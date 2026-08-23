@@ -1,0 +1,61 @@
+name: Bug report
+description: Something in the library or the build pipeline is broken
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - An icon renders incorrectly
+        - Types / TypeScript
+        - Package exports or resolution
+        - Accessibility
+        - Tree-shaking / bundle size
+        - Validation (bun run validate)
+        - Generation (bun run generate)
+        - Build (bun run build)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Minimal code, or the exact command and its full output.
+      render: shell
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: "@qeetrix/icons version"
+      placeholder: 0.1.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: React version, bundler, TypeScript version, OS. For pipeline bugs, `bun --version` and `node --version`.
+      render: shell
+    validations:
+      required: true

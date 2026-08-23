@@ -1,0 +1,27 @@
+{
+  "$comment": "The closed set of icon categories. A directory under icons/ that is not listed here is a validation error, and a listed category may legitimately be empty. Declaring the taxonomy rather than inferring it from the filesystem is what makes a typo'd directory ('navigaton/') fail loudly instead of silently becoming a new category. Category is browse metadata only — it is never part of an icon's export name, so moving an icon between categories is not a breaking change.",
+  "categories": [
+    "accessibility",
+    "arrows",
+    "communication",
+    "data",
+    "design",
+    "development",
+    "devices",
+    "editing",
+    "files",
+    "finance",
+    "hardware",
+    "interface",
+    "maps",
+    "media",
+    "navigation",
+    "notifications",
+    "security",
+    "social",
+    "status",
+    "time",
+    "users",
+    "utilities"
+  ]
+}

@@ -15,7 +15,7 @@
 ![Biome](https://img.shields.io/badge/Biome-2-60A5FA?logo=biome&logoColor=fff)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**[🚀 Install](#-install)** · **[🎨 Usage](#-usage)** · **[♿ Accessibility](#-accessibility)** · **[🏗 How it works](#-how-it-works)** · **[🛠 Develop](#-develop)**
+**[🚀 Install](#-install)** · **[🎨 Usage](#-usage)** · **[🔎 Find an icon](#-finding-an-icon)** · **[♿ Accessibility](#-accessibility)** · **[🏗 How it works](#-how-it-works)** · **[🛠 Develop](#-develop)**
 
 | | | | |
 |:---:|:---:|:---:|:---:|
@@ -208,8 +208,19 @@ direction.
 At this size, searching first is the difference between a coherent catalogue and a pile.
 
 ```bash
-bun run gallery && open .gallery/index.html   # search name, tag or alias; filter by category
+bun run explorer && open .explorer/index.html
 ```
+
+The explorer is a single static file with the whole catalogue inlined — no server, no build step.
+
+| | |
+|:--|:--|
+| **Search** | Names, component names, categories, tags and aliases, with deterministic ranking: exact name → prefix → alias → component → substring → tag → category |
+| **Filter** | Category, coverage priority, mirror-only |
+| **Preview** | 16 / 20 / 24 / 32 / 48 / 64 px, on light or dark, grid or list |
+| **Detail** | Full metadata plus copyable import, JSX and component name |
+| **Linkable** | `#icon=shield-check`, `#q=lock&category=security` — every view is shareable |
+| **Keyboard** | Tab and Enter throughout, arrow keys across the grid, `/` to focus search, Escape to close |
 
 Or read the [coverage matrix](docs/icon-catalog.md), which lists every icon with its tags and
 aliases. Search the **aliases** too — many words you would reach for are aliases rather than names:
@@ -308,12 +319,14 @@ icon-metadata.json      ← tags, aliases, RTL mirror flags, coverage priority
 scripts/
   validate.mjs          ← bun run validate
   generate.mjs          ← bun run generate [--check]
-  gallery.mjs           ← bun run gallery
+  explorer.mjs          ← bun run explorer
   catalog.mjs           ← bun run catalog [--check]
+  api-docs.mjs          ← bun run api [--check]
+  verify-package.mjs    ← bun run verify:package
   doctor.mjs            ← bun run doctor
   clean.mjs
-  config/categories.json
-  lib/                  discover · svg · rules · naming · emit · io · pipeline
+  config/               categories · package-size baseline · consumer fixture
+  lib/                  discover · svg · rules · naming · emit · io · pipeline · search
 src/
   index.ts              ← public barrel (hand-written)
   types.ts              ← QeetrixIconProps, IconMetadata (hand-written)
@@ -322,7 +335,7 @@ src/
   icons/                ← GENERATED, one module per icon
 tests/
   fixtures/             valid + invalid SVGs, outside icons/ on purpose
-  icons/ metadata/ build/ visual/
+  icons/ metadata/ build/ visual/ explorer/
 docs/                   icon-catalog · icon-design-system · icon-guidelines · naming · contributing
 ```
 
@@ -366,7 +379,7 @@ calls, and a check that blocked a merge over a naming opinion would just get swi
 bun install
 bun run validate      # check every source SVG
 bun run generate      # regenerate components, barrel and metadata
-bun run gallery       # build the local review gallery, then open .gallery/index.html
+bun run explorer       # build the explorer and review sheets, then open .explorer/index.html
 bun run catalog       # regenerate docs/icon-catalog.md
 bun run doctor        # catalogue health report (advisory)
 bun run typecheck
@@ -375,13 +388,13 @@ bun run test
 bun run build         # clean → generate → tsc → tsc-alias
 ```
 
-### Reviewing icons
+### The icon explorer
 
-`bun run gallery` writes three artifacts to `.gallery/` (gitignored):
+`bun run explorer` writes three artifacts to `.explorer/` (gitignored):
 
 | | |
 |:--|:--|
-| `index.html` | Searchable browser — filter by category and priority, preview at 16/20/24/32, copy the import |
+| `index.html` | The **icon explorer** — ranked search over names, tags and aliases; category, priority and mirror filters; grid or list; preview at 16/20/24/32/48/64; light and dark preview; copy import, JSX or component name; deep-linkable |
 | `contact-sheet.svg` | The whole set on one page. The only way to catch an icon that looks wrong *beside its siblings* |
 | `small-sizes.svg` | Every icon at all four sizes. 16px is where glyphs fall apart |
 
@@ -394,14 +407,19 @@ Tooling: **bun**, **Biome 2**, **Vitest 4**, **Changesets**, and plain **`tsc`**
 bundler, which suits a package whose ideal output is one module per icon anyway. This mirrors
 `@qeetrix/ui`; there is no ESLint and no Prettier anywhere in the workspace.
 
-CI runs `validate → generate:check → build → typecheck → lint → test → gallery → catalog:check → doctor`
-on every push and PR.
+CI runs two jobs. `verify` covers
+`validate → generate:check → build → typecheck → lint → test → explorer → catalog:check → api:check → doctor`.
+`package` runs `verify:package` on its own, so a slow install and bundle measurement does not gate
+every review.
 
 **Docs**
 
 | | |
 |:--|:--|
+| [docs/usage.md](docs/usage.md) | **Start here as a consumer** — install, sizing, colour, accessibility, entry points |
+| [docs/api.md](docs/api.md) | Complete prop reference, generated from the shipped types |
 | [docs/icon-catalog.md](docs/icon-catalog.md) | **The coverage matrix** — every icon, its priority, tags, aliases and RTL flag. Search this before adding one |
+| [docs/releases.md](docs/releases.md) | Changesets, what each bump means, deprecation policy |
 | [docs/icon-design-system.md](docs/icon-design-system.md) | The visual language — grid bands, stroke density, shared motifs, small-size rules |
 | [docs/icon-guidelines.md](docs/icon-guidelines.md) | The technical spec and every validation rule |
 | [docs/naming.md](docs/naming.md) | Naming governance, and tags vs aliases |

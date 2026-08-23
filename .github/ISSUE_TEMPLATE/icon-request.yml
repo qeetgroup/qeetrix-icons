@@ -1,0 +1,91 @@
+name: Icon request
+description: Request a new icon for the library
+title: "icon: "
+labels: ["icon request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: search `@qeetrix/icons/metadata` (or the existing issues) for
+        the concept — it may already exist under a different name or alias.
+
+  - type: input
+    id: name
+    attributes:
+      label: Proposed name
+      description: kebab-case. See docs/naming.md — name the shape, not the meaning.
+      placeholder: calendar-check
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - accessibility
+        - arrows
+        - communication
+        - design
+        - development
+        - editing
+        - files
+        - finance
+        - hardware
+        - interface
+        - maps
+        - media
+        - navigation
+        - security
+        - social
+        - status
+        - users
+        - utilities
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: What do you need it for?
+      description: Which product and surface. Concrete use cases keep the set from sprawling.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tags
+    attributes:
+      label: Search terms
+      description: Words someone would type to find this icon.
+      placeholder: schedule, confirmed, booking, appointment
+    validations:
+      required: true
+
+  - type: textarea
+    id: reference
+    attributes:
+      label: Visual reference
+      description: |
+        Describe the glyph, or attach a sketch. Please do **not** attach an SVG
+        from another icon library — this set is original artwork.
+
+  - type: dropdown
+    id: mirror
+    attributes:
+      label: Does it have a horizontal direction?
+      description: If yes it must mirror under dir="rtl". Vertical direction does not count.
+      options:
+        - "No"
+        - "Yes — points left or right"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirm
+      options:
+        - label: I checked this icon does not already exist under another name or alias
+          required: true
+        - label: I am not asking for a glyph copied from another icon library
+          required: true

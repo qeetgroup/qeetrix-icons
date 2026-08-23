@@ -1,0 +1,14 @@
+{
+  "$comment": "Size baseline for bun run verify:package. Recorded with --update-baseline. Growth beyond the tolerance is reported, not failed: the catalogue is meant to grow. Re-record deliberately, in the same change that grows the package, so the diff shows it.",
+  "tolerance": 0.25,
+  "sizes": {
+    "tarball": 54375,
+    "distJs": 235259,
+    "distDts": 66180,
+    "metadata": 74404,
+    "bundleOneIcon": 586,
+    "bundleDeepImport": 586,
+    "bundleWholeSet": 76320,
+    "bundleMetadataOnly": 3815
+  }
+}
