@@ -441,7 +441,8 @@ Phase 3 delivered enterprise coverage. Phase 4 should build:
 - **Discovery surfaces** — an icon browser in `qeetrix-docs` and Storybook stories, both fed by
   `@qeetrix/icons/metadata`.
 - **Figma library** published from the same canonical SVG, so design and code cannot drift.
-- **A published `1.0.0`**, once the migration has proved the API in a real consumer.
+- **Prove `1.0.0` against a real consumer.** The API is frozen as of 1.0.0 but has not yet
+  been exercised by a product; the migration is where any awkwardness will surface.
 
 ---
 

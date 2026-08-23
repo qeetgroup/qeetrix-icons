@@ -99,14 +99,25 @@ bun run version       # consume changesets, bump, write the changelog
 bun run release       # build then publish (CI does this)
 ```
 
-## Pre-1.0
+## What 1.0.0 committed to
 
-The package is at `0.x`, which under semver means the API is not yet frozen. In practice this
-repository already treats icon names as stable — nothing released has been renamed or removed — but
-the `0.` prefix is honest: the API has not been proved against a real consumer yet.
+From `1.0.0`, the table above is a promise rather than a convention. Concretely:
 
-**`1.0.0` should follow the first product migration**, not precede it. Until `@qeetrix/ui` actually
-depends on this package, "stable" is a claim rather than an observation.
+- **Icon component names are frozen.** Removing or renaming one is a major release. This is the
+  expensive commitment, and it is why [naming.md](naming.md) is strict and why the catalogue records
+  the names it argued about in its "Deliberate non-duplicates" table.
+- **`QeetrixIconProps` and the rendering defaults are frozen.** Size, stroke, caps, `currentColor`,
+  and the accessibility branch cannot change without a major.
+- **The three entry points are frozen.** Nothing internal is reachable, so nothing internal can
+  become a breaking change by accident.
+
+Adding icons, tags, aliases and optional props stays minor or patch, and visual corrections stay
+patch. The freeze is on the shape, not the contents.
+
+One caveat worth being honest about: `1.0.0` shipped **before** the first product migration. The API
+is well covered by tests, but it has not yet been proved by a real consumer — the first `@qeetrix/ui`
+integration is where any awkwardness will surface, and fixing it then will cost a `2.0.0` rather than
+a `0.x` bump. That was a deliberate trade.
 
 ## Deprecation
 
