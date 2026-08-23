@@ -2,7 +2,7 @@
 
 # Icon catalogue
 
-The coverage matrix for `@qeetrix/icons` v0.1.0: **331 icons** across
+The coverage matrix for `@qeetrix/icons`: **331 icons** across
 **22 categories**, every one with tags, aliases, RTL behaviour and a coverage
 priority.
 

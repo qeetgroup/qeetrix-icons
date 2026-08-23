@@ -173,4 +173,21 @@ describe.skipIf(!built)("the generated API reference", () => {
     expect(api).toContain("What is not public");
     expect(api).toContain("icon-metadata.json");
   });
+
+  it("does not embed the package version", () => {
+    // It used to. Changesets bumps the version without running any generator,
+    // so every release made these committed, --checked documents stale and
+    // failed CI on content that had not changed. The version belongs in
+    // package.json, CHANGELOG.md and npm — not in a document about API shape.
+    for (const doc of ["docs/api.md", "docs/icon-catalog.md"]) {
+      const text = readFileSync(join(PKG, doc), "utf8");
+      // The `v0.2.0` heading form that used to be interpolated.
+      expect(text, doc).not.toMatch(/v\d+\.\d+\.\d+/);
+      // And no version printed next to the package name. Deliberately not a
+      // bare search for the version string: `api.md` legitimately quotes an
+      // example version in IconDeprecation's `since` doc, which would collide
+      // with the real one by coincidence.
+      expect(text, doc).not.toMatch(/@qeetrix\/icons`?\s+v?\d+\.\d+\.\d+/);
+    }
+  });
 });
