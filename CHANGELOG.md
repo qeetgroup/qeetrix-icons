@@ -1,5 +1,42 @@
 # @qeetrix/icons
 
+## 1.0.0
+
+### Major Changes
+
+- 1.0.0 — the icon API is now stable.
+
+  Nothing about the package changes in this release. The version number is the change: icon names,
+  component names, props and entry points are now covered by semantic versioning, so a minor or patch
+  upgrade can add icons and correct artwork but can never take an export away.
+
+  **What is stable from here**
+
+  - **Every icon's component name.** `import { ArrowLeft } from "@qeetrix/icons"` will keep resolving.
+    Renaming or removing an icon now requires a major release, which is why the catalogue prefers
+    adding an alias over renaming.
+  - **`QeetrixIconProps`.** `React.SVGProps<SVGSVGElement>` plus `size`. Props may be added, never
+    removed or retyped without a major.
+  - **The rendering defaults.** 24 × 24 grid, 2px stroke, round caps and joins, `currentColor`,
+    decorative by default with `aria-hidden` flipping to `role="img"` when a label is passed.
+  - **The entry points.** `@qeetrix/icons`, `@qeetrix/icons/metadata` and
+    `@qeetrix/icons/icons/<name>`. No internal paths are reachable.
+  - **`IconMetadata`.** Fields may be added optionally; existing ones keep their meaning.
+
+  **What still moves freely**
+
+  New icons, new tags and aliases, visual corrections to existing glyphs, and category moves — a
+  category is browse metadata and is not part of any export name.
+
+  **What is in the box**
+
+  331 icons across 22 categories, one outline style, zero runtime dependencies, React as a peer, ESM
+  with declarations, and `sideEffects: false`. One icon bundles to 586 bytes against 76 KB for the
+  whole set. Published with provenance.
+
+  See `docs/releases.md` for what counts as a breaking change, and `docs/icon-catalog.md` for the
+  catalogue.
+
 ## 0.2.0
 
 ### Minor Changes
