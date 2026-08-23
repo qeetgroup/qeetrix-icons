@@ -1,6 +1,6 @@
 {
   "name": "@qeetrix/icons",
-  "version": "0.2.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Qeetrix Icons — the Qeet Group icon library. Outline icons on a 24×24 grid, generated from canonical SVG.",
   "license": "MIT",
