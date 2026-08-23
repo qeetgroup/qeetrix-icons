@@ -135,6 +135,53 @@ describe("the heavy verification is wired up", () => {
   });
 });
 
+describe("the release workflow", () => {
+  const release = readFileSync(join(PKG, ".github/workflows/release.yml"), "utf8");
+
+  it("separates versioning from publishing", () => {
+    // Versioning must work without credentials; publishing must not be attempted
+    // without them.
+    expect(release).toMatch(/^\s{2}version:$/m);
+    expect(release).toMatch(/^\s{2}publish:$/m);
+  });
+
+  it("does not pass a publish input to the changesets action", () => {
+    // It used to. That makes the action attempt a publish on every push to main,
+    // which failed with ENEEDAUTH on a repository with no NPM_TOKEN — a red run
+    // on every merge. Publishing is the separate, guarded job instead.
+    const withBlock = release.match(/uses: changesets\/action@v1\n(\s+)with:\n((?:\1 {2}.+\n)+)/);
+    expect(withBlock, "changesets action `with:` block not found").not.toBeNull();
+    expect(withBlock?.[2]).not.toContain("publish:");
+  });
+
+  it("guards the publish step on credentials actually being present", () => {
+    expect(release).toContain("steps.creds.outputs.ready == 'true'");
+    expect(release).toContain("steps.creds.outputs.ready != 'true'");
+    // Reduced to a boolean output because secrets are unavailable in a step `if`.
+    expect(release).toMatch(/secrets\.NPM_TOKEN != ''/);
+  });
+
+  it("gates publishing on the protected environment, and nothing else", () => {
+    const publishJob = release.slice(release.indexOf("\n  publish:"));
+    expect(publishJob).toContain("environment: npm-publish");
+    const versionJob = release.slice(
+      release.indexOf("\n  version:"),
+      release.indexOf("\n  publish:"),
+    );
+    expect(versionJob).not.toContain("environment:");
+  });
+
+  it("uses a node version whose npm supports trusted publishing", () => {
+    // npm >= 11.5 is required, which means Node 24. Node 20 ships npm 10.
+    expect(release).toMatch(/node-version: 2[4-9]/);
+  });
+
+  it("explains the missing configuration rather than just failing", () => {
+    expect(release).toContain("GITHUB_STEP_SUMMARY");
+    expect(release).toContain("::warning");
+  });
+});
+
 describe.skipIf(!built)("the generated API reference", () => {
   it("is current", () => {
     const result = spawnSync("node", ["scripts/api-docs.mjs", "--check"], {

@@ -75,16 +75,21 @@ That is why `delete`, `bin`, `add`, `close`, `gear` and `stop` are aliases and n
 
 ## How a release happens
 
-Releases are driven by Changesets through `.github/workflows/release.yml`:
+Releases are driven by Changesets through `.github/workflows/release.yml`, which has two jobs:
 
 1. A PR lands on `main` carrying one or more changeset files.
-2. The workflow opens (or updates) a **version PR** that consumes the changesets, bumps the version
-   and writes `CHANGELOG.md`.
-3. Merging the version PR publishes to npm.
+2. The **`version`** job consumes them and opens (or updates) a version PR that bumps the version and
+   writes `CHANGELOG.md`. This job needs no credentials, so versioning always works.
+3. Merging that version PR leaves nothing pending, so the **`publish`** job runs.
 
-Nothing publishes from a feature branch, and nothing publishes without a changeset. The workflow is
-gated on the protected `npm-publish` environment and an `NPM_TOKEN`, so it is currently inert — see
-"Not yet configured" below.
+The split matters. Passing a `publish:` input to the Changesets action makes it attempt a publish on
+*every* push to `main`, which fails with `ENEEDAUTH` when there are no credentials — a red run on
+every merge that tells you nothing. Publishing is therefore its own job, gated on the protected
+`npm-publish` environment, and it checks for credentials before trying.
+
+**When publishing is not configured, the job succeeds with a warning** and writes the missing steps
+into the run summary. That is a deliberate choice: a package that has never shipped is legitimately
+unpublishable, and a permanently red workflow trains people to ignore it.
 
 Locally:
 
@@ -169,12 +174,25 @@ There is deliberately no automation for removal. At this catalogue size the cost
 deprecated icon is a few hundred bytes that tree-shaking already discards for anyone not importing
 it — and the cost of removing one is a broken build. The asymmetry says keep it.
 
-## Not yet configured
+## Not yet published
 
-`release.yml` cannot publish until two things exist outside this repository:
+`@qeetrix/icons` has never been published — `npm view @qeetrix/icons` returns 404. Versioning works
+and version PRs land; the `publish` job skips with a warning until the registry side exists.
 
-- a protected GitHub environment named `npm-publish`
-- an `NPM_TOKEN` secret with publish rights to the `@qeetrix` scope
+Two ways to enable it, and the order matters:
 
-Until then the workflow runs, opens version PRs, and stops short of publishing. That is deliberate —
-an accidental first publish is much harder to undo than a delayed one.
+**A token.** Add an `NPM_TOKEN` secret with publish rights to the `@qeetrix` scope. This is the only
+option for the first release.
+
+**Trusted publishing (OIDC).** Configure a trusted publisher for `@qeetrix/icons` on npmjs.com
+pointing at this repository and the `Release` workflow, then set the repository variable
+`QEETRIX_NPM_TRUSTED_PUBLISHING` to `true`. Two constraints worth knowing before reaching for it:
+
+- npm requires the **package to already exist** before a trusted publisher can be attached to it, so
+  the first release still needs a token.
+- Trusted publishing needs **npm ≥ 11.5**, which is why the workflow pins `node-version: 24`. On
+  Node 20 (npm 10) the OIDC path cannot work even with the registry configured — that is what the
+  first failed release run was actually hitting.
+
+A protected `npm-publish` environment is also referenced. If it does not exist GitHub creates it
+unprotected, so add required reviewers there if a human should approve each publish.
