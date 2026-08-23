@@ -42,16 +42,30 @@ jobs:
       - run: bun run typecheck
       - run: bun run lint
 
-      # Includes the visual-regression snapshots, the explorer's behaviour and
-      # accessibility tests, and the tree-shaking check against the real dist/.
-      - run: bun run test
-
-      # The explorer is a local tool, so nothing consumes its output in CI —
-      # but one that has silently stopped building is one nobody reviews icons
-      # in. The explorer tests need it to exist, so this runs before them on a
-      # clean checkout; `test` above tolerates its absence by skipping.
+      # Before `test`, and that ordering is load-bearing: the explorer's
+      # behaviour and accessibility tests load the generated .explorer/index.html
+      # and skip when it is absent. With this step after `test`, all 40 of them
+      # silently skipped on a clean checkout — green CI that verified nothing.
       - name: build the icon explorer
         run: bun run explorer
+
+      # Visual-regression snapshots, the explorer's behaviour and accessibility
+      # tests, and the tree-shaking check against the real dist/.
+      #
+      # A skipped suite is not a passing suite: several suites guard on an
+      # artifact existing (dist/, .explorer/) and skip when it does not, so a
+      # step-ordering mistake shows up as green CI that verified nothing. That
+      # is exactly what happened before the explorer step moved above this one,
+      # so the skip count is checked rather than trusted to a comment.
+      - name: test
+        run: |
+          set -o pipefail
+          bun run test 2>&1 | tee /tmp/test.log
+          if grep -qE '[0-9]+ skipped' /tmp/test.log; then
+            echo "::error::Tests were skipped, which means an artifact they need was missing."
+            grep -E 'skipped' /tmp/test.log
+            exit 1
+          fi
 
       # Both are generated, so both can go stale like any tracked artifact.
       - name: check the icon catalogue is current

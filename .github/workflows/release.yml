@@ -16,15 +16,16 @@ env:
   BUN_VERSION: 1.3.14
 
 jobs:
-  release:
+  # Consumes changesets and opens (or updates) the version PR. This needs no npm
+  # credentials, so it is deliberately NOT gated on the publish environment —
+  # versioning has to keep working whether or not publishing is set up.
+  version:
     runs-on: ubuntu-latest
-    # A protected environment gates publishing. Until it exists and holds
-    # NPM_TOKEN, this workflow opens a version PR and never publishes.
-    environment: npm-publish
     permissions:
       contents: write
       pull-requests: write
-      id-token: write
+    outputs:
+      pending: ${{ steps.changesets.outputs.hasChangesets }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,20 +33,86 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: ${{ vars.QEETRIX_NPM_REGISTRY || 'https://registry.npmjs.org' }}
-          scope: "@qeetrix"
       - run: bun install --frozen-lockfile
-      - run: bun run build
-      - name: version or publish
+
+      # No `publish:` input on purpose. Passing one makes the action attempt a
+      # publish on every push to main, which fails with ENEEDAUTH when there are
+      # no credentials — a red run on every merge that says nothing useful.
+      # Publishing is the separate, gated job below.
+      - id: changesets
         uses: changesets/action@v1
         with:
           version: bun run version
-          publish: bunx changeset publish
           commit: "chore: version packages"
           title: "chore: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    needs: version
+    # Only when nothing is pending. A pending version PR means changesets are
+    # still unconsumed, so the version on main is not the one to release yet.
+    if: needs.version.outputs.pending != 'true'
+    runs-on: ubuntu-latest
+    # The protected environment gates the publish itself, and nothing else.
+    environment: npm-publish
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          # Node 24 for npm 11. Trusted publishing needs npm >= 11.5, so the
+          # previous Node 20 (npm 10) could not have used the OIDC path even
+          # with the registry side configured.
+          node-version: 24
+          registry-url: ${{ vars.QEETRIX_NPM_REGISTRY || 'https://registry.npmjs.org' }}
+          scope: "@qeetrix"
+      - run: bun install --frozen-lockfile
+
+      # Secrets are not available in a step-level `if`, so the decision is
+      # reduced to a boolean output first. The expression evaluates to the string
+      # "true" or "false" and never prints the secret.
+      - id: creds
+        name: check for publish credentials
+        run: |
+          echo "ready=${{ secrets.NPM_TOKEN != '' || vars.QEETRIX_NPM_TRUSTED_PUBLISHING == 'true' }}" >> "$GITHUB_OUTPUT"
+
+      # Not configured is a normal state for a package that has never shipped,
+      # so say what is missing and succeed. Failing here would mean a red run on
+      # every merge to main, which trains people to ignore the release workflow.
+      - if: steps.creds.outputs.ready != 'true'
+        name: report that publishing is not configured
+        run: |
+          {
+            echo "## Publishing is not configured"
+            echo
+            echo "Versioning ran. The publish step was skipped because this repository"
+            echo "has no way to authenticate to the registry yet."
+            echo
+            echo "Pick one:"
+            echo
+            echo "- **A token.** Add an \`NPM_TOKEN\` secret with publish rights to the"
+            echo "  \`@qeetrix\` scope. Simplest, and the only option for a package that"
+            echo "  has never been published."
+            echo "- **Trusted publishing (OIDC).** Configure a trusted publisher for"
+            echo "  \`@qeetrix/icons\` on npmjs.com pointing at this repository and the"
+            echo "  \`Release\` workflow, then set the repository variable"
+            echo "  \`QEETRIX_NPM_TRUSTED_PUBLISHING\` to \`true\`. Note npm requires the"
+            echo "  package to exist before a trusted publisher can be attached, so the"
+            echo "  first release still needs a token."
+            echo
+            echo "See \`docs/releases.md\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning title=Publishing skipped::No NPM_TOKEN and trusted publishing not enabled. See the job summary."
+
+      - if: steps.creds.outputs.ready == 'true'
+        name: build and publish
+        run: bun run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

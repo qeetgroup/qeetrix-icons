@@ -2,7 +2,7 @@
 
 # API reference
 
-The complete public surface of `@qeetrix/icons` v0.1.0.
+The complete public surface of `@qeetrix/icons`.
 
 Generated from the shipped declarations in `dist/`, which is what your editor loads — so this
 document cannot describe a prop that does not exist. `bun run api -- --check` proves the committed
