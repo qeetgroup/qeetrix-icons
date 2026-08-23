@@ -16,8 +16,6 @@ env:
   BUN_VERSION: 1.3.14
 
 jobs:
-  # Everything that only needs the repository. Fast, and the job a reviewer
-  # actually waits on.
   verify:
     runs-on: ubuntu-latest
     steps:
@@ -27,14 +25,11 @@ jobs:
           bun-version: ${{ env.BUN_VERSION }}
       - run: bun install --frozen-lockfile
 
-      # Cheapest check first: a malformed SVG fails here rather than surfacing
-      # as a confusing TypeScript error after generation.
       - name: validate icons
         run: bun run validate
 
-      # Before `build`, deliberately. `build` runs the generator itself, so
-      # checking afterwards would silently overwrite hand-edited generated
-      # files instead of reporting them.
+      # Must precede `build`: build runs the generator, so checking afterwards
+      # would overwrite a hand-edited generated file instead of reporting it.
       - name: check generated output is committed
         run: bun run generate:check
 
@@ -42,21 +37,13 @@ jobs:
       - run: bun run typecheck
       - run: bun run lint
 
-      # Before `test`, and that ordering is load-bearing: the explorer's
-      # behaviour and accessibility tests load the generated .explorer/index.html
-      # and skip when it is absent. With this step after `test`, all 40 of them
-      # silently skipped on a clean checkout — green CI that verified nothing.
+      # Must precede `test`: the explorer tests read .explorer/index.html and
+      # skip when it is absent.
       - name: build the icon explorer
         run: bun run explorer
 
-      # Visual-regression snapshots, the explorer's behaviour and accessibility
-      # tests, and the tree-shaking check against the real dist/.
-      #
-      # A skipped suite is not a passing suite: several suites guard on an
-      # artifact existing (dist/, .explorer/) and skip when it does not, so a
-      # step-ordering mistake shows up as green CI that verified nothing. That
-      # is exactly what happened before the explorer step moved above this one,
-      # so the skip count is checked rather than trusted to a comment.
+      # Several suites skip when an artifact they need is missing, so a
+      # step-ordering mistake surfaces as a green run that tested nothing.
       - name: test
         run: |
           set -o pipefail
@@ -67,22 +54,18 @@ jobs:
             exit 1
           fi
 
-      # Both are generated, so both can go stale like any tracked artifact.
       - name: check the icon catalogue is current
         run: bun run catalog:check
       - name: check the API reference is current
         run: bun run api:check
 
-      # Advisory by design: duplicate semantics and family gaps are judgement
-      # calls, so this reports on every PR without failing the build. A check
-      # that blocked merges over a naming opinion would just get disabled.
+      # Advisory: duplicate semantics and family gaps are judgement calls.
+      # Do not make this fail the build.
       - name: catalogue health report
         run: bun run doctor
 
-  # Separate job: packing, installing into a throwaway consumer and bundling
-  # takes far longer than the rest of the suite combined, and it fails for
-  # different reasons. Keeping it apart means a reviewer can see the fast
-  # signal without waiting for it.
+  # Separate job because packing, installing and bundling takes longer than
+  # everything above combined.
   package:
     runs-on: ubuntu-latest
     steps:
@@ -92,11 +75,5 @@ jobs:
           bun-version: ${{ env.BUN_VERSION }}
       - run: bun install --frozen-lockfile
       - run: bun run build
-
-      # Packs the real tarball, asserts its contents, installs it into a
-      # throwaway project outside the source tree, typechecks that consumer
-      # against the shipped declarations with skipLibCheck off, server-renders
-      # to prove runtime, then measures tree-shaking and size against a
-      # committed baseline.
       - name: verify the published package
         run: bun run verify:package
