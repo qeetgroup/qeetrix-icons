@@ -49,19 +49,26 @@
     }
   },
   "files": {
-    "includes": ["**", "!icons", "!tests/fixtures", "!dist"]
+    "includes": ["**", "!icons", "!dist"]
   },
   "overrides": [
     {
-      "includes": ["icon-metadata.json"],
+      "includes": ["src/icons/**"],
       "formatter": {
         "enabled": false
-      }
-    },
-    {
-      "includes": ["src/icons/**"],
+      },
+      "assist": {
+        "actions": {
+          "source": {
+            "organizeImports": "off"
+          }
+        }
+      },
       "linter": {
         "rules": {
+          "a11y": {
+            "noSvgWithoutTitle": "off"
+          },
           "suspicious": {
             "noShadowRestrictedNames": "off"
           }

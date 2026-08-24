@@ -1,30 +1,25 @@
 /**
  * `@qeetrix/icons` — the Qeet Group icon library.
  *
- * Icon components are generated from the canonical SVG sources in `icons/` by
- * `scripts/generate.mjs`; this barrel is hand-written and re-exports the
- * generated set alongside the public types and the shared `<svg>` shell.
+ * Every component is generated from `icons/<style>/<category>/<name>.svg` by
+ * `scripts/generate.mjs`, and holds that file's SVG markup byte for byte. There
+ * is no shared `<svg>` shell and no runtime: each component is a plain function
+ * returning the source SVG, so what ships is what a designer exported.
+ *
+ * One component per icon name, with the style behind a `variant` prop:
+ *
+ *   import { Activity } from "@qeetrix/icons";
+ *
+ *   <Activity />                      // outline (the default)
+ *   <Activity variant="solid" />
+ *   <Activity width={20} height={20} />
+ *   <Activity className="size-5" />
  *
  * Every export is side-effect free (`sideEffects: false`), so a bundler drops
  * every icon a consumer does not import.
- *
- * Icon metadata is deliberately NOT re-exported here — it lives behind
- * `@qeetrix/icons/metadata` so that importing one icon never drags the whole
- * catalogue into the bundle.
- *
- * Export order below is the one Biome's `organizeImports` assist enforces
- * (alphabetical by module specifier), not a semantic grouping.
  */
 
-// The shared shell, plus the spec constants generated components render with.
-// Exported so consumers can build a matching one-off glyph without guessing.
-export {
-  ICON_DEFAULT_SIZE,
-  ICON_DEFAULT_STROKE_WIDTH,
-  ICON_VIEW_BOX,
-  IconBase,
-} from "./icon-base.js";
 // Every icon component. GENERATED — see src/icons/index.ts.
 export * from "./icons/index.js";
 // Public types.
-export type { IconDeprecation, IconMetadata, QeetrixIconProps } from "./types.js";
+export type { IconVariant, QeetrixIconProps } from "./types.js";

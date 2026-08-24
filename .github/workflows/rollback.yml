@@ -1,0 +1,105 @@
+name: Rollback
+
+# Points `latest` back at an older published version, so `bun add @qeetrix/icons`
+# stops serving a bad release.
+#
+# This is how a rollback works on npm. A published version is immutable and
+# cannot be replaced, and unpublishing breaks every lockfile that already
+# pins it — so instead of removing the bad version, this moves the `latest`
+# dist-tag to a known-good one. Anyone who pinned the bad version explicitly
+# keeps working; everyone installing fresh gets the good one.
+#
+# Run it from Actions → Rollback → Run workflow, and give it the version to go
+# back to (for example 1.0.1). To go forward again, either release a new version
+# normally or run this with the newer version.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Published version to make latest (e.g. 1.0.1)"
+        required: true
+        type: string
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: ${{ vars.QEETRIX_NPM_REGISTRY || 'https://registry.npmjs.org' }}
+          scope: "@qeetrix"
+
+      - id: check
+        name: the target version exists and is not already latest
+        env:
+          TARGET: ${{ inputs.version }}
+        run: |
+          set -uo pipefail
+          name=$(node -p "require('./package.json').name")
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+
+          # Reject a version that was never published — otherwise the dist-tag
+          # move fails with a less obvious error.
+          if ! npm view "$name@$TARGET" version >/dev/null 2>&1; then
+            echo "::error::$name@$TARGET is not published. Pick a version that exists: npm view $name versions"
+            exit 1
+          fi
+
+          current=$(npm view "$name" dist-tags.latest 2>/dev/null || echo "")
+          echo "current latest: ${current:-unknown}"
+          echo "target:         $TARGET"
+          if [ "$current" = "$TARGET" ]; then
+            echo "::notice::latest is already $TARGET. Nothing to do."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "previous=${current:-unknown}" >> "$GITHUB_OUTPUT"
+
+      - id: creds
+        if: steps.check.outputs.changed == 'true'
+        name: are publish credentials configured?
+        run: |
+          echo "ready=${{ secrets.NPM_TOKEN != '' || vars.QEETRIX_NPM_TRUSTED_PUBLISHING == 'true' }}" >> "$GITHUB_OUTPUT"
+
+      - if: steps.check.outputs.changed == 'true' && steps.creds.outputs.ready == 'true'
+        name: move the latest dist-tag
+        # `npm dist-tag` is an authenticated write, same as publish.
+        env:
+          TARGET: ${{ inputs.version }}
+          NAME: ${{ steps.check.outputs.name }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm dist-tag add "$NAME@$TARGET" latest
+
+      - if: steps.check.outputs.changed == 'true' && steps.creds.outputs.ready == 'true'
+        name: summarise
+        run: |
+          {
+            echo "## Rolled back"
+            echo
+            echo "\`latest\` moved from \`${{ steps.check.outputs.previous }}\` to \`${{ inputs.version }}\`."
+            echo
+            echo "Fresh installs now resolve to \`${{ inputs.version }}\`. The bad version is"
+            echo "still on the registry and still installable if pinned explicitly, which is"
+            echo "deliberate — unpublishing would break existing lockfiles."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - if: steps.check.outputs.changed == 'true' && steps.creds.outputs.ready != 'true'
+        name: report that publishing is not configured
+        run: |
+          echo "::warning title=Rollback skipped::No NPM_TOKEN and trusted publishing not enabled. See docs/releases.md."
