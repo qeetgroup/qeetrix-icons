@@ -74,12 +74,26 @@ function markup(node) {
   return children ? `<${node.name}${attrs}>${children}</${node.name}>` : `<${node.name}${attrs} />`;
 }
 
-const icons = [...entries].sort((a, b) => byString(a.name, b.name));
-for (const icon of icons) {
-  icon.inner = icon.tree.children
+// Group entries by name; keep one representative entry per unique icon name.
+// Each icon record carries inner markup per variant for the preview toggle.
+const byName = new Map();
+for (const entry of entries) {
+  if (!byName.has(entry.name)) byName.set(entry.name, { ...entry, variants: {} });
+  const iconRecord = byName.get(entry.name);
+  iconRecord.variants[entry.style] = entry.tree.children
     .filter((child) => child.type === "element")
     .map(markup)
     .join("");
+  // Prefer outline as the representative tree for the default display.
+  if (entry.style === "outline" || !iconRecord.variants.outline) {
+    iconRecord.style = entry.style;
+    iconRecord.tree = entry.tree;
+  }
+}
+
+const icons = [...byName.values()].sort((a, b) => byString(a.name, b.name));
+for (const icon of icons) {
+  icon.inner = icon.variants[icon.style] ?? "";
 }
 
 /** SVG root presentation attrs per style — must match the pipeline's ROOT_ATTRS_* constants. */
@@ -157,6 +171,7 @@ function html() {
         name: icon.name,
         component: icon.component,
         style: icon.style,
+        variants: Object.keys(icon.variants),
         category: icon.category,
         tags: icon.tags,
         aliases: icon.aliases,
@@ -385,7 +400,7 @@ function syncToggles() {
 function visible() {
   const styleFilter = el('style').value;
   let pool = ICONS;
-  if (styleFilter) pool = pool.filter((i) => i.style === styleFilter);
+  if (styleFilter) pool = pool.filter((i) => i.variants.includes(styleFilter));
   return filterIcons({
     icons: pool,
     query: el('q').value,

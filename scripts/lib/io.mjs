@@ -54,20 +54,27 @@ export function applyOrCheck({ root, files, managedDirs, check }) {
 
   // A source SVG that was renamed or deleted leaves an orphan behind. The
   // generator owns these directories outright, so anything unaccounted for goes.
-  for (const dir of managedDirs) {
-    const abs = join(root, dir);
-    if (!existsSync(abs)) continue;
-    for (const entry of readdirSync(abs, { withFileTypes: true })) {
+  // Walk recursively so category subdirectories are also scanned.
+  function scanForOrphans(absDir) {
+    if (!existsSync(absDir)) return;
+    for (const entry of readdirSync(absDir, { withFileTypes: true })) {
+      if (entry.isDirectory()) {
+        scanForOrphans(join(absDir, entry.name));
+        continue;
+      }
       if (!entry.isFile()) continue;
-      const rel = relative(root, join(abs, entry.name));
+      const rel = relative(root, join(absDir, entry.name));
       if (files.has(rel)) continue;
       if (check) {
         stale.push(rel);
         continue;
       }
-      rmSync(join(abs, entry.name));
+      rmSync(join(absDir, entry.name));
       removed.push(rel);
     }
+  }
+  for (const dir of managedDirs) {
+    scanForOrphans(join(root, dir));
   }
 
   return { written, stale: stale.sort(byString), removed, ok: stale.length === 0 };

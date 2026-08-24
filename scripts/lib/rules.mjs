@@ -386,8 +386,6 @@ export function validateSet(icons, metadata) {
   const warnings = [];
 
   // Duplicate canonical name within the same style.
-  // The same name in outline/ and solid/ is intentional — each produces a
-  // distinct component (Add vs AddSolid), so cross-style collisions are fine.
   const byName = new Map(); // name → first icon seen (for metadata checks below)
   const byStyleAndName = new Map(); // "style:name" → icon
   for (const icon of icons) {
@@ -407,16 +405,15 @@ export function validateSet(icons, metadata) {
     if (!byName.has(icon.name)) byName.set(icon.name, icon);
   }
 
-  // Two different filenames that produce the same React export. Style suffixes
-  // (Solid, Sharp) ensure outline/add → Add, solid/add → AddSolid, sharp/add → AddSharp.
-  const byComponent = new Map();
+  // Two different filenames that produce the same React component name.
+  // Cross-style icons share one component (variant prop), so only same-style
+  // collisions (two different names that happen to PascalCase identically) matter.
+  const byStyleAndComponent = new Map(); // "style:Component" → icon
   for (const icon of icons) {
     if (iconNameError(icon.name)) continue; // already reported
-    const component = toComponentName(icon.name) + (
-      icon.style === "solid" ? "Solid" :
-      icon.style === "sharp" ? "Sharp" : ""
-    );
-    const seen = byComponent.get(component);
+    const component = toComponentName(icon.name);
+    const key = `${icon.style}:${component}`;
+    const seen = byStyleAndComponent.get(key);
     if (seen) {
       errors.push(
         issue(
@@ -427,14 +424,18 @@ export function validateSet(icons, metadata) {
       );
       continue;
     }
-    byComponent.set(component, icon);
+    byStyleAndComponent.set(key, icon);
   }
 
   // Alias and tag hygiene. Search always covers the canonical name and the
   // aliases, so restating either as a tag is duplicated maintenance, and an
   // alias that is itself an icon name makes a query ambiguous between two
   // different glyphs.
+  // Deduplicate by name: same icon with multiple styles shares one metadata entry.
+  const checkedHygieneNames = new Set();
   for (const icon of icons) {
+    if (checkedHygieneNames.has(icon.name)) continue;
+    checkedHygieneNames.add(icon.name);
     const entry = metadata[icon.name];
     if (!entry) continue;
     const tags = entry.tags ?? [];
@@ -532,8 +533,13 @@ export function validateSet(icons, metadata) {
 
   // An alias asserts "this icon is also called X", so two owners make the query
   // ambiguous. Tags carry no such claim and may be shared freely.
+  // Deduplicate by name: an icon with both outline and solid variants shares one
+  // metadata entry, so the same alias would otherwise appear to collide with itself.
   const aliasOwner = new Map();
+  const checkedAliasNames = new Set();
   for (const icon of icons) {
+    if (checkedAliasNames.has(icon.name)) continue;
+    checkedAliasNames.add(icon.name);
     for (const alias of metadata[icon.name]?.aliases ?? []) {
       const held = aliasOwner.get(alias);
       if (held) {

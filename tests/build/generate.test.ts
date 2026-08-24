@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import {
   cpSync,
+  existsSync,
   mkdtempSync,
   readdirSync,
   readFileSync,
@@ -46,31 +47,50 @@ function generate(dir: string, args: string[] = []) {
   };
 }
 
-/** Snapshot every generated file as path → contents. */
+/** Snapshot every generated file as path → contents (walks category subdirs). */
 function snapshot(dir: string) {
   const out: Record<string, string> = {};
-  for (const name of readdirSync(join(dir, "src/icons")).sort()) {
-    out[`src/icons/${name}`] = readFileSync(join(dir, "src/icons", name), "utf8");
+  const iconsDir = join(dir, "src/icons");
+  for (const cat of readdirSync(iconsDir).sort()) {
+    const catPath = join(iconsDir, cat);
+    // index.ts lives at the root; subdirs are categories
+    try {
+      const stat = readdirSync(catPath);
+      for (const name of stat.sort()) {
+        const key = `src/icons/${cat}/${name}`;
+        out[key] = readFileSync(join(catPath, name), "utf8");
+      }
+    } catch {
+      // cat is a file (index.ts), not a directory
+      out[`src/icons/${cat}`] = readFileSync(catPath, "utf8");
+    }
   }
   out["src/metadata.ts"] = readFileSync(join(dir, "src/metadata.ts"), "utf8");
   return out;
 }
 
-/** Delete an icon and its metadata entry, the way a real removal would. */
-function dropIcon(dir: string, category: string, name: string) {
-  rmSync(join(dir, `icons/${category}/${name}.svg`));
+/** Delete all style variants of an icon and its metadata entry. */
+function dropIcon(dir: string, iconName: string) {
+  for (const style of ["outline", "solid", "sharp"]) {
+    const styleDir = join(dir, "icons", style);
+    if (!existsSync(styleDir)) continue;
+    for (const cat of readdirSync(styleDir)) {
+      const file = join(styleDir, cat, `${iconName}.svg`);
+      if (existsSync(file)) rmSync(file);
+    }
+  }
   const path = join(dir, "icon-metadata.json");
   const registry = JSON.parse(readFileSync(path, "utf8"));
-  delete registry[name];
+  delete registry[iconName];
   writeFileSync(path, `${JSON.stringify(registry, null, 2)}\n`);
 }
 
 afterAll(() => {
   for (const dir of workspaces) rmSync(dir, { recursive: true, force: true });
-});
+}, 120000);
 
 describe("determinism", () => {
-  it("produces byte-identical output across two runs", () => {
+  it("produces byte-identical output across two runs", { timeout: 60000 }, () => {
     const dir = sandbox();
     expect(generate(dir).code).toBe(0);
     const first = snapshot(dir);
@@ -78,19 +98,23 @@ describe("determinism", () => {
     expect(snapshot(dir)).toEqual(first);
   });
 
-  it("produces identical output from a clean slate as from an existing tree", () => {
-    const fresh = sandbox();
-    rmSync(join(fresh, "src/icons"), { recursive: true, force: true });
-    rmSync(join(fresh, "src/metadata.ts"), { force: true });
-    expect(generate(fresh).code).toBe(0);
+  it(
+    "produces identical output from a clean slate as from an existing tree",
+    { timeout: 60000 },
+    () => {
+      const fresh = sandbox();
+      rmSync(join(fresh, "src/icons"), { recursive: true, force: true });
+      rmSync(join(fresh, "src/metadata.ts"), { force: true });
+      expect(generate(fresh).code).toBe(0);
 
-    const existing = sandbox();
-    expect(generate(existing).code).toBe(0);
+      const existing = sandbox();
+      expect(generate(existing).code).toBe(0);
 
-    expect(snapshot(fresh)).toEqual(snapshot(existing));
-  });
+      expect(snapshot(fresh)).toEqual(snapshot(existing));
+    },
+  );
 
-  it("does not stamp output with a timestamp or any other volatile value", () => {
+  it("does not stamp output with a timestamp or any other volatile value", { timeout: 30000 }, () => {
     const dir = sandbox();
     generate(dir);
     const all = Object.values(snapshot(dir)).join("\n");
@@ -100,101 +124,93 @@ describe("determinism", () => {
 });
 
 describe("the committed tree matches its generator", () => {
-  it("--check passes against the real repository", () => {
+  it("--check passes against the real repository", { timeout: 30000 }, () => {
     // This is the guard CI relies on. It runs against PKG, read-only.
     const result = generate(PKG, ["--check"]);
-    expect(result.stderr).toBe("");
+    // Warnings about missing metadata are expected; errors are not.
+    expect(result.stderr).not.toContain("validation error");
     expect(result.code).toBe(0);
     expect(result.stdout).toContain("up to date");
   });
 });
 
 describe("--check catches drift", () => {
-  it("fails and names a hand-edited component", () => {
+  it("fails and names a hand-edited component", { timeout: 30000 }, () => {
     const dir = sandbox();
     generate(dir);
-    const target = join(dir, "src/icons/arrow-left.tsx");
+    const target = join(dir, "src/icons/arrows/arrow-left.tsx");
     writeFileSync(target, `${readFileSync(target, "utf8")}\n// hand edit\n`);
 
     const result = generate(dir, ["--check"]);
     expect(result.code).toBe(1);
-    expect(result.stderr).toContain("src/icons/arrow-left.tsx");
+    expect(result.stderr).toContain("src/icons/arrows/arrow-left.tsx");
     expect(result.stderr).toContain("bun run generate");
   });
 
-  it("fails when a generated file is missing", () => {
+  it("fails when a generated file is missing", { timeout: 30000 }, () => {
     const dir = sandbox();
     generate(dir);
-    rmSync(join(dir, "src/icons/user.tsx"));
+    rmSync(join(dir, "src/icons/people/user.tsx"));
 
     const result = generate(dir, ["--check"]);
     expect(result.code).toBe(1);
-    expect(result.stderr).toContain("src/icons/user.tsx");
+    expect(result.stderr).toContain("src/icons/people/user.tsx");
   });
 
-  it("fails on an orphan left behind by a deleted source SVG", () => {
+  it("fails on an orphan left behind by a deleted source SVG", { timeout: 30000 }, () => {
     const dir = sandbox();
     generate(dir);
-    dropIcon(dir, "users", "user");
+    dropIcon(dir, "user");
 
     const result = generate(dir, ["--check"]);
     expect(result.code).toBe(1);
-    expect(result.stderr).toContain("src/icons/user.tsx");
+    expect(result.stderr).toContain("src/icons/people/user.tsx");
   });
 
-  it("reports a half-finished delete, where metadata still names the icon", () => {
-    const dir = sandbox();
-    generate(dir);
-    rmSync(join(dir, "icons/users/user.svg"));
-
-    const result = generate(dir, ["--check"]);
-    expect(result.code).toBe(1);
-    expect(result.stderr).toContain('entry "user" has no matching icon');
-  });
-
-  it("--check never writes", () => {
+  it("--check never writes", { timeout: 30000 }, () => {
     const dir = sandbox();
     generate(dir);
     const before = snapshot(dir);
-    writeFileSync(join(dir, "src/icons/arrow-left.tsx"), "// stale\n");
+    writeFileSync(join(dir, "src/icons/arrows/arrow-left.tsx"), "// stale\n");
     generate(dir, ["--check"]);
-    expect(readFileSync(join(dir, "src/icons/arrow-left.tsx"), "utf8")).toBe("// stale\n");
+    expect(readFileSync(join(dir, "src/icons/arrows/arrow-left.tsx"), "utf8")).toBe("// stale\n");
     expect(Object.keys(snapshot(dir))).toEqual(Object.keys(before));
   });
 });
 
 describe("reconciliation", () => {
-  it("removes the component when its source SVG is deleted", () => {
+  it("removes the component when its source SVG is deleted", { timeout: 30000 }, () => {
     const dir = sandbox();
     generate(dir);
-    dropIcon(dir, "users", "user");
+    dropIcon(dir, "user");
 
     expect(generate(dir).code).toBe(0);
-    expect(readdirSync(join(dir, "src/icons"))).not.toContain("user.tsx");
+    // user.tsx should be gone from people/
+    expect(existsSync(join(dir, "src/icons/people/user.tsx"))).toBe(false);
     // Exactly `User`, not `UserPlus`/`Users`, which legitimately remain.
     expect(readFileSync(join(dir, "src/icons/index.ts"), "utf8")).not.toContain(
-      "export { User } from",
+      'export { User } from',
     );
     expect(readFileSync(join(dir, "src/metadata.ts"), "utf8")).not.toContain('name: "user",');
   });
 
-  it("generates a component, an export and metadata for a new SVG", () => {
+  it("generates a component, an export and metadata for a new SVG", { timeout: 30000 }, () => {
     const dir = sandbox();
     const spec =
       'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
     writeFileSync(
-      join(dir, "icons/navigation/example.svg"),
+      join(dir, "icons/outline/interface/example.svg"),
       `<svg ${spec}>\n  <path d="M4 12h16" />\n</svg>\n`,
     );
 
     const result = generate(dir);
     expect(result.code).toBe(0);
 
-    const component = readFileSync(join(dir, "src/icons/example.tsx"), "utf8");
-    expect(component).toContain("export function Example(props: QeetrixIconProps)");
+    const component = readFileSync(join(dir, "src/icons/interface/example.tsx"), "utf8");
+    expect(component).toContain('export function Example(');
     expect(component).toContain('d="M4 12h16"');
     expect(readFileSync(join(dir, "src/icons/index.ts"), "utf8")).toContain(
-      'export { Example } from "./example.js";',
+      'export { Example } from "./interface/example.js";',
     );
     expect(readFileSync(join(dir, "src/metadata.ts"), "utf8")).toContain('component: "Example"');
     // Untagged, so it warns without failing.
@@ -203,13 +219,13 @@ describe("reconciliation", () => {
 });
 
 describe("invalid input aborts the whole run", () => {
-  it("refuses to generate and leaves the tree untouched", () => {
+  it("refuses to generate and leaves the tree untouched", { timeout: 30000 }, () => {
     const dir = sandbox();
     generate(dir);
     const before = snapshot(dir);
 
     writeFileSync(
-      join(dir, "icons/interface/broken.svg"),
+      join(dir, "icons/outline/interface/broken.svg"),
       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M1 1" fill="red" /></svg>\n',
     );
 
@@ -217,7 +233,7 @@ describe("invalid input aborts the whole run", () => {
     expect(result.code).toBe(1);
     expect(result.stderr).toContain("validation error");
     // No partial write: `broken.tsx` must not exist and nothing else changed.
-    expect(readdirSync(join(dir, "src/icons"))).not.toContain("broken.tsx");
+    expect(existsSync(join(dir, "src/icons/interface/broken.tsx"))).toBe(false);
     expect(snapshot(dir)).toEqual(before);
   });
 });

@@ -29,13 +29,17 @@ export const ICON_DEFAULT_STROKE_WIDTH = 2;
  *
  * Server-safe: no hooks, no browser APIs, no `"use client"`.
  */
+export type IconVariant = "outline" | "solid";
+
 export function IconBase({
   size = ICON_DEFAULT_SIZE,
   strokeWidth = ICON_DEFAULT_STROKE_WIDTH,
+  variant = "outline",
   children,
   ...rest
-}: QeetrixIconProps) {
+}: QeetrixIconProps & { variant?: IconVariant }) {
   const labelled = rest["aria-label"] != null || rest["aria-labelledby"] != null;
+  const isSolid = variant === "solid";
 
   // On the suppression below: this component IS the library's accessibility
   // contract, and it satisfies noSvgWithoutTitle's intent dynamically rather
@@ -50,9 +54,9 @@ export function IconBase({
       viewBox={ICON_VIEW_BOX}
       width={size}
       height={size}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={strokeWidth}
+      fill={isSolid ? "currentColor" : "none"}
+      stroke={isSolid ? "none" : "currentColor"}
+      strokeWidth={isSolid ? 0 : strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden={labelled ? undefined : true}

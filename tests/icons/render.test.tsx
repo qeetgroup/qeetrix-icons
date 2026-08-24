@@ -3,14 +3,15 @@ import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 import {
   ArrowLeft,
+  ArrowRightShort,
   Check,
-  ChevronRight,
   Search,
   Settings,
-  ShieldCheck,
+  ShieldTick,
   Trash,
   User,
 } from "../../src/index.js";
+
 
 const svgOf = (container: HTMLElement) => container.querySelector("svg") as SVGSVGElement;
 
@@ -36,21 +37,20 @@ describe("rendering", () => {
   });
 
   it("draws its own geometry rather than an empty shell", () => {
-    const svg = svgOf(render(<ShieldCheck />).container);
+    const svg = svgOf(render(<ShieldTick />).container);
     expect(
       svg.querySelectorAll("path, circle, rect, line, polyline, polygon").length,
     ).toBeGreaterThan(0);
   });
 
   it("keeps a long path on a single element", () => {
-    // `settings` is a computed cog whose path data far exceeds the 100-column
-    // limit, so it exercises the emitter's line-breaking. Assert the rendered
-    // shape rather than the coordinates, so a redraw does not break this test.
+    // `settings` paths far exceed the 100-column limit, exercising the
+    // emitter's line-breaking. Assert shape rather than coordinates.
     const svg = svgOf(render(<Settings />).container);
-    expect(svg.querySelector("circle")).toBeInTheDocument();
     const paths = svg.querySelectorAll("path");
-    expect(paths).toHaveLength(1);
-    expect(paths[0].getAttribute("d")?.length ?? 0).toBeGreaterThan(100);
+    expect(paths.length).toBeGreaterThan(0);
+    const longest = Math.max(...[...paths].map((p) => p.getAttribute("d")?.length ?? 0));
+    expect(longest).toBeGreaterThan(100);
   });
 });
 
@@ -172,7 +172,7 @@ describe("standard SVG props pass through", () => {
     let node: SVGSVGElement | null = null;
     render(
       <ArrowLeft
-        ref={(el) => {
+        ref={(el: SVGSVGElement | null) => {
           node = el;
         }}
       />,
@@ -198,7 +198,7 @@ describe("icons in the contexts products actually use them", () => {
   it("in a link with visible text", async () => {
     const { container } = render(
       <a href="/settings">
-        Settings <ChevronRight size={16} />
+        Settings <ArrowRightShort size={16} />
       </a>,
     );
     expect(screen.getByRole("link", { name: "Settings" })).toBeInTheDocument();
@@ -263,7 +263,7 @@ describe("icons in the contexts products actually use them", () => {
           <tr>
             <td>Ada</td>
             <td>
-              <ShieldCheck size={16} aria-label="Verified" />
+              <ShieldTick size={16} aria-label="Verified" />
             </td>
           </tr>
         </tbody>

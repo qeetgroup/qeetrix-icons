@@ -28,8 +28,9 @@
 
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { emitBarrel, emitComponent, emitMetadata } from "./lib/emit.mjs";
+import { emitBarrel, emitComponents, emitMetadata } from "./lib/emit.mjs";
 import { applyOrCheck, report } from "./lib/io.mjs";
+import { toComponentName } from "./lib/naming.mjs";
 import { collect, reportIssues } from "./lib/pipeline.mjs";
 
 const PKG = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -39,14 +40,30 @@ const { entries, errors, warnings } = collect({ root: PKG });
 
 if (!reportIssues({ errors, warnings, count: entries.length })) process.exit(1);
 
-const files = new Map();
+// Group entries by icon name — multiple styles share one .tsx file.
+// Also track category (from the first entry seen for each name).
+const byName = new Map(); // name → { category, group: [{icon, style}] }
 for (const entry of entries) {
-  files.set(
-    `src/icons/${entry.name}.tsx`,
-    emitComponent({ icon: entry, component: entry.component }),
-  );
+  if (!byName.has(entry.name)) {
+    byName.set(entry.name, { category: entry.category, group: [] });
+  }
+  byName.get(entry.name).group.push({ icon: entry, style: entry.style });
 }
-files.set("src/icons/index.ts", emitBarrel(entries));
+
+const files = new Map();
+const STYLE_ORDER = { outline: 0, solid: 1, sharp: 2 };
+
+// Component path relative mappings for the barrel: name → "category/name"
+const barrelEntries = [];
+
+for (const [name, { category, group }] of byName) {
+  group.sort((a, b) => (STYLE_ORDER[a.style] ?? 9) - (STYLE_ORDER[b.style] ?? 9));
+  files.set(`src/icons/${category}/${name}.tsx`, emitComponents(toComponentName(name), group));
+  barrelEntries.push({ name: `${category}/${name}`, component: toComponentName(name) });
+}
+
+// Barrel: one export per unique icon name, path includes category subdir.
+files.set("src/icons/index.ts", emitBarrel(barrelEntries));
 files.set("src/metadata.ts", emitMetadata(entries));
 
 const { written, stale, removed } = applyOrCheck({

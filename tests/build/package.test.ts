@@ -37,7 +37,7 @@ describe.skipIf(!built)("built package", () => {
     const missing: string[] = [];
     for (const icon of icons) {
       for (const ext of [".js", ".d.ts"]) {
-        const path = `dist/icons/${icon.name}${ext}`;
+        const path = `dist/icons/${icon.category}/${icon.name}${ext}`;
         if (!existsSync(join(PKG, path))) missing.push(path);
       }
     }
@@ -57,14 +57,14 @@ describe.skipIf(!built)("built package", () => {
   });
 
   it("leaves react as an external import rather than bundling it", () => {
-    const component = readFileSync(join(PKG, "dist/icons/arrow-left.js"), "utf8");
+    const component = readFileSync(join(PKG, "dist/icons/arrows/arrow-left.js"), "utf8");
     expect(component).toContain('from "react/jsx-runtime"');
   });
 
   it("keeps one module per icon, so unused icons can be dropped", () => {
     const barrel = readFileSync(join(PKG, "dist/icons/index.js"), "utf8");
     for (const icon of icons) {
-      expect(barrel, icon.name).toContain(`./${icon.name}.js`);
+      expect(barrel, icon.name).toContain(`./${icon.category}/${icon.name}.js`);
     }
   });
 });
