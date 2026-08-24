@@ -67,10 +67,7 @@ export function collect({ root, dir = "icons", metadata = loadMetadata(root) }) 
     const entry = metadata[icon.name] ?? {};
     entries.push({
       name: icon.name,
-      component: toComponentName(icon.name) + (
-        icon.style === "solid" ? "Solid" :
-        icon.style === "sharp" ? "Sharp" : ""
-      ),
+      component: toComponentName(icon.name),
       style: icon.style,
       category: icon.category,
       group: icon.category,

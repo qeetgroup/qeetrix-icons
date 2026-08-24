@@ -26,8 +26,8 @@ describe("tier ordering", () => {
   });
 
   it("ranks an exact alias above a component prefix", () => {
-    // `verified` is an alias of shield-check and appears in no icon's name.
-    expect(names("verified")[0]).toBe("shield-check");
+    // `verified` is an alias of shield-tick and appears in no icon's name.
+    expect(names("verified")[0]).toBe("shield-tick");
   });
 
   it("finds an icon through a tag alone", () => {
@@ -40,11 +40,11 @@ describe("tier ordering", () => {
     expect(names("delete")[0]).toBe("trash");
     expect(names("gear")[0]).toBe("settings");
     expect(names("hamburger")[0]).toBe("menu");
-    expect(names("checkbox")[0]).toBe("check-square");
+    expect(names("checkbox")[0]).toBe("tick-square");
   });
 
   it("matches a component name", () => {
-    expect(names("ShieldCheck")).toContain("shield-check");
+    expect(names("ShieldTick")).toContain("shield-tick");
     expect(names("arrowleft")).toContain("arrow-left");
   });
 
@@ -74,14 +74,14 @@ describe("tier ordering", () => {
 
 describe("query behaviour", () => {
   it("treats multiple words as AND", () => {
-    const result = names("shield check");
-    expect(result).toContain("shield-check");
-    // `shield` alone does not match the term `check`, so it is excluded.
+    const result = names("shield tick");
+    expect(result).toContain("shield-tick");
+    // `shield` alone does not match the term `tick`, so it is excluded.
     expect(result).not.toContain("shield");
   });
 
   it("is case- and whitespace-insensitive", () => {
-    expect(names("  SHIELD-Check ")[0]).toBe("shield-check");
+    expect(names("  SHIELD-Tick ")[0]).toBe("shield-tick");
   });
 
   it("returns the whole catalogue, name-sorted, for an empty query", () => {
@@ -106,9 +106,10 @@ describe("query behaviour", () => {
   });
 
   it("orders ties by name length then alphabetically", () => {
-    const result = names("arrow-");
+    // All "arrow-ci" matches start with that prefix → same tier → sorted by length.
+    const result = names("arrow-ci");
+    expect(result.length).toBeGreaterThan(1);
     const lengths = result.map((n) => n.length);
-    // Every result is a prefix match, so they share a tier and sort by length.
     expect(lengths).toEqual([...lengths].sort((a, b) => a - b));
   });
 });
@@ -157,19 +158,17 @@ describe("the searches a developer actually types", () => {
     ["shield", "shield"],
     ["user", "user"],
     ["arrow", "arrow-up"],
-    ["chevron", "chevron-up"],
     ["trash", "trash"],
     ["bin", "trash"],
-    ["close", "x"],
-    ["add", "plus"],
-    ["spinner", "loader"],
-    ["stop", "square"],
-    ["sign-out", "log-out"],
+    ["close", "close-circle"],
+    ["add", "add"],
+    ["stop", "stop"],
+    ["sign-out", "logout"],
     ["magnifying-glass", "search"],
     ["dark-mode", "moon"],
     ["notification", "bell"],
     ["padlock", "lock"],
-    ["webauthn", "passkey"],
+    ["webauthn", "finger-scan"],
   ])("%s finds %s", (query, expected) => {
     expect(names(query)).toContain(expected);
   });

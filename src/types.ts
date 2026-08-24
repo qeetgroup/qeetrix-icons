@@ -35,6 +35,8 @@ export interface IconMetadata {
   component: string;
   /** Category, always derived from the `icons/` subdirectory. */
   category: string;
+  /** Available style variants for this icon, e.g. `["outline", "solid"]`. */
+  variants: string[];
   /** Free-form search keywords. */
   tags: string[];
   /** Alternative names that should resolve to this icon in a search. */

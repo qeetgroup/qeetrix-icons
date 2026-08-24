@@ -44,7 +44,9 @@ function bundle(source: string) {
 
 /** A path `d` value that belongs to exactly one icon, for use as a tracer. */
 function tracer(name: string) {
-  const source = readFileSync(join(PKG, "dist/icons", `${name}.js`), "utf8");
+  const icon = icons.find((i) => i.name === name);
+  if (!icon) throw new Error(`icon "${name}" not found in metadata`);
+  const source = readFileSync(join(PKG, "dist/icons", icon.category, `${name}.js`), "utf8");
   const match = source.match(/d:\s*"([^"]{12,})"/);
   if (!match) throw new Error(`no usable tracer path in ${name}`);
   return match[1];
@@ -60,8 +62,8 @@ describe.skipIf(!built)("tree-shaking", () => {
     expect(output).toContain(tracer("arrow-left"));
 
     // Icons that were not imported must not be in the bundle. Sample across
-    // categories rather than all 146, to keep the test fast.
-    for (const name of ["settings", "shield-check", "database", "megaphone", "thumbs-up"]) {
+    // categories rather than all 1166, to keep the test fast.
+    for (const name of ["settings", "shield-tick", "data", "heart", "user"]) {
       expect(output, `${name} leaked into the bundle`).not.toContain(tracer(name));
     }
   });
@@ -93,9 +95,9 @@ describe.skipIf(!built)("tree-shaking", () => {
 
   it("supports deep-importing a single icon without touching the barrel", () => {
     const output = bundle(
-      `import { ChevronRight } from "${dist}/icons/chevron-right.js";\nconsole.log(ChevronRight);\n`,
+      `import { ArrowRight } from "${dist}/icons/arrows/arrow-right.js";\nconsole.log(ArrowRight);\n`,
     );
-    expect(output).toContain(tracer("chevron-right"));
+    expect(output).toContain(tracer("arrow-right"));
     expect(output).not.toContain(tracer("arrow-left"));
     expect(output.length).toBeLessThan(4_000);
   });

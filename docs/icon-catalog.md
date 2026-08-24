@@ -2,8 +2,8 @@
 
 # Icon catalogue
 
-The coverage matrix for `@qeetrix/icons`: **331 icons** across
-**22 categories**, every one with tags, aliases, RTL behaviour and a coverage
+The coverage matrix for `@qeetrix/icons`: **2307 icons** across
+**20 categories**, every one with tags, aliases, RTL behaviour and a coverage
 priority.
 
 This file is generated from `icons/` and `icon-metadata.json`, so it cannot disagree with what
@@ -25,167 +25,1372 @@ gets built next — it is **not** part of the published package.
 
 | | Meaning | Count | Share |
 |:--|:--|--:|--:|
-| **P0** | Essential. You cannot build a standard enterprise interface without it. | 88 | 27% |
-| **P1** | Highly useful. Common in real product screens. | 210 | 63% |
-| **P2** | Useful but specialised. | 33 | 10% |
+| **P0** | Essential. You cannot build a standard enterprise interface without it. | 18 | 1% |
+| **P1** | Highly useful. Common in real product screens. | 2 | 0% |
+| **P2** | Useful but specialised. | 0 | 0% |
 | **P3** | Optional. | 0 | 0% |
 
-P0 and P1 together are 90% of the
+P0 and P1 together are 1% of the
 catalogue, which is the intended shape: the set is weighted towards what products actually reach for.
 
 ## Categories
 
 | Category | Icons | Share |
 |:--|--:|--:|
-| `accessibility` | 6 | 2% |
-| `arrows` | 13 | 4% |
-| `communication` | 25 | 8% |
-| `data` | 14 | 4% |
-| `design` | 8 | 2% |
-| `development` | 12 | 4% |
-| `devices` | 16 | 5% |
-| `editing` | 26 | 8% |
-| `files` | 34 | 10% |
-| `finance` | 12 | 4% |
-| `hardware` | 1 | 0% |
-| `interface` | 35 | 11% |
-| `maps` | 2 | 1% |
-| `media` | 14 | 4% |
-| `navigation` | 19 | 6% |
-| `notifications` | 5 | 2% |
-| `security` | 18 | 5% |
-| `social` | 7 | 2% |
-| `status` | 13 | 4% |
-| `time` | 14 | 4% |
-| `users` | 16 | 5% |
-| `utilities` | 21 | 6% |
+| `arrows` | 128 | 6% |
+| `communication` | 116 | 5% |
+| `crypto` | 132 | 6% |
+| `data` | 38 | 2% |
+| `design` | 98 | 4% |
+| `devices` | 96 | 4% |
+| `editing` | 84 | 4% |
+| `files` | 134 | 6% |
+| `finance` | 120 | 5% |
+| `interface` | 537 | 23% |
+| `location` | 36 | 2% |
+| `media` | 166 | 7% |
+| `nature` | 102 | 4% |
+| `people` | 48 | 2% |
+| `seasonal` | 232 | 10% |
+| `security` | 54 | 2% |
+| `shopping` | 42 | 2% |
+| `social` | 50 | 2% |
+| `time` | 42 | 2% |
+| `travel` | 52 | 2% |
 
 The category is the source directory and is browse metadata only — it never appears in an icon's
 export name, so moving an icon between categories is not a breaking change.
 
 ## Families
 
-12 bases carry three or more variants. Families are the reason the set feels
+98 bases carry three or more variants. Families are the reason the set feels
 designed rather than accumulated: the modifier vocabulary is fixed, so a consumer who has met
 `user-plus` can guess `folder-plus` without looking.
 
 ```text
-file
-├── file-alert
-├── file-archive
-├── file-check
-├── file-code
-├── file-download
-├── file-edit
-├── file-image
-├── file-lock
-├── file-minus
-├── file-plus
-├── file-search
-├── file-text
-├── file-upload
-└── file-x
+gift
+├── gift-3
+├── gift-5
+├── gift-alt
+├── gift-bag
+├── gift-bag
+├── gift-bow
+├── gift-bow
+├── gift-box
+├── gift-box
+├── gift-circle
+├── gift-cupcake
+├── gift-cupcake
+├── gift-fancy
+├── gift-fancy
+├── gift-heart
+├── gift-heart
+├── gift-lid
+├── gift-lid
+├── gift-open
+├── gift-open
+├── gift-ribbon
+├── gift-ribbon
+├── gift-round
+├── gift-round
+├── gift-square
+├── gift-square
+├── gift-stack
+├── gift-stack
+├── gift-star
+├── gift-star
+├── gift-tag
+├── gift-tag
+├── gift-wrap
+└── gift-wrap
 ```
 
 ```text
 calendar
-├── calendar-check
-├── calendar-clock
-├── calendar-days
+├── calendar-add
+├── calendar-add
+├── calendar-alt
+├── calendar-alt
+├── calendar-christmas
+├── calendar-christmas
+├── calendar-circle
+├── calendar-circle
+├── calendar-date
+├── calendar-date
 ├── calendar-edit
-├── calendar-off
-├── calendar-plus
+├── calendar-edit
+├── calendar-grid
+├── calendar-grid
+├── calendar-list
+├── calendar-list
+├── calendar-month
+├── calendar-month
+├── calendar-remove
+├── calendar-remove
 ├── calendar-search
-└── calendar-x
-```
-
-```text
-user
-├── user-check
-├── user-circle
-├── user-edit
-├── user-lock
-├── user-minus
-├── user-plus
-├── user-search
-└── user-x
-```
-
-```text
-folder
-├── folder-check
-├── folder-lock
-├── folder-minus
-├── folder-open
-├── folder-plus
-├── folder-search
-└── folder-x
-```
-
-```text
-shield
-├── shield-alert
-├── shield-check
-├── shield-lock
-├── shield-off
-├── shield-user
-└── shield-x
-```
-
-```text
-mail
-├── mail-check
-├── mail-open
-├── mail-plus
-├── mail-search
-└── mail-x
-```
-
-```text
-arrow-up
-├── arrow-up-down
-├── arrow-up-left
-└── arrow-up-right
-```
-
-```text
-bell
-├── bell-dot
-├── bell-off
-└── bell-ring
+├── calendar-search
+├── calendar-tick
+├── calendar-tick
+├── calendar-tree
+└── calendar-tree
 ```
 
 ```text
 cloud
-├── cloud-download
-├── cloud-off
-└── cloud-upload
+├── cloud-add
+├── cloud-add
+├── cloud-change
+├── cloud-change
+├── cloud-connection
+├── cloud-connection
+├── cloud-cross
+├── cloud-cross
+├── cloud-drizzle
+├── cloud-drizzle
+├── cloud-fog
+├── cloud-fog
+├── cloud-lightning
+├── cloud-lightning
+├── cloud-minus
+├── cloud-minus
+├── cloud-notif
+├── cloud-notif
+├── cloud-plus
+├── cloud-plus
+├── cloud-remove
+├── cloud-remove
+├── cloud-snow
+├── cloud-snow
+├── cloud-sunny
+└── cloud-sunny
 ```
 
 ```text
-credit-card
-├── credit-card-check
-├── credit-card-plus
-└── credit-card-x
+document
+├── document-cloud
+├── document-cloud
+├── document-code
+├── document-code
+├── document-copy
+├── document-copy
+├── document-download
+├── document-download
+├── document-favorite
+├── document-favorite
+├── document-filter
+├── document-filter
+├── document-forward
+├── document-forward
+├── document-like
+├── document-like
+├── document-normal
+├── document-normal
+├── document-previous
+├── document-previous
+├── document-sketch
+├── document-sketch
+├── document-text
+├── document-text
+├── document-upload
+└── document-upload
 ```
 
 ```text
-message-square
-├── message-square-plus
-├── message-square-search
-└── message-square-x
+grid
+├── grid-add
+├── grid-add
+├── grid-alt
+├── grid-alt
+├── grid-blocks
+├── grid-blocks
+├── grid-dots
+├── grid-dots
+├── grid-edit
+├── grid-edit
+├── grid-equal
+├── grid-equal
+├── grid-eraser
+├── grid-eraser
+├── grid-large
+├── grid-large
+├── grid-lock
+├── grid-lock
+├── grid-mini
+├── grid-mini
+├── grid-mixed
+├── grid-mixed
+├── grid-small
+├── grid-small
+├── grid-wide
+└── grid-wide
 ```
 
 ```text
-phone
-├── phone-incoming
-├── phone-off
-└── phone-outgoing
+snow
+├── snow-burst
+├── snow-burst
+├── snow-circle
+├── snow-circle
+├── snow-cross
+├── snow-cross
+├── snow-crystal
+├── snow-crystal
+├── snow-dot
+├── snow-dot
+├── snow-drift
+├── snow-drift
+├── snow-fall
+├── snow-fall
+├── snow-flurry
+├── snow-flurry
+├── snow-gem
+├── snow-gem
+├── snow-ice
+├── snow-ice
+├── snow-ring
+├── snow-ring
+├── snow-spin
+├── snow-spin
+├── snow-star
+└── snow-star
+```
+
+```text
+arrow
+├── arrow-back
+├── arrow-back
+├── arrow-circle-down
+├── arrow-circle-down
+├── arrow-circle-left
+├── arrow-circle-left
+├── arrow-circle-right
+├── arrow-circle-right
+├── arrow-circle-up
+├── arrow-circle-up
+├── arrow-down
+├── arrow-down
+├── arrow-forward
+├── arrow-forward
+├── arrow-left
+├── arrow-left
+├── arrow-right
+├── arrow-right
+├── arrow-square
+├── arrow-square
+├── arrow-transfer
+├── arrow-transfer
+├── arrow-up
+└── arrow-up
+```
+
+```text
+video
+├── video-add
+├── video-add
+├── video-circle
+├── video-circle
+├── video-horizontal
+├── video-horizontal
+├── video-octagon
+├── video-octagon
+├── video-play
+├── video-play
+├── video-remove
+├── video-remove
+├── video-slash
+├── video-slash
+├── video-square
+├── video-square
+├── video-tick
+├── video-tick
+├── video-time
+├── video-time
+├── video-vertical
+└── video-vertical
+```
+
+```text
+money
+├── money-add
+├── money-add
+├── money-alt
+├── money-alt
+├── money-change
+├── money-change
+├── money-circle
+├── money-circle
+├── money-forbidden
+├── money-forbidden
+├── money-receive
+├── money-receive
+├── money-remove
+├── money-remove
+├── money-send
+├── money-send
+├── money-tick
+├── money-tick
+├── money-time
+└── money-time
+```
+
+```text
+receipt
+├── receipt-add
+├── receipt-add
+├── receipt-alt
+├── receipt-alt
+├── receipt-discount
+├── receipt-discount
+├── receipt-edit
+├── receipt-edit
+├── receipt-item
+├── receipt-item
+├── receipt-list
+├── receipt-list
+├── receipt-minus
+├── receipt-minus
+├── receipt-search
+├── receipt-search
+├── receipt-square
+├── receipt-square
+├── receipt-text
+└── receipt-text
+```
+
+```text
+user
+├── user-add
+├── user-add
+├── user-circle-add
+├── user-circle-add
+├── user-edit
+├── user-edit
+├── user-hexagon
+├── user-hexagon
+├── user-minus
+├── user-minus
+├── user-remove
+├── user-remove
+├── user-search
+├── user-search
+├── user-square
+├── user-square
+├── user-tag
+├── user-tag
+├── user-tick
+└── user-tick
+```
+
+```text
+card
+├── card-add
+├── card-add
+├── card-coin
+├── card-coin
+├── card-edit
+├── card-edit
+├── card-pos
+├── card-pos
+├── card-receive
+├── card-receive
+├── card-remove
+├── card-remove
+├── card-send
+├── card-send
+├── card-slash
+├── card-slash
+├── card-tick
+└── card-tick
+```
+
+```text
+wallet
+├── wallet-add
+├── wallet-add
+├── wallet-alt
+├── wallet-alt
+├── wallet-check
+├── wallet-check
+├── wallet-circle
+├── wallet-circle
+├── wallet-minus
+├── wallet-minus
+├── wallet-money
+├── wallet-money
+├── wallet-remove
+├── wallet-remove
+├── wallet-round
+├── wallet-round
+├── wallet-search
+└── wallet-search
+```
+
+```text
+call
+├── call-add
+├── call-add
+├── call-calling
+├── call-calling
+├── call-incoming
+├── call-incoming
+├── call-minus
+├── call-minus
+├── call-outgoing
+├── call-outgoing
+├── call-received
+├── call-received
+├── call-remove
+├── call-remove
+├── call-slash
+└── call-slash
+```
+
+```text
+direct
+├── direct-down
+├── direct-down
+├── direct-inbox
+├── direct-inbox
+├── direct-left
+├── direct-left
+├── direct-normal
+├── direct-normal
+├── direct-notification
+├── direct-notification
+├── direct-right
+├── direct-right
+├── direct-send
+├── direct-send
+├── direct-up
+└── direct-up
+```
+
+```text
+folder
+├── folder-add
+├── folder-add
+├── folder-alt
+├── folder-alt
+├── folder-cloud
+├── folder-cloud
+├── folder-connection
+├── folder-connection
+├── folder-cross
+├── folder-cross
+├── folder-favorite
+├── folder-favorite
+├── folder-minus
+├── folder-minus
+├── folder-open
+└── folder-open
+```
+
+```text
+gallery
+├── gallery-add
+├── gallery-add
+├── gallery-edit
+├── gallery-edit
+├── gallery-export
+├── gallery-export
+├── gallery-favorite
+├── gallery-favorite
+├── gallery-import
+├── gallery-import
+├── gallery-remove
+├── gallery-remove
+├── gallery-slash
+├── gallery-slash
+├── gallery-tick
+└── gallery-tick
+```
+
+```text
+heart
+├── heart-add
+├── heart-add
+├── heart-circle
+├── heart-circle
+├── heart-edit
+├── heart-edit
+├── heart-remove
+├── heart-remove
+├── heart-search
+├── heart-search
+├── heart-slash
+├── heart-slash
+├── heart-tick
+└── heart-tick
+```
+
+```text
+music
+├── music-circle
+├── music-circle
+├── music-dashboard
+├── music-dashboard
+├── music-filter
+├── music-filter
+├── music-library-alt
+├── music-library-alt
+├── music-play
+├── music-play
+├── music-playlist
+├── music-playlist
+├── music-square
+└── music-square
+```
+
+```text
+note
+├── note-add
+├── note-add
+├── note-alt
+├── note-alt
+├── note-favorite
+├── note-favorite
+├── note-lines
+├── note-lines
+├── note-remove
+├── note-remove
+├── note-square
+├── note-square
+├── note-text
+└── note-text
+```
+
+```text
+box
+├── box-add
+├── box-add
+├── box-alt
+├── box-alt
+├── box-remove
+├── box-remove
+├── box-search
+├── box-search
+├── box-tick
+├── box-tick
+├── box-time
+└── box-time
+```
+
+```text
+filter
+├── filter-add
+├── filter-add
+├── filter-edit
+├── filter-edit
+├── filter-remove
+├── filter-remove
+├── filter-search
+├── filter-search
+├── filter-square
+├── filter-square
+├── filter-tick
+└── filter-tick
+```
+
+```text
+home
+├── home-alt
+├── home-alt
+├── home-hashtag
+├── home-hashtag
+├── home-simple
+├── home-simple
+├── home-trend-down
+├── home-trend-down
+├── home-trend-up
+├── home-trend-up
+├── home-wifi
+└── home-wifi
+```
+
+```text
+profile
+├── profile-add
+├── profile-add
+├── profile-circle
+├── profile-circle
+├── profile-delete
+├── profile-delete
+├── profile-pair
+├── profile-pair
+├── profile-remove
+├── profile-remove
+├── profile-tick
+└── profile-tick
+```
+
+```text
+star
+├── star-alt
+├── star-alt
+├── star-circle
+├── star-circle
+├── star-filled
+├── star-filled
+├── star-five
+├── star-five
+├── star-garland
+├── star-garland
+├── star-slash
+└── star-slash
+```
+
+```text
+archive
+├── archive-add
+├── archive-add
+├── archive-book
+├── archive-book
+├── archive-minus
+├── archive-minus
+├── archive-slash
+├── archive-slash
+├── archive-tick
+└── archive-tick
+```
+
+```text
+bag
+├── bag-alt
+├── bag-alt
+├── bag-cross
+├── bag-cross
+├── bag-happy
+├── bag-happy
+├── bag-tick
+├── bag-tick
+├── bag-timer
+└── bag-timer
+```
+
+```text
+chart
+├── chart-bar
+├── chart-bar
+├── chart-fail
+├── chart-fail
+├── chart-ring
+├── chart-ring
+├── chart-square
+├── chart-square
+├── chart-success
+└── chart-success
+```
+
+```text
+clipboard
+├── clipboard-close
+├── clipboard-close
+├── clipboard-export
+├── clipboard-export
+├── clipboard-import
+├── clipboard-import
+├── clipboard-text
+├── clipboard-text
+├── clipboard-tick
+└── clipboard-tick
+```
+
+```text
+empty-wallet
+├── empty-wallet-add
+├── empty-wallet-add
+├── empty-wallet-change
+├── empty-wallet-change
+├── empty-wallet-remove
+├── empty-wallet-remove
+├── empty-wallet-tick
+├── empty-wallet-tick
+├── empty-wallet-time
+└── empty-wallet-time
+```
+
+```text
+location
+├── location-add
+├── location-add
+├── location-cross
+├── location-cross
+├── location-minus
+├── location-minus
+├── location-slash
+├── location-slash
+├── location-tick
+└── location-tick
+```
+
+```text
+notification
+├── notification-alt
+├── notification-alt
+├── notification-bing
+├── notification-bing
+├── notification-circle
+├── notification-circle
+├── notification-favorite
+├── notification-favorite
+├── notification-status
+└── notification-status
+```
+
+```text
+search
+├── search-favorite
+├── search-favorite
+├── search-normal
+├── search-normal
+├── search-status
+├── search-status
+├── search-zoom-in
+├── search-zoom-in
+├── search-zoom-out
+└── search-zoom-out
+```
+
+```text
+shield
+├── shield-cross
+├── shield-cross
+├── shield-search
+├── shield-search
+├── shield-security
+├── shield-security
+├── shield-slash
+├── shield-slash
+├── shield-tick
+└── shield-tick
+```
+
+```text
+sms
+├── sms-edit
+├── sms-edit
+├── sms-notification
+├── sms-notification
+├── sms-search
+├── sms-search
+├── sms-star
+├── sms-star
+├── sms-tracking
+└── sms-tracking
+```
+
+```text
+snowman
+├── snowman-hat
+├── snowman-hat
+├── snowman-scarf
+├── snowman-scarf
+├── snowman-smile
+├── snowman-smile
+├── snowman-tall
+├── snowman-tall
+├── snowman-wave
+└── snowman-wave
+```
+
+```text
+toy
+├── toy-alt
+├── toy-alt
+├── toy-car
+├── toy-car
+├── toy-drum
+├── toy-drum
+├── toy-plane
+├── toy-plane
+├── toy-robot
+└── toy-robot
+```
+
+```text
+arrow-square
+├── arrow-square-down
+├── arrow-square-down
+├── arrow-square-left
+├── arrow-square-left
+├── arrow-square-right
+├── arrow-square-right
+├── arrow-square-up
+└── arrow-square-up
+```
+
+```text
+backward
+├── backward-10-seconds
+├── backward-10-seconds
+├── backward-15-seconds
+├── backward-15-seconds
+├── backward-5-seconds
+├── backward-5-seconds
+├── backward-item
+└── backward-item
+```
+
+```text
+candy
+├── candy-alt
+├── candy-alt
+├── candy-cane
+├── candy-cane
+├── candy-round
+├── candy-round
+├── candy-twist
+└── candy-twist
+```
+
+```text
+forward
+├── forward-10-seconds
+├── forward-10-seconds
+├── forward-15-seconds
+├── forward-15-seconds
+├── forward-5-seconds
+├── forward-5-seconds
+├── forward-item
+└── forward-item
+```
+
+```text
+lamp
+├── lamp-charge
+├── lamp-charge
+├── lamp-christmas
+├── lamp-christmas
+├── lamp-on
+├── lamp-on
+├── lamp-slash
+└── lamp-slash
+```
+
+```text
+like
+├── like-alt
+├── like-alt
+├── like-dislike
+├── like-dislike
+├── like-shapes
+├── like-shapes
+├── like-tag
+└── like-tag
+```
+
+```text
+link
+├── link-alt
+├── link-alt
+├── link-chain
+├── link-chain
+├── link-circle
+├── link-circle
+├── link-square
+└── link-square
+```
+
+```text
+maximize
+├── maximize-alt
+├── maximize-alt
+├── maximize-circle
+├── maximize-circle
+├── maximize-crop
+├── maximize-crop
+├── maximize-frame
+└── maximize-frame
+```
+
+```text
+santa
+├── santa-alt
+├── santa-alt
+├── santa-face
+├── santa-face
+├── santa-hat
+├── santa-hat
+├── santa-mouth
+└── santa-mouth
+```
+
+```text
+security
+├── security-card
+├── security-card
+├── security-safe
+├── security-safe
+├── security-time
+├── security-time
+├── security-user
+└── security-user
+```
+
+```text
+setting
+├── setting-alt
+├── setting-alt
+├── setting-circle
+├── setting-circle
+├── setting-sliders
+├── setting-sliders
+├── setting-square
+└── setting-square
+```
+
+```text
+shop
+├── shop-add
+├── shop-add
+├── shop-gift
+├── shop-gift
+├── shop-remove
+├── shop-remove
+├── shop-snow
+└── shop-snow
+```
+
+```text
+tag
+├── tag-alt
+├── tag-alt
+├── tag-cross
+├── tag-cross
+├── tag-right
+├── tag-right
+├── tag-user
+└── tag-user
+```
+
+```text
+text
+├── text-block
+├── text-block
+├── text-bold
+├── text-bold
+├── text-italic
+├── text-italic
+├── text-underline
+└── text-underline
+```
+
+```text
+ticket
+├── ticket-alt
+├── ticket-alt
+├── ticket-discount
+├── ticket-discount
+├── ticket-expired
+├── ticket-expired
+├── ticket-star
+└── ticket-star
+```
+
+```text
+truck
+├── truck-fast
+├── truck-fast
+├── truck-remove
+├── truck-remove
+├── truck-tick
+├── truck-tick
+├── truck-time
+└── truck-time
+```
+
+```text
+add
+├── add-circle
+├── add-circle
+├── add-item
+├── add-item
+├── add-square
+└── add-square
+```
+
+```text
+arrow-down
+├── arrow-down-alt
+├── arrow-down-alt
+├── arrow-down-filled
+├── arrow-down-filled
+├── arrow-down-short
+└── arrow-down-short
+```
+
+```text
+arrow-left
+├── arrow-left-alt
+├── arrow-left-alt
+├── arrow-left-filled
+├── arrow-left-filled
+├── arrow-left-short
+└── arrow-left-short
+```
+
+```text
+arrow-right
+├── arrow-right-alt
+├── arrow-right-alt
+├── arrow-right-filled
+├── arrow-right-filled
+├── arrow-right-short
+└── arrow-right-short
+```
+
+```text
+arrow-up
+├── arrow-up-alt
+├── arrow-up-alt
+├── arrow-up-filled
+├── arrow-up-filled
+├── arrow-up-short
+└── arrow-up-short
+```
+
+```text
+bluetooth
+├── bluetooth-alt
+├── bluetooth-alt
+├── bluetooth-circle
+├── bluetooth-circle
+├── bluetooth-rectangle
+└── bluetooth-rectangle
+```
+
+```text
+book
+├── book-open
+├── book-open
+├── book-saved
+├── book-saved
+├── book-square
+└── book-square
+```
+
+```text
+briefcase
+├── briefcase-cross
+├── briefcase-cross
+├── briefcase-tick
+├── briefcase-tick
+├── briefcase-timer
+└── briefcase-timer
+```
+
+```text
+building
+├── building-bank
+├── building-bank
+├── building-office
+├── building-office
+├── building-tower
+└── building-tower
+```
+
+```text
+candy-cane
+├── candy-cane-alt
+├── candy-cane-alt
+├── candy-cane-loop
+├── candy-cane-loop
+├── candy-cane-twist
+└── candy-cane-twist
+```
+
+```text
+fireworks
+├── fireworks-alt
+├── fireworks-alt
+├── fireworks-burst
+├── fireworks-burst
+├── fireworks-sparkle
+└── fireworks-sparkle
+```
+
+```text
+global
+├── global-edit
+├── global-edit
+├── global-refresh
+├── global-refresh
+├── global-search
+└── global-search
+```
+
+```text
+hierarchy
+├── hierarchy-alt
+├── hierarchy-alt
+├── hierarchy-square
+├── hierarchy-square
+├── hierarchy-tree
+└── hierarchy-tree
+```
+
+```text
+music-square
+├── music-square-add
+├── music-square-add
+├── music-square-remove
+├── music-square-remove
+├── music-square-search
+└── music-square-search
+```
+
+```text
+play
+├── play-add
+├── play-add
+├── play-circle
+├── play-circle
+├── play-remove
+└── play-remove
+```
+
+```text
+arrows-swap
+├── arrows-swap-horizontal
+├── arrows-swap-horizontal
+├── arrows-swap-vertical
+└── arrows-swap-vertical
+```
+
+```text
+bucket
+├── bucket-circle
+├── bucket-circle
+├── bucket-square
+└── bucket-square
+```
+
+```text
+code
+├── code-alt
+├── code-alt
+├── code-circle
+└── code-circle
+```
+
+```text
+cpu
+├── cpu-charge
+├── cpu-charge
+├── cpu-setting
+└── cpu-setting
+```
+
+```text
+driver
+├── driver-alt
+├── driver-alt
+├── driver-refresh
+└── driver-refresh
+```
+
+```text
+fire
+├── fire-alt
+├── fire-alt
+├── fire-glow
+└── fire-glow
+```
+
+```text
+flash
+├── flash-circle
+├── flash-circle
+├── flash-slash
+└── flash-slash
+```
+
+```text
+google
+├── google-drive
+├── google-drive
+├── google-play
+└── google-play
+```
+
+```text
+hashtag
+├── hashtag-down
+├── hashtag-down
+├── hashtag-up
+└── hashtag-up
+```
+
+```text
+hierarchy-square
+├── hierarchy-square-alt
+├── hierarchy-square-alt
+├── hierarchy-square-tree
+└── hierarchy-square-tree
+```
+
+```text
+lock
+├── lock-circle
+├── lock-circle
+├── lock-slash
+└── lock-slash
+```
+
+```text
+magic
+├── magic-star
+├── magic-star
+├── magic-wand
+└── magic-wand
+```
+
+```text
+mask
+├── mask-alt
+├── mask-alt
+├── mask-split
+└── mask-split
+```
+
+```text
+messages
+├── messages-2
+├── messages-2
+├── messages-bubbles-2
+└── messages-bubbles-2
+```
+
+```text
+microphone
+├── microphone-2
+├── microphone-2
+├── microphone-slash
+└── microphone-slash
+```
+
+```text
+minus
+├── minus-circle
+├── minus-circle
+├── minus-square
+└── minus-square
+```
+
+```text
+monitor
+├── monitor-mobile
+├── monitor-mobile
+├── monitor-recorder
+└── monitor-recorder
+```
+
+```text
+more
+├── more-circle
+├── more-circle
+├── more-square
+└── more-square
+```
+
+```text
+mouse
+├── mouse-circle
+├── mouse-circle
+├── mouse-square
+└── mouse-square
+```
+
+```text
+path
+├── path-alt
+├── path-alt
+├── path-square
+└── path-square
+```
+
+```text
+quote-down
+├── quote-down-circle
+├── quote-down-circle
+├── quote-down-square
+└── quote-down-square
+```
+
+```text
+quote-up
+├── quote-up-circle
+├── quote-up-circle
+├── quote-up-square
+└── quote-up-square
+```
+
+```text
+send
+├── send-alt
+├── send-alt
+├── send-square
+└── send-square
+```
+
+```text
+simcard
+├── simcard-alt
+├── simcard-alt
+├── simcard-square
+└── simcard-square
+```
+
+```text
+slider
+├── slider-horizontal
+├── slider-horizontal
+├── slider-vertical
+└── slider-vertical
+```
+
+```text
+stick
+├── stick-cross
+├── stick-cross
+├── stick-wave
+└── stick-wave
+```
+
+```text
+swap-horizontal
+├── swap-horizontal-alt
+├── swap-horizontal-alt
+├── swap-horizontal-box
+└── swap-horizontal-box
+```
+
+```text
+timer
+├── timer-pause
+├── timer-pause
+├── timer-start
+└── timer-start
+```
+
+```text
+tree
+├── tree-alt
+├── tree-alt
+├── tree-pine
+└── tree-pine
+```
+
+```text
+ethereum
+├── ethereum-classic-etc
+├── ethereum-classic-etc
+└── ethereum-eth
 ```
 
 ## RTL mirroring
 
-72 of 331 icons (22%) are marked `mirror: true` and
+68 of 2307 icons (3%) are marked `mirror: true` and
 must be flipped horizontally under `dir="rtl"`. The flag is metadata — this package does not read
 layout direction; a consumer applies it.
 
@@ -196,7 +1401,7 @@ Three rules decide the value, and the validator knows about all three:
 - **Media transport does not.** `skip-forward` points right everywhere, because playback direction
   is not reading direction.
 
-`align-left` · `align-right` · `arrow-down-left` · `arrow-down-right` · `arrow-left` · `arrow-right` · `arrow-up-left` · `arrow-up-right` · `battery-low` · `book` · `chevron-left` · `chevron-right` · `chevrons-left` · `chevrons-right` · `ear` · `ear-off` · `edit` · `external-link` · `filter-x` · `first-page` · `flag` · `forward` · `git-merge` · `git-pull-request` · `key` · `key-off` · `last-page` · `list` · `list-checks` · `list-ordered` · `log-in` · `log-out` · `megaphone` · `message-circle` · `message-square` · `message-square-plus` · `message-square-search` · `message-square-x` · `messages` · `phone-incoming` · `phone-outgoing` · `quote` · `redo` · `reply` · `reply-all` · `rocket` · `rss` · `ruler` · `search` · `search-x` · `send` · `shopping-cart` · `sidebar-left` · `sidebar-right` · `sort` · `sort-asc` · `sort-desc` · `terminal` · `toggle-left` · `toggle-right` · `truck` · `undo` · `video` · `video-off` · `volume` · `volume-low` · `volume-off` · `workflow` · `wrench` · `zap` · `zoom-in` · `zoom-out`
+`align-left` · `align-left` · `align-left-alt` · `align-left-alt` · `align-right` · `align-right` · `arrow-back` · `arrow-back` · `arrow-circle-left` · `arrow-circle-left` · `arrow-circle-right` · `arrow-circle-right` · `arrow-forward` · `arrow-forward` · `arrow-left` · `arrow-left` · `arrow-left-alt` · `arrow-left-alt` · `arrow-left-filled` · `arrow-left-filled` · `arrow-left-short` · `arrow-left-short` · `arrow-right` · `arrow-right` · `arrow-right-alt` · `arrow-right-alt` · `arrow-right-filled` · `arrow-right-filled` · `arrow-right-short` · `arrow-right-short` · `arrow-square-left` · `arrow-square-left` · `arrow-square-right` · `arrow-square-right` · `direct-left` · `direct-left` · `direct-right` · `direct-right` · `export-circle-right` · `export-circle-right` · `export-right` · `export-right` · `import-circle-left` · `import-circle-left` · `import-left` · `import-left` · `left-bar-grid` · `left-bar-grid` · `left-sidebar-grid` · `left-sidebar-grid` · `refresh-left` · `refresh-left` · `refresh-right` · `refresh-right` · `rotate-left` · `rotate-left` · `rotate-right` · `rotate-right` · `sidebar-left` · `sidebar-left` · `sidebar-right` · `sidebar-right` · `tag-right` · `tag-right` · `textalign-left` · `textalign-left` · `textalign-right` · `textalign-right`
 
 ## Deliberate non-duplicates
 
@@ -229,443 +1434,2409 @@ gaps below on every run; they are decisions, not omissions.
 
 ## Full catalogue
 
-### `accessibility` (6)
+### `arrows` (128)
 
 | Icon | Component | Pri | RTL | Aliases | Tags |
 |:--|:--|:--:|:--:|:--|:--|
-| `accessibility` | `Accessibility` | P2 |  | `a11y` | accessible, disability, inclusive, wheelchair |
-| `captions` | `Captions` | P1 |  | `subtitles` `cc` | captioning, closed, transcript |
-| `captions-off` | `CaptionsOff` | P2 |  | — | cc, disabled, hidden, subtitles |
-| `ear` | `Ear` | P2 | ↔ | `hearing` | aid, audio, listen, sound |
-| `ear-off` | `EarOff` | P2 | ↔ | — | deaf, hearing, impaired, loss, muted |
-| `text-size` | `TextSize` | P1 |  | `font-size` | font, legibility, scale, typography, zoom |
+| `arrow` | `Arrow` | — |  | — | — |
+| `arrow` | `Arrow` | — |  | — | — |
+| `arrow-back` | `ArrowBack` | — | ↔ | — | back, undo, return |
+| `arrow-back` | `ArrowBack` | — | ↔ | — | back, undo, return |
+| `arrow-circle-down` | `ArrowCircleDown` | — |  | — | — |
+| `arrow-circle-down` | `ArrowCircleDown` | — |  | — | — |
+| `arrow-circle-left` | `ArrowCircleLeft` | — | ↔ | — | direction, navigate, previous |
+| `arrow-circle-left` | `ArrowCircleLeft` | — | ↔ | — | direction, navigate, previous |
+| `arrow-circle-right` | `ArrowCircleRight` | — | ↔ | — | direction, navigate, next |
+| `arrow-circle-right` | `ArrowCircleRight` | — | ↔ | — | direction, navigate, next |
+| `arrow-circle-up` | `ArrowCircleUp` | — |  | — | — |
+| `arrow-circle-up` | `ArrowCircleUp` | — |  | — | — |
+| `arrow-down` | `ArrowDown` | — |  | — | — |
+| `arrow-down` | `ArrowDown` | — |  | — | — |
+| `arrow-down-alt` | `ArrowDownAlt` | — |  | — | — |
+| `arrow-down-alt` | `ArrowDownAlt` | — |  | — | — |
+| `arrow-down-filled` | `ArrowDownFilled` | — |  | — | — |
+| `arrow-down-filled` | `ArrowDownFilled` | — |  | — | — |
+| `arrow-down-short` | `ArrowDownShort` | — |  | — | — |
+| `arrow-down-short` | `ArrowDownShort` | — |  | — | — |
+| `arrow-forward` | `ArrowForward` | — | ↔ | — | forward, redo, next |
+| `arrow-forward` | `ArrowForward` | — | ↔ | — | forward, redo, next |
+| `arrow-left` | `ArrowLeft` | — | ↔ | — | previous, back, left, direction, navigate |
+| `arrow-left` | `ArrowLeft` | — | ↔ | — | previous, back, left, direction, navigate |
+| `arrow-left-alt` | `ArrowLeftAlt` | — | ↔ | — | direction, back |
+| `arrow-left-alt` | `ArrowLeftAlt` | — | ↔ | — | direction, back |
+| `arrow-left-filled` | `ArrowLeftFilled` | — | ↔ | — | direction, back |
+| `arrow-left-filled` | `ArrowLeftFilled` | — | ↔ | — | direction, back |
+| `arrow-left-short` | `ArrowLeftShort` | — | ↔ | — | direction, previous |
+| `arrow-left-short` | `ArrowLeftShort` | — | ↔ | — | direction, previous |
+| `arrow-right` | `ArrowRight` | — | ↔ | — | next, forward, right, direction, navigate |
+| `arrow-right` | `ArrowRight` | — | ↔ | — | next, forward, right, direction, navigate |
+| `arrow-right-alt` | `ArrowRightAlt` | — | ↔ | — | direction, forward |
+| `arrow-right-alt` | `ArrowRightAlt` | — | ↔ | — | direction, forward |
+| `arrow-right-filled` | `ArrowRightFilled` | — | ↔ | — | direction, next |
+| `arrow-right-filled` | `ArrowRightFilled` | — | ↔ | — | direction, next |
+| `arrow-right-short` | `ArrowRightShort` | — | ↔ | — | direction, next |
+| `arrow-right-short` | `ArrowRightShort` | — | ↔ | — | direction, next |
+| `arrow-square` | `ArrowSquare` | — |  | — | — |
+| `arrow-square` | `ArrowSquare` | — |  | — | — |
+| `arrow-square-down` | `ArrowSquareDown` | — |  | — | — |
+| `arrow-square-down` | `ArrowSquareDown` | — |  | — | — |
+| `arrow-square-left` | `ArrowSquareLeft` | — | ↔ | — | direction, navigate |
+| `arrow-square-left` | `ArrowSquareLeft` | — | ↔ | — | direction, navigate |
+| `arrow-square-right` | `ArrowSquareRight` | — | ↔ | — | direction, navigate |
+| `arrow-square-right` | `ArrowSquareRight` | — | ↔ | — | direction, navigate |
+| `arrow-square-up` | `ArrowSquareUp` | — |  | — | — |
+| `arrow-square-up` | `ArrowSquareUp` | — |  | — | — |
+| `arrow-transfer` | `ArrowTransfer` | — |  | — | — |
+| `arrow-transfer` | `ArrowTransfer` | — |  | — | — |
+| `arrow-transfer-vertical` | `ArrowTransferVertical` | — |  | — | — |
+| `arrow-transfer-vertical` | `ArrowTransferVertical` | — |  | — | — |
+| `arrow-up` | `ArrowUp` | — |  | — | — |
+| `arrow-up` | `ArrowUp` | — |  | — | — |
+| `arrow-up-alt` | `ArrowUpAlt` | — |  | — | — |
+| `arrow-up-alt` | `ArrowUpAlt` | — |  | — | — |
+| `arrow-up-filled` | `ArrowUpFilled` | — |  | — | — |
+| `arrow-up-filled` | `ArrowUpFilled` | — |  | — | — |
+| `arrow-up-short` | `ArrowUpShort` | — |  | — | — |
+| `arrow-up-short` | `ArrowUpShort` | — |  | — | — |
+| `arrows-swap` | `ArrowsSwap` | — |  | — | — |
+| `arrows-swap` | `ArrowsSwap` | — |  | — | — |
+| `arrows-swap-horizontal` | `ArrowsSwapHorizontal` | — |  | — | — |
+| `arrows-swap-horizontal` | `ArrowsSwapHorizontal` | — |  | — | — |
+| `arrows-swap-vertical` | `ArrowsSwapVertical` | — |  | — | — |
+| `arrows-swap-vertical` | `ArrowsSwapVertical` | — |  | — | — |
+| `convert-arrow` | `ConvertArrow` | — |  | — | — |
+| `convert-arrow` | `ConvertArrow` | — |  | — | — |
+| `export-circle` | `ExportCircle` | — |  | — | — |
+| `export-circle` | `ExportCircle` | — |  | — | — |
+| `export-circle-right` | `ExportCircleRight` | — | ↔ | — | export, share, direction |
+| `export-circle-right` | `ExportCircleRight` | — | ↔ | — | export, share, direction |
+| `export-right` | `ExportRight` | — | ↔ | — | export, share, direction |
+| `export-right` | `ExportRight` | — | ↔ | — | export, share, direction |
+| `export-up` | `ExportUp` | — |  | — | — |
+| `export-up` | `ExportUp` | — |  | — | — |
+| `import-circle` | `ImportCircle` | — |  | — | — |
+| `import-circle` | `ImportCircle` | — |  | — | — |
+| `import-circle-left` | `ImportCircleLeft` | — | ↔ | — | import, receive, direction |
+| `import-circle-left` | `ImportCircleLeft` | — | ↔ | — | import, receive, direction |
+| `import-down` | `ImportDown` | — |  | — | — |
+| `import-down` | `ImportDown` | — |  | — | — |
+| `import-left` | `ImportLeft` | — | ↔ | — | import, receive, direction |
+| `import-left` | `ImportLeft` | — | ↔ | — | import, receive, direction |
+| `programming-arrow` | `ProgrammingArrow` | — |  | — | — |
+| `programming-arrow` | `ProgrammingArrow` | — |  | — | — |
+| `programming-arrows` | `ProgrammingArrows` | — |  | — | — |
+| `programming-arrows` | `ProgrammingArrows` | — |  | — | — |
+| `receive-square` | `ReceiveSquare` | — |  | — | — |
+| `receive-square` | `ReceiveSquare` | — |  | — | — |
+| `receive-square-alt` | `ReceiveSquareAlt` | — |  | — | — |
+| `receive-square-alt` | `ReceiveSquareAlt` | — |  | — | — |
+| `recovery-convert` | `RecoveryConvert` | — |  | — | — |
+| `recovery-convert` | `RecoveryConvert` | — |  | — | — |
+| `redo-arrow` | `RedoArrow` | — |  | — | — |
+| `redo-arrow` | `RedoArrow` | — |  | — | — |
+| `refresh-arrow` | `RefreshArrow` | — |  | — | — |
+| `refresh-arrow` | `RefreshArrow` | — |  | — | — |
+| `refresh-arrow-alt` | `RefreshArrowAlt` | — |  | — | — |
+| `refresh-arrow-alt` | `RefreshArrowAlt` | — |  | — | — |
+| `refresh-circle` | `RefreshCircle` | — |  | — | — |
+| `refresh-circle` | `RefreshCircle` | — |  | — | — |
+| `refresh-left` | `RefreshLeft` | — | ↔ | — | rotate, undo, direction |
+| `refresh-left` | `RefreshLeft` | — | ↔ | — | rotate, undo, direction |
+| `refresh-right` | `RefreshRight` | — | ↔ | — | rotate, redo, direction |
+| `refresh-right` | `RefreshRight` | — | ↔ | — | rotate, redo, direction |
+| `refresh-square` | `RefreshSquare` | — |  | — | — |
+| `refresh-square` | `RefreshSquare` | — |  | — | — |
+| `rotate-left` | `RotateLeft` | — | ↔ | — | rotate, undo, direction |
+| `rotate-left` | `RotateLeft` | — | ↔ | — | rotate, undo, direction |
+| `rotate-right` | `RotateRight` | — | ↔ | — | rotate, redo, direction |
+| `rotate-right` | `RotateRight` | — | ↔ | — | rotate, redo, direction |
+| `send` | `Send` | — |  | — | — |
+| `send` | `Send` | — |  | — | — |
+| `send-alt` | `SendAlt` | — |  | — | — |
+| `send-alt` | `SendAlt` | — |  | — | — |
+| `send-square` | `SendSquare` | — |  | — | — |
+| `send-square` | `SendSquare` | — |  | — | — |
+| `send-square-alt` | `SendSquareAlt` | — |  | — | — |
+| `send-square-alt` | `SendSquareAlt` | — |  | — | — |
+| `swap-horizontal` | `SwapHorizontal` | — |  | — | — |
+| `swap-horizontal` | `SwapHorizontal` | — |  | — | — |
+| `swap-horizontal-alt` | `SwapHorizontalAlt` | — |  | — | — |
+| `swap-horizontal-alt` | `SwapHorizontalAlt` | — |  | — | — |
+| `swap-horizontal-box` | `SwapHorizontalBox` | — |  | — | — |
+| `swap-horizontal-box` | `SwapHorizontalBox` | — |  | — | — |
+| `undo-arrow` | `UndoArrow` | — |  | — | — |
+| `undo-arrow` | `UndoArrow` | — |  | — | — |
 
-### `arrows` (13)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `arrow-down` | `ArrowDown` | P0 |  | — | descend, down, sort, south |
-| `arrow-down-left` | `ArrowDownLeft` | P1 | ↔ | — | diagonal, inbound, reduce, southwest |
-| `arrow-down-right` | `ArrowDownRight` | P2 | ↔ | — | diagonal, inbound, southeast |
-| `arrow-left` | `ArrowLeft` | P0 | ↔ | `arrow-back` | back, previous, return, west |
-| `arrow-left-right` | `ArrowLeftRight` | P1 |  | — | exchange, horizontal, resize, swap, width |
-| `arrow-right` | `ArrowRight` | P0 | ↔ | `arrow-forward` | continue, east, forward, next |
-| `arrow-up` | `ArrowUp` | P0 |  | — | ascend, north, sort, up |
-| `arrow-up-down` | `ArrowUpDown` | P1 |  | — | height, reorder, resize, swap, vertical |
-| `arrow-up-left` | `ArrowUpLeft` | P2 | ↔ | — | diagonal, northwest, outbound |
-| `arrow-up-right` | `ArrowUpRight` | P1 | ↔ | — | diagonal, grow, northeast, outbound |
-| `move` | `Move` | P1 |  | — | drag, grab, pan, reposition |
-| `swap-horizontal` | `SwapHorizontal` | P1 |  | `exchange` | switch, trade, transfer |
-| `swap-vertical` | `SwapVertical` | P2 |  | — | exchange, reorder, reverse, switch |
-
-### `communication` (25)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `at-sign` | `AtSign` | P0 |  | `mention` | address, email, handle |
-| `forward` | `Forward` | P1 | ↔ | — | along, on, pass, redirect, send |
-| `mail` | `Mail` | P0 |  | `email` `envelope` | inbox, letter, message |
-| `mail-check` | `MailCheck` | P1 |  | — | confirmed, delivered, email, read |
-| `mail-open` | `MailOpen` | P1 |  | — | email, envelope, opened, read, seen |
-| `mail-plus` | `MailPlus` | P1 |  | `compose` | email, new, write |
-| `mail-search` | `MailSearch` | P1 |  | — | email, find, inbox, query |
-| `mail-x` | `MailX` | P1 |  | — | delete, email, reject, spam |
-| `message-circle` | `MessageCircle` | P1 | ↔ | `chat` | bubble, comment, conversation, talk |
-| `message-square` | `MessageSquare` | P0 | ↔ | `comment` | bubble, discussion, feedback, note |
-| `message-square-plus` | `MessageSquarePlus` | P1 | ↔ | `new-chat` | chat, compose, conversation, new, start |
-| `message-square-search` | `MessageSquareSearch` | P1 | ↔ | — | conversation, find, history, query |
-| `message-square-x` | `MessageSquareX` | P2 | ↔ | — | close, conversation, delete, dismiss |
-| `messages` | `Messages` | P1 | ↔ | `conversations` | chats, inbox, threads |
-| `mic` | `Mic` | P0 |  | `microphone` | audio, record, speak, voice |
-| `mic-off` | `MicOff` | P1 |  | `mute` | microphone, muted, silenced |
-| `phone` | `Phone` | P0 |  | `call` | contact, dial, ring, telephone |
-| `phone-incoming` | `PhoneIncoming` | P1 | ↔ | — | call, inbound, received, ringing |
-| `phone-off` | `PhoneOff` | P1 |  | `hang-up` | call, decline, end, hang, up |
-| `phone-outgoing` | `PhoneOutgoing` | P1 | ↔ | — | call, dialled, outbound, placed |
-| `reply` | `Reply` | P1 | ↔ | `respond` | answer, back, return |
-| `reply-all` | `ReplyAll` | P1 | ↔ | — | answer, everyone, group, respond |
-| `send` | `Send` | P0 | ↔ | `submit` | deliver, dispatch, paper, plane |
-| `video` | `Video` | P0 | ↔ | `camcorder` | call, camera, meeting, record, webcam |
-| `video-off` | `VideoOff` | P1 | ↔ | — | call, camera, disabled, stopped |
-
-### `data` (14)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `activity` | `Activity` | P1 |  | `pulse` `monitoring` | health, heartbeat, live |
-| `chart-area` | `ChartArea` | P1 |  | `area-chart` | cumulative, filled, trend, volume |
-| `chart-bar` | `ChartBar` | P1 |  | `bar-chart` | analytics, bars, graph, metrics, report, statistics |
-| `chart-line` | `ChartLine` | P1 |  | `line-chart` | analytics, graph, metrics, timeseries, trend |
-| `chart-pie` | `ChartPie` | P1 |  | `pie-chart` | breakdown, proportion, segments, share |
-| `database` | `Database` | P1 |  | `db` `storage` | data, records, sql, store |
-| `gauge` | `Gauge` | P1 |  | `meter` `speedometer` | dial, kpi, performance, speed |
-| `lightbulb` | `Lightbulb` | P1 |  | `idea` `insight` | hint, suggestion, tip |
-| `server` | `Server` | P1 |  | `host` | backend, infrastructure, machine, rack |
-| `table` | `Table` | P1 |  | `spreadsheet` | columns, dataset, grid, rows |
-| `target` | `Target` | P1 |  | `goal` `bullseye` | focus, kpi, objective |
-| `trending-down` | `TrendingDown` | P1 |  | `decline` | decrease, drop, fall, loss |
-| `trending-up` | `TrendingUp` | P1 |  | `growth` | improve, increase, rise, up |
-| `workflow` | `Workflow` | P1 | ↔ | `pipeline` `flow` | automation, process, steps |
-
-### `design` (8)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `contrast` | `Contrast` | P1 |  | `high-contrast` | accessibility, appearance, brightness, theme |
-| `crop` | `Crop` | P1 |  | — | cut, frame, image, resize, trim |
-| `droplet` | `Droplet` | P2 |  | `opacity` `ink` | colour, fill, water |
-| `eraser` | `Eraser` | P2 |  | `rubber` | clear, delete, mark, out, rub, undo |
-| `layers` | `Layers` | P1 |  | `stack` | groups, levels, overlay, z-index |
-| `palette` | `Palette` | P1 |  | `color` `theme` | brand, colour, paint, swatch |
-| `ruler` | `Ruler` | P2 | ↔ | `measure` | dimensions, scale, size, spacing |
-| `shapes` | `Shapes` | P2 |  | — | geometry, objects, primitives, vector |
-
-### `development` (12)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `braces` | `Braces` | P1 |  | `json` `curly` | config, object, schema |
-| `brackets` | `Brackets` | P2 |  | `array` | index, list, square |
-| `bug` | `Bug` | P1 |  | `issue` `defect` | debug, error, problem |
-| `code` | `Code` | P1 |  | `source` | develop, markup, programming, snippet |
-| `git-branch` | `GitBranch` | P1 |  | `branch` | control, fork, merge, repository, version |
-| `git-commit` | `GitCommit` | P1 |  | `commit` | change, revision, sha, snapshot |
-| `git-merge` | `GitMerge` | P1 | ↔ | `merge` | branches, combine, integrate, join |
-| `git-pull-request` | `GitPullRequest` | P1 | ↔ | `pull-request` | contribute, pr, propose, review |
-| `package` | `Package` | P1 |  | `module` `dependency` | bundle, library, npm |
-| `rocket` | `Rocket` | P1 | ↔ | `deploy` `launch` | release, ship |
-| `terminal` | `Terminal` | P1 | ↔ | `console` `shell` `cli` | command, prompt |
-| `wrench` | `Wrench` | P1 | ↔ | `tools` `repair` | configure, fix, maintenance |
-
-### `devices` (16)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `battery` | `Battery` | P1 |  | — | charge, energy, level, power |
-| `battery-charging` | `BatteryCharging` | P1 |  | — | charge, energy, plugged, power |
-| `battery-low` | `BatteryLow` | P1 | ↔ | — | charge, critical, depleted, power, warning |
-| `bluetooth` | `Bluetooth` | P1 |  | — | connect, nearby, pairing, wireless |
-| `headphones` | `Headphones` | P1 |  | `headset` | audio, listen, support |
-| `laptop` | `Laptop` | P1 |  | `computer` | macbook, notebook, portable |
-| `monitor` | `Monitor` | P1 |  | `display` `screen` | computer, desktop |
-| `mouse` | `Mouse` | P2 |  | — | click, input, peripheral, pointer |
-| `plug` | `Plug` | P1 |  | `socket` | adapter, connect, energy, power |
-| `printer` | `Printer` | P1 |  | `print` | hardcopy, output, paper |
-| `router` | `Router` | P2 |  | `modem` `gateway` | access, network, point |
-| `smartphone` | `Smartphone` | P1 |  | `mobile` | android, device, handset, ios, phone |
-| `speaker` | `Speaker` | P2 |  | — | audio, loud, monitor, output, sound |
-| `watch` | `Watch` | P2 |  | `smartwatch` | device, time, wearable |
-| `wifi` | `Wifi` | P1 |  | `wireless` | connection, internet, network, signal |
-| `wifi-off` | `WifiOff` | P1 |  | — | airplane, disconnected, network, no, offline |
-
-### `editing` (26)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `align-center` | `AlignCenter` | P1 |  | — | centred, format, middle, paragraph |
-| `align-justify` | `AlignJustify` | P2 |  | — | block, format, full, paragraph |
-| `align-left` | `AlignLeft` | P1 | ↔ | — | format, justify, paragraph, start |
-| `align-right` | `AlignRight` | P1 | ↔ | — | end, format, justify, paragraph |
-| `bold` | `Bold` | P1 |  | `strong` | format, heavy, text, weight |
-| `clipboard` | `Clipboard` | P1 |  | `paste` | board, buffer, copied |
-| `clipboard-check` | `ClipboardCheck` | P1 |  | — | approved, done, pasted, task, verified |
-| `clipboard-list` | `ClipboardList` | P1 |  | — | agenda, checklist, notes, tasks |
-| `copy` | `Copy` | P0 |  | `duplicate` | clone, copies |
-| `edit` | `Edit` | P0 | ↔ | `pencil` | change, modify, rename, write |
-| `heading` | `Heading` | P1 |  | `title` | format, h1, headline, section |
-| `italic` | `Italic` | P1 |  | `emphasis` | format, oblique, slant, text |
-| `link` | `Link` | P0 |  | `url` | attach, chain, connect, hyperlink |
-| `link-off` | `LinkOff` | P1 |  | `unlink` | broken, detach, disconnect |
-| `list-checks` | `ListChecks` | P1 | ↔ | `checklist` `todo` | done, items, tasks |
-| `list-ordered` | `ListOrdered` | P1 | ↔ | `numbered-list` | enumerate, numbered, ol, steps |
-| `quote` | `Quote` | P1 | ↔ | `blockquote` | citation, excerpt, quotation |
-| `redo` | `Redo` | P1 | ↔ | — | again, forward, reapply, repeat |
-| `repeat` | `Repeat` | P1 |  | `loop` `recurring` | again, cycle |
-| `save` | `Save` | P0 |  | — | disk, floppy, persist, store, write |
-| `scissors` | `Scissors` | P1 |  | `cut` | clip, snip, trim |
-| `strikethrough` | `Strikethrough` | P1 |  | `strike` | crossed, deleted, format, out, text |
-| `text` | `Text` | P1 |  | `type` | characters, font, heading, typography |
-| `trash` | `Trash` | P0 |  | `delete` `bin` | destroy, discard, remove |
-| `underline` | `Underline` | P1 |  | — | decoration, format, line, text |
-| `undo` | `Undo` | P1 | ↔ | `revert` | back, reverse, rollback |
-
-### `files` (34)
+### `communication` (116)
 
 | Icon | Component | Pri | RTL | Aliases | Tags |
 |:--|:--|:--:|:--:|:--|:--|
-| `archive` | `Archive` | P1 |  | — | box, cold, retain, storage, store |
-| `cloud` | `Cloud` | P0 |  | — | hosted, remote, saas, storage |
-| `cloud-download` | `CloudDownload` | P0 |  | — | fetch, pull, remote, restore, sync |
-| `cloud-off` | `CloudOff` | P1 |  | `offline` | connection, disconnected, local, no |
-| `cloud-upload` | `CloudUpload` | P0 |  | — | backup, push, remote, save, sync |
-| `download` | `Download` | P0 |  | `export` | down, pull, receive, save |
-| `file` | `File` | P0 |  | `document` | blank, page, sheet |
-| `file-alert` | `FileAlert` | P1 |  | `file-warning` | document, error, invalid, problem, warning |
-| `file-archive` | `FileArchive` | P2 |  | `file-zip` | bundle, compressed, document, zip |
-| `file-check` | `FileCheck` | P1 |  | — | approved, document, validated, verified |
-| `file-code` | `FileCode` | P1 |  | — | document, program, script, source |
-| `file-download` | `FileDownload` | P1 |  | — | document, export, fetch, save |
-| `file-edit` | `FileEdit` | P1 |  | `file-pen` | amend, document, revise, rewrite |
-| `file-image` | `FileImage` | P1 |  | — | document, media, photo, picture |
-| `file-lock` | `FileLock` | P1 |  | `policy` | document, encrypted, private, restricted |
-| `file-minus` | `FileMinus` | P1 |  | — | detach, document, remove |
-| `file-plus` | `FilePlus` | P1 |  | `new-file` | add, create, document, file, new |
-| `file-search` | `FileSearch` | P1 |  | `audit-log` | audit, document, find, inspect |
-| `file-text` | `FileText` | P1 |  | — | article, content, document, page, prose |
-| `file-upload` | `FileUpload` | P1 |  | — | attach, document, import, send |
-| `file-x` | `FileX` | P1 |  | — | delete, document, failed, invalid, reject |
-| `files` | `Files` | P1 |  | `documents` | batch, collection, multiple |
-| `folder` | `Folder` | P0 |  | `directory` | container, group |
-| `folder-check` | `FolderCheck` | P1 |  | — | approved, directory, synced, verified |
-| `folder-lock` | `FolderLock` | P1 |  | — | directory, encrypted, private, restricted |
-| `folder-minus` | `FolderMinus` | P1 |  | — | detach, directory, remove |
-| `folder-open` | `FolderOpen` | P1 |  | — | active, browse, directory, expanded |
-| `folder-plus` | `FolderPlus` | P1 |  | `new-folder` | add, create, directory, folder, new |
-| `folder-search` | `FolderSearch` | P1 |  | — | browse, directory, find, inspect |
-| `folder-x` | `FolderX` | P1 |  | — | delete, directory, reject |
-| `hard-drive` | `HardDrive` | P1 |  | `disk` | local, storage, volume |
-| `inbox` | `Inbox` | P0 |  | `tray` | incoming, messages, received |
-| `paperclip` | `Paperclip` | P1 |  | `attachment` | attach, clip, enclosure |
-| `upload` | `Upload` | P0 |  | `import` | publish, push, send |
+| `bubble` | `Bubble` | — |  | — | — |
+| `bubble` | `Bubble` | — |  | — | — |
+| `call` | `Call` | — |  | — | — |
+| `call` | `Call` | — |  | — | — |
+| `call-add` | `CallAdd` | — |  | — | — |
+| `call-add` | `CallAdd` | — |  | — | — |
+| `call-calling` | `CallCalling` | — |  | — | — |
+| `call-calling` | `CallCalling` | — |  | — | — |
+| `call-incoming` | `CallIncoming` | — |  | — | — |
+| `call-incoming` | `CallIncoming` | — |  | — | — |
+| `call-minus` | `CallMinus` | — |  | — | — |
+| `call-minus` | `CallMinus` | — |  | — | — |
+| `call-outgoing` | `CallOutgoing` | — |  | — | — |
+| `call-outgoing` | `CallOutgoing` | — |  | — | — |
+| `call-received` | `CallReceived` | — |  | — | — |
+| `call-received` | `CallReceived` | — |  | — | — |
+| `call-remove` | `CallRemove` | — |  | — | — |
+| `call-remove` | `CallRemove` | — |  | — | — |
+| `call-slash` | `CallSlash` | — |  | — | — |
+| `call-slash` | `CallSlash` | — |  | — | — |
+| `chatbox` | `Chatbox` | — |  | — | — |
+| `chatbox` | `Chatbox` | — |  | — | — |
+| `direct` | `Direct` | — |  | — | — |
+| `direct` | `Direct` | — |  | — | — |
+| `direct-down` | `DirectDown` | — |  | — | — |
+| `direct-down` | `DirectDown` | — |  | — | — |
+| `direct-inbox` | `DirectInbox` | — |  | — | — |
+| `direct-inbox` | `DirectInbox` | — |  | — | — |
+| `direct-left` | `DirectLeft` | — | ↔ | — | direction, navigate |
+| `direct-left` | `DirectLeft` | — | ↔ | — | direction, navigate |
+| `direct-normal` | `DirectNormal` | — |  | — | — |
+| `direct-normal` | `DirectNormal` | — |  | — | — |
+| `direct-notification` | `DirectNotification` | — |  | — | — |
+| `direct-notification` | `DirectNotification` | — |  | — | — |
+| `direct-right` | `DirectRight` | — | ↔ | — | direction, navigate |
+| `direct-right` | `DirectRight` | — | ↔ | — | direction, navigate |
+| `direct-send` | `DirectSend` | — |  | — | — |
+| `direct-send` | `DirectSend` | — |  | — | — |
+| `direct-up` | `DirectUp` | — |  | — | — |
+| `direct-up` | `DirectUp` | — |  | — | — |
+| `directbox-default` | `DirectboxDefault` | — |  | — | — |
+| `directbox-default` | `DirectboxDefault` | — |  | — | — |
+| `directbox-notif` | `DirectboxNotif` | — |  | — | — |
+| `directbox-notif` | `DirectboxNotif` | — |  | — | — |
+| `directbox-receive` | `DirectboxReceive` | — |  | — | — |
+| `directbox-receive` | `DirectboxReceive` | — |  | — | — |
+| `directbox-send` | `DirectboxSend` | — |  | — | — |
+| `directbox-send` | `DirectboxSend` | — |  | — | — |
+| `message-add` | `MessageAdd` | — |  | — | — |
+| `message-add` | `MessageAdd` | — |  | — | — |
+| `message-add-alt` | `MessageAddAlt` | — |  | — | — |
+| `message-add-alt` | `MessageAddAlt` | — |  | — | — |
+| `message-bubble` | `MessageBubble` | — |  | — | — |
+| `message-bubble` | `MessageBubble` | — |  | — | — |
+| `message-circle` | `MessageCircle` | — |  | — | — |
+| `message-circle` | `MessageCircle` | — |  | — | — |
+| `message-edit` | `MessageEdit` | — |  | — | — |
+| `message-edit` | `MessageEdit` | — |  | — | — |
+| `message-favorite` | `MessageFavorite` | — |  | — | — |
+| `message-favorite` | `MessageFavorite` | — |  | — | — |
+| `message-minus` | `MessageMinus` | — |  | — | — |
+| `message-minus` | `MessageMinus` | — |  | — | — |
+| `message-notif` | `MessageNotif` | — |  | — | — |
+| `message-notif` | `MessageNotif` | — |  | — | — |
+| `message-programming` | `MessageProgramming` | — |  | — | — |
+| `message-programming` | `MessageProgramming` | — |  | — | — |
+| `message-question` | `MessageQuestion` | — |  | — | — |
+| `message-question` | `MessageQuestion` | — |  | — | — |
+| `message-remove` | `MessageRemove` | — |  | — | — |
+| `message-remove` | `MessageRemove` | — |  | — | — |
+| `message-search` | `MessageSearch` | — |  | — | — |
+| `message-search` | `MessageSearch` | — |  | — | — |
+| `message-square` | `MessageSquare` | — |  | — | — |
+| `message-square` | `MessageSquare` | — |  | — | — |
+| `message-text` | `MessageText` | — |  | — | — |
+| `message-text` | `MessageText` | — |  | — | — |
+| `message-text-alt` | `MessageTextAlt` | — |  | — | — |
+| `message-text-alt` | `MessageTextAlt` | — |  | — | — |
+| `message-tick` | `MessageTick` | — |  | — | — |
+| `message-tick` | `MessageTick` | — |  | — | — |
+| `message-time` | `MessageTime` | — |  | — | — |
+| `message-time` | `MessageTime` | — |  | — | — |
+| `messages` | `Messages` | — |  | — | — |
+| `messages` | `Messages` | — |  | — | — |
+| `messages-2` | `Messages2` | — |  | — | — |
+| `messages-2` | `Messages2` | — |  | — | — |
+| `messages-bubbles-2` | `MessagesBubbles2` | — |  | — | — |
+| `messages-bubbles-2` | `MessagesBubbles2` | — |  | — | — |
+| `messenger` | `Messenger` | — |  | — | — |
+| `messenger` | `Messenger` | — |  | — | — |
+| `microphone` | `Microphone` | — |  | — | — |
+| `microphone` | `Microphone` | — |  | — | — |
+| `microphone-2` | `Microphone2` | — |  | — | — |
+| `microphone-2` | `Microphone2` | — |  | — | — |
+| `microphone-slash` | `MicrophoneSlash` | — |  | — | — |
+| `microphone-slash` | `MicrophoneSlash` | — |  | — | — |
+| `microphone-slash-alt` | `MicrophoneSlashAlt` | — |  | — | — |
+| `microphone-slash-alt` | `MicrophoneSlashAlt` | — |  | — | — |
+| `sms` | `Sms` | — |  | — | — |
+| `sms` | `Sms` | — |  | — | — |
+| `sms-edit` | `SmsEdit` | — |  | — | — |
+| `sms-edit` | `SmsEdit` | — |  | — | — |
+| `sms-notification` | `SmsNotification` | — |  | — | — |
+| `sms-notification` | `SmsNotification` | — |  | — | — |
+| `sms-search` | `SmsSearch` | — |  | — | — |
+| `sms-search` | `SmsSearch` | — |  | — | — |
+| `sms-star` | `SmsStar` | — |  | — | — |
+| `sms-star` | `SmsStar` | — |  | — | — |
+| `sms-tracking` | `SmsTracking` | — |  | — | — |
+| `sms-tracking` | `SmsTracking` | — |  | — | — |
+| `voice-circle` | `VoiceCircle` | — |  | — | — |
+| `voice-circle` | `VoiceCircle` | — |  | — | — |
+| `voice-square` | `VoiceSquare` | — |  | — | — |
+| `voice-square` | `VoiceSquare` | — |  | — | — |
+| `whatsapp` | `Whatsapp` | — |  | — | — |
+| `whatsapp` | `Whatsapp` | — |  | — | — |
 
-### `finance` (12)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `bank` | `Bank` | P1 |  | `institution` | account, branch, transfer |
-| `banknote` | `Banknote` | P1 |  | `cash` `money` | currency, note, payment |
-| `calculator` | `Calculator` | P1 |  | — | compute, estimate, maths, sum, total |
-| `credit-card` | `CreditCard` | P0 |  | `payment` `card` | billing, checkout, visa |
-| `credit-card-check` | `CreditCardCheck` | P1 |  | — | approved, authorised, card, verified |
-| `credit-card-plus` | `CreditCardPlus` | P1 |  | — | add, card, method, new, payment |
-| `credit-card-x` | `CreditCardX` | P1 |  | — | card, declined, failed, invalid, remove |
-| `percent` | `Percent` | P1 |  | `discount` | interest, rate, share, tax |
-| `receipt` | `Receipt` | P1 |  | `invoice` `bill` | gst, statement, transaction |
-| `shopping-cart` | `ShoppingCart` | P1 | ↔ | `basket` `cart` | checkout, order, purchase |
-| `tag` | `Tag` | P1 |  | `label` `price` | category, discount, sku |
-| `wallet` | `Wallet` | P1 |  | `balance` | account, funds, money, payment |
-
-### `hardware` (1)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `cpu` | `Cpu` | P1 |  | `processor` `chip` | compute, core, silicon |
-
-### `interface` (35)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `check` | `Check` | P0 |  | `tick` | complete, confirm, done, success |
-| `check-square` | `CheckSquare` | P0 |  | `checkbox` | checked, selected, tick |
-| `checks` | `Checks` | P1 |  | `check-check` `read-receipt` | delivered, double, read, receipt, seen |
-| `circle` | `Circle` | P1 |  | — | dot, empty, radio, shape, unselected |
-| `circle-dot` | `CircleDot` | P1 |  | `radio` | chosen, selected, target |
-| `columns` | `Columns` | P1 |  | — | layout, panes, split, table, vertical |
-| `drag-handle` | `DragHandle` | P0 |  | `grip` | dots, move, reorder, rows |
-| `eye` | `Eye` | P0 |  | `show` | preview, reveal, view, visible |
-| `eye-off` | `EyeOff` | P0 |  | `hide` | conceal, hidden, invisible |
-| `filter` | `Filter` | P0 |  | `funnel` | facet, narrow, refine |
-| `filter-x` | `FilterX` | P1 | ↔ | `clear-filter` | clear, funnel, remove, reset |
-| `grid` | `Grid` | P0 |  | — | cards, gallery, layout, tiles, view |
-| `hash` | `Hash` | P1 |  | `channel` | number, pound, tag, topic |
-| `keyboard` | `Keyboard` | P1 |  | — | hotkey, input, keys, shortcut, typing |
-| `list` | `List` | P0 | ↔ | — | bullets, items, lines, rows, view |
-| `menu` | `Menu` | P0 |  | `hamburger` | bars, more, navigation |
-| `minus` | `Minus` | P0 |  | `remove` | collapse, dash, decrement, subtract |
-| `minus-square` | `MinusSquare` | P1 |  | `indeterminate` | checkbox, mixed, partial |
-| `more-horizontal` | `MoreHorizontal` | P0 |  | `ellipsis` | actions, dots, options, overflow |
-| `more-vertical` | `MoreVertical` | P0 |  | `kebab` | actions, ellipsis, options, overflow |
-| `plus` | `Plus` | P0 |  | `add` | create, increment, new |
-| `plus-square` | `PlusSquare` | P2 |  | — | add, box, create, new |
-| `rows` | `Rows` | P1 |  | — | horizontal, layout, stacked, table |
-| `search` | `Search` | P0 | ↔ | `magnifying-glass` | find, lookup, magnifier, query |
-| `search-x` | `SearchX` | P1 | ↔ | `clear-search` | clear, dismiss, query, reset |
-| `sliders` | `Sliders` | P1 |  | `controls` | adjust, mixer, settings, tune |
-| `sort` | `Sort` | P0 | ↔ | `order` | arrange, rank, sequence |
-| `sort-asc` | `SortAsc` | P0 | ↔ | `sort-ascending` | a-z, ascending, increasing, low-high |
-| `sort-desc` | `SortDesc` | P0 | ↔ | `sort-descending` | decreasing, descending, high-low, z-a |
-| `square` | `Square` | P1 |  | `stop` | checkbox, empty, shape, unchecked |
-| `toggle-left` | `ToggleLeft` | P1 | ↔ | `switch-off` | boolean, disabled, off, switch |
-| `toggle-right` | `ToggleRight` | P1 | ↔ | `switch-on` | boolean, enabled, on, switch |
-| `x` | `X` | P0 |  | `close` | cancel, cross, dismiss, remove |
-| `zoom-in` | `ZoomIn` | P1 | ↔ | — | closer, enlarge, magnify, scale |
-| `zoom-out` | `ZoomOut` | P1 | ↔ | — | further, reduce, scale, shrink |
-
-### `maps` (2)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `map` | `Map` | P2 |  | `atlas` | directions, geography, location, region |
-| `map-pin` | `MapPin` | P1 |  | `location` `marker` | address, geo, place |
-
-### `media` (14)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `camera` | `Camera` | P1 |  | — | capture, lens, photo, picture, snapshot |
-| `camera-off` | `CameraOff` | P1 |  | — | blocked, disabled, lens, privacy |
-| `film` | `Film` | P1 |  | `movie` `reel` | cinema, clip, video |
-| `image` | `Image` | P0 |  | `picture` `photo` | graphic, media, thumbnail |
-| `music` | `Music` | P1 |  | `song` | audio, playlist, track, tune |
-| `pause` | `Pause` | P0 |  | — | break, hold, playback, stop, suspend |
-| `play` | `Play` | P0 |  | `start` | begin, playback, resume, run |
-| `screen-share` | `ScreenShare` | P1 |  | `present` `cast` | display, meeting, mirror |
-| `shuffle` | `Shuffle` | P2 |  | `random` | crossed, mix, reorder |
-| `skip-back` | `SkipBack` | P1 |  | `previous` | restart, rewind, track |
-| `skip-forward` | `SkipForward` | P1 |  | `next` | advance, fast, forward, track |
-| `volume` | `Volume` | P1 | ↔ | `sound` `audio` | loud, speaker, unmute |
-| `volume-low` | `VolumeLow` | P1 | ↔ | `quiet` | down, level, soft, sound |
-| `volume-off` | `VolumeOff` | P1 | ↔ | `silent` | mute, muted, no, sound |
-
-### `navigation` (19)
+### `crypto` (132)
 
 | Icon | Component | Pri | RTL | Aliases | Tags |
 |:--|:--|:--:|:--:|:--|:--|
-| `chevron-down` | `ChevronDown` | P0 |  | — | accordion, caret, dropdown, expand, open |
-| `chevron-left` | `ChevronLeft` | P0 | ↔ | — | back, caret, collapse, previous |
-| `chevron-right` | `ChevronRight` | P0 | ↔ | — | breadcrumb, caret, expand, forward, next |
-| `chevron-up` | `ChevronUp` | P0 |  | — | accordion, caret, close, collapse |
-| `chevrons-down` | `ChevronsDown` | P2 |  | — | all, bottom, expand, scroll |
-| `chevrons-left` | `ChevronsLeft` | P0 | ↔ | — | first, page, previous, rewind, skip |
-| `chevrons-right` | `ChevronsRight` | P0 | ↔ | — | forward, last, next, page, skip |
-| `chevrons-up` | `ChevronsUp` | P2 |  | — | all, collapse, scroll, top |
-| `collapse` | `Collapse` | P1 |  | — | corners, in, reduce, shrink |
-| `expand` | `Expand` | P1 |  | — | corners, enlarge, fullscreen, out |
-| `external-link` | `ExternalLink` | P0 | ↔ | — | launch, new, open, outbound, tab |
-| `first-page` | `FirstPage` | P0 | ↔ | — | beginning, pagination, rewind, start |
-| `last-page` | `LastPage` | P0 | ↔ | — | end, finish, pagination |
-| `log-in` | `LogIn` | P0 | ↔ | `sign-in` | authenticate, enter, in, login, sign |
-| `log-out` | `LogOut` | P0 | ↔ | `sign-out` | exit, leave, logout, out, sign |
-| `maximize` | `Maximize` | P0 |  | — | enlarge, expand, fullscreen, zoom |
-| `minimize` | `Minimize` | P0 |  | — | collapse, exit, fullscreen, reduce, shrink |
-| `sidebar-left` | `SidebarLeft` | P0 | ↔ | `panel-left` | drawer, navigation, panel, toggle |
-| `sidebar-right` | `SidebarRight` | P1 | ↔ | `panel-right` | drawer, inspector, panel, toggle |
+| `aave-aave` | `AaveAave` | — |  | — | — |
+| `aave-aave` | `AaveAave` | — |  | — | — |
+| `ankr-ankr` | `AnkrAnkr` | — |  | — | — |
+| `ankr-ankr` | `AnkrAnkr` | — |  | — | — |
+| `augur-rep` | `AugurRep` | — |  | — | — |
+| `augur-rep` | `AugurRep` | — |  | — | — |
+| `autonio-niox` | `AutonioNiox` | — |  | — | — |
+| `autonio-niox` | `AutonioNiox` | — |  | — | — |
+| `avalanche-avax` | `AvalancheAvax` | — |  | — | — |
+| `avalanche-avax` | `AvalancheAvax` | — |  | — | — |
+| `binance-coin-bnb` | `BinanceCoinBnb` | — |  | — | — |
+| `binance-coin-bnb` | `BinanceCoinBnb` | — |  | — | — |
+| `binance-usd-busd` | `BinanceUsdBusd` | — |  | — | — |
+| `binance-usd-busd` | `BinanceUsdBusd` | — |  | — | — |
+| `bitcoin-btc` | `BitcoinBtc` | — |  | — | — |
+| `bitcoin-btc` | `BitcoinBtc` | — |  | — | — |
+| `bitcoin-card` | `BitcoinCard` | — |  | — | — |
+| `bitcoin-card` | `BitcoinCard` | — |  | — | — |
+| `bitcoin-convert` | `BitcoinConvert` | — |  | — | — |
+| `bitcoin-convert` | `BitcoinConvert` | — |  | — | — |
+| `bitcoin-refresh` | `BitcoinRefresh` | — |  | — | — |
+| `bitcoin-refresh` | `BitcoinRefresh` | — |  | — | — |
+| `buy-crypto` | `BuyCrypto` | — |  | — | — |
+| `buy-crypto` | `BuyCrypto` | — |  | — | — |
+| `cardano-ada` | `CardanoAda` | — |  | — | — |
+| `cardano-ada` | `CardanoAda` | — |  | — | — |
+| `celo-celo` | `CeloCelo` | — |  | — | — |
+| `celo-celo` | `CeloCelo` | — |  | — | — |
+| `celsius-cel` | `CelsiusCel` | — |  | — | — |
+| `celsius-cel` | `CelsiusCel` | — |  | — | — |
+| `chainlink-link` | `ChainlinkLink` | — |  | — | — |
+| `chainlink-link` | `ChainlinkLink` | — |  | — | — |
+| `civic-cvc` | `CivicCvc` | — |  | — | — |
+| `civic-cvc` | `CivicCvc` | — |  | — | — |
+| `dai-dai` | `DaiDai` | — |  | — | — |
+| `dai-dai` | `DaiDai` | — |  | — | — |
+| `dash-dash` | `DashDash` | — |  | — | — |
+| `dash-dash-navigation-control-speed-transportation-route` | `DashDashNavigationControlSpeedTransportationRoute` | — |  | — | — |
+| `decred-dcr` | `DecredDcr` | — |  | — | — |
+| `decred-dcr` | `DecredDcr` | — |  | — | — |
+| `dent-dent` | `DentDent` | — |  | — | — |
+| `dent-dental-care-toothbrush-oral-hygiene-checkup-smile` | `DentDentalCareToothbrushOralHygieneCheckupSmile` | — |  | — | — |
+| `educare-ekt` | `EducareEkt` | — |  | — | — |
+| `educare-ekt` | `EducareEkt` | — |  | — | — |
+| `emercoin-emc` | `EmercoinEmc` | — |  | — | — |
+| `emercoin-emc` | `EmercoinEmc` | — |  | — | — |
+| `enjin-coin-enj` | `EnjinCoinEnj` | — |  | — | — |
+| `enjin-coin-enj` | `EnjinCoinEnj` | — |  | — | — |
+| `eos-eos` | `EosEos` | — |  | — | — |
+| `eos-eos` | `EosEos` | — |  | — | — |
+| `ethereum` | `Ethereum` | — |  | — | — |
+| `ethereum-classic-etc` | `EthereumClassicEtc` | — |  | — | — |
+| `ethereum-classic-etc` | `EthereumClassicEtc` | — |  | — | — |
+| `ethereum-eth` | `EthereumEth` | — |  | — | — |
+| `ftx-token-ftt` | `FtxTokenFtt` | — |  | — | — |
+| `ftx-token-ftt` | `FtxTokenFtt` | — |  | — | — |
+| `harmony-one` | `HarmonyOne` | — |  | — | — |
+| `harmony-one` | `HarmonyOne` | — |  | — | — |
+| `hedera-hashgraph-hbar` | `HederaHashgraphHbar` | — |  | — | — |
+| `hedera-hashgraph-hbar` | `HederaHashgraphHbar` | — |  | — | — |
+| `hex-hex` | `HexHex` | — |  | — | — |
+| `hex-hex` | `HexHex` | — |  | — | — |
+| `huobi-token-ht` | `HuobiTokenHt` | — |  | — | — |
+| `huobi-token-ht` | `HuobiTokenHt` | — |  | — | — |
+| `icon-icx` | `IconIcx` | — |  | — | — |
+| `icon-icx` | `IconIcx` | — |  | — | — |
+| `iost-iost` | `IostIost` | — |  | — | — |
+| `iost-iost` | `IostIost` | — |  | — | — |
+| `kyber-network-knc` | `KyberNetworkKnc` | — |  | — | — |
+| `kyber-network-knc` | `KyberNetworkKnc` | — |  | — | — |
+| `litecoin` | `Litecoin` | — |  | — | — |
+| `litecoin-ltc` | `LitecoinLtc` | — |  | — | — |
+| `maker-mkr` | `MakerMkr` | — |  | — | — |
+| `maker-mkr` | `MakerMkr` | — |  | — | — |
+| `monero-xmr` | `MoneroXmr` | — |  | — | — |
+| `monero-xmr` | `MoneroXmr` | — |  | — | — |
+| `nebulas-nas` | `NebulasNas` | — |  | — | — |
+| `nebulas-nas` | `NebulasNas` | — |  | — | — |
+| `nem-xem` | `NemXem` | — |  | — | — |
+| `nem-xem` | `NemXem` | — |  | — | — |
+| `nexo-nexo` | `NexoNexo` | — |  | — | — |
+| `nexo-nexo` | `NexoNexo` | — |  | — | — |
+| `ocean-protocol-ocean` | `OceanProtocolOcean` | — |  | — | — |
+| `ocean-protocol-ocean` | `OceanProtocolOcean` | — |  | — | — |
+| `ok-app` | `OkApp` | — |  | — | — |
+| `ok-app` | `OkApp` | — |  | — | — |
+| `okb-okb` | `OkbOkb` | — |  | — | — |
+| `okb-okb` | `OkbOkb` | — |  | — | — |
+| `ontology-knowledge-structure-concept-map-relationship-data-model` | `OntologyKnowledgeStructureConceptMapRelationshipDataModel` | — |  | — | — |
+| `ontology-knowledge-structure-concept-map-semantics-information` | `OntologyKnowledgeStructureConceptMapSemanticsInformation` | — |  | — | — |
+| `polkadot-dot` | `PolkadotDot` | — |  | — | — |
+| `polkadot-dot` | `PolkadotDot` | — |  | — | — |
+| `polygon-matic` | `PolygonMatic` | — |  | — | — |
+| `polygon-matic` | `PolygonMatic` | — |  | — | — |
+| `polyswarm-nct` | `PolyswarmNct` | — |  | — | — |
+| `polyswarm-nct` | `PolyswarmNct` | — |  | — | — |
+| `quant-qnt` | `QuantQnt` | — |  | — | — |
+| `quant-qnt` | `QuantQnt` | — |  | — | — |
+| `siacoin-sc` | `SiacoinSc` | — |  | — | — |
+| `siacoin-sc` | `SiacoinSc` | — |  | — | — |
+| `solana-sol` | `SolanaSol` | — |  | — | — |
+| `solana-sol` | `SolanaSol` | — |  | — | — |
+| `stacks-stx` | `StacksStx` | — |  | — | — |
+| `stacks-stx` | `StacksStx` | — |  | — | — |
+| `stellar-xlm` | `StellarXlm` | — |  | — | — |
+| `stellar-xlm` | `StellarXlm` | — |  | — | — |
+| `tenx-pay` | `TenxPay` | — |  | — | — |
+| `tenx-pay` | `TenxPay` | — |  | — | — |
+| `tether-usdt` | `TetherUsdt` | — |  | — | — |
+| `tether-usdt` | `TetherUsdt` | — |  | — | — |
+| `the-graph-grt` | `TheGraphGrt` | — |  | — | — |
+| `the-graph-grt` | `TheGraphGrt` | — |  | — | — |
+| `theta-theta` | `ThetaTheta` | — |  | — | — |
+| `theta-theta` | `ThetaTheta` | — |  | — | — |
+| `thorchain-rune` | `ThorchainRune` | — |  | — | — |
+| `thorchain-rune` | `ThorchainRune` | — |  | — | — |
+| `trontron-trx` | `TrontronTrx` | — |  | — | — |
+| `trontron-trx` | `TrontronTrx` | — |  | — | — |
+| `usd-coin-usdc` | `UsdCoinUsdc` | — |  | — | — |
+| `usd-coin-usdc` | `UsdCoinUsdc` | — |  | — | — |
+| `velas-vlx` | `VelasVlx` | — |  | — | — |
+| `velas-vlx` | `VelasVlx` | — |  | — | — |
+| `vibe-vibe` | `VibeVibe` | — |  | — | — |
+| `vibe-vibe` | `VibeVibe` | — |  | — | — |
+| `wanchain-wan` | `WanchainWan` | — |  | — | — |
+| `wanchain-wan` | `WanchainWan` | — |  | — | — |
+| `wanchain-wan-alt` | `WanchainWanAlt` | — |  | — | — |
+| `wanchain-wan-alt` | `WanchainWanAlt` | — |  | — | — |
+| `xrp-xrp` | `XrpXrp` | — |  | — | — |
+| `xrp-xrp` | `XrpXrp` | — |  | — | — |
+| `zel-zel` | `ZelZel` | — |  | — | — |
+| `zel-zel` | `ZelZel` | — |  | — | — |
 
-### `notifications` (5)
+### `data` (38)
 
 | Icon | Component | Pri | RTL | Aliases | Tags |
 |:--|:--|:--:|:--:|:--|:--|
-| `bell` | `Bell` | P0 |  | `notification` | alarm, alert, reminder, ring |
-| `bell-dot` | `BellDot` | P1 |  | `unread` | alert, badge, new, pending |
-| `bell-off` | `BellOff` | P1 |  | `mute-notifications` | disturb, do, mute, not, silence, snooze |
-| `bell-ring` | `BellRing` | P1 |  | `ringing` | active, alerting, urgent |
-| `megaphone` | `Megaphone` | P2 | ↔ | `announcement` | announce, broadcast, campaign, promote, shout |
+| `activity` | `Activity` | — |  | — | — |
+| `activity` | `Activity` | — |  | — | — |
+| `chart` | `Chart` | — |  | — | — |
+| `chart` | `Chart` | — |  | — | — |
+| `chart-bar` | `ChartBar` | — |  | — | — |
+| `chart-bar` | `ChartBar` | — |  | — | — |
+| `chart-fail` | `ChartFail` | — |  | — | — |
+| `chart-fail` | `ChartFail` | — |  | — | — |
+| `chart-ring` | `ChartRing` | — |  | — | — |
+| `chart-ring` | `ChartRing` | — |  | — | — |
+| `chart-square` | `ChartSquare` | — |  | — | — |
+| `chart-square` | `ChartSquare` | — |  | — | — |
+| `chart-success` | `ChartSuccess` | — |  | — | — |
+| `chart-success` | `ChartSuccess` | — |  | — | — |
+| `data` | `Data` | — |  | — | — |
+| `data` | `Data` | — |  | — | — |
+| `data-alt` | `DataAlt` | — |  | — | — |
+| `data-alt` | `DataAlt` | — |  | — | — |
+| `diagram` | `Diagram` | — |  | — | — |
+| `diagram` | `Diagram` | — |  | — | — |
+| `favorite-chart` | `FavoriteChart` | — |  | — | — |
+| `favorite-chart` | `FavoriteChart` | — |  | — | — |
+| `graph` | `Graph` | — |  | — | — |
+| `graph` | `Graph` | — |  | — | — |
+| `presentation-chart` | `PresentationChart` | — |  | — | — |
+| `presention-chart` | `PresentionChart` | — |  | — | — |
+| `ranking` | `Ranking` | — |  | — | — |
+| `ranking` | `Ranking` | — |  | — | — |
+| `ranking-alt` | `RankingAlt` | — |  | — | — |
+| `ranking-alt` | `RankingAlt` | — |  | — | — |
+| `status` | `Status` | — |  | — | — |
+| `status` | `Status` | — |  | — | — |
+| `status-up` | `StatusUp` | — |  | — | — |
+| `status-up` | `StatusUp` | — |  | — | — |
+| `trend-down` | `TrendDown` | — |  | — | — |
+| `trend-down` | `TrendDown` | — |  | — | — |
+| `trend-up` | `TrendUp` | — |  | — | — |
+| `trend-up` | `TrendUp` | — |  | — | — |
 
-### `security` (18)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `certificate` | `Certificate` | P1 |  | `tls` | credential, diploma, seal, signed |
-| `face-id` | `FaceId` | P1 |  | `facial-recognition` | biometric, facial, recognition, unlock |
-| `fingerprint` | `Fingerprint` | P1 |  | `biometric` | authentication, identity, scan, touch |
-| `key` | `Key` | P0 | ↔ | `credential` | access, api, secret, token |
-| `key-off` | `KeyOff` | P1 | ↔ | — | credential, disabled, expired, revoked |
-| `lock` | `Lock` | P0 |  | `padlock` | closed, encrypted, password, private, secure |
-| `lock-open` | `LockOpen` | P1 |  | `unlock` | access, open, public, unlocked, unsecured |
-| `passkey` | `Passkey` | P1 |  | `webauthn` `fido` | biometric, credential, device, login |
-| `password` | `Password` | P0 |  | — | credential, field, masked, pin, secret |
-| `scan` | `Scan` | P1 |  | — | barcode, capture, detect, qr, read |
-| `shield` | `Shield` | P1 |  | `security` | defend, guard, protection, safe |
-| `shield-alert` | `ShieldAlert` | P1 |  | — | breach, insecure, risk, vulnerability, warning |
-| `shield-check` | `ShieldCheck` | P0 |  | `verified` | compliance, protected, secure, trusted |
-| `shield-lock` | `ShieldLock` | P1 |  | — | encrypted, private, protected, secured |
-| `shield-off` | `ShieldOff` | P1 |  | — | disabled, exposed, off, security, unprotected |
-| `shield-user` | `ShieldUser` | P1 |  | — | account, guarded, identity, protection |
-| `shield-x` | `ShieldX` | P1 |  | — | blocked, denied, rejected, unprotected |
-| `vault` | `Vault` | P1 |  | `safe` | secrets, storage, strongbox |
-
-### `social` (7)
-
-| Icon | Component | Pri | RTL | Aliases | Tags |
-|:--|:--|:--:|:--:|:--|:--|
-| `gift` | `Gift` | P2 |  | `reward` | bonus, perk, present, referral |
-| `qr-code` | `QrCode` | P1 |  | — | barcode, link, mobile, pairing, scan |
-| `rss` | `Rss` | P2 | ↔ | `feed` | subscribe, syndication, updates |
-| `share` | `Share` | P0 |  | — | distribute, forward, network, send, social |
-| `thumbs-down` | `ThumbsDown` | P2 |  | `dislike` `downvote` | bad, negative, reject |
-| `thumbs-up` | `ThumbsUp` | P2 |  | `like` `upvote` | approve, good, positive |
-| `trophy` | `Trophy` | P2 |  | `winner` `leaderboard` | achievement, prize, rank |
-
-### `status` (13)
+### `design` (98)
 
 | Icon | Component | Pri | RTL | Aliases | Tags |
 |:--|:--|:--:|:--:|:--|:--|
-| `alert-circle` | `AlertCircle` | P0 |  | — | attention, caution, error, exclamation, warning |
-| `alert-octagon` | `AlertOctagon` | P1 |  | `critical` | blocked, danger, severe, stop |
-| `alert-triangle` | `AlertTriangle` | P0 |  | `warning` | caution, danger, hazard, risk |
-| `ban` | `Ban` | P0 |  | `blocked` `forbidden` | denied, disabled, prohibited |
-| `check-circle` | `CheckCircle` | P0 |  | `success` | approved, complete, done, verified |
-| `help-circle` | `HelpCircle` | P0 |  | `question` | assistance, faq, support, unknown |
-| `info-circle` | `InfoCircle` | P0 |  | `information` | about, detail, note, tip |
-| `loader` | `Loader` | P0 |  | `spinner` | busy, loading, progress, wait |
-| `minus-circle` | `MinusCircle` | P1 |  | — | deny, disabled, remove, subtract |
-| `plus-circle` | `PlusCircle` | P0 |  | `add-circle` | add, create, insert, new |
-| `sync` | `Sync` | P0 |  | `synchronise` | refresh, replicate, two-way |
-| `x-circle` | `XCircle` | P0 |  | `error` | cancel, dismiss, failed, reject |
-| `x-square` | `XSquare` | P1 |  | — | box, cancel, close, dismiss, reject |
+| `bezier` | `Bezier` | — |  | — | — |
+| `bezier` | `Bezier` | — |  | — | — |
+| `blend` | `Blend` | — |  | — | — |
+| `blend` | `Blend` | — |  | — | — |
+| `blend-alt` | `BlendAlt` | — |  | — | — |
+| `blend-alt` | `BlendAlt` | — |  | — | — |
+| `blur` | `Blur` | — |  | — | — |
+| `blur` | `Blur` | — |  | — | — |
+| `brush` | `Brush` | — |  | — | — |
+| `brush` | `Brush` | — |  | — | — |
+| `brush-square` | `BrushSquare` | — |  | — | — |
+| `brush-square` | `BrushSquare` | — |  | — | — |
+| `bucket` | `Bucket` | — |  | — | — |
+| `bucket` | `Bucket` | — |  | — | — |
+| `bucket-circle` | `BucketCircle` | — |  | — | — |
+| `bucket-circle` | `BucketCircle` | — |  | — | — |
+| `bucket-square` | `BucketSquare` | — |  | — | — |
+| `bucket-square` | `BucketSquare` | — |  | — | — |
+| `color-swatch` | `ColorSwatch` | — |  | — | — |
+| `color-swatch` | `ColorSwatch` | — |  | — | — |
+| `colorfilter` | `Colorfilter` | — |  | — | — |
+| `colorfilter` | `Colorfilter` | — |  | — | — |
+| `colors-square` | `ColorsSquare` | — |  | — | — |
+| `colors-square` | `ColorsSquare` | — |  | — | — |
+| `component` | `Component` | — |  | — | — |
+| `component` | `Component` | — |  | — | — |
+| `convert-3d-cube` | `Convert3dCube` | — |  | — | — |
+| `convert-3d-cube` | `Convert3dCube` | — |  | — | — |
+| `convertshape` | `Convertshape` | — |  | — | — |
+| `convertshape` | `Convertshape` | — |  | — | — |
+| `convertshape-alt` | `ConvertshapeAlt` | — |  | — | — |
+| `convertshape-alt` | `ConvertshapeAlt` | — |  | — | — |
+| `crop` | `Crop` | — |  | — | — |
+| `crop` | `Crop` | — |  | — | — |
+| `cube-3d` | `Cube3d` | — |  | — | — |
+| `cube-3d` | `Cube3d` | — |  | — | — |
+| `cube-3d-scan` | `Cube3dScan` | — |  | — | — |
+| `cube-3d-scan` | `Cube3dScan` | — |  | — | — |
+| `designtools` | `Designtools` | — |  | — | — |
+| `designtools` | `Designtools` | — |  | — | — |
+| `figma` | `Figma` | — |  | — | — |
+| `figma` | `Figma` | — |  | — | — |
+| `figma-circle` | `FigmaCircle` | — |  | — | — |
+| `figma-circle` | `FigmaCircle` | — |  | — | — |
+| `framer` | `Framer` | — |  | — | — |
+| `framer` | `Framer` | — |  | — | — |
+| `illustrator` | `Illustrator` | — |  | — | — |
+| `illustrator` | `Illustrator` | — |  | — | — |
+| `magicpen` | `Magicpen` | — |  | — | — |
+| `magicpen` | `Magicpen` | — |  | — | — |
+| `main-component` | `MainComponent` | — |  | — | — |
+| `main-component` | `MainComponent` | — |  | — | — |
+| `mask` | `Mask` | — |  | — | — |
+| `mask` | `Mask` | — |  | — | — |
+| `mask-alt` | `MaskAlt` | — |  | — | — |
+| `mask-alt` | `MaskAlt` | — |  | — | — |
+| `mask-split` | `MaskSplit` | — |  | — | — |
+| `mask-split` | `MaskSplit` | — |  | — | — |
+| `paint-brush` | `PaintBrush` | — |  | — | — |
+| `paint-brush` | `PaintBrush` | — |  | — | — |
+| `paint-brush-alt` | `PaintBrushAlt` | — |  | — | — |
+| `paint-brush-alt` | `PaintBrushAlt` | — |  | — | — |
+| `paint-roller` | `PaintRoller` | — |  | — | — |
+| `paint-roller` | `PaintRoller` | — |  | — | — |
+| `paintbucket` | `Paintbucket` | — |  | — | — |
+| `paintbucket` | `Paintbucket` | — |  | — | — |
+| `path` | `Path` | — |  | — | — |
+| `path` | `Path` | — |  | — | — |
+| `path-alt` | `PathAlt` | — |  | — | — |
+| `path-alt` | `PathAlt` | — |  | — | — |
+| `path-square` | `PathSquare` | — |  | — | — |
+| `path-square` | `PathSquare` | — |  | — | — |
+| `pen-add` | `PenAdd` | — |  | — | — |
+| `pen-add` | `PenAdd` | — |  | — | — |
+| `pen-close` | `PenClose` | — |  | — | — |
+| `pen-close` | `PenClose` | — |  | — | — |
+| `pen-remove` | `PenRemove` | — |  | — | — |
+| `pen-remove` | `PenRemove` | — |  | — | — |
+| `pen-tool` | `PenTool` | — |  | — | — |
+| `pen-tool` | `PenTool` | — |  | — | — |
+| `pen-tool-alt` | `PenToolAlt` | — |  | — | — |
+| `pen-tool-alt` | `PenToolAlt` | — |  | — | — |
+| `photoshop` | `Photoshop` | — |  | — | — |
+| `photoshop` | `Photoshop` | — |  | — | — |
+| `rotate-3d` | `Rotate3d` | — |  | — | — |
+| `rotate-3d` | `Rotate3d` | — |  | — | — |
+| `ruler` | `Ruler` | — |  | — | — |
+| `ruler` | `Ruler` | — |  | — | — |
+| `ruler-pen` | `RulerPen` | — |  | — | — |
+| `ruler-pen` | `RulerPen` | — |  | — | — |
+| `square-3d` | `Square3d` | — |  | — | — |
+| `square-3d` | `Square3d` | — |  | — | — |
+| `square-3side` | `Square3side` | — |  | — | — |
+| `square-3side` | `Square3side` | — |  | — | — |
+| `triangle` | `Triangle` | — |  | — | — |
+| `triangle` | `Triangle` | — |  | — | — |
+| `xd` | `Xd` | — |  | — | — |
+| `xd` | `Xd` | — |  | — | — |
 
-### `time` (14)
+### `devices` (96)
 
 | Icon | Component | Pri | RTL | Aliases | Tags |
 |:--|:--|:--:|:--:|:--|:--|
-| `alarm-clock` | `AlarmClock` | P1 |  | `reminder` | alert, scheduled, wake |
-| `calendar` | `Calendar` | P0 |  | `date` | event, month, planner, schedule |
-| `calendar-check` | `CalendarCheck` | P1 |  | — | booked, confirmed, rsvp, scheduled |
-| `calendar-clock` | `CalendarClock` | P1 |  | `scheduled` | appointment, slot, timed |
-| `calendar-days` | `CalendarDays` | P1 |  | `month` | dates, grid, overview |
-| `calendar-edit` | `CalendarEdit` | P1 |  | — | amend, event, modify, reschedule |
-| `calendar-off` | `CalendarOff` | P1 |  | — | blocked, closed, holiday, unavailable |
-| `calendar-plus` | `CalendarPlus` | P1 |  | — | add, book, event, new, schedule |
-| `calendar-search` | `CalendarSearch` | P1 |  | — | availability, event, find, lookup |
-| `calendar-x` | `CalendarX` | P1 |  | — | cancelled, declined, removed, unavailable |
-| `clock` | `Clock` | P0 |  | `time` | duration, hour, schedule, watch |
-| `history` | `History` | P1 |  | `recent` | log, past, revisions, timeline |
-| `hourglass` | `Hourglass` | P1 |  | — | duration, elapsed, pending, waiting |
-| `timer` | `Timer` | P1 |  | `stopwatch` `countdown` | duration, elapsed |
+| `airpod` | `Airpod` | — |  | — | — |
+| `airpod` | `Airpod` | — |  | — | — |
+| `airpods` | `Airpods` | — |  | — | — |
+| `airpods` | `Airpods` | — |  | — | — |
+| `autobrightness` | `Autobrightness` | — |  | — | — |
+| `autobrightness` | `Autobrightness` | — |  | — | — |
+| `battery-2bars` | `Battery2bars` | — |  | — | — |
+| `battery-2bars` | `Battery2bars` | — |  | — | — |
+| `battery-charging` | `BatteryCharging` | — |  | — | — |
+| `battery-charging` | `BatteryCharging` | — |  | — | — |
+| `battery-disable` | `BatteryDisable` | — |  | — | — |
+| `battery-disable` | `BatteryDisable` | — |  | — | — |
+| `battery-empty` | `BatteryEmpty` | — |  | — | — |
+| `battery-empty` | `BatteryEmpty` | — |  | — | — |
+| `battery-empty-alt` | `BatteryEmptyAlt` | — |  | — | — |
+| `battery-empty-alt` | `BatteryEmptyAlt` | — |  | — | — |
+| `battery-full` | `BatteryFull` | — |  | — | — |
+| `battery-full` | `BatteryFull` | — |  | — | — |
+| `bluetooth` | `Bluetooth` | — |  | — | — |
+| `bluetooth` | `Bluetooth` | — |  | — | — |
+| `bluetooth-alt` | `BluetoothAlt` | — |  | — | — |
+| `bluetooth-alt` | `BluetoothAlt` | — |  | — | — |
+| `bluetooth-circle` | `BluetoothCircle` | — |  | — | — |
+| `bluetooth-circle` | `BluetoothCircle` | — |  | — | — |
+| `bluetooth-rectangle` | `BluetoothRectangle` | — |  | — | — |
+| `bluetooth-rectangle` | `BluetoothRectangle` | — |  | — | — |
+| `cd` | `Cd` | — |  | — | — |
+| `cd` | `Cd` | — |  | — | — |
+| `computing` | `Computing` | — |  | — | — |
+| `computing` | `Computing` | — |  | — | — |
+| `cpu` | `Cpu` | — |  | — | — |
+| `cpu` | `Cpu` | — |  | — | — |
+| `cpu-charge` | `CpuCharge` | — |  | — | — |
+| `cpu-charge` | `CpuCharge` | — |  | — | — |
+| `cpu-setting` | `CpuSetting` | — |  | — | — |
+| `cpu-setting` | `CpuSetting` | — |  | — | — |
+| `devices` | `Devices` | — |  | — | — |
+| `devices` | `Devices` | — |  | — | — |
+| `driver` | `Driver` | — |  | — | — |
+| `driver` | `Driver` | — |  | — | — |
+| `driver-alt` | `DriverAlt` | — |  | — | — |
+| `driver-alt` | `DriverAlt` | — |  | — | — |
+| `driver-refresh` | `DriverRefresh` | — |  | — | — |
+| `driver-refresh` | `DriverRefresh` | — |  | — | — |
+| `external-drive` | `ExternalDrive` | — |  | — | — |
+| `external-drive` | `ExternalDrive` | — |  | — | — |
+| `gameboy` | `Gameboy` | — |  | — | — |
+| `gameboy` | `Gameboy` | — |  | — | — |
+| `lamp` | `Lamp` | — |  | — | — |
+| `lamp` | `Lamp` | — |  | — | — |
+| `lamp-charge` | `LampCharge` | — |  | — | — |
+| `lamp-charge` | `LampCharge` | — |  | — | — |
+| `lamp-on` | `LampOn` | — |  | — | — |
+| `lamp-on` | `LampOn` | — |  | — | — |
+| `lamp-slash` | `LampSlash` | — |  | — | — |
+| `lamp-slash` | `LampSlash` | — |  | — | — |
+| `mobile` | `Mobile` | — |  | — | — |
+| `mobile` | `Mobile` | — |  | — | — |
+| `mobile-programming` | `MobileProgramming` | — |  | — | — |
+| `mobile-programming` | `MobileProgramming` | — |  | — | — |
+| `monitor` | `Monitor` | — |  | — | — |
+| `monitor` | `Monitor` | — |  | — | — |
+| `monitor-mobile` | `MonitorMobile` | — |  | — | — |
+| `monitor-mobile` | `MonitorMobile` | — |  | — | — |
+| `monitor-recorder` | `MonitorRecorder` | — |  | — | — |
+| `monitor-recorder` | `MonitorRecorder` | — |  | — | — |
+| `mouse` | `Mouse` | — |  | — | — |
+| `mouse` | `Mouse` | — |  | — | — |
+| `mouse-circle` | `MouseCircle` | — |  | — | — |
+| `mouse-circle` | `MouseCircle` | — |  | — | — |
+| `mouse-square` | `MouseSquare` | — |  | — | — |
+| `mouse-square` | `MouseSquare` | — |  | — | — |
+| `printer` | `Printer` | — |  | — | — |
+| `printer` | `Printer` | — |  | — | — |
+| `printer-slash` | `PrinterSlash` | — |  | — | — |
+| `printer-slash` | `PrinterSlash` | — |  | — | — |
+| `ram` | `Ram` | — |  | — | — |
+| `ram` | `Ram` | — |  | — | — |
+| `ram-alt` | `RamAlt` | — |  | — | — |
+| `ram-alt` | `RamAlt` | — |  | — | — |
+| `simcard` | `Simcard` | — |  | — | — |
+| `simcard` | `Simcard` | — |  | — | — |
+| `simcard-alt` | `SimcardAlt` | — |  | — | — |
+| `simcard-alt` | `SimcardAlt` | — |  | — | — |
+| `simcard-square` | `SimcardSquare` | — |  | — | — |
+| `simcard-square` | `SimcardSquare` | — |  | — | — |
+| `smart-home` | `SmartHome` | — |  | — | — |
+| `smart-home` | `SmartHome` | — |  | — | — |
+| `wifi` | `Wifi` | — |  | — | — |
+| `wifi` | `Wifi` | — |  | — | — |
+| `wifi-square` | `WifiSquare` | — |  | — | — |
+| `wifi-square` | `WifiSquare` | — |  | — | — |
+| `windows` | `Windows` | — |  | — | — |
+| `windows` | `Windows` | — |  | — | — |
+| `xiaomi` | `Xiaomi` | — |  | — | — |
+| `xiaomi` | `Xiaomi` | — |  | — | — |
 
-### `users` (16)
+### `editing` (84)
 
 | Icon | Component | Pri | RTL | Aliases | Tags |
 |:--|:--|:--:|:--:|:--|:--|
-| `award` | `Award` | P1 |  | `medal` | achievement, prize, recognition |
-| `briefcase` | `Briefcase` | P1 |  | `work` `job` | business, employment, portfolio |
-| `contact` | `Contact` | P1 |  | — | card, details, person, profile, vcard |
-| `graduation-cap` | `GraduationCap` | P2 |  | `training` | course, education, learning |
-| `id-badge` | `IdBadge` | P1 |  | `employee-badge` | credential, employee, identity, pass |
-| `organization` | `Organization` | P1 |  | `company` `building` | office, tenant, workspace |
-| `user` | `User` | P0 |  | `person` `account` | avatar, member, profile |
-| `user-check` | `UserCheck` | P1 |  | — | approved, confirmed, member, verified |
-| `user-circle` | `UserCircle` | P0 |  | `avatar` | account, portrait, profile |
-| `user-edit` | `UserEdit` | P1 |  | `user-pen` | account, modify, profile, rename |
-| `user-lock` | `UserLock` | P1 |  | — | account, locked, restricted, suspended |
-| `user-minus` | `UserMinus` | P0 |  | — | detach, member, remove, seat |
-| `user-plus` | `UserPlus` | P1 |  | `invite` `add-user` | add, member, new, user |
-| `user-search` | `UserSearch` | P1 |  | — | directory, find, lookup, member |
-| `user-x` | `UserX` | P1 |  | `remove-user` | block, deny, member, remove, revoke |
-| `users` | `Users` | P0 |  | `people` `team` `group` | audience, members |
+| `align-bottom` | `AlignBottom` | — |  | — | — |
+| `align-bottom` | `AlignBottom` | — |  | — | — |
+| `align-horizontally` | `AlignHorizontally` | — |  | — | — |
+| `align-horizontally` | `AlignHorizontally` | — |  | — | — |
+| `align-left` | `AlignLeft` | — | ↔ | — | text, justify, layout |
+| `align-left` | `AlignLeft` | — | ↔ | — | text, justify, layout |
+| `align-left-alt` | `AlignLeftAlt` | — | ↔ | — | text, justify, layout |
+| `align-left-alt` | `AlignLeftAlt` | — | ↔ | — | text, justify, layout |
+| `align-right` | `AlignRight` | — | ↔ | — | text, justify, layout |
+| `align-right` | `AlignRight` | — | ↔ | — | text, justify, layout |
+| `align-top` | `AlignTop` | — |  | — | — |
+| `align-top` | `AlignTop` | — |  | — | — |
+| `align-top-alt` | `AlignTopAlt` | — |  | — | — |
+| `align-top-alt` | `AlignTopAlt` | — |  | — | — |
+| `align-vertically` | `AlignVertically` | — |  | — | — |
+| `align-vertically` | `AlignVertically` | — |  | — | — |
+| `copy` | `Copy` | — |  | — | — |
+| `copy` | `Copy` | — |  | — | — |
+| `copy-success` | `CopySuccess` | — |  | — | — |
+| `copy-success` | `CopySuccess` | — |  | — | — |
+| `edit` | `Edit` | — |  | — | — |
+| `edit` | `Edit` | — |  | — | — |
+| `edit-alt` | `EditAlt` | — |  | — | — |
+| `edit-alt` | `EditAlt` | — |  | — | — |
+| `eraser` | `Eraser` | — |  | — | — |
+| `eraser` | `Eraser` | — |  | — | — |
+| `firstline` | `Firstline` | — |  | — | — |
+| `firstline` | `Firstline` | — |  | — | — |
+| `format-circle` | `FormatCircle` | — |  | — | — |
+| `format-circle` | `FormatCircle` | — |  | — | — |
+| `format-square` | `FormatSquare` | — |  | — | — |
+| `format-square` | `FormatSquare` | — |  | — | — |
+| `layer` | `Layer` | — |  | — | — |
+| `layer` | `Layer` | — |  | — | — |
+| `math-symbol` | `MathSymbol` | — |  | — | — |
+| `math-symbol` | `MathSymbol` | — |  | — | — |
+| `mirror` | `Mirror` | — |  | — | — |
+| `mirror` | `Mirror` | — |  | — | — |
+| `paragraphspacing` | `Paragraphspacing` | — |  | — | — |
+| `pharagraphspacing` | `Pharagraphspacing` | — |  | — | — |
+| `quote-down` | `QuoteDown` | — |  | — | — |
+| `quote-down` | `QuoteDown` | — |  | — | — |
+| `quote-down-circle` | `QuoteDownCircle` | — |  | — | — |
+| `quote-down-circle` | `QuoteDownCircle` | — |  | — | — |
+| `quote-down-square` | `QuoteDownSquare` | — |  | — | — |
+| `quote-down-square` | `QuoteDownSquare` | — |  | — | — |
+| `quote-up` | `QuoteUp` | — |  | — | — |
+| `quote-up` | `QuoteUp` | — |  | — | — |
+| `quote-up-circle` | `QuoteUpCircle` | — |  | — | — |
+| `quote-up-circle` | `QuoteUpCircle` | — |  | — | — |
+| `quote-up-square` | `QuoteUpSquare` | — |  | — | — |
+| `quote-up-square` | `QuoteUpSquare` | — |  | — | — |
+| `scissor` | `Scissor` | — |  | — | — |
+| `scissor` | `Scissor` | — |  | — | — |
+| `size` | `Size` | — |  | — | — |
+| `size` | `Size` | — |  | — | — |
+| `smallcaps` | `Smallcaps` | — |  | — | — |
+| `smallcaps` | `Smallcaps` | — |  | — | — |
+| `subtitle` | `Subtitle` | — |  | — | — |
+| `subtitle` | `Subtitle` | — |  | — | — |
+| `text` | `Text` | — |  | — | — |
+| `text` | `Text` | — |  | — | — |
+| `text-block` | `TextBlock` | — |  | — | — |
+| `text-block` | `TextBlock` | — |  | — | — |
+| `text-bold` | `TextBold` | — |  | — | — |
+| `text-bold` | `TextBold` | — |  | — | — |
+| `text-italic` | `TextItalic` | — |  | — | — |
+| `text-italic` | `TextItalic` | — |  | — | — |
+| `text-underline` | `TextUnderline` | — |  | — | — |
+| `text-underline` | `TextUnderline` | — |  | — | — |
+| `textalign-center` | `TextalignCenter` | — |  | — | — |
+| `textalign-center` | `TextalignCenter` | — |  | — | — |
+| `textalign-justifycenter` | `TextalignJustifycenter` | — |  | — | — |
+| `textalign-justifycenter` | `TextalignJustifycenter` | — |  | — | — |
+| `textalign-justifyleft` | `TextalignJustifyleft` | — |  | — | — |
+| `textalign-justifyleft` | `TextalignJustifyleft` | — |  | — | — |
+| `textalign-justifyright` | `TextalignJustifyright` | — |  | — | — |
+| `textalign-justifyright` | `TextalignJustifyright` | — |  | — | — |
+| `textalign-left` | `TextalignLeft` | — | ↔ | — | text, justify, align |
+| `textalign-left` | `TextalignLeft` | — | ↔ | — | text, justify, align |
+| `textalign-right` | `TextalignRight` | — | ↔ | — | text, justify, align |
+| `textalign-right` | `TextalignRight` | — | ↔ | — | text, justify, align |
+| `translate` | `Translate` | — |  | — | — |
+| `translate` | `Translate` | — |  | — | — |
 
-### `utilities` (21)
+### `files` (134)
 
 | Icon | Component | Pri | RTL | Aliases | Tags |
 |:--|:--|:--:|:--:|:--|:--|
-| `book` | `Book` | P1 | ↔ | `manual` | closed, documentation, guide, reading |
-| `book-open` | `BookOpen` | P1 |  | `docs` `reading` | documentation, guide, open, reference |
-| `bookmark` | `Bookmark` | P1 |  | — | favourite, flag, later, pin, read, save |
-| `flag` | `Flag` | P1 | ↔ | `report` | country, flagged, mark, milestone |
-| `globe` | `Globe` | P1 |  | `world` `language` | international, region, web |
-| `heart` | `Heart` | P1 |  | — | favourite, like, love, saved, wishlist |
-| `home` | `Home` | P0 |  | `dashboard` | house, index, main, start |
-| `languages` | `Languages` | P1 |  | `translate` `locale` | i18n, international |
-| `moon` | `Moon` | P0 |  | `dark-mode` `night` | dark, mode, sleep, theme |
-| `newspaper` | `Newspaper` | P1 |  | `news` `article` | feed, press, publication |
-| `pin` | `Pin` | P1 |  | — | attach, fasten, keep, stick, sticky |
-| `pin-off` | `PinOff` | P1 |  | `unpin` | detach, release, unstick |
-| `power` | `Power` | P1 |  | `shutdown` | off, on, restart, toggle |
-| `refresh` | `Refresh` | P0 |  | `reload` `retry` | again, sync, update |
-| `settings` | `Settings` | P0 |  | `gear` `cog` `preferences` | configure, options |
-| `star` | `Star` | P0 |  | `favourite` `rate` | bookmark, featured, important |
-| `store` | `Store` | P2 |  | `shop` `merchant` | outlet, retail, vendor |
-| `sun` | `Sun` | P0 |  | `light-mode` `day` | bright, light, mode, theme |
-| `ticket` | `Ticket` | P1 |  | `voucher` `coupon` | admission, issue, support |
-| `truck` | `Truck` | P2 | ↔ | `delivery` `shipping` | logistics, transport |
-| `zap` | `Zap` | P1 | ↔ | `lightning` `instant` | action, fast, power, trigger |
+| `archive` | `Archive` | — |  | — | — |
+| `archive` | `Archive` | — |  | — | — |
+| `archive-add` | `ArchiveAdd` | — |  | — | — |
+| `archive-add` | `ArchiveAdd` | — |  | — | — |
+| `archive-book` | `ArchiveBook` | — |  | — | — |
+| `archive-book` | `ArchiveBook` | — |  | — | — |
+| `archive-minus` | `ArchiveMinus` | — |  | — | — |
+| `archive-minus` | `ArchiveMinus` | — |  | — | — |
+| `archive-slash` | `ArchiveSlash` | — |  | — | — |
+| `archive-slash` | `ArchiveSlash` | — |  | — | — |
+| `archive-tick` | `ArchiveTick` | — |  | — | — |
+| `archive-tick` | `ArchiveTick` | — |  | — | — |
+| `attach-circle` | `AttachCircle` | — |  | — | — |
+| `attach-circle` | `AttachCircle` | — |  | — | — |
+| `attach-square` | `AttachSquare` | — |  | — | — |
+| `attach-square` | `AttachSquare` | — |  | — | — |
+| `book` | `Book` | — |  | — | — |
+| `book` | `Book` | — |  | — | — |
+| `book-open` | `BookOpen` | — |  | — | — |
+| `book-open` | `BookOpen` | — |  | — | — |
+| `book-saved` | `BookSaved` | — |  | — | — |
+| `book-saved` | `BookSaved` | — |  | — | — |
+| `book-square` | `BookSquare` | — |  | — | — |
+| `book-square` | `BookSquare` | — |  | — | — |
+| `bookmark` | `Bookmark` | — |  | — | — |
+| `bookmark` | `Bookmark` | — |  | — | — |
+| `bookmark-alt` | `BookmarkAlt` | — |  | — | — |
+| `bookmark-alt` | `BookmarkAlt` | — |  | — | — |
+| `clipboard` | `Clipboard` | — |  | — | — |
+| `clipboard` | `Clipboard` | — |  | — | — |
+| `clipboard-close` | `ClipboardClose` | — |  | — | — |
+| `clipboard-close` | `ClipboardClose` | — |  | — | — |
+| `clipboard-export` | `ClipboardExport` | — |  | — | — |
+| `clipboard-export` | `ClipboardExport` | — |  | — | — |
+| `clipboard-import` | `ClipboardImport` | — |  | — | — |
+| `clipboard-import` | `ClipboardImport` | — |  | — | — |
+| `clipboard-text` | `ClipboardText` | — |  | — | — |
+| `clipboard-text` | `ClipboardText` | — |  | — | — |
+| `clipboard-tick` | `ClipboardTick` | — |  | — | — |
+| `clipboard-tick` | `ClipboardTick` | — |  | — | — |
+| `document` | `Document` | — |  | — | — |
+| `document` | `Document` | — |  | — | — |
+| `document-cloud` | `DocumentCloud` | — |  | — | — |
+| `document-cloud` | `DocumentCloud` | — |  | — | — |
+| `document-code` | `DocumentCode` | — |  | — | — |
+| `document-code` | `DocumentCode` | — |  | — | — |
+| `document-code-alt` | `DocumentCodeAlt` | — |  | — | — |
+| `document-code-alt` | `DocumentCodeAlt` | — |  | — | — |
+| `document-copy` | `DocumentCopy` | — |  | — | — |
+| `document-copy` | `DocumentCopy` | — |  | — | — |
+| `document-download` | `DocumentDownload` | — |  | — | — |
+| `document-download` | `DocumentDownload` | — |  | — | — |
+| `document-favorite` | `DocumentFavorite` | — |  | — | — |
+| `document-favorite` | `DocumentFavorite` | — |  | — | — |
+| `document-filter` | `DocumentFilter` | — |  | — | — |
+| `document-filter` | `DocumentFilter` | — |  | — | — |
+| `document-forward` | `DocumentForward` | — |  | — | — |
+| `document-forward` | `DocumentForward` | — |  | — | — |
+| `document-like` | `DocumentLike` | — |  | — | — |
+| `document-like` | `DocumentLike` | — |  | — | — |
+| `document-normal` | `DocumentNormal` | — |  | — | — |
+| `document-normal` | `DocumentNormal` | — |  | — | — |
+| `document-previous` | `DocumentPrevious` | — |  | — | — |
+| `document-previous` | `DocumentPrevious` | — |  | — | — |
+| `document-sketch` | `DocumentSketch` | — |  | — | — |
+| `document-sketch` | `DocumentSketch` | — |  | — | — |
+| `document-text` | `DocumentText` | — |  | — | — |
+| `document-text` | `DocumentText` | — |  | — | — |
+| `document-text-alt` | `DocumentTextAlt` | — |  | — | — |
+| `document-text-alt` | `DocumentTextAlt` | — |  | — | — |
+| `document-upload` | `DocumentUpload` | — |  | — | — |
+| `document-upload` | `DocumentUpload` | — |  | — | — |
+| `dropbox` | `Dropbox` | — |  | — | — |
+| `dropbox` | `Dropbox` | — |  | — | — |
+| `folder` | `Folder` | — |  | — | — |
+| `folder` | `Folder` | — |  | — | — |
+| `folder-add` | `FolderAdd` | — |  | — | — |
+| `folder-add` | `FolderAdd` | — |  | — | — |
+| `folder-alt` | `FolderAlt` | — |  | — | — |
+| `folder-alt` | `FolderAlt` | — |  | — | — |
+| `folder-cloud` | `FolderCloud` | — |  | — | — |
+| `folder-cloud` | `FolderCloud` | — |  | — | — |
+| `folder-connection` | `FolderConnection` | — |  | — | — |
+| `folder-connection` | `FolderConnection` | — |  | — | — |
+| `folder-cross` | `FolderCross` | — |  | — | — |
+| `folder-cross` | `FolderCross` | — |  | — | — |
+| `folder-favorite` | `FolderFavorite` | — |  | — | — |
+| `folder-favorite` | `FolderFavorite` | — |  | — | — |
+| `folder-minus` | `FolderMinus` | — |  | — | — |
+| `folder-minus` | `FolderMinus` | — |  | — | — |
+| `folder-open` | `FolderOpen` | — |  | — | — |
+| `folder-open` | `FolderOpen` | — |  | — | — |
+| `note` | `Note` | — |  | — | — |
+| `note` | `Note` | — |  | — | — |
+| `note-add` | `NoteAdd` | — |  | — | — |
+| `note-add` | `NoteAdd` | — |  | — | — |
+| `note-alt` | `NoteAlt` | — |  | — | — |
+| `note-alt` | `NoteAlt` | — |  | — | — |
+| `note-favorite` | `NoteFavorite` | — |  | — | — |
+| `note-favorite` | `NoteFavorite` | — |  | — | — |
+| `note-lines` | `NoteLines` | — |  | — | — |
+| `note-lines` | `NoteLines` | — |  | — | — |
+| `note-remove` | `NoteRemove` | — |  | — | — |
+| `note-remove` | `NoteRemove` | — |  | — | — |
+| `note-square` | `NoteSquare` | — |  | — | — |
+| `note-square` | `NoteSquare` | — |  | — | — |
+| `note-text` | `NoteText` | — |  | — | — |
+| `note-text` | `NoteText` | — |  | — | — |
+| `paper` | `Paper` | — |  | — | — |
+| `paper` | `Paper` | — |  | — | — |
+| `paper-alt` | `PaperAlt` | — |  | — | — |
+| `paper-alt` | `PaperAlt` | — |  | — | — |
+| `paperclip` | `Paperclip` | — |  | — | — |
+| `paperclip` | `Paperclip` | — |  | — | — |
+| `paperclip-alt` | `PaperclipAlt` | — |  | — | — |
+| `paperclip-alt` | `PaperclipAlt` | — |  | — | — |
+| `save-add` | `SaveAdd` | — |  | — | — |
+| `save-add` | `SaveAdd` | — |  | — | — |
+| `save-alt` | `SaveAlt` | — |  | — | — |
+| `save-alt` | `SaveAlt` | — |  | — | — |
+| `save-minus` | `SaveMinus` | — |  | — | — |
+| `save-minus` | `SaveMinus` | — |  | — | — |
+| `save-remove` | `SaveRemove` | — |  | — | — |
+| `save-remove` | `SaveRemove` | — |  | — | — |
+| `stickynote` | `Stickynote` | — |  | — | — |
+| `stickynote` | `Stickynote` | — |  | — | — |
+| `task` | `Task` | — |  | — | — |
+| `task` | `Task` | — |  | — | — |
+| `task-square` | `TaskSquare` | — |  | — | — |
+| `task-square` | `TaskSquare` | — |  | — | — |
+| `trash` | `Trash` | P0 |  | `delete` `bin` | remove, clear, discard |
+| `trash` | `Trash` | P0 |  | `delete` `bin` | remove, clear, discard |
+| `trash-square` | `TrashSquare` | — |  | — | — |
+| `trash-square` | `TrashSquare` | — |  | — | — |
+
+### `finance` (120)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `bank` | `Bank` | — |  | — | — |
+| `bank` | `Bank` | — |  | — | — |
+| `bill` | `Bill` | — |  | — | — |
+| `bill` | `Bill` | — |  | — | — |
+| `building-bank` | `BuildingBank` | — |  | — | — |
+| `building-bank` | `BuildingBank` | — |  | — | — |
+| `cards` | `Cards` | — |  | — | — |
+| `cards` | `Cards` | — |  | — | — |
+| `coin` | `Coin` | — |  | — | — |
+| `coin` | `Coin` | — |  | — | — |
+| `coin-alt` | `CoinAlt` | — |  | — | — |
+| `coin-alt` | `CoinAlt` | — |  | — | — |
+| `convert-card` | `ConvertCard` | — |  | — | — |
+| `convert-card` | `ConvertCard` | — |  | — | — |
+| `courthouse` | `Courthouse` | — |  | — | — |
+| `courthouse` | `Courthouse` | — |  | — | — |
+| `discount-circle` | `DiscountCircle` | — |  | — | — |
+| `discount-circle` | `DiscountCircle` | — |  | — | — |
+| `discount-shape` | `DiscountShape` | — |  | — | — |
+| `discount-shape` | `DiscountShape` | — |  | — | — |
+| `dollar-circle` | `DollarCircle` | — |  | — | — |
+| `dollar-circle` | `DollarCircle` | — |  | — | — |
+| `dollar-square` | `DollarSquare` | — |  | — | — |
+| `dollar-square` | `DollarSquare` | — |  | — | — |
+| `empty-wallet` | `EmptyWallet` | — |  | — | — |
+| `empty-wallet` | `EmptyWallet` | — |  | — | — |
+| `empty-wallet-add` | `EmptyWalletAdd` | — |  | — | — |
+| `empty-wallet-add` | `EmptyWalletAdd` | — |  | — | — |
+| `empty-wallet-change` | `EmptyWalletChange` | — |  | — | — |
+| `empty-wallet-change` | `EmptyWalletChange` | — |  | — | — |
+| `empty-wallet-remove` | `EmptyWalletRemove` | — |  | — | — |
+| `empty-wallet-remove` | `EmptyWalletRemove` | — |  | — | — |
+| `empty-wallet-tick` | `EmptyWalletTick` | — |  | — | — |
+| `empty-wallet-tick` | `EmptyWalletTick` | — |  | — | — |
+| `empty-wallet-time` | `EmptyWalletTime` | — |  | — | — |
+| `empty-wallet-time` | `EmptyWalletTime` | — |  | — | — |
+| `money` | `Money` | — |  | — | — |
+| `money` | `Money` | — |  | — | — |
+| `money-add` | `MoneyAdd` | — |  | — | — |
+| `money-add` | `MoneyAdd` | — |  | — | — |
+| `money-alt` | `MoneyAlt` | — |  | — | — |
+| `money-alt` | `MoneyAlt` | — |  | — | — |
+| `money-change` | `MoneyChange` | — |  | — | — |
+| `money-change` | `MoneyChange` | — |  | — | — |
+| `money-circle` | `MoneyCircle` | — |  | — | — |
+| `money-circle` | `MoneyCircle` | — |  | — | — |
+| `money-forbidden` | `MoneyForbidden` | — |  | — | — |
+| `money-forbidden` | `MoneyForbidden` | — |  | — | — |
+| `money-receive` | `MoneyReceive` | — |  | — | — |
+| `money-receive` | `MoneyReceive` | — |  | — | — |
+| `money-remove` | `MoneyRemove` | — |  | — | — |
+| `money-remove` | `MoneyRemove` | — |  | — | — |
+| `money-send` | `MoneySend` | — |  | — | — |
+| `money-send` | `MoneySend` | — |  | — | — |
+| `money-send-alt` | `MoneySendAlt` | — |  | — | — |
+| `money-send-alt` | `MoneySendAlt` | — |  | — | — |
+| `money-tick` | `MoneyTick` | — |  | — | — |
+| `money-tick` | `MoneyTick` | — |  | — | — |
+| `money-time` | `MoneyTime` | — |  | — | — |
+| `money-time` | `MoneyTime` | — |  | — | — |
+| `moneys` | `Moneys` | — |  | — | — |
+| `moneys` | `Moneys` | — |  | — | — |
+| `paypal` | `Paypal` | — |  | — | — |
+| `paypal` | `Paypal` | — |  | — | — |
+| `percentage-circle` | `PercentageCircle` | — |  | — | — |
+| `percentage-circle` | `PercentageCircle` | — |  | — | — |
+| `percentage-square` | `PercentageSquare` | — |  | — | — |
+| `percentage-square` | `PercentageSquare` | — |  | — | — |
+| `receipt` | `Receipt` | — |  | — | — |
+| `receipt` | `Receipt` | — |  | — | — |
+| `receipt-add` | `ReceiptAdd` | — |  | — | — |
+| `receipt-add` | `ReceiptAdd` | — |  | — | — |
+| `receipt-alt` | `ReceiptAlt` | — |  | — | — |
+| `receipt-alt` | `ReceiptAlt` | — |  | — | — |
+| `receipt-discount` | `ReceiptDiscount` | — |  | — | — |
+| `receipt-discount` | `ReceiptDiscount` | — |  | — | — |
+| `receipt-discount-alt` | `ReceiptDiscountAlt` | — |  | — | — |
+| `receipt-discount-alt` | `ReceiptDiscountAlt` | — |  | — | — |
+| `receipt-edit` | `ReceiptEdit` | — |  | — | — |
+| `receipt-edit` | `ReceiptEdit` | — |  | — | — |
+| `receipt-item` | `ReceiptItem` | — |  | — | — |
+| `receipt-item` | `ReceiptItem` | — |  | — | — |
+| `receipt-list` | `ReceiptList` | — |  | — | — |
+| `receipt-list` | `ReceiptList` | — |  | — | — |
+| `receipt-list-alt` | `ReceiptListAlt` | — |  | — | — |
+| `receipt-list-alt` | `ReceiptListAlt` | — |  | — | — |
+| `receipt-minus` | `ReceiptMinus` | — |  | — | — |
+| `receipt-minus` | `ReceiptMinus` | — |  | — | — |
+| `receipt-search` | `ReceiptSearch` | — |  | — | — |
+| `receipt-search` | `ReceiptSearch` | — |  | — | — |
+| `receipt-square` | `ReceiptSquare` | — |  | — | — |
+| `receipt-square` | `ReceiptSquare` | — |  | — | — |
+| `receipt-text` | `ReceiptText` | — |  | — | — |
+| `receipt-text` | `ReceiptText` | — |  | — | — |
+| `trade` | `Trade` | — |  | — | — |
+| `trade` | `Trade` | — |  | — | — |
+| `transaction-minus` | `TransactionMinus` | — |  | — | — |
+| `transaction-minus` | `TransactionMinus` | — |  | — | — |
+| `wallet` | `Wallet` | — |  | — | — |
+| `wallet` | `Wallet` | — |  | — | — |
+| `wallet-add` | `WalletAdd` | — |  | — | — |
+| `wallet-add` | `WalletAdd` | — |  | — | — |
+| `wallet-add-alt` | `WalletAddAlt` | — |  | — | — |
+| `wallet-add-alt` | `WalletAddAlt` | — |  | — | — |
+| `wallet-alt` | `WalletAlt` | — |  | — | — |
+| `wallet-alt` | `WalletAlt` | — |  | — | — |
+| `wallet-check` | `WalletCheck` | — |  | — | — |
+| `wallet-check` | `WalletCheck` | — |  | — | — |
+| `wallet-circle` | `WalletCircle` | — |  | — | — |
+| `wallet-circle` | `WalletCircle` | — |  | — | — |
+| `wallet-minus` | `WalletMinus` | — |  | — | — |
+| `wallet-minus` | `WalletMinus` | — |  | — | — |
+| `wallet-money` | `WalletMoney` | — |  | — | — |
+| `wallet-money` | `WalletMoney` | — |  | — | — |
+| `wallet-remove` | `WalletRemove` | — |  | — | — |
+| `wallet-remove` | `WalletRemove` | — |  | — | — |
+| `wallet-round` | `WalletRound` | — |  | — | — |
+| `wallet-round` | `WalletRound` | — |  | — | — |
+| `wallet-search` | `WalletSearch` | — |  | — | — |
+| `wallet-search` | `WalletSearch` | — |  | — | — |
+
+### `interface` (537)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `add` | `Add` | — |  | `plus` | create, new, insert |
+| `add` | `Add` | — |  | `plus` | create, new, insert |
+| `add-circle` | `AddCircle` | — |  | — | — |
+| `add-circle` | `AddCircle` | — |  | — | — |
+| `add-item` | `AddItem` | — |  | — | — |
+| `add-item` | `AddItem` | — |  | — | — |
+| `add-square` | `AddSquare` | — |  | — | — |
+| `add-square` | `AddSquare` | — |  | — | — |
+| `ai-ac` | `AiAc` | — |  | — | — |
+| `ai-ac` | `AiAc` | — |  | — | — |
+| `ai-add` | `AiAdd` | — |  | — | — |
+| `ai-add` | `AiAdd` | — |  | — | — |
+| `ai-antenna` | `AiAntenna` | — |  | — | — |
+| `ai-antenna` | `AiAntenna` | — |  | — | — |
+| `ai-commentary` | `AiCommentary` | — |  | — | — |
+| `ai-commentary` | `AiCommentary` | — |  | — | — |
+| `ai-fuel-tank` | `AiFuelTank` | — |  | — | — |
+| `ai-fuel-tank` | `AiFuelTank` | — |  | — | — |
+| `ai-heart-square` | `AiHeartSquare` | — |  | — | — |
+| `ai-heart-square` | `AiHeartSquare` | — |  | — | — |
+| `ai-homepage` | `AiHomepage` | — |  | — | — |
+| `ai-homepage` | `AiHomepage` | — |  | — | — |
+| `ai-hospital` | `AiHospital` | — |  | — | — |
+| `ai-hospital` | `AiHospital` | — |  | — | — |
+| `ai-housing` | `AiHousing` | — |  | — | — |
+| `ai-housing` | `AiHousing` | — |  | — | — |
+| `ai-landscape` | `AiLandscape` | — |  | — | — |
+| `ai-landscape` | `AiLandscape` | — |  | — | — |
+| `ai-loveletter` | `AiLoveletter` | — |  | — | — |
+| `ai-loveletter` | `AiLoveletter` | — |  | — | — |
+| `ai-record-video` | `AiRecordVideo` | — |  | — | — |
+| `ai-record-video` | `AiRecordVideo` | — |  | — | — |
+| `ai-sand-timer` | `AiSandTimer` | — |  | — | — |
+| `ai-sand-timer` | `AiSandTimer` | — |  | — | — |
+| `ai-send-message` | `AiSendMessage` | — |  | — | — |
+| `ai-send-message` | `AiSendMessage` | — |  | — | — |
+| `ai-shape-triangle` | `AiShapeTriangle` | — |  | — | — |
+| `ai-shape-triangle` | `AiShapeTriangle` | — |  | — | — |
+| `ai-syringe` | `AiSyringe` | — |  | — | — |
+| `ai-syringe` | `AiSyringe` | — |  | — | — |
+| `ai-tag-price` | `AiTagPrice` | — |  | — | — |
+| `ai-tag-price` | `AiTagPrice` | — |  | — | — |
+| `ai-tools` | `AiTools` | — |  | — | — |
+| `ai-tools` | `AiTools` | — |  | — | — |
+| `ai-users` | `AiUsers` | — |  | — | — |
+| `ai-users` | `AiUsers` | — |  | — | — |
+| `ai-water-cycle` | `AiWaterCycle` | — |  | — | — |
+| `ai-water-cycle` | `AiWaterCycle` | — |  | — | — |
+| `ai-weight` | `AiWeight` | — |  | — | — |
+| `ai-weight` | `AiWeight` | — |  | — | — |
+| `airdrop` | `Airdrop` | — |  | — | — |
+| `airdrop` | `Airdrop` | — |  | — | — |
+| `aquarius` | `Aquarius` | — |  | — | — |
+| `aquarius` | `Aquarius` | — |  | — | — |
+| `award` | `Award` | — |  | — | — |
+| `award` | `Award` | — |  | — | — |
+| `barcode` | `Barcode` | — |  | — | — |
+| `barcode` | `Barcode` | — |  | — | — |
+| `bell` | `Bell` | P0 |  | — | alert, notify, notification, alarm |
+| `bell` | `Bell` | P0 |  | — | alert, notify, notification, alarm |
+| `bell-alt` | `BellAlt` | — |  | — | — |
+| `bell-alt` | `BellAlt` | — |  | — | — |
+| `box` | `Box` | — |  | — | — |
+| `box` | `Box` | — |  | — | — |
+| `box-add` | `BoxAdd` | — |  | — | — |
+| `box-add` | `BoxAdd` | — |  | — | — |
+| `box-alt` | `BoxAlt` | — |  | — | — |
+| `box-alt` | `BoxAlt` | — |  | — | — |
+| `box-remove` | `BoxRemove` | — |  | — | — |
+| `box-remove` | `BoxRemove` | — |  | — | — |
+| `box-search` | `BoxSearch` | — |  | — | — |
+| `box-search` | `BoxSearch` | — |  | — | — |
+| `box-tick` | `BoxTick` | — |  | — | — |
+| `box-tick` | `BoxTick` | — |  | — | — |
+| `box-time` | `BoxTime` | — |  | — | — |
+| `box-time` | `BoxTime` | — |  | — | — |
+| `briefcase` | `Briefcase` | — |  | — | — |
+| `briefcase` | `Briefcase` | — |  | — | — |
+| `briefcase-cross` | `BriefcaseCross` | — |  | — | — |
+| `briefcase-cross` | `BriefcaseCross` | — |  | — | — |
+| `briefcase-tick` | `BriefcaseTick` | — |  | — | — |
+| `briefcase-tick` | `BriefcaseTick` | — |  | — | — |
+| `briefcase-timer` | `BriefcaseTimer` | — |  | — | — |
+| `briefcase-timer` | `BriefcaseTimer` | — |  | — | — |
+| `broom` | `Broom` | — |  | — | — |
+| `broom` | `Broom` | — |  | — | — |
+| `building` | `Building` | — |  | — | — |
+| `building` | `Building` | — |  | — | — |
+| `building-office` | `BuildingOffice` | — |  | — | — |
+| `building-office` | `BuildingOffice` | — |  | — | — |
+| `building-tower` | `BuildingTower` | — |  | — | — |
+| `building-tower` | `BuildingTower` | — |  | — | — |
+| `buildings` | `Buildings` | — |  | — | — |
+| `buildings` | `Buildings` | — |  | — | — |
+| `buildings-alt` | `BuildingsAlt` | — |  | — | — |
+| `buildings-alt` | `BuildingsAlt` | — |  | — | — |
+| `calculator` | `Calculator` | — |  | — | — |
+| `calculator` | `Calculator` | — |  | — | — |
+| `candle` | `Candle` | — |  | — | — |
+| `candle` | `Candle` | — |  | — | — |
+| `candle-alt` | `CandleAlt` | — |  | — | — |
+| `candle-alt` | `CandleAlt` | — |  | — | — |
+| `category` | `Category` | — |  | — | — |
+| `category` | `Category` | — |  | — | — |
+| `category-alt` | `CategoryAlt` | — |  | — | — |
+| `category-alt` | `CategoryAlt` | — |  | — | — |
+| `check` | `Check` | — |  | — | tick, done, complete, success, confirm |
+| `check` | `Check` | — |  | — | tick, done, complete, success, confirm |
+| `close-circle` | `CloseCircle` | — |  | `x` | dismiss, cancel, remove |
+| `close-circle` | `CloseCircle` | — |  | `x` | dismiss, cancel, remove |
+| `close-square` | `CloseSquare` | — |  | — | dismiss, cancel, close |
+| `close-square` | `CloseSquare` | — |  | — | dismiss, cancel, close |
+| `code` | `Code` | — |  | — | — |
+| `code` | `Code` | — |  | — | — |
+| `code-alt` | `CodeAlt` | — |  | — | — |
+| `code-alt` | `CodeAlt` | — |  | — | — |
+| `code-circle` | `CodeCircle` | — |  | — | — |
+| `code-circle` | `CodeCircle` | — |  | — | — |
+| `coffee` | `Coffee` | — |  | — | — |
+| `coffee` | `Coffee` | — |  | — | — |
+| `command` | `Command` | — |  | — | — |
+| `command` | `Command` | — |  | — | — |
+| `command-square` | `CommandSquare` | — |  | — | — |
+| `command-square` | `CommandSquare` | — |  | — | — |
+| `conversation-box` | `ConversationBox` | — |  | — | — |
+| `conversation-box` | `ConversationBox` | — |  | — | — |
+| `copyright` | `Copyright` | — |  | — | — |
+| `copyright` | `Copyright` | — |  | — | — |
+| `creative-commons` | `CreativeCommons` | — |  | — | — |
+| `creative-commons` | `CreativeCommons` | — |  | — | — |
+| `crown` | `Crown` | — |  | — | — |
+| `crown` | `Crown` | — |  | — | — |
+| `crown-alt` | `CrownAlt` | — |  | — | — |
+| `crown-alt` | `CrownAlt` | — |  | — | — |
+| `cup` | `Cup` | — |  | — | — |
+| `cup` | `Cup` | — |  | — | — |
+| `danger` | `Danger` | — |  | — | — |
+| `danger` | `Danger` | — |  | — | — |
+| `device-message` | `DeviceMessage` | — |  | — | — |
+| `device-message` | `DeviceMessage` | — |  | — | — |
+| `diamonds` | `Diamonds` | — |  | — | — |
+| `diamonds` | `Diamonds` | — |  | — | — |
+| `discover` | `Discover` | — |  | — | — |
+| `discover` | `Discover` | — |  | — | — |
+| `dislike` | `Dislike` | — |  | — | — |
+| `dislike` | `Dislike` | — |  | — | — |
+| `dots-more` | `DotsMore` | — |  | — | — |
+| `dots-more` | `DotsMore` | — |  | — | — |
+| `emoji-happy` | `EmojiHappy` | — |  | — | — |
+| `emoji-happy` | `EmojiHappy` | — |  | — | — |
+| `emoji-normal` | `EmojiNormal` | — |  | — | — |
+| `emoji-normal` | `EmojiNormal` | — |  | — | — |
+| `emoji-sad` | `EmojiSad` | — |  | — | — |
+| `emoji-sad` | `EmojiSad` | — |  | — | — |
+| `enhance-prize` | `EnhancePrize` | — |  | — | — |
+| `enhance-prize` | `EnhancePrize` | — |  | — | — |
+| `eye` | `Eye` | — |  | — | — |
+| `eye` | `Eye` | — |  | — | — |
+| `eye-slash` | `EyeSlash` | — |  | — | — |
+| `eye-slash` | `EyeSlash` | — |  | — | — |
+| `filter` | `Filter` | — |  | — | — |
+| `filter` | `Filter` | — |  | — | — |
+| `filter-add` | `FilterAdd` | — |  | — | — |
+| `filter-add` | `FilterAdd` | — |  | — | — |
+| `filter-edit` | `FilterEdit` | — |  | — | — |
+| `filter-edit` | `FilterEdit` | — |  | — | — |
+| `filter-remove` | `FilterRemove` | — |  | — | — |
+| `filter-remove` | `FilterRemove` | — |  | — | — |
+| `filter-search` | `FilterSearch` | — |  | — | — |
+| `filter-search` | `FilterSearch` | — |  | — | — |
+| `filter-square` | `FilterSquare` | — |  | — | — |
+| `filter-square` | `FilterSquare` | — |  | — | — |
+| `filter-tick` | `FilterTick` | — |  | — | — |
+| `filter-tick` | `FilterTick` | — |  | — | — |
+| `flag` | `Flag` | — |  | — | — |
+| `flag` | `Flag` | — |  | — | — |
+| `flag-alt` | `FlagAlt` | — |  | — | — |
+| `flag-alt` | `FlagAlt` | — |  | — | — |
+| `forbidden` | `Forbidden` | — |  | — | — |
+| `forbidden` | `Forbidden` | — |  | — | — |
+| `forbidden-2` | `Forbidden2` | — |  | — | — |
+| `forbidden-2` | `Forbidden2` | — |  | — | — |
+| `game` | `Game` | — |  | — | — |
+| `game` | `Game` | — |  | — | — |
+| `gemini` | `Gemini` | — |  | — | — |
+| `gemini` | `Gemini` | — |  | — | — |
+| `gemini-alt` | `GeminiAlt` | — |  | — | — |
+| `gemini-alt` | `GeminiAlt` | — |  | — | — |
+| `glass` | `Glass` | — |  | — | — |
+| `glass` | `Glass` | — |  | — | — |
+| `grid` | `Grid` | — |  | — | — |
+| `grid` | `Grid` | — |  | — | — |
+| `grid-add` | `GridAdd` | — |  | — | — |
+| `grid-add` | `GridAdd` | — |  | — | — |
+| `grid-alt` | `GridAlt` | — |  | — | — |
+| `grid-alt` | `GridAlt` | — |  | — | — |
+| `grid-blocks` | `GridBlocks` | — |  | — | — |
+| `grid-blocks` | `GridBlocks` | — |  | — | — |
+| `grid-dots` | `GridDots` | — |  | — | — |
+| `grid-dots` | `GridDots` | — |  | — | — |
+| `grid-edit` | `GridEdit` | — |  | — | — |
+| `grid-edit` | `GridEdit` | — |  | — | — |
+| `grid-equal` | `GridEqual` | — |  | — | — |
+| `grid-equal` | `GridEqual` | — |  | — | — |
+| `grid-eraser` | `GridEraser` | — |  | — | — |
+| `grid-eraser` | `GridEraser` | — |  | — | — |
+| `grid-large` | `GridLarge` | — |  | — | — |
+| `grid-large` | `GridLarge` | — |  | — | — |
+| `grid-lock` | `GridLock` | — |  | — | — |
+| `grid-lock` | `GridLock` | — |  | — | — |
+| `grid-mini` | `GridMini` | — |  | — | — |
+| `grid-mini` | `GridMini` | — |  | — | — |
+| `grid-mixed` | `GridMixed` | — |  | — | — |
+| `grid-mixed` | `GridMixed` | — |  | — | — |
+| `grid-small` | `GridSmall` | — |  | — | — |
+| `grid-small` | `GridSmall` | — |  | — | — |
+| `grid-wide` | `GridWide` | — |  | — | — |
+| `grid-wide` | `GridWide` | — |  | — | — |
+| `grids-4` | `Grids4` | — |  | — | — |
+| `grids-4` | `Grids4` | — |  | — | — |
+| `happy` | `Happy` | — |  | — | — |
+| `happy` | `Happy` | — |  | — | — |
+| `happyemoji` | `Happyemoji` | — |  | — | — |
+| `happyemoji` | `Happyemoji` | — |  | — | — |
+| `hashtag` | `Hashtag` | — |  | — | — |
+| `hashtag` | `Hashtag` | — |  | — | — |
+| `hashtag-down` | `HashtagDown` | — |  | — | — |
+| `hashtag-down` | `HashtagDown` | — |  | — | — |
+| `hashtag-up` | `HashtagUp` | — |  | — | — |
+| `hashtag-up` | `HashtagUp` | — |  | — | — |
+| `health` | `Health` | — |  | — | — |
+| `health` | `Health` | — |  | — | — |
+| `heart` | `Heart` | — |  | — | — |
+| `heart` | `Heart` | — |  | — | — |
+| `heart-add` | `HeartAdd` | — |  | — | — |
+| `heart-add` | `HeartAdd` | — |  | — | — |
+| `heart-circle` | `HeartCircle` | — |  | — | — |
+| `heart-circle` | `HeartCircle` | — |  | — | — |
+| `heart-edit` | `HeartEdit` | — |  | — | — |
+| `heart-edit` | `HeartEdit` | — |  | — | — |
+| `heart-remove` | `HeartRemove` | — |  | — | — |
+| `heart-remove` | `HeartRemove` | — |  | — | — |
+| `heart-search` | `HeartSearch` | — |  | — | — |
+| `heart-search` | `HeartSearch` | — |  | — | — |
+| `heart-slash` | `HeartSlash` | — |  | — | — |
+| `heart-slash` | `HeartSlash` | — |  | — | — |
+| `heart-tick` | `HeartTick` | — |  | — | — |
+| `heart-tick` | `HeartTick` | — |  | — | — |
+| `hierarchy` | `Hierarchy` | — |  | — | — |
+| `hierarchy` | `Hierarchy` | — |  | — | — |
+| `hierarchy-alt` | `HierarchyAlt` | — |  | — | — |
+| `hierarchy-alt` | `HierarchyAlt` | — |  | — | — |
+| `hierarchy-square` | `HierarchySquare` | — |  | — | — |
+| `hierarchy-square` | `HierarchySquare` | — |  | — | — |
+| `hierarchy-square-alt` | `HierarchySquareAlt` | — |  | — | — |
+| `hierarchy-square-alt` | `HierarchySquareAlt` | — |  | — | — |
+| `hierarchy-square-tree` | `HierarchySquareTree` | — |  | — | — |
+| `hierarchy-square-tree` | `HierarchySquareTree` | — |  | — | — |
+| `hierarchy-tree` | `HierarchyTree` | — |  | — | — |
+| `hierarchy-tree` | `HierarchyTree` | — |  | — | — |
+| `home` | `Home` | — |  | — | — |
+| `home` | `Home` | — |  | — | — |
+| `home-alt` | `HomeAlt` | — |  | — | — |
+| `home-alt` | `HomeAlt` | — |  | — | — |
+| `home-hashtag` | `HomeHashtag` | — |  | — | — |
+| `home-hashtag` | `HomeHashtag` | — |  | — | — |
+| `home-simple` | `HomeSimple` | — |  | — | — |
+| `home-simple` | `HomeSimple` | — |  | — | — |
+| `home-trend-down` | `HomeTrendDown` | — |  | — | — |
+| `home-trend-down` | `HomeTrendDown` | — |  | — | — |
+| `home-trend-up` | `HomeTrendUp` | — |  | — | — |
+| `home-trend-up` | `HomeTrendUp` | — |  | — | — |
+| `home-wifi` | `HomeWifi` | — |  | — | — |
+| `home-wifi` | `HomeWifi` | — |  | — | — |
+| `hospital` | `Hospital` | — |  | — | — |
+| `hospital` | `Hospital` | — |  | — | — |
+| `house` | `House` | — |  | — | — |
+| `house` | `House` | — |  | — | — |
+| `house-2` | `House2` | — |  | — | — |
+| `house-2` | `House2` | — |  | — | — |
+| `info-circle` | `InfoCircle` | — |  | — | — |
+| `info-circle` | `InfoCircle` | — |  | — | — |
+| `information` | `Information` | — |  | — | — |
+| `information` | `Information` | — |  | — | — |
+| `judge` | `Judge` | — |  | — | — |
+| `judge` | `Judge` | — |  | — | — |
+| `language-circle` | `LanguageCircle` | — |  | — | — |
+| `language-circle` | `LanguageCircle` | — |  | — | — |
+| `language-square` | `LanguageSquare` | — |  | — | — |
+| `language-square` | `LanguageSquare` | — |  | — | — |
+| `layout-adjust` | `LayoutAdjust` | — |  | — | — |
+| `layout-adjust` | `LayoutAdjust` | — |  | — | — |
+| `left-bar-grid` | `LeftBarGrid` | — | ↔ | — | layout, sidebar, grid |
+| `left-bar-grid` | `LeftBarGrid` | — | ↔ | — | layout, sidebar, grid |
+| `left-sidebar-grid` | `LeftSidebarGrid` | — | ↔ | — | layout, sidebar, grid |
+| `left-sidebar-grid` | `LeftSidebarGrid` | — | ↔ | — | layout, sidebar, grid |
+| `level` | `Level` | — |  | — | — |
+| `level` | `Level` | — |  | — | — |
+| `lifebuoy` | `Lifebuoy` | — |  | — | — |
+| `lifebuoy` | `Lifebuoy` | — |  | — | — |
+| `like` | `Like` | — |  | — | — |
+| `like` | `Like` | — |  | — | — |
+| `like-alt` | `LikeAlt` | — |  | — | — |
+| `like-alt` | `LikeAlt` | — |  | — | — |
+| `like-dislike` | `LikeDislike` | — |  | — | — |
+| `like-dislike` | `LikeDislike` | — |  | — | — |
+| `like-shapes` | `LikeShapes` | — |  | — | — |
+| `like-shapes` | `LikeShapes` | — |  | — | — |
+| `like-tag` | `LikeTag` | — |  | — | — |
+| `like-tag` | `LikeTag` | — |  | — | — |
+| `link` | `Link` | — |  | — | — |
+| `link` | `Link` | — |  | — | — |
+| `link-alt` | `LinkAlt` | — |  | — | — |
+| `link-alt` | `LinkAlt` | — |  | — | — |
+| `link-chain` | `LinkChain` | — |  | — | — |
+| `link-chain` | `LinkChain` | — |  | — | — |
+| `link-circle` | `LinkCircle` | — |  | — | — |
+| `link-circle` | `LinkCircle` | — |  | — | — |
+| `link-square` | `LinkSquare` | — |  | — | — |
+| `link-square` | `LinkSquare` | — |  | — | — |
+| `link-square-alt` | `LinkSquareAlt` | — |  | — | — |
+| `link-square-alt` | `LinkSquareAlt` | — |  | — | — |
+| `login` | `Login` | — |  | — | — |
+| `login` | `Login` | — |  | — | — |
+| `login-alt` | `LoginAlt` | — |  | — | — |
+| `login-alt` | `LoginAlt` | — |  | — | — |
+| `logout` | `Logout` | — |  | `sign-out` `log-out` `sign-out-alt` | exit, leave |
+| `logout` | `Logout` | — |  | `sign-out` `log-out` `sign-out-alt` | exit, leave |
+| `logout-alt` | `LogoutAlt` | — |  | — | — |
+| `logout-alt` | `LogoutAlt` | — |  | — | — |
+| `lovely` | `Lovely` | — |  | — | — |
+| `lovely` | `Lovely` | — |  | — | — |
+| `magic` | `Magic` | — |  | — | — |
+| `magic` | `Magic` | — |  | — | — |
+| `magic-star` | `MagicStar` | — |  | — | — |
+| `magic-star` | `MagicStar` | — |  | — | — |
+| `magic-wand` | `MagicWand` | — |  | — | — |
+| `magic-wand` | `MagicWand` | — |  | — | — |
+| `maximize` | `Maximize` | — |  | — | — |
+| `maximize` | `Maximize` | — |  | — | — |
+| `maximize-alt` | `MaximizeAlt` | — |  | — | — |
+| `maximize-alt` | `MaximizeAlt` | — |  | — | — |
+| `maximize-circle` | `MaximizeCircle` | — |  | — | — |
+| `maximize-circle` | `MaximizeCircle` | — |  | — | — |
+| `maximize-crop` | `MaximizeCrop` | — |  | — | — |
+| `maximize-crop` | `MaximizeCrop` | — |  | — | — |
+| `maximize-frame` | `MaximizeFrame` | — |  | — | — |
+| `maximize-frame` | `MaximizeFrame` | — |  | — | — |
+| `medal` | `Medal` | — |  | — | — |
+| `medal` | `Medal` | — |  | — | — |
+| `medal-star` | `MedalStar` | — |  | — | — |
+| `medal-star` | `MedalStar` | — |  | — | — |
+| `menu` | `Menu` | P0 |  | `hamburger` `nav-menu` | navigation, nav |
+| `menu` | `Menu` | P0 |  | `hamburger` `nav-menu` | navigation, nav |
+| `menu-board` | `MenuBoard` | — |  | — | — |
+| `menu-board` | `MenuBoard` | — |  | — | — |
+| `milk` | `Milk` | — |  | — | — |
+| `milk` | `Milk` | — |  | — | — |
+| `minus` | `Minus` | — |  | — | — |
+| `minus` | `Minus` | — |  | — | — |
+| `minus-circle` | `MinusCircle` | — |  | — | — |
+| `minus-circle` | `MinusCircle` | — |  | — | — |
+| `minus-square` | `MinusSquare` | — |  | — | — |
+| `minus-square` | `MinusSquare` | — |  | — | — |
+| `more` | `More` | — |  | — | — |
+| `more` | `More` | — |  | — | — |
+| `more-circle` | `MoreCircle` | — |  | — | — |
+| `more-circle` | `MoreCircle` | — |  | — | — |
+| `more-square` | `MoreSquare` | — |  | — | — |
+| `more-square` | `MoreSquare` | — |  | — | — |
+| `notification` | `Notification` | — |  | — | — |
+| `notification` | `Notification` | — |  | — | — |
+| `notification-alt` | `NotificationAlt` | — |  | — | — |
+| `notification-alt` | `NotificationAlt` | — |  | — | — |
+| `notification-bing` | `NotificationBing` | — |  | — | — |
+| `notification-bing` | `NotificationBing` | — |  | — | — |
+| `notification-circle` | `NotificationCircle` | — |  | — | — |
+| `notification-circle` | `NotificationCircle` | — |  | — | — |
+| `notification-favorite` | `NotificationFavorite` | — |  | — | — |
+| `notification-favorite` | `NotificationFavorite` | — |  | — | — |
+| `notification-status` | `NotificationStatus` | — |  | — | — |
+| `notification-status` | `NotificationStatus` | — |  | — | — |
+| `omega-circle` | `OmegaCircle` | — |  | — | — |
+| `omega-circle` | `OmegaCircle` | — |  | — | — |
+| `omega-square` | `OmegaSquare` | — |  | — | — |
+| `omega-square` | `OmegaSquare` | — |  | — | — |
+| `pet` | `Pet` | — |  | — | — |
+| `pet` | `Pet` | — |  | — | — |
+| `picture-frame` | `PictureFrame` | — |  | — | — |
+| `picture-frame` | `PictureFrame` | — |  | — | — |
+| `radar` | `Radar` | — |  | — | — |
+| `radar` | `Radar` | — |  | — | — |
+| `radar-alt` | `RadarAlt` | — |  | — | — |
+| `radar-alt` | `RadarAlt` | — |  | — | — |
+| `received` | `Received` | — |  | — | — |
+| `received` | `Received` | — |  | — | — |
+| `reserve` | `Reserve` | — |  | — | — |
+| `reserve` | `Reserve` | — |  | — | — |
+| `row-horizontal` | `RowHorizontal` | — |  | — | — |
+| `row-horizontal` | `RowHorizontal` | — |  | — | — |
+| `row-vertical` | `RowVertical` | — |  | — | — |
+| `row-vertical` | `RowVertical` | — |  | — | — |
+| `sagittarius` | `Sagittarius` | — |  | — | — |
+| `sagittarius` | `Sagittarius` | — |  | — | — |
+| `scan` | `Scan` | — |  | — | — |
+| `scan` | `Scan` | — |  | — | — |
+| `scan-barcode` | `ScanBarcode` | — |  | — | — |
+| `scan-barcode` | `ScanBarcode` | — |  | — | — |
+| `scanner` | `Scanner` | — |  | — | — |
+| `scanner` | `Scanner` | — |  | — | — |
+| `scanning` | `Scanning` | — |  | — | — |
+| `scanning` | `Scanning` | — |  | — | — |
+| `scroll` | `Scroll` | — |  | — | — |
+| `scroll` | `Scroll` | — |  | — | — |
+| `search` | `Search` | P0 |  | `magnifying-glass` | find, query, magnify, lookup |
+| `search` | `Search` | P0 |  | `magnifying-glass` | find, query, magnify, lookup |
+| `search-favorite` | `SearchFavorite` | — |  | — | — |
+| `search-favorite` | `SearchFavorite` | — |  | — | — |
+| `search-favorite-alt` | `SearchFavoriteAlt` | — |  | — | — |
+| `search-favorite-alt` | `SearchFavoriteAlt` | — |  | — | — |
+| `search-normal` | `SearchNormal` | — |  | — | — |
+| `search-normal` | `SearchNormal` | — |  | — | — |
+| `search-status` | `SearchStatus` | — |  | — | — |
+| `search-status` | `SearchStatus` | — |  | — | — |
+| `search-status-alt` | `SearchStatusAlt` | — |  | — | — |
+| `search-status-alt` | `SearchStatusAlt` | — |  | — | — |
+| `search-zoom-in` | `SearchZoomIn` | — |  | — | — |
+| `search-zoom-in` | `SearchZoomIn` | — |  | — | — |
+| `search-zoom-in-alt` | `SearchZoomInAlt` | — |  | — | — |
+| `search-zoom-in-alt` | `SearchZoomInAlt` | — |  | — | — |
+| `search-zoom-out` | `SearchZoomOut` | — |  | — | — |
+| `search-zoom-out` | `SearchZoomOut` | — |  | — | — |
+| `search-zoom-out-alt` | `SearchZoomOutAlt` | — |  | — | — |
+| `search-zoom-out-alt` | `SearchZoomOutAlt` | — |  | — | — |
+| `serving-dome` | `ServingDome` | — |  | — | — |
+| `serving-dome` | `ServingDome` | — |  | — | — |
+| `setting` | `Setting` | — |  | — | — |
+| `setting-alt` | `SettingAlt` | — |  | — | — |
+| `setting-alt` | `SettingAlt` | — |  | — | — |
+| `setting-circle` | `SettingCircle` | — |  | — | — |
+| `setting-circle` | `SettingCircle` | — |  | — | — |
+| `setting-sliders` | `SettingSliders` | — |  | — | — |
+| `setting-sliders` | `SettingSliders` | — |  | — | — |
+| `setting-square` | `SettingSquare` | — |  | — | — |
+| `setting-square` | `SettingSquare` | — |  | — | — |
+| `settings` | `Settings` | P0 |  | `gear` `cog` `prefs` | configure, options, preferences |
+| `settings` | `Settings` | P0 |  | `gear` `cog` `prefs` | configure, options, preferences |
+| `shapes` | `Shapes` | — |  | — | — |
+| `shapes` | `Shapes` | — |  | — | — |
+| `shapes-alt` | `ShapesAlt` | — |  | — | — |
+| `shapes-alt` | `ShapesAlt` | — |  | — | — |
+| `share` | `Share` | — |  | — | — |
+| `share` | `Share` | — |  | — | — |
+| `sidebar-bottom` | `SidebarBottom` | — |  | — | — |
+| `sidebar-bottom` | `SidebarBottom` | — |  | — | — |
+| `sidebar-left` | `SidebarLeft` | — | ↔ | — | layout, panel, nav |
+| `sidebar-left` | `SidebarLeft` | — | ↔ | — | layout, panel, nav |
+| `sidebar-right` | `SidebarRight` | — | ↔ | — | layout, panel, nav |
+| `sidebar-right` | `SidebarRight` | — | ↔ | — | layout, panel, nav |
+| `sidebar-top` | `SidebarTop` | — |  | — | — |
+| `sidebar-top` | `SidebarTop` | — |  | — | — |
+| `slash` | `Slash` | — |  | — | — |
+| `slash` | `Slash` | — |  | — | — |
+| `slider` | `Slider` | — |  | — | — |
+| `slider` | `Slider` | — |  | — | — |
+| `slider-horizontal` | `SliderHorizontal` | — |  | — | — |
+| `slider-horizontal` | `SliderHorizontal` | — |  | — | — |
+| `slider-horizontal-alt` | `SliderHorizontalAlt` | — |  | — | — |
+| `slider-horizontal-alt` | `SliderHorizontalAlt` | — |  | — | — |
+| `slider-vertical` | `SliderVertical` | — |  | — | — |
+| `slider-vertical` | `SliderVertical` | — |  | — | — |
+| `slider-vertical-alt` | `SliderVerticalAlt` | — |  | — | — |
+| `slider-vertical-alt` | `SliderVerticalAlt` | — |  | — | — |
+| `smart-cursor` | `SmartCursor` | — |  | — | — |
+| `smart-cursor` | `SmartCursor` | — |  | — | — |
+| `smileys` | `Smileys` | — |  | — | — |
+| `smileys` | `Smileys` | — |  | — | — |
+| `sort` | `Sort` | — |  | — | — |
+| `sort` | `Sort` | — |  | — | — |
+| `speedometer` | `Speedometer` | — |  | — | — |
+| `speedometer` | `Speedometer` | — |  | — | — |
+| `star` | `Star` | — |  | — | — |
+| `star` | `Star` | — |  | — | — |
+| `star-alt` | `StarAlt` | — |  | — | — |
+| `star-alt` | `StarAlt` | — |  | — | — |
+| `star-circle` | `StarCircle` | — |  | — | — |
+| `star-circle` | `StarCircle` | — |  | — | — |
+| `star-filled` | `StarFilled` | — |  | — | — |
+| `star-filled` | `StarFilled` | — |  | — | — |
+| `star-five` | `StarFive` | — |  | — | — |
+| `star-five` | `StarFive` | — |  | — | — |
+| `star-slash` | `StarSlash` | — |  | — | — |
+| `star-slash` | `StarSlash` | — |  | — | — |
+| `stars` | `Stars` | — |  | — | — |
+| `stars` | `Stars` | — |  | — | — |
+| `sticker` | `Sticker` | — |  | — | — |
+| `sticker` | `Sticker` | — |  | — | — |
+| `story` | `Story` | — |  | — | — |
+| `story` | `Story` | — |  | — | — |
+| `support-24h` | `Support24h` | — |  | — | — |
+| `support-24h` | `Support24h` | — |  | — | — |
+| `tag` | `Tag` | — |  | — | — |
+| `tag` | `Tag` | — |  | — | — |
+| `tag-alt` | `TagAlt` | — |  | — | — |
+| `tag-alt` | `TagAlt` | — |  | — | — |
+| `tag-cross` | `TagCross` | — |  | — | — |
+| `tag-cross` | `TagCross` | — |  | — | — |
+| `tag-right` | `TagRight` | — | ↔ | — | label, tag, direction |
+| `tag-right` | `TagRight` | — | ↔ | — | label, tag, direction |
+| `tag-user` | `TagUser` | — |  | — | — |
+| `tag-user` | `TagUser` | — |  | — | — |
+| `telescope` | `Telescope` | — |  | — | — |
+| `telescope` | `Telescope` | — |  | — | — |
+| `tick-circle` | `TickCircle` | — |  | — | — |
+| `tick-circle` | `TickCircle` | — |  | — | — |
+| `tick-square` | `TickSquare` | — |  | `check-square` | checkbox, check, done, completed |
+| `tick-square` | `TickSquare` | — |  | `check-square` | checkbox, check, done, completed |
+| `toggle-off` | `ToggleOff` | — |  | — | — |
+| `toggle-off` | `ToggleOff` | — |  | — | — |
+| `toggle-off-circle` | `ToggleOffCircle` | — |  | — | — |
+| `toggle-off-circle` | `ToggleOffCircle` | — |  | — | — |
+| `toggle-on` | `ToggleOn` | — |  | — | — |
+| `toggle-on` | `ToggleOn` | — |  | — | — |
+| `toggle-on-circle` | `ToggleOnCircle` | — |  | — | — |
+| `toggle-on-circle` | `ToggleOnCircle` | — |  | — | — |
+| `top-bottom-grid` | `TopBottomGrid` | — |  | — | — |
+| `top-bottom-grid` | `TopBottomGrid` | — |  | — | — |
+| `unlimited` | `Unlimited` | — |  | — | — |
+| `unlimited` | `Unlimited` | — |  | — | — |
+| `verify` | `Verify` | — |  | — | — |
+| `verify` | `Verify` | — |  | — | — |
+| `warning-alt` | `WarningAlt` | — |  | — | — |
+| `warning-alt` | `WarningAlt` | — |  | — | — |
+| `weight` | `Weight` | — |  | — | — |
+| `weight` | `Weight` | — |  | — | — |
+| `zoom` | `Zoom` | — |  | — | — |
+| `zoom` | `Zoom` | — |  | — | — |
+
+### `location` (36)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `global` | `Global` | — |  | — | — |
+| `global` | `Global` | — |  | — | — |
+| `global-edit` | `GlobalEdit` | — |  | — | — |
+| `global-edit` | `GlobalEdit` | — |  | — | — |
+| `global-refresh` | `GlobalRefresh` | — |  | — | — |
+| `global-refresh` | `GlobalRefresh` | — |  | — | — |
+| `global-search` | `GlobalSearch` | — |  | — | — |
+| `global-search` | `GlobalSearch` | — |  | — | — |
+| `gps` | `Gps` | — |  | — | — |
+| `gps` | `Gps` | — |  | — | — |
+| `gps-slash` | `GpsSlash` | — |  | — | — |
+| `gps-slash` | `GpsSlash` | — |  | — | — |
+| `location` | `Location` | — |  | — | — |
+| `location` | `Location` | — |  | — | — |
+| `location-add` | `LocationAdd` | — |  | — | — |
+| `location-add` | `LocationAdd` | — |  | — | — |
+| `location-cross` | `LocationCross` | — |  | — | — |
+| `location-cross` | `LocationCross` | — |  | — | — |
+| `location-minus` | `LocationMinus` | — |  | — | — |
+| `location-minus` | `LocationMinus` | — |  | — | — |
+| `location-slash` | `LocationSlash` | — |  | — | — |
+| `location-slash` | `LocationSlash` | — |  | — | — |
+| `location-tick` | `LocationTick` | — |  | — | — |
+| `location-tick` | `LocationTick` | — |  | — | — |
+| `map` | `Map` | — |  | — | — |
+| `map` | `Map` | — |  | — | — |
+| `map-alt` | `MapAlt` | — |  | — | — |
+| `map-alt` | `MapAlt` | — |  | — | — |
+| `route-square` | `RouteSquare` | — |  | — | — |
+| `route-square` | `RouteSquare` | — |  | — | — |
+| `routing` | `Routing` | — |  | — | — |
+| `routing` | `Routing` | — |  | — | — |
+| `routing-alt` | `RoutingAlt` | — |  | — | — |
+| `routing-alt` | `RoutingAlt` | — |  | — | — |
+| `signpost` | `Signpost` | — |  | — | — |
+| `signpost` | `Signpost` | — |  | — | — |
+
+### `media` (166)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `audio-square` | `AudioSquare` | — |  | — | — |
+| `audio-square` | `AudioSquare` | — |  | — | — |
+| `backward` | `Backward` | — |  | — | — |
+| `backward` | `Backward` | — |  | — | — |
+| `backward-10-seconds` | `Backward10Seconds` | — |  | — | — |
+| `backward-10-seconds` | `Backward10Seconds` | — |  | — | — |
+| `backward-15-seconds` | `Backward15Seconds` | — |  | — | — |
+| `backward-15-seconds` | `Backward15Seconds` | — |  | — | — |
+| `backward-5-seconds` | `Backward5Seconds` | — |  | — | — |
+| `backward-5-seconds` | `Backward5Seconds` | — |  | — | — |
+| `backward-item` | `BackwardItem` | — |  | — | — |
+| `backward-item` | `BackwardItem` | — |  | — | — |
+| `camera` | `Camera` | — |  | — | — |
+| `camera` | `Camera` | — |  | — | — |
+| `camera-slash` | `CameraSlash` | — |  | — | — |
+| `camera-slash` | `CameraSlash` | — |  | — | — |
+| `forward` | `Forward` | — |  | — | — |
+| `forward` | `Forward` | — |  | — | — |
+| `forward-10-seconds` | `Forward10Seconds` | — |  | — | — |
+| `forward-10-seconds` | `Forward10Seconds` | — |  | — | — |
+| `forward-15-seconds` | `Forward15Seconds` | — |  | — | — |
+| `forward-15-seconds` | `Forward15Seconds` | — |  | — | — |
+| `forward-5-seconds` | `Forward5Seconds` | — |  | — | — |
+| `forward-5-seconds` | `Forward5Seconds` | — |  | — | — |
+| `forward-item` | `ForwardItem` | — |  | — | — |
+| `forward-item` | `ForwardItem` | — |  | — | — |
+| `gallery` | `Gallery` | — |  | — | — |
+| `gallery` | `Gallery` | — |  | — | — |
+| `gallery-add` | `GalleryAdd` | — |  | — | — |
+| `gallery-add` | `GalleryAdd` | — |  | — | — |
+| `gallery-edit` | `GalleryEdit` | — |  | — | — |
+| `gallery-edit` | `GalleryEdit` | — |  | — | — |
+| `gallery-export` | `GalleryExport` | — |  | — | — |
+| `gallery-export` | `GalleryExport` | — |  | — | — |
+| `gallery-favorite` | `GalleryFavorite` | — |  | — | — |
+| `gallery-favorite` | `GalleryFavorite` | — |  | — | — |
+| `gallery-import` | `GalleryImport` | — |  | — | — |
+| `gallery-import` | `GalleryImport` | — |  | — | — |
+| `gallery-remove` | `GalleryRemove` | — |  | — | — |
+| `gallery-remove` | `GalleryRemove` | — |  | — | — |
+| `gallery-slash` | `GallerySlash` | — |  | — | — |
+| `gallery-slash` | `GallerySlash` | — |  | — | — |
+| `gallery-tick` | `GalleryTick` | — |  | — | — |
+| `gallery-tick` | `GalleryTick` | — |  | — | — |
+| `headphone` | `Headphone` | — |  | — | — |
+| `headphone` | `Headphone` | — |  | — | — |
+| `headphones` | `Headphones` | — |  | — | — |
+| `headphones` | `Headphones` | — |  | — | — |
+| `image` | `Image` | — |  | — | — |
+| `image` | `Image` | — |  | — | — |
+| `mini-music-square` | `MiniMusicSquare` | — |  | — | — |
+| `mini-music-square` | `MiniMusicSquare` | — |  | — | — |
+| `mirroring-screen` | `MirroringScreen` | — |  | — | — |
+| `mirroring-screen` | `MirroringScreen` | — |  | — | — |
+| `music` | `Music` | — |  | — | — |
+| `music` | `Music` | — |  | — | — |
+| `music-circle` | `MusicCircle` | — |  | — | — |
+| `music-circle` | `MusicCircle` | — |  | — | — |
+| `music-dashboard` | `MusicDashboard` | — |  | — | — |
+| `music-dashboard` | `MusicDashboard` | — |  | — | — |
+| `music-filter` | `MusicFilter` | — |  | — | — |
+| `music-filter` | `MusicFilter` | — |  | — | — |
+| `music-library-alt` | `MusicLibraryAlt` | — |  | — | — |
+| `music-library-alt` | `MusicLibraryAlt` | — |  | — | — |
+| `music-play` | `MusicPlay` | — |  | — | — |
+| `music-play` | `MusicPlay` | — |  | — | — |
+| `music-playlist` | `MusicPlaylist` | — |  | — | — |
+| `music-playlist` | `MusicPlaylist` | — |  | — | — |
+| `music-square` | `MusicSquare` | — |  | — | — |
+| `music-square` | `MusicSquare` | — |  | — | — |
+| `music-square-add` | `MusicSquareAdd` | — |  | — | — |
+| `music-square-add` | `MusicSquareAdd` | — |  | — | — |
+| `music-square-remove` | `MusicSquareRemove` | — |  | — | — |
+| `music-square-remove` | `MusicSquareRemove` | — |  | — | — |
+| `music-square-search` | `MusicSquareSearch` | — |  | — | — |
+| `music-square-search` | `MusicSquareSearch` | — |  | — | — |
+| `musical-note-ai` | `MusicalNoteAi` | — |  | — | — |
+| `musical-note-ai` | `MusicalNoteAi` | — |  | — | — |
+| `musicnote` | `Musicnote` | — |  | — | — |
+| `musicnote` | `Musicnote` | — |  | — | — |
+| `next` | `Next` | — |  | — | — |
+| `next` | `Next` | — |  | — | — |
+| `pause` | `Pause` | — |  | — | — |
+| `pause` | `Pause` | — |  | — | — |
+| `pause-circle` | `PauseCircle` | — |  | — | — |
+| `pause-circle` | `PauseCircle` | — |  | — | — |
+| `play` | `Play` | — |  | — | — |
+| `play` | `Play` | — |  | — | — |
+| `play-add` | `PlayAdd` | — |  | — | — |
+| `play-add` | `PlayAdd` | — |  | — | — |
+| `play-circle` | `PlayCircle` | — |  | — | — |
+| `play-circle` | `PlayCircle` | — |  | — | — |
+| `play-circle-alt` | `PlayCircleAlt` | — |  | — | — |
+| `play-circle-alt` | `PlayCircleAlt` | — |  | — | — |
+| `play-remove` | `PlayRemove` | — |  | — | — |
+| `play-remove` | `PlayRemove` | — |  | — | — |
+| `previous` | `Previous` | — |  | — | — |
+| `previous` | `Previous` | — |  | — | — |
+| `radio` | `Radio` | — |  | — | — |
+| `radio` | `Radio` | — |  | — | — |
+| `record` | `Record` | — |  | — | — |
+| `record` | `Record` | — |  | — | — |
+| `record-circle` | `RecordCircle` | — |  | — | — |
+| `record-circle` | `RecordCircle` | — |  | — | — |
+| `repeat-arrow` | `RepeatArrow` | — |  | — | — |
+| `repeat-arrow` | `RepeatArrow` | — |  | — | — |
+| `repeat-circle` | `RepeatCircle` | — |  | — | — |
+| `repeat-circle` | `RepeatCircle` | — |  | — | — |
+| `repeate-music` | `RepeateMusic` | — |  | — | — |
+| `repeate-music` | `RepeateMusic` | — |  | — | — |
+| `repeate-one` | `RepeateOne` | — |  | — | — |
+| `repeate-one` | `RepeateOne` | — |  | — | — |
+| `screenmirroring` | `Screenmirroring` | — |  | — | — |
+| `screenmirroring` | `Screenmirroring` | — |  | — | — |
+| `shuffle` | `Shuffle` | — |  | — | — |
+| `shuffle` | `Shuffle` | — |  | — | — |
+| `sound` | `Sound` | — |  | — | — |
+| `sound` | `Sound` | — |  | — | — |
+| `speaker` | `Speaker` | — |  | — | — |
+| `speaker` | `Speaker` | — |  | — | — |
+| `spotify` | `Spotify` | — |  | — | — |
+| `spotify` | `Spotify` | — |  | — | — |
+| `stop` | `Stop` | P1 |  | — | halt, end, square, media |
+| `stop` | `Stop` | P1 |  | — | halt, end, square, media |
+| `stop-circle` | `StopCircle` | — |  | — | — |
+| `stop-circle` | `StopCircle` | — |  | — | — |
+| `twitch` | `Twitch` | — |  | — | — |
+| `twitch` | `Twitch` | — |  | — | — |
+| `video` | `Video` | — |  | — | — |
+| `video` | `Video` | — |  | — | — |
+| `video-add` | `VideoAdd` | — |  | — | — |
+| `video-add` | `VideoAdd` | — |  | — | — |
+| `video-circle` | `VideoCircle` | — |  | — | — |
+| `video-circle` | `VideoCircle` | — |  | — | — |
+| `video-horizontal` | `VideoHorizontal` | — |  | — | — |
+| `video-horizontal` | `VideoHorizontal` | — |  | — | — |
+| `video-octagon` | `VideoOctagon` | — |  | — | — |
+| `video-octagon` | `VideoOctagon` | — |  | — | — |
+| `video-play` | `VideoPlay` | — |  | — | — |
+| `video-play` | `VideoPlay` | — |  | — | — |
+| `video-remove` | `VideoRemove` | — |  | — | — |
+| `video-remove` | `VideoRemove` | — |  | — | — |
+| `video-slash` | `VideoSlash` | — |  | — | — |
+| `video-slash` | `VideoSlash` | — |  | — | — |
+| `video-square` | `VideoSquare` | — |  | — | — |
+| `video-square` | `VideoSquare` | — |  | — | — |
+| `video-tick` | `VideoTick` | — |  | — | — |
+| `video-tick` | `VideoTick` | — |  | — | — |
+| `video-time` | `VideoTime` | — |  | — | — |
+| `video-time` | `VideoTime` | — |  | — | — |
+| `video-vertical` | `VideoVertical` | — |  | — | — |
+| `video-vertical` | `VideoVertical` | — |  | — | — |
+| `volume-cross` | `VolumeCross` | — |  | — | — |
+| `volume-cross` | `VolumeCross` | — |  | — | — |
+| `volume-high` | `VolumeHigh` | — |  | — | — |
+| `volume-high` | `VolumeHigh` | — |  | — | — |
+| `volume-low` | `VolumeLow` | — |  | — | — |
+| `volume-low` | `VolumeLow` | — |  | — | — |
+| `volume-low-alt` | `VolumeLowAlt` | — |  | — | — |
+| `volume-low-alt` | `VolumeLowAlt` | — |  | — | — |
+| `volume-mute` | `VolumeMute` | — |  | — | — |
+| `volume-mute` | `VolumeMute` | — |  | — | — |
+| `volume-slash` | `VolumeSlash` | — |  | — | — |
+| `volume-slash` | `VolumeSlash` | — |  | — | — |
+| `volume-up` | `VolumeUp` | — |  | — | — |
+| `volume-up` | `VolumeUp` | — |  | — | — |
+
+### `nature` (102)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `birds` | `Birds` | — |  | — | — |
+| `birds` | `Birds` | — |  | — | — |
+| `cloud` | `Cloud` | — |  | — | — |
+| `cloud` | `Cloud` | — |  | — | — |
+| `cloud-add` | `CloudAdd` | — |  | — | — |
+| `cloud-add` | `CloudAdd` | — |  | — | — |
+| `cloud-change` | `CloudChange` | — |  | — | — |
+| `cloud-change` | `CloudChange` | — |  | — | — |
+| `cloud-connection` | `CloudConnection` | — |  | — | — |
+| `cloud-connection` | `CloudConnection` | — |  | — | — |
+| `cloud-cross` | `CloudCross` | — |  | — | — |
+| `cloud-cross` | `CloudCross` | — |  | — | — |
+| `cloud-drizzle` | `CloudDrizzle` | — |  | — | — |
+| `cloud-drizzle` | `CloudDrizzle` | — |  | — | — |
+| `cloud-fog` | `CloudFog` | — |  | — | — |
+| `cloud-fog` | `CloudFog` | — |  | — | — |
+| `cloud-lightning` | `CloudLightning` | — |  | — | — |
+| `cloud-lightning` | `CloudLightning` | — |  | — | — |
+| `cloud-minus` | `CloudMinus` | — |  | — | — |
+| `cloud-minus` | `CloudMinus` | — |  | — | — |
+| `cloud-notif` | `CloudNotif` | — |  | — | — |
+| `cloud-notif` | `CloudNotif` | — |  | — | — |
+| `cloud-plus` | `CloudPlus` | — |  | — | — |
+| `cloud-plus` | `CloudPlus` | — |  | — | — |
+| `cloud-remove` | `CloudRemove` | — |  | — | — |
+| `cloud-remove` | `CloudRemove` | — |  | — | — |
+| `cloud-snow` | `CloudSnow` | — |  | — | — |
+| `cloud-snow` | `CloudSnow` | — |  | — | — |
+| `cloud-sunny` | `CloudSunny` | — |  | — | — |
+| `cloud-sunny` | `CloudSunny` | — |  | — | — |
+| `deer` | `Deer` | — |  | — | — |
+| `deer` | `Deer` | — |  | — | — |
+| `drop` | `Drop` | — |  | — | — |
+| `drop` | `Drop` | — |  | — | — |
+| `electricity` | `Electricity` | — |  | — | — |
+| `electricity` | `Electricity` | — |  | — | — |
+| `fire` | `Fire` | — |  | — | — |
+| `fire` | `Fire` | — |  | — | — |
+| `fire-alt` | `FireAlt` | — |  | — | — |
+| `fire-alt` | `FireAlt` | — |  | — | — |
+| `fire-glow` | `FireGlow` | — |  | — | — |
+| `fire-glow` | `FireGlow` | — |  | — | — |
+| `fireworks` | `Fireworks` | — |  | — | — |
+| `fireworks` | `Fireworks` | — |  | — | — |
+| `fireworks-alt` | `FireworksAlt` | — |  | — | — |
+| `fireworks-alt` | `FireworksAlt` | — |  | — | — |
+| `fireworks-burst` | `FireworksBurst` | — |  | — | — |
+| `fireworks-burst` | `FireworksBurst` | — |  | — | — |
+| `fireworks-sparkle` | `FireworksSparkle` | — |  | — | — |
+| `fireworks-sparkle` | `FireworksSparkle` | — |  | — | — |
+| `flash` | `Flash` | — |  | — | — |
+| `flash` | `Flash` | — |  | — | — |
+| `flash-circle` | `FlashCircle` | — |  | — | — |
+| `flash-circle` | `FlashCircle` | — |  | — | — |
+| `flash-slash` | `FlashSlash` | — |  | — | — |
+| `flash-slash` | `FlashSlash` | — |  | — | — |
+| `moon` | `Moon` | — |  | `dark-mode` | night, theme, dark |
+| `moon` | `Moon` | — |  | `dark-mode` | night, theme, dark |
+| `snow` | `Snow` | — |  | — | — |
+| `snow` | `Snow` | — |  | — | — |
+| `snow-burst` | `SnowBurst` | — |  | — | — |
+| `snow-burst` | `SnowBurst` | — |  | — | — |
+| `snow-circle` | `SnowCircle` | — |  | — | — |
+| `snow-circle` | `SnowCircle` | — |  | — | — |
+| `snow-cross` | `SnowCross` | — |  | — | — |
+| `snow-cross` | `SnowCross` | — |  | — | — |
+| `snow-crystal` | `SnowCrystal` | — |  | — | — |
+| `snow-crystal` | `SnowCrystal` | — |  | — | — |
+| `snow-dot` | `SnowDot` | — |  | — | — |
+| `snow-dot` | `SnowDot` | — |  | — | — |
+| `snow-drift` | `SnowDrift` | — |  | — | — |
+| `snow-drift` | `SnowDrift` | — |  | — | — |
+| `snow-fall` | `SnowFall` | — |  | — | — |
+| `snow-fall` | `SnowFall` | — |  | — | — |
+| `snow-flurry` | `SnowFlurry` | — |  | — | — |
+| `snow-flurry` | `SnowFlurry` | — |  | — | — |
+| `snow-gem` | `SnowGem` | — |  | — | — |
+| `snow-gem` | `SnowGem` | — |  | — | — |
+| `snow-ice` | `SnowIce` | — |  | — | — |
+| `snow-ice` | `SnowIce` | — |  | — | — |
+| `snow-ring` | `SnowRing` | — |  | — | — |
+| `snow-ring` | `SnowRing` | — |  | — | — |
+| `snow-spin` | `SnowSpin` | — |  | — | — |
+| `snow-spin` | `SnowSpin` | — |  | — | — |
+| `snow-star` | `SnowStar` | — |  | — | — |
+| `snow-star` | `SnowStar` | — |  | — | — |
+| `snowflake` | `Snowflake` | — |  | — | — |
+| `snowflake` | `Snowflake` | — |  | — | — |
+| `sun` | `Sun` | — |  | — | — |
+| `sun` | `Sun` | — |  | — | — |
+| `sun-fog` | `SunFog` | — |  | — | — |
+| `sun-fog` | `SunFog` | — |  | — | — |
+| `tree` | `Tree` | — |  | — | — |
+| `tree` | `Tree` | — |  | — | — |
+| `tree-alt` | `TreeAlt` | — |  | — | — |
+| `tree-alt` | `TreeAlt` | — |  | — | — |
+| `tree-pine` | `TreePine` | — |  | — | — |
+| `tree-pine` | `TreePine` | — |  | — | — |
+| `wind` | `Wind` | — |  | — | — |
+| `wind` | `Wind` | — |  | — | — |
+| `wind-2` | `Wind2` | — |  | — | — |
+| `wind-2` | `Wind2` | — |  | — | — |
+
+### `people` (48)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `enhance-user-ai` | `EnhanceUserAi` | — |  | — | — |
+| `enhance-user-ai` | `EnhanceUserAi` | — |  | — | — |
+| `man` | `Man` | — |  | — | — |
+| `man` | `Man` | — |  | — | — |
+| `people` | `People` | — |  | — | — |
+| `people` | `People` | — |  | — | — |
+| `personalcard` | `Personalcard` | — |  | — | — |
+| `personalcard` | `Personalcard` | — |  | — | — |
+| `profile` | `Profile` | — |  | — | — |
+| `profile` | `Profile` | — |  | — | — |
+| `profile-add` | `ProfileAdd` | — |  | — | — |
+| `profile-add` | `ProfileAdd` | — |  | — | — |
+| `profile-circle` | `ProfileCircle` | — |  | — | — |
+| `profile-circle` | `ProfileCircle` | — |  | — | — |
+| `profile-delete` | `ProfileDelete` | — |  | — | — |
+| `profile-delete` | `ProfileDelete` | — |  | — | — |
+| `profile-pair` | `ProfilePair` | — |  | — | — |
+| `profile-pair` | `ProfilePair` | — |  | — | — |
+| `profile-remove` | `ProfileRemove` | — |  | — | — |
+| `profile-remove` | `ProfileRemove` | — |  | — | — |
+| `profile-tick` | `ProfileTick` | — |  | — | — |
+| `profile-tick` | `ProfileTick` | — |  | — | — |
+| `teacher` | `Teacher` | — |  | — | — |
+| `teacher` | `Teacher` | — |  | — | — |
+| `user` | `User` | P0 |  | `person` | account, profile, member |
+| `user` | `User` | P0 |  | `person` | account, profile, member |
+| `user-add` | `UserAdd` | — |  | — | — |
+| `user-add` | `UserAdd` | — |  | — | — |
+| `user-circle-add` | `UserCircleAdd` | — |  | — | — |
+| `user-circle-add` | `UserCircleAdd` | — |  | — | — |
+| `user-edit` | `UserEdit` | — |  | — | — |
+| `user-edit` | `UserEdit` | — |  | — | — |
+| `user-hexagon` | `UserHexagon` | — |  | — | — |
+| `user-hexagon` | `UserHexagon` | — |  | — | — |
+| `user-minus` | `UserMinus` | — |  | — | — |
+| `user-minus` | `UserMinus` | — |  | — | — |
+| `user-remove` | `UserRemove` | — |  | — | — |
+| `user-remove` | `UserRemove` | — |  | — | — |
+| `user-search` | `UserSearch` | — |  | — | — |
+| `user-search` | `UserSearch` | — |  | — | — |
+| `user-square` | `UserSquare` | — |  | — | — |
+| `user-square` | `UserSquare` | — |  | — | — |
+| `user-tag` | `UserTag` | — |  | — | — |
+| `user-tag` | `UserTag` | — |  | — | — |
+| `user-tick` | `UserTick` | — |  | — | — |
+| `user-tick` | `UserTick` | — |  | — | — |
+| `woman` | `Woman` | — |  | — | — |
+| `woman` | `Woman` | — |  | — | — |
+
+### `seasonal` (232)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `angel` | `Angel` | — |  | — | — |
+| `angel` | `Angel` | — |  | — | — |
+| `angel-alt` | `AngelAlt` | — |  | — | — |
+| `angel-alt` | `AngelAlt` | — |  | — | — |
+| `ball-baseball` | `BallBaseball` | — |  | — | — |
+| `ball-baseball` | `BallBaseball` | — |  | — | — |
+| `ball-basketball` | `BallBasketball` | — |  | — | — |
+| `ball-basketball` | `BallBasketball` | — |  | — | — |
+| `ball-billiards` | `BallBilliards` | — |  | — | — |
+| `ball-billiards` | `BallBilliards` | — |  | — | — |
+| `ball-bowling` | `BallBowling` | — |  | — | — |
+| `ball-bowling` | `BallBowling` | — |  | — | — |
+| `ball-cricket` | `BallCricket` | — |  | — | — |
+| `ball-cricket` | `BallCricket` | — |  | — | — |
+| `ball-dodgeball` | `BallDodgeball` | — |  | — | — |
+| `ball-dodgeball` | `BallDodgeball` | — |  | — | — |
+| `ball-field-hockey` | `BallFieldHockey` | — |  | — | — |
+| `ball-field-hockey` | `BallFieldHockey` | — |  | — | — |
+| `ball-football` | `BallFootball` | — |  | — | — |
+| `ball-football` | `BallFootball` | — |  | — | — |
+| `ball-golf` | `BallGolf` | — |  | — | — |
+| `ball-golf` | `BallGolf` | — |  | — | — |
+| `ball-handball` | `BallHandball` | — |  | — | — |
+| `ball-handball` | `BallHandball` | — |  | — | — |
+| `ball-hurling` | `BallHurling` | — |  | — | — |
+| `ball-hurling` | `BallHurling` | — |  | — | — |
+| `ball-kabaddi` | `BallKabaddi` | — |  | — | — |
+| `ball-kabaddi` | `BallKabaddi` | — |  | — | — |
+| `ball-lacrosse` | `BallLacrosse` | — |  | — | — |
+| `ball-lacrosse` | `BallLacrosse` | — |  | — | — |
+| `ball-padel` | `BallPadel` | — |  | — | — |
+| `ball-padel` | `BallPadel` | — |  | — | — |
+| `ball-petanque` | `BallPetanque` | — |  | — | — |
+| `ball-petanque` | `BallPetanque` | — |  | — | — |
+| `ball-polo` | `BallPolo` | — |  | — | — |
+| `ball-polo` | `BallPolo` | — |  | — | — |
+| `ball-racquetball` | `BallRacquetball` | — |  | — | — |
+| `ball-racquetball` | `BallRacquetball` | — |  | — | — |
+| `ball-rugby` | `BallRugby` | — |  | — | — |
+| `ball-rugby` | `BallRugby` | — |  | — | — |
+| `ball-shuttlecock` | `BallShuttlecock` | — |  | — | — |
+| `ball-shuttlecock` | `BallShuttlecock` | — |  | — | — |
+| `ball-soccer` | `BallSoccer` | — |  | — | — |
+| `ball-soccer` | `BallSoccer` | — |  | — | — |
+| `ball-squash` | `BallSquash` | — |  | — | — |
+| `ball-squash` | `BallSquash` | — |  | — | — |
+| `ball-table-tennis` | `BallTableTennis` | — |  | — | — |
+| `ball-table-tennis` | `BallTableTennis` | — |  | — | — |
+| `ball-tennis` | `BallTennis` | — |  | — | — |
+| `ball-tennis` | `BallTennis` | — |  | — | — |
+| `ball-volleyball` | `BallVolleyball` | — |  | — | — |
+| `ball-volleyball` | `BallVolleyball` | — |  | — | — |
+| `ball-water-polo` | `BallWaterPolo` | — |  | — | — |
+| `ball-water-polo` | `BallWaterPolo` | — |  | — | — |
+| `balloon` | `Balloon` | — |  | — | — |
+| `balloon` | `Balloon` | — |  | — | — |
+| `booking-snow` | `BookingSnow` | — |  | — | — |
+| `booking-snow` | `BookingSnow` | — |  | — | — |
+| `cake` | `Cake` | — |  | — | — |
+| `cake` | `Cake` | — |  | — | — |
+| `cake-4` | `Cake4` | — |  | — | — |
+| `cake-4` | `Cake4` | — |  | — | — |
+| `calendar-christmas` | `CalendarChristmas` | — |  | — | — |
+| `calendar-christmas` | `CalendarChristmas` | — |  | — | — |
+| `calendar-tree` | `CalendarTree` | — |  | — | — |
+| `calendar-tree` | `CalendarTree` | — |  | — | — |
+| `candy` | `Candy` | — |  | — | — |
+| `candy` | `Candy` | — |  | — | — |
+| `candy-alt` | `CandyAlt` | — |  | — | — |
+| `candy-alt` | `CandyAlt` | — |  | — | — |
+| `candy-cane` | `CandyCane` | — |  | — | — |
+| `candy-cane` | `CandyCane` | — |  | — | — |
+| `candy-cane-alt` | `CandyCaneAlt` | — |  | — | — |
+| `candy-cane-alt` | `CandyCaneAlt` | — |  | — | — |
+| `candy-cane-loop` | `CandyCaneLoop` | — |  | — | — |
+| `candy-cane-loop` | `CandyCaneLoop` | — |  | — | — |
+| `candy-cane-twist` | `CandyCaneTwist` | — |  | — | — |
+| `candy-cane-twist` | `CandyCaneTwist` | — |  | — | — |
+| `candy-round` | `CandyRound` | — |  | — | — |
+| `candy-round` | `CandyRound` | — |  | — | — |
+| `candy-twist` | `CandyTwist` | — |  | — | — |
+| `candy-twist` | `CandyTwist` | — |  | — | — |
+| `christmas-bell` | `ChristmasBell` | — |  | — | — |
+| `christmas-bell` | `ChristmasBell` | — |  | — | — |
+| `christmas-bow` | `ChristmasBow` | — |  | — | — |
+| `christmas-bow` | `ChristmasBow` | — |  | — | — |
+| `christmas-card` | `ChristmasCard` | — |  | — | — |
+| `christmas-card` | `ChristmasCard` | — |  | — | — |
+| `christmas-house` | `ChristmasHouse` | — |  | — | — |
+| `christmas-house` | `ChristmasHouse` | — |  | — | — |
+| `christmas-shoes` | `ChristmasShoes` | — |  | — | — |
+| `christmas-shoes` | `ChristmasShoes` | — |  | — | — |
+| `christmas-sweater` | `ChristmasSweater` | — |  | — | — |
+| `christmas-sweater` | `ChristmasSweater` | — |  | — | — |
+| `christmas-tree` | `ChristmasTree` | — |  | — | — |
+| `christmas-tree` | `ChristmasTree` | — |  | — | — |
+| `christmas-wreath` | `ChristmasWreath` | — |  | — | — |
+| `christmas-wreath` | `ChristmasWreath` | — |  | — | — |
+| `decor` | `Decor` | — |  | — | — |
+| `decor` | `Decor` | — |  | — | — |
+| `email-snow` | `EmailSnow` | — |  | — | — |
+| `email-snow` | `EmailSnow` | — |  | — | — |
+| `ghost` | `Ghost` | — |  | — | — |
+| `ghost` | `Ghost` | — |  | — | — |
+| `gift` | `Gift` | — |  | — | — |
+| `gift` | `Gift` | — |  | — | — |
+| `gift-3` | `Gift3` | — |  | — | — |
+| `gift-5` | `Gift5` | — |  | — | — |
+| `gift-alt` | `GiftAlt` | — |  | — | — |
+| `gift-bow` | `GiftBow` | — |  | — | — |
+| `gift-bow` | `GiftBow` | — |  | — | — |
+| `gift-box` | `GiftBox` | — |  | — | — |
+| `gift-box` | `GiftBox` | — |  | — | — |
+| `gift-circle` | `GiftCircle` | — |  | — | — |
+| `gift-cupcake` | `GiftCupcake` | — |  | — | — |
+| `gift-cupcake` | `GiftCupcake` | — |  | — | — |
+| `gift-fancy` | `GiftFancy` | — |  | — | — |
+| `gift-fancy` | `GiftFancy` | — |  | — | — |
+| `gift-heart` | `GiftHeart` | — |  | — | — |
+| `gift-heart` | `GiftHeart` | — |  | — | — |
+| `gift-lid` | `GiftLid` | — |  | — | — |
+| `gift-lid` | `GiftLid` | — |  | — | — |
+| `gift-open` | `GiftOpen` | — |  | — | — |
+| `gift-open` | `GiftOpen` | — |  | — | — |
+| `gift-ribbon` | `GiftRibbon` | — |  | — | — |
+| `gift-ribbon` | `GiftRibbon` | — |  | — | — |
+| `gift-round` | `GiftRound` | — |  | — | — |
+| `gift-round` | `GiftRound` | — |  | — | — |
+| `gift-square` | `GiftSquare` | — |  | — | — |
+| `gift-square` | `GiftSquare` | — |  | — | — |
+| `gift-stack` | `GiftStack` | — |  | — | — |
+| `gift-stack` | `GiftStack` | — |  | — | — |
+| `gift-star` | `GiftStar` | — |  | — | — |
+| `gift-star` | `GiftStar` | — |  | — | — |
+| `gift-tag` | `GiftTag` | — |  | — | — |
+| `gift-tag` | `GiftTag` | — |  | — | — |
+| `gift-wrap` | `GiftWrap` | — |  | — | — |
+| `gift-wrap` | `GiftWrap` | — |  | — | — |
+| `hanging-ornament` | `HangingOrnament` | — |  | — | — |
+| `hanging-ornament` | `HangingOrnament` | — |  | — | — |
+| `hat` | `Hat` | — |  | — | — |
+| `hat` | `Hat` | — |  | — | — |
+| `hat-3` | `Hat3` | — |  | — | — |
+| `hat-alt` | `HatAlt` | — |  | — | — |
+| `ho-ho-ho` | `HoHoHo` | — |  | — | — |
+| `ho-ho-ho` | `HoHoHo` | — |  | — | — |
+| `holiday-icons` | `HolidayIcons` | — |  | — | — |
+| `holiday-icons` | `HolidayIcons` | — |  | — | — |
+| `horseshoe` | `Horseshoe` | — |  | — | — |
+| `horseshoe` | `Horseshoe` | — |  | — | — |
+| `lamp-christmas` | `LampChristmas` | — |  | — | — |
+| `lamp-christmas` | `LampChristmas` | — |  | — | — |
+| `lantern-star` | `LanternStar` | — |  | — | — |
+| `lantern-star` | `LanternStar` | — |  | — | — |
+| `lollipop` | `Lollipop` | — |  | — | — |
+| `lollipop` | `Lollipop` | — |  | — | — |
+| `mistletoe` | `Mistletoe` | — |  | — | — |
+| `mistletoe` | `Mistletoe` | — |  | — | — |
+| `mitten` | `Mitten` | — |  | — | — |
+| `mitten` | `Mitten` | — |  | — | — |
+| `party-hat` | `PartyHat` | — |  | — | — |
+| `party-hat` | `PartyHat` | — |  | — | — |
+| `party-popper` | `PartyPopper` | — |  | — | — |
+| `party-popper` | `PartyPopper` | — |  | — | — |
+| `reindeer-antlers` | `ReindeerAntlers` | — |  | — | — |
+| `reindeer-antlers` | `ReindeerAntlers` | — |  | — | — |
+| `reindeer-arch` | `ReindeerArch` | — |  | — | — |
+| `reindeer-arch` | `ReindeerArch` | — |  | — | — |
+| `reindeer-face` | `ReindeerFace` | — |  | — | — |
+| `reindeer-face` | `ReindeerFace` | — |  | — | — |
+| `santa` | `Santa` | — |  | — | — |
+| `santa` | `Santa` | — |  | — | — |
+| `santa-alt` | `SantaAlt` | — |  | — | — |
+| `santa-alt` | `SantaAlt` | — |  | — | — |
+| `santa-face` | `SantaFace` | — |  | — | — |
+| `santa-face` | `SantaFace` | — |  | — | — |
+| `santa-hat` | `SantaHat` | — |  | — | — |
+| `santa-hat` | `SantaHat` | — |  | — | — |
+| `santa-mouth` | `SantaMouth` | — |  | — | — |
+| `santa-mouth` | `SantaMouth` | — |  | — | — |
+| `shop-snow` | `ShopSnow` | — |  | — | — |
+| `shop-snow` | `ShopSnow` | — |  | — | — |
+| `ski` | `Ski` | — |  | — | — |
+| `ski` | `Ski` | — |  | — | — |
+| `sleigh` | `Sleigh` | — |  | — | — |
+| `sleigh` | `Sleigh` | — |  | — | — |
+| `sleigh-alt` | `SleighAlt` | — |  | — | — |
+| `sleigh-alt` | `SleighAlt` | — |  | — | — |
+| `snowman` | `Snowman` | — |  | — | — |
+| `snowman` | `Snowman` | — |  | — | — |
+| `snowman-hat` | `SnowmanHat` | — |  | — | — |
+| `snowman-hat` | `SnowmanHat` | — |  | — | — |
+| `snowman-scarf` | `SnowmanScarf` | — |  | — | — |
+| `snowman-scarf` | `SnowmanScarf` | — |  | — | — |
+| `snowman-smile` | `SnowmanSmile` | — |  | — | — |
+| `snowman-smile` | `SnowmanSmile` | — |  | — | — |
+| `snowman-tall` | `SnowmanTall` | — |  | — | — |
+| `snowman-tall` | `SnowmanTall` | — |  | — | — |
+| `snowman-wave` | `SnowmanWave` | — |  | — | — |
+| `snowman-wave` | `SnowmanWave` | — |  | — | — |
+| `socks` | `Socks` | — |  | — | — |
+| `socks` | `Socks` | — |  | — | — |
+| `socks-2` | `Socks2` | — |  | — | — |
+| `socks-pair` | `SocksPair` | — |  | — | — |
+| `sparkler` | `Sparkler` | — |  | — | — |
+| `sparkler` | `Sparkler` | — |  | — | — |
+| `star-garland` | `StarGarland` | — |  | — | — |
+| `star-garland` | `StarGarland` | — |  | — | — |
+| `stick` | `Stick` | — |  | — | — |
+| `stick` | `Stick` | — |  | — | — |
+| `stick-cross` | `StickCross` | — |  | — | — |
+| `stick-cross` | `StickCross` | — |  | — | — |
+| `stick-wave` | `StickWave` | — |  | — | — |
+| `stick-wave` | `StickWave` | — |  | — | — |
+| `toy` | `Toy` | — |  | — | — |
+| `toy` | `Toy` | — |  | — | — |
+| `toy-alt` | `ToyAlt` | — |  | — | — |
+| `toy-alt` | `ToyAlt` | — |  | — | — |
+| `toy-car` | `ToyCar` | — |  | — | — |
+| `toy-car` | `ToyCar` | — |  | — | — |
+| `toy-drum` | `ToyDrum` | — |  | — | — |
+| `toy-drum` | `ToyDrum` | — |  | — | — |
+| `toy-plane` | `ToyPlane` | — |  | — | — |
+| `toy-plane` | `ToyPlane` | — |  | — | — |
+| `toy-robot` | `ToyRobot` | — |  | — | — |
+| `toy-robot` | `ToyRobot` | — |  | — | — |
+| `winter-boots` | `WinterBoots` | — |  | — | — |
+| `winter-boots` | `WinterBoots` | — |  | — | — |
+| `winter-mitten` | `WinterMitten` | — |  | — | — |
+| `winter-mitten` | `WinterMitten` | — |  | — | — |
+| `winter-pattern` | `WinterPattern` | — |  | — | — |
+| `winter-pattern` | `WinterPattern` | — |  | — | — |
+
+### `security` (54)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `finger-circle` | `FingerCircle` | — |  | — | — |
+| `finger-circle` | `FingerCircle` | — |  | — | — |
+| `finger-scan` | `FingerScan` | — |  | `passkey` `webauthn` | biometric, fingerprint, touch-id |
+| `finger-scan` | `FingerScan` | — |  | `passkey` `webauthn` | biometric, fingerprint, touch-id |
+| `key` | `Key` | — |  | — | — |
+| `key` | `Key` | — |  | — | — |
+| `key-square` | `KeySquare` | — |  | — | — |
+| `key-square` | `KeySquare` | — |  | — | — |
+| `keyboard` | `Keyboard` | — |  | — | — |
+| `keyboard` | `Keyboard` | — |  | — | — |
+| `keyboard-open` | `KeyboardOpen` | — |  | — | — |
+| `keyboard-open` | `KeyboardOpen` | — |  | — | — |
+| `lock` | `Lock` | P0 |  | — | security, private, locked, padlock |
+| `lock` | `Lock` | P0 |  | — | security, private, locked, padlock |
+| `lock-circle` | `LockCircle` | — |  | — | — |
+| `lock-circle` | `LockCircle` | — |  | — | — |
+| `lock-slash` | `LockSlash` | — |  | — | — |
+| `lock-slash` | `LockSlash` | — |  | — | — |
+| `padlock` | `Padlock` | — |  | — | — |
+| `padlock` | `Padlock` | — |  | — | — |
+| `password-check` | `PasswordCheck` | — |  | — | — |
+| `password-check` | `PasswordCheck` | — |  | — | — |
+| `safe-home` | `SafeHome` | — |  | — | — |
+| `safe-home` | `SafeHome` | — |  | — | — |
+| `security` | `Security` | — |  | — | — |
+| `security` | `Security` | — |  | — | — |
+| `security-card` | `SecurityCard` | — |  | — | — |
+| `security-card` | `SecurityCard` | — |  | — | — |
+| `security-safe` | `SecuritySafe` | — |  | — | — |
+| `security-safe` | `SecuritySafe` | — |  | — | — |
+| `security-time` | `SecurityTime` | — |  | — | — |
+| `security-time` | `SecurityTime` | — |  | — | — |
+| `security-user` | `SecurityUser` | — |  | — | — |
+| `security-user` | `SecurityUser` | — |  | — | — |
+| `shield` | `Shield` | P0 |  | — | security, protect, safe |
+| `shield` | `Shield` | P0 |  | — | security, protect, safe |
+| `shield-cross` | `ShieldCross` | — |  | — | — |
+| `shield-cross` | `ShieldCross` | — |  | — | — |
+| `shield-search` | `ShieldSearch` | — |  | — | — |
+| `shield-search` | `ShieldSearch` | — |  | — | — |
+| `shield-security` | `ShieldSecurity` | — |  | — | — |
+| `shield-security` | `ShieldSecurity` | — |  | — | — |
+| `shield-slash` | `ShieldSlash` | — |  | — | — |
+| `shield-slash` | `ShieldSlash` | — |  | — | — |
+| `shield-tick` | `ShieldTick` | P0 |  | `verified` `shield-check` | security, protected, safe, trusted |
+| `shield-tick` | `ShieldTick` | P0 |  | `verified` `shield-check` | security, protected, safe, trusted |
+| `smart-lock-ai` | `SmartLockAi` | — |  | — | — |
+| `smart-lock-ai` | `SmartLockAi` | — |  | — | — |
+| `strongbox` | `Strongbox` | — |  | — | — |
+| `strongbox` | `Strongbox` | — |  | — | — |
+| `strongbox-2` | `Strongbox2` | — |  | — | — |
+| `strongbox-2` | `Strongbox2` | — |  | — | — |
+| `unlock` | `Unlock` | — |  | `lock-open` | open, unlocked, security |
+| `unlock` | `Unlock` | — |  | `lock-open` | open, unlocked, security |
+
+### `shopping` (42)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `bag` | `Bag` | — |  | — | — |
+| `bag` | `Bag` | — |  | — | — |
+| `bag-alt` | `BagAlt` | — |  | — | — |
+| `bag-alt` | `BagAlt` | — |  | — | — |
+| `bag-cross` | `BagCross` | — |  | — | — |
+| `bag-cross` | `BagCross` | — |  | — | — |
+| `bag-cross-alt` | `BagCrossAlt` | — |  | — | — |
+| `bag-cross-alt` | `BagCrossAlt` | — |  | — | — |
+| `bag-happy` | `BagHappy` | — |  | — | — |
+| `bag-happy` | `BagHappy` | — |  | — | — |
+| `bag-tick` | `BagTick` | — |  | — | — |
+| `bag-tick` | `BagTick` | — |  | — | — |
+| `bag-tick-alt` | `BagTickAlt` | — |  | — | — |
+| `bag-tick-alt` | `BagTickAlt` | — |  | — | — |
+| `bag-timer` | `BagTimer` | — |  | — | — |
+| `bag-timer` | `BagTimer` | — |  | — | — |
+| `gift-bag` | `GiftBag` | — |  | — | — |
+| `gift-bag` | `GiftBag` | — |  | — | — |
+| `shop` | `Shop` | — |  | — | — |
+| `shop` | `Shop` | — |  | — | — |
+| `shop-add` | `ShopAdd` | — |  | — | — |
+| `shop-add` | `ShopAdd` | — |  | — | — |
+| `shop-gift` | `ShopGift` | — |  | — | — |
+| `shop-gift` | `ShopGift` | — |  | — | — |
+| `shop-remove` | `ShopRemove` | — |  | — | — |
+| `shop-remove` | `ShopRemove` | — |  | — | — |
+| `shopping-bag` | `ShoppingBag` | — |  | — | — |
+| `shopping-bag` | `ShoppingBag` | — |  | — | — |
+| `shopping-cart` | `ShoppingCart` | — |  | — | — |
+| `shopping-cart` | `ShoppingCart` | — |  | — | — |
+| `smart-bag` | `SmartBag` | — |  | — | — |
+| `smart-bag` | `SmartBag` | — |  | — | — |
+| `ticket` | `Ticket` | — |  | — | — |
+| `ticket` | `Ticket` | — |  | — | — |
+| `ticket-alt` | `TicketAlt` | — |  | — | — |
+| `ticket-alt` | `TicketAlt` | — |  | — | — |
+| `ticket-discount` | `TicketDiscount` | — |  | — | — |
+| `ticket-discount` | `TicketDiscount` | — |  | — | — |
+| `ticket-expired` | `TicketExpired` | — |  | — | — |
+| `ticket-expired` | `TicketExpired` | — |  | — | — |
+| `ticket-star` | `TicketStar` | — |  | — | — |
+| `ticket-star` | `TicketStar` | — |  | — | — |
+
+### `social` (50)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `android` | `Android` | — |  | — | — |
+| `android` | `Android` | — |  | — | — |
+| `apple` | `Apple` | — |  | — | — |
+| `apple` | `Apple` | — |  | — | — |
+| `behance` | `Behance` | — |  | — | — |
+| `behance` | `Behance` | — |  | — | — |
+| `blogger` | `Blogger` | — |  | — | — |
+| `blogger` | `Blogger` | — |  | — | — |
+| `bootstrap` | `Bootstrap` | — |  | — | — |
+| `bootstrap` | `Bootstrap` | — |  | — | — |
+| `chrome` | `Chrome` | — |  | — | — |
+| `chrome` | `Chrome` | — |  | — | — |
+| `dribbble` | `Dribbble` | — |  | — | — |
+| `dribbble` | `Dribbble` | — |  | — | — |
+| `facebook` | `Facebook` | — |  | — | — |
+| `facebook` | `Facebook` | — |  | — | — |
+| `google` | `Google` | — |  | — | — |
+| `google` | `Google` | — |  | — | — |
+| `google-drive` | `GoogleDrive` | — |  | — | — |
+| `google-drive` | `GoogleDrive` | — |  | — | — |
+| `google-play` | `GooglePlay` | — |  | — | — |
+| `google-play` | `GooglePlay` | — |  | — | — |
+| `html-3` | `Html3` | — |  | — | — |
+| `html-3` | `Html3` | — |  | — | — |
+| `html-5` | `Html5` | — |  | — | — |
+| `html-5` | `Html5` | — |  | — | — |
+| `instagram` | `Instagram` | — |  | — | — |
+| `instagram` | `Instagram` | — |  | — | — |
+| `javascript` | `Javascript` | — |  | — | — |
+| `javascript` | `Javascript` | — |  | — | — |
+| `js` | `Js` | — |  | — | — |
+| `js` | `Js` | — |  | — | — |
+| `python` | `Python` | — |  | — | — |
+| `python` | `Python` | — |  | — | — |
+| `shutterstock` | `Shutterstock` | — |  | — | — |
+| `shutterstock` | `Shutterstock` | — |  | — | — |
+| `slack` | `Slack` | — |  | — | — |
+| `slack` | `Slack` | — |  | — | — |
+| `snapchat` | `Snapchat` | — |  | — | — |
+| `snapchat` | `Snapchat` | — |  | — | — |
+| `trello` | `Trello` | — |  | — | — |
+| `trello` | `Trello` | — |  | — | — |
+| `ui8` | `Ui8` | — |  | — | — |
+| `ui8` | `Ui8` | — |  | — | — |
+| `vuesax` | `Vuesax` | — |  | — | — |
+| `vuesax` | `Vuesax` | — |  | — | — |
+| `youtube` | `Youtube` | — |  | — | — |
+| `youtube` | `Youtube` | — |  | — | — |
+| `zipline` | `Zipline` | — |  | — | — |
+| `zipline` | `Zipline` | — |  | — | — |
+
+### `time` (42)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `alarm` | `Alarm` | — |  | — | — |
+| `alarm` | `Alarm` | — |  | — | — |
+| `calendar` | `Calendar` | — |  | — | — |
+| `calendar` | `Calendar` | — |  | — | — |
+| `calendar-add` | `CalendarAdd` | — |  | — | — |
+| `calendar-add` | `CalendarAdd` | — |  | — | — |
+| `calendar-alt` | `CalendarAlt` | — |  | — | — |
+| `calendar-alt` | `CalendarAlt` | — |  | — | — |
+| `calendar-circle` | `CalendarCircle` | — |  | — | — |
+| `calendar-circle` | `CalendarCircle` | — |  | — | — |
+| `calendar-date` | `CalendarDate` | — |  | — | — |
+| `calendar-date` | `CalendarDate` | — |  | — | — |
+| `calendar-edit` | `CalendarEdit` | — |  | — | — |
+| `calendar-edit` | `CalendarEdit` | — |  | — | — |
+| `calendar-grid` | `CalendarGrid` | — |  | — | — |
+| `calendar-grid` | `CalendarGrid` | — |  | — | — |
+| `calendar-list` | `CalendarList` | — |  | — | — |
+| `calendar-list` | `CalendarList` | — |  | — | — |
+| `calendar-month` | `CalendarMonth` | — |  | — | — |
+| `calendar-month` | `CalendarMonth` | — |  | — | — |
+| `calendar-remove` | `CalendarRemove` | — |  | — | — |
+| `calendar-remove` | `CalendarRemove` | — |  | — | — |
+| `calendar-search` | `CalendarSearch` | — |  | — | — |
+| `calendar-search` | `CalendarSearch` | — |  | — | — |
+| `calendar-tick` | `CalendarTick` | — |  | — | — |
+| `calendar-tick` | `CalendarTick` | — |  | — | — |
+| `clock` | `Clock` | — |  | — | — |
+| `clock` | `Clock` | — |  | — | — |
+| `clock-alt` | `ClockAlt` | — |  | — | — |
+| `clock-alt` | `ClockAlt` | — |  | — | — |
+| `hourglass` | `Hourglass` | — |  | — | — |
+| `hourglass` | `Hourglass` | — |  | — | — |
+| `timer` | `Timer` | — |  | — | — |
+| `timer` | `Timer` | — |  | — | — |
+| `timer-pause` | `TimerPause` | — |  | — | — |
+| `timer-pause` | `TimerPause` | — |  | — | — |
+| `timer-start` | `TimerStart` | — |  | — | — |
+| `timer-start` | `TimerStart` | — |  | — | — |
+| `watch` | `Watch` | — |  | — | — |
+| `watch` | `Watch` | — |  | — | — |
+| `watch-status` | `WatchStatus` | — |  | — | — |
+| `watch-status` | `WatchStatus` | — |  | — | — |
+
+### `travel` (52)
+
+| Icon | Component | Pri | RTL | Aliases | Tags |
+|:--|:--|:--:|:--:|:--|:--|
+| `airplane` | `Airplane` | — |  | — | — |
+| `airplane` | `Airplane` | — |  | — | — |
+| `airplane-square` | `AirplaneSquare` | — |  | — | — |
+| `airplane-square` | `AirplaneSquare` | — |  | — | — |
+| `bus` | `Bus` | — |  | — | — |
+| `bus` | `Bus` | — |  | — | — |
+| `car` | `Car` | — |  | — | — |
+| `car` | `Car` | — |  | — | — |
+| `card` | `Card` | — |  | — | — |
+| `card` | `Card` | — |  | — | — |
+| `card-add` | `CardAdd` | — |  | — | — |
+| `card-add` | `CardAdd` | — |  | — | — |
+| `card-coin` | `CardCoin` | — |  | — | — |
+| `card-coin` | `CardCoin` | — |  | — | — |
+| `card-edit` | `CardEdit` | — |  | — | — |
+| `card-edit` | `CardEdit` | — |  | — | — |
+| `card-pos` | `CardPos` | — |  | — | — |
+| `card-pos` | `CardPos` | — |  | — | — |
+| `card-receive` | `CardReceive` | — |  | — | — |
+| `card-receive` | `CardReceive` | — |  | — | — |
+| `card-remove` | `CardRemove` | — |  | — | — |
+| `card-remove` | `CardRemove` | — |  | — | — |
+| `card-remove-alt` | `CardRemoveAlt` | — |  | — | — |
+| `card-remove-alt` | `CardRemoveAlt` | — |  | — | — |
+| `card-send` | `CardSend` | — |  | — | — |
+| `card-send` | `CardSend` | — |  | — | — |
+| `card-slash` | `CardSlash` | — |  | — | — |
+| `card-slash` | `CardSlash` | — |  | — | — |
+| `card-tick` | `CardTick` | — |  | — | — |
+| `card-tick` | `CardTick` | — |  | — | — |
+| `card-tick-alt` | `CardTickAlt` | — |  | — | — |
+| `card-tick-alt` | `CardTickAlt` | — |  | — | — |
+| `driving` | `Driving` | — |  | — | — |
+| `driving` | `Driving` | — |  | — | — |
+| `gas-station` | `GasStation` | — |  | — | — |
+| `gas-station` | `GasStation` | — |  | — | — |
+| `ship` | `Ship` | — |  | — | — |
+| `ship` | `Ship` | — |  | — | — |
+| `smart-car` | `SmartCar` | — |  | — | — |
+| `smart-car` | `SmartCar` | — |  | — | — |
+| `truck` | `Truck` | — |  | — | — |
+| `truck` | `Truck` | — |  | — | — |
+| `truck-fast` | `TruckFast` | — |  | — | — |
+| `truck-fast` | `TruckFast` | — |  | — | — |
+| `truck-remove` | `TruckRemove` | — |  | — | — |
+| `truck-remove` | `TruckRemove` | — |  | — | — |
+| `truck-tick` | `TruckTick` | — |  | — | — |
+| `truck-tick` | `TruckTick` | — |  | — | — |
+| `truck-time` | `TruckTime` | — |  | — | — |
+| `truck-time` | `TruckTime` | — |  | — | — |
+| `wing-wing` | `WingWing` | — |  | — | — |
+| `wing-wing-fly-flight-aircraft-aerodynamics-wingspan` | `WingWingFlyFlightAircraftAerodynamicsWingspan` | — |  | — | — |

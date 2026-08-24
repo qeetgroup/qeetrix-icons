@@ -62,21 +62,23 @@ const note = (check, message) => findings.push({ check, message });
 // Two icons whose tag sets overlap heavily are candidates for being one icon
 // plus an alias. Jaccard rather than raw overlap, so a long tag list is not
 // penalised for being thorough.
-for (let i = 0; i < entries.length; i++) {
-  for (let j = i + 1; j < entries.length; j++) {
+// Deduplicate entries by name first: the same icon may appear as outline+solid.
+const uniqueEntries = [...new Map(entries.map((e) => [e.name, e])).values()];
+for (let i = 0; i < uniqueEntries.length; i++) {
+  for (let j = i + 1; j < uniqueEntries.length; j++) {
     // Counterpart pairs share tags by design: `align-left`/`align-right` describe
     // the same operation in opposite directions, and `plus-circle`/`plus-square`
     // the same action in two shapes. Flagging them is noise.
-    if (areCounterparts(entries[i].name, entries[j].name)) continue;
-    const a = new Set(metadata[entries[i].name]?.tags ?? []);
-    const b = new Set(metadata[entries[j].name]?.tags ?? []);
+    if (areCounterparts(uniqueEntries[i].name, uniqueEntries[j].name)) continue;
+    const a = new Set(metadata[uniqueEntries[i].name]?.tags ?? []);
+    const b = new Set(metadata[uniqueEntries[j].name]?.tags ?? []);
     if (a.size < 4 || b.size < 4) continue;
     const shared = [...a].filter((t) => b.has(t));
     const union = new Set([...a, ...b]).size;
     if (shared.length / union >= 0.6) {
       note(
         "duplicate-semantics",
-        `"${entries[i].name}" and "${entries[j].name}" share ${shared.length}/${union} tags (${shared.join(", ")}) — should one be an alias of the other?`,
+        `"${uniqueEntries[i].name}" and "${uniqueEntries[j].name}" share ${shared.length}/${union} tags (${shared.join(", ")}) — should one be an alias of the other?`,
       );
     }
   }

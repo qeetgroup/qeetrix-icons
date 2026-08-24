@@ -24,7 +24,7 @@ For guidance on *using* these, see [usage.md](usage.md).
 
 ## Icon components
 
-**331 icon components**, each a named export from the package root:
+**1166 icon components**, each a named export from the package root:
 
 ```tsx
 import { Search, ShieldCheck } from "@qeetrix/icons";
@@ -81,32 +81,9 @@ nothing, which is the most common icon accessibility bug. Here it is unrepresent
 ## `IconBase`
 
 ```ts
-export declare const ICON_VIEW_BOX = "0 0 24 24";
-/** Default rendered size in px. */
-export declare const ICON_DEFAULT_SIZE = 24;
-/** Default stroke width. Matches the outline spec in docs/icon-guidelines.md. */
-export declare const ICON_DEFAULT_STROKE_WIDTH = 2;
-/**
- * The single `<svg>` shell every generated icon renders through.
- *
- * Centralising it means the grid, the stroke defaults and — most importantly —
- * the accessibility behaviour are defined exactly once rather than duplicated
- * into every generated component.
- *
- * Accessibility: an icon is decorative by default (`aria-hidden="true"`),
- * because that is overwhelmingly the common case — an icon beside a text label
- * adds nothing for a screen reader. Passing `aria-label` or `aria-labelledby`
- * flips it to a semantic graphic (`role="img"`, no `aria-hidden`). That
- * automatic flip is the point: it makes the silent failure mode — an element
- * that is both `aria-hidden` and labelled, so the label is never announced —
- * unrepresentable.
- *
- * `...rest` is spread last, so every default above remains overridable;
- * `aria-hidden={false}` opts out of the decorative default entirely.
- *
- * Server-safe: no hooks, no browser APIs, no `"use client"`.
- */
-export declare function IconBase({ size, strokeWidth, children, ...rest }: QeetrixIconProps): import("react").JSX.Element;
+export declare function IconBase({ size, strokeWidth, variant, children, ...rest }: QeetrixIconProps & {
+    variant?: IconVariant;
+}): import("react").JSX.Element;
 ```
 
 The shared `<svg>` shell every generated icon renders through. It is exported so you can build a
@@ -156,6 +133,7 @@ UI. See [usage.md](usage.md#the-metadata-entry-point) for why.
 | `name` | `string` | Canonical kebab-case name, matching the source filename. |
 | `component` | `string` | PascalCase name of the exported React component. |
 | `category` | `string` | Category, always derived from the `icons/` subdirectory. |
+| `variants` | `string[]` | Available style variants for this icon, e.g. `["outline", "solid"]`. |
 | `tags` | `string[]` | Free-form search keywords. |
 | `aliases` | `string[]` | Alternative names that should resolve to this icon in a search. |
 | `mirror` | `boolean` | Whether the glyph must be mirrored horizontally under `dir="rtl"`. |

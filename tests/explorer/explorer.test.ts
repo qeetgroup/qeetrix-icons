@@ -199,10 +199,10 @@ describe.skipIf(!built)("explorer", () => {
   describe("icon detail", () => {
     it("opens on click and shows the full metadata", () => {
       click("#reset");
-      const cell = q<HTMLElement>('.cell[data-name="shield-check"]');
+      const cell = q<HTMLElement>('.cell[data-name="shield-tick"]');
       cell?.dispatchEvent(new win.MouseEvent("click", { bubbles: true }));
-      expect(q("#dcomp")?.textContent).toBe("ShieldCheck");
-      expect(q("#dname")?.textContent).toBe("shield-check");
+      expect(q("#dcomp")?.textContent).toBe("ShieldTick");
+      expect(q("#dname")?.textContent).toBe("shield-tick");
       expect(q("#dcat")?.textContent).toBe("security");
       expect(q("#dpri")?.textContent).toMatch(/^P[0-3]$/);
       expect(q("#dmirror")?.textContent).toContain("not mirror");
@@ -215,9 +215,9 @@ describe.skipIf(!built)("explorer", () => {
     });
 
     it("offers copyable import, JSX and component name", () => {
-      expect(q("#dimport")?.textContent).toBe('import { ShieldCheck } from "@qeetrix/icons";');
-      expect(q("#dusage")?.textContent).toBe('<ShieldCheck size={20} aria-hidden="true" />');
-      expect(q("#dcname")?.textContent).toBe("ShieldCheck");
+      expect(q("#dimport")?.textContent).toBe('import { ShieldTick } from "@qeetrix/icons";');
+      expect(q("#dusage")?.textContent).toBe('<ShieldTick size={20} aria-hidden="true" />');
+      expect(q("#dcname")?.textContent).toBe("ShieldTick");
       expect(all("[data-copy]")).toHaveLength(3);
     });
 
@@ -226,7 +226,7 @@ describe.skipIf(!built)("explorer", () => {
     });
 
     it("deep-links the open icon into the URL", () => {
-      expect(win.location.hash).toContain("icon=shield-check");
+      expect(win.location.hash).toContain("icon=shield-tick");
     });
 
     it("lets a tag be clicked to search for it", () => {
@@ -271,7 +271,7 @@ describe.skipIf(!built)("explorer", () => {
       // The query matched, the category narrowed, and ranking put `lock` first.
       expect(restoredCells.length).toBeGreaterThan(0);
       expect(restoredCells[0]).toBe("lock");
-      expect(restoredCells).toContain("lock-open");
+      expect(restoredCells).toContain("unlock");
       restored.window.close();
     });
 
@@ -383,7 +383,7 @@ describe.skipIf(!built)("explorer", () => {
     it("stays a reasonable size for the whole catalogue", () => {
       const bytes = readFileSync(HTML).byteLength;
       expect(bytes).toBeGreaterThan(50_000);
-      expect(bytes).toBeLessThan(600_000);
+      expect(bytes).toBeLessThan(4_000_000);
     });
   });
 });
