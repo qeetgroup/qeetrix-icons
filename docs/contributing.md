@@ -4,12 +4,12 @@
 
 ```bash
 bun install
-bun run build          # generates src/icons/**, then compiles dist/
-bun run explorer       # then: open .explorer/index.html
+bun run generate                       # icons/**.svg → src/icons/**
+cd example && bun install && bun run dev   # look at the result
 ```
 
-That is the whole local setup. There is no dev server, no watch mode to leave running, and no
-environment to configure — the explorer is a static file you regenerate when the icons change.
+That is the whole local setup — no environment to configure. The example app resolves
+`@qeetrix/icons` to `../src`, so it renders the working tree: run `bun run generate` and refresh.
 
 Bun only — never npm, pnpm or yarn. The version is pinned in `packageManager`, and the whole Qeet
 workspace uses it. macOS and Linux are supported; only Linux runs in CI, so treat Windows as
@@ -17,99 +17,92 @@ unverified.
 
 ## Every command
 
+There is **one script**, `scripts/generate.mjs`. Everything else is a standard tool.
+
 | Command | Does | When |
 |:--|:--|:--|
-| `bun run validate` | Check every source SVG against the spec | After drawing |
-| `bun run generate` | Regenerate `src/icons/**` and `src/metadata.ts` | After drawing |
-| `bun run generate:check` | Verify the committed generated output matches | CI |
-| `bun run explorer` | Build the explorer and review sheets into `.explorer/` | To look at icons |
-| `bun run catalog` | Regenerate `docs/icon-catalog.md` | After adding an icon |
-| `bun run api` | Regenerate `docs/api.md` from `dist/` | After changing a public type |
-| `bun run doctor` | Catalogue health report (advisory) | Before a PR |
+| `bun run generate` | Regenerate `src/icons/**` from `icons/**.svg` | After drawing |
+| `bun run generate:check` | Verify the committed output matches. Writes nothing | CI |
 | `bun run typecheck` | `tsc --noEmit` over `src/` and `tests/` | Before a PR |
 | `bun run lint` | Biome — lint *and* format check | Before a PR |
 | `bun run format` | Biome, applying fixes | When lint complains |
-| `bun run test` | Vitest: validation, metadata, render, visual, explorer, package | Before a PR |
-| `bun run test -- -u` | Re-record visual snapshots **deliberately** | After redrawing an icon |
-| `bun run build` | clean → generate → `tsc` → `tsc-alias` | Before verifying the package |
-| `bun run verify:package` | Pack, install, typecheck, render and measure the real tarball | Before a release |
-| `bun run clean` | Remove `dist/` | Rarely |
+| `bun run test` | Vitest — the whole contract, one file | Before a PR |
+| `bun run test:watch` | Same, watching | While working |
+| `bun run build` | `rm -rf dist` → generate → `tsc` → `tsc-alias` | Before publishing |
 
 ## Adding an icon
 
 ### First: check it does not already exist
 
-At 300+ icons this is the step that protects the catalogue. The fastest way to make the set worse is
-to add a second glyph for something already here under a different word.
+At 1,166 icons this is the step that protects the set. The fastest way to make it worse is to add a
+second glyph for something already here under a different word.
 
 ```bash
-bun run explorer && open .explorer/index.html   # search name, tag AND alias
+cd example && bun run dev    # search by name and category
 ```
 
-Search [docs/icon-catalog.md](icon-catalog.md) too, and search the **Aliases** column — `delete` is
-an alias of `trash`, `add` of `plus`, `stop` of `square`, `gear` of `settings`. If the concept is
-already covered, the right change is usually **a new alias on the existing icon**, not a new icon.
-
-Only create a separate glyph when the product interaction genuinely differs. `docs/icon-catalog.md`
-has a "Deliberate non-duplicates" table recording the calls already made, and a "Known gaps" table
-recording concepts checked and rejected — read both before arguing for a new one.
+If the concept is already covered, do nothing — there is no alias mechanism to extend, so a duplicate
+glyph is pure cost.
 
 ### Then: draw it
 
 ```bash
-# 1. Draw it against the technical spec in docs/icon-guidelines.md AND the
-#    visual language in docs/icon-design-system.md
-$EDITOR icons/navigation/breadcrumb-separator.svg
+# 1. Draw against the technical spec in docs/icon-guidelines.md AND the visual
+#    language in docs/icon-design-system.md. Paint every shape flat white.
+$EDITOR icons/round-outline/interface/breadcrumb-separator.svg
 
-# 2. Add tags so search can find it (optional — you get a warning, not an error)
-$EDITOR icon-metadata.json
-
-# 3. Generate, and commit what it writes
+# 2. Generate, and commit what it writes
 bun run generate
 
-# 4. Look at it — beside its siblings, and at 16px
-bun run explorer && open .explorer/index.html
+# 3. Look at it — beside its siblings, and at 16px
+cd example && bun run dev
 
-# 5. Regenerate the coverage matrix
-bun run catalog
-
-# 6. Prove it
-bun run validate && bun run doctor && bun run typecheck && bun run lint && bun run test
+# 4. Prove it
+bun run typecheck && bun run lint && bun run test
 ```
 
-Step 3 writes `src/icons/breadcrumb-separator.tsx`, adds the export to `src/icons/index.ts`, and adds
-the record to `src/metadata.ts`. **Commit those files.** They are generated but tracked — see below.
+Step 2 writes `src/icons/interface/breadcrumb-separator.tsx` and adds the export to
+`src/icons/index.ts`. **Commit those files.** They are generated but tracked — see below.
 
-Step 4 is not optional in practice. Validation proves an icon is *legal*; only looking at it proves it
-belongs to the family. Open `.explorer/contact-sheet.svg` and find your icon among its neighbours — if
-it is heavier, lighter, or differently proportioned, fix it now.
+Step 3 is not optional in practice. The suite proves an icon is faithfully transcribed; only looking
+proves it belongs to the family. If it is heavier, lighter, or differently proportioned than its
+neighbours, fix it now.
 
-If you redrew an existing icon, the visual-regression snapshot will fail. That is the system working:
-re-record with `bun run test -- -u` and the PR diff will show exactly what changed about the shape.
+### Which directory
 
-Then add a changeset so the release notes explain what landed:
-
-```bash
-bun run changeset
+```text
+icons/<shape>-<variant>/<category>/<name>.svg
 ```
+
+`<shape>-<variant>` is one of `round-outline`, `round-solid`, `sharp-outline`, `sharp-solid`. The two
+halves become the `shape` and `variant` props; a misnamed directory is a hard error from the
+generator rather than a silently ignored folder.
+
+Ship the same `<name>.svg` in both variants of a shape where you can — 1,141 of 1,166 icons do, and
+the type narrows to whatever exists, so a solid-only icon simply rejects `variant="outline"`.
+
+`<category>` is free-form: the directory *is* the category, so creating one creates it. There is no
+closed list to register in any more. Keep a `.gitkeep` in an empty directory so git tracks it.
+
+### Versioning
 
 New icons are a `minor` bump. Redrawing an existing icon is a `patch`. Renaming or removing one is
-`major` — the export is public API.
+`major` — the export is public API, and the name comes from the filename. There are no changesets:
+opening a PR bumps the patch version automatically. See [releases.md](releases.md).
 
 ## Never hand-edit these
 
 ```text
 src/icons/**        one component per icon, plus the barrel
-src/metadata.ts     the searchable catalogue
 ```
 
 Each carries a `GENERATED by scripts/generate.mjs` banner. They are committed anyway, for two
 reasons: a reader browsing the repo sees the real component source, and a diff shows exactly what an
 icon change did to the public API.
 
-Committed generated files drift, so `bun run generate:check` compares them byte-for-byte against
-what the generator would produce right now and fails if they differ. CI runs it **before** `build`,
-so a hand-edit is caught rather than silently overwritten by the build's own generate step.
+Committed generated files drift, so `bun run generate:check` compares them byte-for-byte against what
+the generator would produce right now and fails if they differ. CI runs it **before** `build`, so a
+hand-edit is caught rather than silently overwritten by the build's own generate step.
 
 If `generate:check` fails, the fix is always `bun run generate` and commit the result.
 
@@ -117,148 +110,91 @@ If `generate:check` fails, the fix is always `bun run generate` and commit the r
 
 | | |
 |:--|:--|
-| `icons/<category>/<name>.svg` | **The source of truth.** Hand-authored. |
-| `icon-metadata.json` | Tags, aliases and the RTL `mirror` flag, keyed by icon name. |
-| `scripts/explorer.mjs` | The explorer: searchable browser, contact sheet, small-size sheet. |
-| `scripts/lib/search.mjs` | The ranking algorithm. Inlined into the explorer, imported by tests. |
-| `scripts/api-docs.mjs` | Generates `docs/api.md` from the shipped `dist/*.d.ts`. |
-| `scripts/verify-package.mjs` | Packs, installs, typechecks, renders and measures the real tarball. |
-| `scripts/config/consumer-*.tsx` | The consumer fixture and render harness that script installs. |
-| `scripts/catalog.mjs` | Generates `docs/icon-catalog.md` from the icons and metadata. |
-| `scripts/doctor.mjs` | Catalogue health: duplicate semantics, family gaps, naming, balance. |
-| `scripts/config/categories.json` | The closed set of categories. |
-| `src/types.ts` | `QeetrixIconProps`, `IconMetadata`. Hand-written. |
-| `src/icon-base.tsx` | The shared `<svg>` shell and the accessibility contract. Hand-written. |
+| `icons/<shape>-<variant>/<category>/<name>.svg` | **The source of truth.** Designer exports, kept as exported. |
+| `scripts/generate.mjs` | The only script. Discovery, SVG→JSX, emit, `--check`. |
+| `src/types.ts` | `QeetrixIcon`, `QeetrixIconProps`, `IconVariant`, `IconShape`. Hand-written. |
 | `src/index.ts` | The public barrel. Hand-written. |
-| `src/icons/**`, `src/metadata.ts` | Generated. |
-| `scripts/lib/*.mjs` | Discovery, parsing, rules, naming, emitters. |
-| `tests/fixtures/{valid,invalid}/` | SVGs that prove validation works. |
-| `tests/visual/` | Visual-regression snapshots and whole-set contract checks. |
-| `tests/build/tree-shaking.test.ts` | Bundles the real `dist/` and proves unused icons are dropped. |
+| `src/icons/**` | Generated. Never edit. |
+| `tests/icons.test.tsx` | The whole suite. |
+| `example/` | Visual check. Excluded from the published tarball. |
 
-## Adding a category
+## Scripts and CI
 
-Add it to `scripts/config/categories.json` and create the directory. A directory that is not on that
-list is a validation error rather than a new category — which is how a typo like `navigaton/` fails
-loudly instead of quietly becoming real. A listed category may sit empty; keep a `.gitkeep` in it so
-git tracks the directory.
-
-## Adding a validation rule
-
-1. Add the rule to `scripts/lib/rules.mjs`, returning `issue("<rule-id>", file, message)`.
-2. Add a fixture at `tests/fixtures/invalid/<rule-id>.svg` that trips exactly it.
-3. Add the fixture to the `EXPECTED` map in `tests/icons/validation.test.ts`.
-4. Document it in the rejection table in `docs/icon-guidelines.md`.
-
-Step 3 is enforced: a test asserts that the fixture directory and the `EXPECTED` map match exactly,
-so a fixture without a declared expectation fails the suite. Assert the specific rule id, not just
-"some error" — a fixture that fails for an unrelated reason gives false confidence.
-
-Write messages that say what was found, not only what was wanted:
+CI runs one job — see [the workflow](../.github/workflows/ci.yml):
 
 ```text
-icons/arrows/arrow-left.svg: viewBox must be "0 0 24 24" (found "0 0 32 32")
+bun install → generate:check → lint → typecheck → test → build
 ```
 
-## Scripts
+`generate:check` deliberately runs **first**: `build` regenerates, so checking afterwards would
+overwrite a hand-edit instead of reporting it.
 
-| Command | Does |
-|:--|:--|
-| `bun run validate` | Check every source SVG. Read-only. |
-| `bun run generate` | Regenerate `src/icons/**` and `src/metadata.ts`. |
-| `bun run generate:check` | Verify the committed output matches the generator. Writes nothing. |
-| `bun run explorer` | Build the explorer and review sheets into `.explorer/` (gitignored). |
-| `bun run catalog` | Regenerate `docs/icon-catalog.md`. |
-| `bun run catalog:check` | Verify the committed catalogue is current. Writes nothing. |
-| `bun run doctor` | Catalogue health report. Advisory; exits 0 unless `--strict`. |
-| `bun run typecheck` | `tsc --noEmit` over `src/` and `tests/`. |
-| `bun run lint` | Biome — lint *and* format check. |
-| `bun run format` | Biome, applying fixes. |
-| `bun run test` | Vitest. |
-| `bun run build` | clean → generate → `tsc` → `tsc-alias`. |
-| `bun run clean` | Remove `dist/`. |
-
-CI runs two jobs — see [the workflow](../.github/workflows/ci.yml). `verify` covers
-`validate → generate:check → build → typecheck → lint → test → explorer → catalog:check → api:check → doctor`;
-`package` runs `verify:package` separately so a slow install does not gate every review.
+Three more workflows handle releases — `version.yml` bumps the patch version on a PR, `release.yml`
+publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
+[releases.md](releases.md).
 
 ## Conventions
 
 **Biome owns formatting.** There is no ESLint and no Prettier. Run `bun run format` rather than
-arguing with it. Two deliberate exceptions:
+arguing with it. Four deliberate exceptions, all on generated or data files:
 
-- `icons/**` is excluded, because Biome parses `.svg` as JSX and applies React a11y rules to what are
-  really data files. Our own validator is far stricter about those files anyway.
-- `icon-metadata.json` has formatting disabled so it can stay one line per icon. At several hundred
-  icons that stays reviewable and produces one-line diffs.
-- `src/icons/**` has `noShadowRestrictedNames` off. `map.svg` generates a component called `Map`,
-  which shadows the global. Renaming the icon to dodge the lint would force a worse public name on
-  every consumer to avoid a shadow that is inert inside a one-export module. See
-  `RESERVED_COMPONENT_NAMES` in `scripts/lib/naming.mjs` for which globals are allowed and why.
-
-**The emitter must produce exactly what Biome would.** Generated files are linted like everything
-else, so the emitter in `scripts/lib/emit.mjs` reproduces Biome's formatting rather than piping
-output through a formatter. Biome's actual rule — established by probing it, not assumed — is that a
-JSX element with a *single* attribute is never broken across lines however long it is, while one with
-two or more breaks once it exceeds 100 columns. If the two ever disagree, `bun run lint` fails
-loudly, which is the intent.
+- `icons/**` is excluded entirely, because Biome parses `.svg` as JSX and applies React a11y rules to
+  what are really data files.
+- `src/icons/**` has the **formatter disabled**. This is the important one: the components hold their
+  source SVG byte for byte, and a formatter would reflow the markup and fight the generator. The
+  generator is the single source of truth for those files, and `generate:check` enforces it.
+- `src/icons/**` has **`organizeImports` off** for the same reason — Biome's collation disagrees with
+  the generator's on names like `wing-wing` vs `wing-wing-fly-…`, and the generated order must win.
+- `src/icons/**` has `noSvgWithoutTitle` and `noShadowRestrictedNames` off. An icon set is decorative
+  by default and the consumer supplies the accessible name; and `map.svg` generates a component called
+  `Map`, which shadows the global harmlessly inside a one-export module.
 
 **Build scripts are `.mjs` run by bare `node`.** Not `bun run x.ts`, not tsx. `engines.node >= 20` is
 the only portability claim this package makes, and a script that needs more would quietly exceed it.
 
-**Generated output must be deterministic.** No timestamps. Sort with an explicit codepoint
-comparator, never `localeCompare` — it is locale-sensitive, and a tracked file's byte order must not
-depend on the machine that produced it.
+**Generated output must be deterministic.** No timestamps. Sort with an explicit codepoint comparator,
+never `localeCompare` — it is locale-sensitive, and a tracked file's byte order must not depend on the
+machine that produced it.
 
 **`import type` is required.** `verbatimModuleSyntax` is on.
 
 ## Testing
 
-Tests live in `tests/`, outside `src/`, because most of what needs testing is the pipeline rather
-than the components. That also keeps them out of `tsconfig.build.json` for free.
+One file, `tests/icons.test.tsx`, ~2,394 assertions. Tests live in `tests/` rather than `src/` because
+most of what needs testing is the pipeline rather than the components — and it keeps them out of
+`tsconfig.build.json` for free.
 
-Broken fixtures live in `tests/fixtures/`, deliberately **outside** `icons/` — the ~24
-intentionally-invalid files exist to prove validation works, and if discovery could see them they
-would fail the real build.
+The suite has four jobs:
 
-Test behaviour, not implementation. `render.test.tsx` asserts on rendered DOM attributes rather than
-on the generated source, so the emitter can change freely as long as the output still behaves.
+**1. Prove the SVG is unchanged.** 2,307 of the assertions reconstruct each source file from the
+rendered DOM and compare it tag by tag, attribute by attribute, value by value. It models the
+generator's two documented transforms rather than ignoring colour, so recolouring something inside
+`<defs>`, missing a visible `white`, or touching any other attribute all fail and name the file.
 
-**Visual regression is markup, not pixels.** `tests/visual/snapshots.test.tsx` snapshots each icon's
-rendered SVG. A pixel-diffing setup would cost a browser download in CI and a binary per icon, and
-would report anti-aliasing drift as an icon change; a markup snapshot catches every change that could
-alter the drawing, with a diff a reviewer can read. What it cannot judge is whether a glyph *looks*
-right — that is what the explorer is for.
+**2. Hold the source invariants.** There is no separate validator, so these are the whole guardrail
+against the two mistakes that would otherwise pass silently:
 
-**Tree-shaking is proved, not assumed.** `tests/build/tree-shaking.test.ts` bundles a one-icon entry
-against the built `dist/` with `bun build` and asserts that other icons' path data is absent. One
-icon currently bundles to ~579 bytes against ~32 KB for the whole set.
+- every `viewBox` is exactly `0 0 24 24`
+- every `fill`/`stroke` is `white`, `none` or `currentColor` — a hex would produce an unthemeable icon
 
-### Metadata rules the validator enforces
+**3. Check the props.** That `variant` selects the right artwork, that `shape` is accepted without
+leaking to the DOM, that `color` overrides the default, that `variant`/`shape` never reach the DOM,
+and that the 2,175 `<clipPath>` masks keep their authored `fill="white"`.
 
-- A **tag** may be shared between icons; an **alias** may not. An alias asserts "this icon is also
-  called X", so two owners make the query ambiguous. See [naming.md](naming.md#tags-vs-aliases).
-- Never restate an alias as a tag, or the icon's own name as either — search already covers both.
-- An alias may not collide with a real icon name.
-- `mirror` is for horizontal direction only. Vertical direction never mirrors, and the `media`
-  category is exempt because playback direction is not reading direction.
-- `priority` must be `P0`–`P3`. It is authoring-only planning data that drives
-  [the coverage matrix](icon-catalog.md) and is deliberately **not** published in the package — it
-  describes our backlog, not the icon.
+**4. Pin the type surface.** A compile-time assertion that `QeetrixIcon` accepts every icon whatever
+it narrows its axes to. This exists because the obvious-looking `ComponentType<QeetrixIconProps>` does
+**not** work — props are contravariant, so an icon narrowing `shape` to `"round"` is not assignable to
+one accepting `"round" | "sharp"`.
 
-### Catalogue governance the tests enforce
+### What the suite cannot do
 
-Beyond per-icon validity, `tests/metadata/catalog.test.ts` locks the rules that only matter at scale:
+**Confirm what a browser paints.** jsdom does not implement SVG presentation attributes in
+`getComputedStyle`, so `color="white"` computes as black there. The assertions check that the attribute
+is present and overridable — which is what this package controls — and the example app is the check for
+the rendered pixel. Do not "fix" that by switching the default to an inline `style`: inline styles
+outrank classes, which would break `dark:` variants.
 
-- No name leads with a verb (`add-user` is rejected; `user-plus` is the form).
-- `-add`, `-remove` and `-delete` are never used as modifiers — the canonical set is `-plus`,
-  `-minus`, `-x`.
-- Every `<base>-<modifier>` variant has its base icon, **in the same category**.
-- Counterpart pairs agree on `mirror`, and every horizontally-directional icon is marked.
-- No declared category is empty, and no name exceeds four words.
-- P0 + P1 must stay above 80% of the catalogue, so it grows by coverage rather than by accretion.
+**Judge whether a glyph looks right.** That is a human call, and the example app is the tool for it.
 
-`bun run doctor` reports the softer signals — heavily overlapping tag sets, half-finished families,
-category imbalance. It is **advisory and exits 0**: those are judgement calls, and a check that
-blocked a merge over a naming opinion would simply get switched off. Its findings that *are*
-decisions are recorded in the catalogue's "Known gaps" table.
+**Tree-shaking is measured, not assumed.** One icon bundles to **1,544 bytes** against **4.4 MB** for
+the whole set, `bun build --minify` with React external.

@@ -1,7 +1,7 @@
-/* GENERATED from icons/outline/communication/message-favorite.svg, icons/solid/communication/message-favorite.svg by scripts/generate.mjs. Do not edit by hand. */
+/* GENERATED from icons/round-outline/communication/message-favorite.svg, icons/round-solid/communication/message-favorite.svg by scripts/generate.mjs. Do not edit by hand. */
 import type { SVGProps } from "react";
 
-export function MessageFavorite({ variant = "outline", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid" }) {
+export function MessageFavorite({ variant = "outline", shape: _shape = "round", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid"; shape?: "round" }) {
   if (variant === "solid") {
     return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="white" {...props}>

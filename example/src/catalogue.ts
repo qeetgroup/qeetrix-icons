@@ -9,7 +9,7 @@ import type { ComponentType, SVGProps } from "react";
  * emits a new icon, it appears here on the next refresh.
  */
 
-export type IconProps = SVGProps<SVGSVGElement> & { variant?: string };
+export type IconProps = SVGProps<SVGSVGElement> & { variant?: string; shape?: string };
 export type Icon = {
   /** kebab-case name, matching the source filename. */
   name: string;
@@ -17,8 +17,12 @@ export type Icon = {
   component: string;
   /** Directory the icon lives in. */
   category: string;
-  /** Styles this icon actually ships, e.g. ["outline", "solid"]. */
+  /** Variants this icon actually ships, e.g. ["outline", "solid"]. */
   variants: string[];
+  /** Shapes this icon actually ships, e.g. ["round"]. */
+  shapes: string[];
+  /** Every `<shape>-<variant>` pair with artwork on disk. */
+  pairs: { shape: string; variant: string }[];
   Component: ComponentType<IconProps>;
 };
 
@@ -28,23 +32,24 @@ const modules = import.meta.glob<Record<string, ComponentType<IconProps>>>(
   { eager: true },
 );
 
-// Source SVGs: ../../icons/<style>/<category>/<name>.svg — keys only, so this
-// costs nothing at runtime. Tells us which variants genuinely exist.
+// Source SVGs: ../../icons/<shape>-<variant>/<category>/<name>.svg — keys only,
+// so this costs nothing at runtime. Tells us which pairs genuinely exist, which
+// is how an empty `sharp-*` directory correctly contributes nothing.
 const svgPaths = Object.keys(import.meta.glob("../../icons/*/*/*.svg"));
 
-const variantsByName = new Map<string, Set<string>>();
-for (const path of svgPaths) {
-  const match = path.match(/\/icons\/([^/]+)\/[^/]+\/([^/]+)\.svg$/);
-  if (!match) continue;
-  const [, style, name] = match;
-  if (!variantsByName.has(name)) variantsByName.set(name, new Set());
-  variantsByName.get(name)?.add(style);
-}
+/** Preferred display order on each axis, so the defaults sort first. */
+const SHAPE_ORDER = ["round", "sharp"];
+const VARIANT_ORDER = ["outline", "solid"];
+const rank = (order: string[]) => (a: string, b: string) => order.indexOf(a) - order.indexOf(b);
 
-/** Preferred display order, so `outline` is the default everywhere. */
-const STYLE_ORDER = ["outline", "solid"];
-const ordered = (styles: Set<string>) =>
-  [...styles].sort((a, b) => STYLE_ORDER.indexOf(a) - STYLE_ORDER.indexOf(b));
+const pairsByName = new Map<string, { shape: string; variant: string }[]>();
+for (const path of svgPaths) {
+  const match = path.match(/\/icons\/([^/]+)-([^/]+)\/[^/]+\/([^/]+)\.svg$/);
+  if (!match) continue;
+  const [, shape, variant, name] = match;
+  if (!pairsByName.has(name)) pairsByName.set(name, []);
+  pairsByName.get(name)?.push({ shape, variant });
+}
 
 export const icons: Icon[] = Object.entries(modules)
   .flatMap(([path, mod]) => {
@@ -57,12 +62,18 @@ export const icons: Icon[] = Object.entries(modules)
     if (!entry) return [];
     const [component, Component] = entry;
 
+    const pairs = (pairsByName.get(name) ?? []).sort(
+      (a, b) => rank(SHAPE_ORDER)(a.shape, b.shape) || rank(VARIANT_ORDER)(a.variant, b.variant),
+    );
+
     return [
       {
         name,
         component,
         category,
-        variants: ordered(variantsByName.get(name) ?? new Set(["outline"])),
+        pairs,
+        variants: [...new Set(pairs.map((p) => p.variant))].sort(rank(VARIANT_ORDER)),
+        shapes: [...new Set(pairs.map((p) => p.shape))].sort(rank(SHAPE_ORDER)),
         Component,
       },
     ];
@@ -71,16 +82,18 @@ export const icons: Icon[] = Object.entries(modules)
 
 export const categories = [...new Set(icons.map((i) => i.category))].sort();
 
-export const allVariants = [...new Set(icons.flatMap((i) => i.variants))].sort(
-  (a, b) => STYLE_ORDER.indexOf(a) - STYLE_ORDER.indexOf(b),
-);
+export const allVariants = [...new Set(icons.flatMap((i) => i.variants))].sort(rank(VARIANT_ORDER));
+
+export const allShapes = [...new Set(icons.flatMap((i) => i.shapes))].sort(rank(SHAPE_ORDER));
 
 /** Totals worth seeing at a glance when checking the set over. */
 export const stats = {
   icons: icons.length,
   files: svgPaths.length,
   categories: categories.length,
+  shapes: allShapes.length,
   bothStyles: icons.filter((i) => i.variants.length > 1).length,
   outlineOnly: icons.filter((i) => i.variants.length === 1 && i.variants[0] === "outline").length,
   solidOnly: icons.filter((i) => i.variants.length === 1 && i.variants[0] === "solid").length,
+  sharp: icons.filter((i) => i.shapes.includes("sharp")).length,
 };

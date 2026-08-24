@@ -1,7 +1,7 @@
-/* GENERATED from icons/solid/travel/wing-wing-fly-flight-aircraft-aerodynamics-wingspan.svg by scripts/generate.mjs. Do not edit by hand. */
+/* GENERATED from icons/round-solid/travel/wing-wing-fly-flight-aircraft-aerodynamics-wingspan.svg by scripts/generate.mjs. Do not edit by hand. */
 import type { SVGProps } from "react";
 
-export function WingWingFlyFlightAircraftAerodynamicsWingspan({ variant: _variant = "solid", ...props }: SVGProps<SVGSVGElement> & { variant?: "solid" }) {
+export function WingWingFlyFlightAircraftAerodynamicsWingspan({ variant: _variant = "solid", shape: _shape = "round", ...props }: SVGProps<SVGSVGElement> & { variant?: "solid"; shape?: "round" }) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="white" {...props}>
       <g clipPath="url(#clip0_4418_8949)">

@@ -1,7 +1,7 @@
-/* GENERATED from icons/outline/interface/information.svg, icons/solid/interface/information.svg by scripts/generate.mjs. Do not edit by hand. */
+/* GENERATED from icons/round-outline/interface/information.svg, icons/round-solid/interface/information.svg by scripts/generate.mjs. Do not edit by hand. */
 import type { SVGProps } from "react";
 
-export function Information({ variant = "outline", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid" }) {
+export function Information({ variant = "outline", shape: _shape = "round", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid"; shape?: "round" }) {
   if (variant === "solid") {
     return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="white" {...props}>

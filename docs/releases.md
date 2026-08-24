@@ -72,7 +72,7 @@ An icon's component name is its public API. `import { ArrowLeft } from "@qeetrix
 compile-time contract, and renaming it turns every consuming build red.
 
 **Do not rename an icon because a better name occurred to you.** The name comes from the source
-filename (`icons/outline/arrows/arrow-left.svg` → `ArrowLeft`), so renaming means renaming the SVG,
+filename (`icons/round-outline/arrows/arrow-left.svg` → `ArrowLeft`), so renaming means renaming the SVG,
 which means a major release. Get it right when the file lands — see [naming.md](naming.md).
 
 Removing an icon is the same cost. There is deliberately no deprecation mechanism: at this catalogue

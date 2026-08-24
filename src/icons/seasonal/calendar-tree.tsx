@@ -1,7 +1,7 @@
-/* GENERATED from icons/outline/seasonal/calendar-tree.svg, icons/solid/seasonal/calendar-tree.svg by scripts/generate.mjs. Do not edit by hand. */
+/* GENERATED from icons/round-outline/seasonal/calendar-tree.svg, icons/round-solid/seasonal/calendar-tree.svg by scripts/generate.mjs. Do not edit by hand. */
 import type { SVGProps } from "react";
 
-export function CalendarTree({ variant = "outline", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid" }) {
+export function CalendarTree({ variant = "outline", shape: _shape = "round", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid"; shape?: "round" }) {
   if (variant === "solid") {
     return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="white" {...props}>

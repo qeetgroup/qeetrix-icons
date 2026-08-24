@@ -14,7 +14,7 @@ Then open the URL it prints (usually <http://localhost:5173>).
 ## Why this exists
 
 Unit tests prove the components hold the source SVG byte for byte, that the
-`variant` prop switches style, and that `<clipPath>` masks are never recoloured.
+`variant` and `shape` props switch style, and that `<clipPath>` masks are never recoloured.
 What they **cannot** prove is what a browser paints: jsdom does not resolve SVG
 presentation attributes, so `color="white"` computes as black there. That is a
 jsdom gap, not a bug — but it means the default colour needs a real engine to
@@ -34,6 +34,8 @@ Then confirm theming works:
 
 - Type `black` or `#b45309` into **Colour override** — every icon should retint.
 - Switch **Variant** to `solid`, then `both`, and check the two styles differ.
+- **Shape** is disabled while only `round` artwork exists. It enables itself once
+  `icons/sharp-outline/` or `icons/sharp-solid/` has SVGs in it.
 - Tick **Only single-style icons** to review the ones shipping just one style.
   Cells are annotated `· no solid` / `· outline only` so gaps are obvious.
 
@@ -43,7 +45,7 @@ Click any cell to copy its import.
 
 The example resolves `@qeetrix/icons` to `../src/index.ts`, and derives the
 catalogue from the filesystem with `import.meta.glob` — the component list from
-`src/icons/`, and which variants exist from the `icons/` SVG tree. There is no
+`src/icons/`, and which `<shape>-<variant>` pairs exist from the `icons/` tree. There is no
 metadata file to keep in sync.
 
 So after changing an SVG:
