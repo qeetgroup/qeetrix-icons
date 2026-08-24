@@ -98,6 +98,18 @@ const toComponentName = (name) =>
 
 // ── read ──────────────────────────────────────────────────────────────────
 /**
+ * Subdirectories of `dir`, ignoring files.
+ *
+ * Filtering to directories is not defensive tidiness — `readdirSync` on a file
+ * throws `ENOTDIR`, so a single stray `.DS_Store` or the `.gitkeep` that makes
+ * git track an empty `sharp-*` directory would otherwise crash the whole run.
+ */
+const subdirs = (dir) =>
+  readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+
+/**
  * Walk `icons/<shape>-<variant>/<category>/<name>.svg`.
  *
  * The directory name is the contract: exactly one hyphen, `<shape>-<variant>`,
@@ -107,7 +119,7 @@ const toComponentName = (name) =>
  */
 function discover() {
   const found = [];
-  for (const style of readdirSync(join(PKG, "icons"))) {
+  for (const style of subdirs(join(PKG, "icons"))) {
     const styleDir = join(PKG, "icons", style);
     const [shape, variant, ...rest] = style.split("-");
 
@@ -118,7 +130,7 @@ function discover() {
       );
     }
 
-    for (const category of readdirSync(styleDir)) {
+    for (const category of subdirs(styleDir)) {
       const categoryDir = join(styleDir, category);
       for (const file of readdirSync(categoryDir)) {
         if (!file.endsWith(".svg")) continue;
