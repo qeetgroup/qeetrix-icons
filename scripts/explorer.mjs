@@ -82,8 +82,16 @@ for (const icon of icons) {
     .join("");
 }
 
-const SPEC =
-  'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+/** SVG root presentation attrs per style — must match the pipeline's ROOT_ATTRS_* constants. */
+const SPEC_BY_STYLE = {
+  outline: 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"',
+  solid:   'fill="currentColor" stroke="none"',
+  sharp:   'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"',
+};
+
+function specFor(icon) {
+  return SPEC_BY_STYLE[icon.style] ?? SPEC_BY_STYLE.outline;
+}
 
 // ── review sheets ─────────────────────────────────────────────────────────
 function contactSheet() {
@@ -98,7 +106,7 @@ function contactSheet() {
       const x = (i % cols) * cell;
       const y = Math.floor(i / cols) * (cell + label);
       return (
-        `<svg x="${x + 20}" y="${y + 18}" width="32" height="32" viewBox="0 0 24 24" ${SPEC}>${icon.inner}</svg>` +
+        `<svg x="${x + 20}" y="${y + 18}" width="32" height="32" viewBox="0 0 24 24" ${specFor(icon)}>${icon.inner}</svg>` +
         `<text x="${x + cell / 2}" y="${y + cell + 8}" font-family="ui-monospace,monospace" font-size="7" fill="#71717a" text-anchor="middle">${icon.name}</text>`
       );
     })
@@ -122,7 +130,7 @@ function smallSizeSheet() {
       const y = 26 + i * rowH;
       const cells = REVIEW_SIZES.map((size, j) => {
         const x = nameCol + REVIEW_SIZES.slice(0, j).reduce((sum, s) => sum + s + gap, 0) + gap / 2;
-        return `<svg x="${x}" y="${y + (rowH - size) / 2}" width="${size}" height="${size}" viewBox="0 0 24 24" ${SPEC}>${icon.inner}</svg>`;
+        return `<svg x="${x}" y="${y + (rowH - size) / 2}" width="${size}" height="${size}" viewBox="0 0 24 24" ${specFor(icon)}>${icon.inner}</svg>`;
       }).join("");
       return (
         `<text x="10" y="${y + rowH / 2 + 4}" font-family="ui-monospace,monospace" font-size="11" fill="#3f3f46">${icon.name}</text>` +
@@ -148,6 +156,7 @@ function html() {
       const record = {
         name: icon.name,
         component: icon.component,
+        style: icon.style,
         category: icon.category,
         tags: icon.tags,
         aliases: icon.aliases,
@@ -255,6 +264,13 @@ function html() {
   <form id="controls" role="search" aria-label="Filter icons" onsubmit="return false">
     <label class="sr" for="q">Search icons by name, tag or alias</label>
     <input type="search" id="q" placeholder="Search name, tag or alias&hellip;  ( / to focus )" autocomplete="off" />
+    <label class="sr" for="style">Style</label>
+    <select id="style">
+      <option value="">All styles</option>
+      <option value="outline">Outline</option>
+      <option value="solid">Solid</option>
+      <option value="sharp">Sharp</option>
+    </select>
     <label class="sr" for="cat">Category</label>
     <select id="cat">
       <option value="">All categories</option>
@@ -308,11 +324,16 @@ ${inlineSearchModule()}
 
 // ── data ──────────────────────────────────────────────────────────────────
 const ICONS = ${data};
-const SPEC = 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+const SPEC_BY_STYLE = {
+  outline: 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"',
+  solid:   'fill="currentColor" stroke="none"',
+  sharp:   'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"',
+};
 const PREVIEW_SIZES = ${JSON.stringify(PREVIEW_SIZES)};
 const el = (id) => document.getElementById(id);
 const svgFor = (i, s) =>
-  '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" ' + SPEC +
+  '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" ' +
+  (SPEC_BY_STYLE[i.style] || SPEC_BY_STYLE.outline) +
   ' aria-hidden="true">' + i.svg + '</svg>';
 
 let listView = false;
@@ -326,6 +347,7 @@ let lastFocus = null;
 function readHash() {
   const p = new URLSearchParams(location.hash.replace(/^#/, ''));
   el('q').value = p.get('q') || '';
+  el('style').value = p.get('style') || '';
   el('cat').value = p.get('category') || '';
   el('pri').value = p.get('priority') || '';
   el('size').value = PREVIEW_SIZES.includes(+p.get('size')) ? p.get('size') : '24';
@@ -339,6 +361,7 @@ function readHash() {
 function writeHash(iconName) {
   const p = new URLSearchParams();
   if (el('q').value.trim()) p.set('q', el('q').value.trim());
+  if (el('style').value) p.set('style', el('style').value);
   if (el('cat').value) p.set('category', el('cat').value);
   if (el('pri').value) p.set('priority', el('pri').value);
   if (el('size').value !== '24') p.set('size', el('size').value);
@@ -360,8 +383,11 @@ function syncToggles() {
 
 // ── render ────────────────────────────────────────────────────────────────
 function visible() {
+  const styleFilter = el('style').value;
+  let pool = ICONS;
+  if (styleFilter) pool = pool.filter((i) => i.style === styleFilter);
   return filterIcons({
-    icons: ICONS,
+    icons: pool,
     query: el('q').value,
     category: el('cat').value,
     priority: el('pri').value,

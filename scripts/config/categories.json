@@ -1,27 +1,25 @@
 {
-  "$comment": "The closed set of icon categories. A directory under icons/ that is not listed here is a validation error, and a listed category may legitimately be empty. Declaring the taxonomy rather than inferring it from the filesystem is what makes a typo'd directory ('navigaton/') fail loudly instead of silently becoming a new category. Category is browse metadata only — it is never part of an icon's export name, so moving an icon between categories is not a breaking change.",
+  "$comment": "The closed set of topical icon categories. A directory under icons/<style>/ that is not listed here is a validation error, and a listed category may legitimately be empty. Styles (outline/solid) are the top-level directories and are hardcoded in discover.mjs — they are not topical categories and do not belong here. Declaring the taxonomy rather than inferring it from the filesystem is what makes a typo'd directory ('navigaton/') fail loudly instead of silently becoming a new category. Category is browse metadata only — it is never part of an icon's export name, so moving an icon between categories is not a breaking change.",
   "categories": [
-    "accessibility",
     "arrows",
     "communication",
+    "crypto",
     "data",
     "design",
-    "development",
     "devices",
     "editing",
     "files",
     "finance",
-    "hardware",
     "interface",
-    "maps",
+    "location",
     "media",
-    "navigation",
-    "notifications",
+    "nature",
+    "people",
+    "seasonal",
     "security",
+    "shopping",
     "social",
-    "status",
     "time",
-    "users",
-    "utilities"
+    "travel"
   ]
 }

@@ -15,7 +15,7 @@ import { join } from "node:path";
 import { discoverIcons, loadCategories } from "./discover.mjs";
 import { toComponentName } from "./naming.mjs";
 import { formatIssue, validateIcon, validateSet } from "./rules.mjs";
-import { parseSvg } from "./svg.mjs";
+import { parseSvg, transformRawIconsax } from "./svg.mjs";
 
 /** Load the hand-authored metadata registry, minus its `$comment` key. */
 export function loadMetadata(root) {
@@ -27,10 +27,12 @@ export function loadMetadata(root) {
  * One validated icon, carrying everything the emitters need.
  *
  * @typedef {object} IconEntry
- * @property {string} name Canonical kebab-case name.
+ * @property {string} name      Canonical kebab-case name.
  * @property {string} component PascalCase React export name.
- * @property {string} category Derived from the directory, never declared.
- * @property {string} file Repo-relative source path.
+ * @property {string} style     "outline" or "solid".
+ * @property {string} category  Topical group (arrows, media, …).
+ * @property {string} group     Alias for category — topical group used by the explorer.
+ * @property {string} file      Repo-relative source path.
  * @property {import("./svg.mjs").SvgNode} tree Parsed root `<svg>` node.
  * @property {string[]} tags
  * @property {string[]} aliases
@@ -54,7 +56,8 @@ export function collect({ root, dir = "icons", metadata = loadMetadata(root) }) 
   const entries = [];
 
   for (const icon of icons) {
-    const parsed = parseSvg(icon.source);
+    const raw = parseSvg(icon.source);
+    const parsed = transformRawIconsax(raw, icon.style);
     const result = validateIcon(icon, parsed);
     errors.push(...result.errors.map(formatIssue));
     warnings.push(...result.warnings.map(formatIssue));
@@ -64,8 +67,13 @@ export function collect({ root, dir = "icons", metadata = loadMetadata(root) }) 
     const entry = metadata[icon.name] ?? {};
     entries.push({
       name: icon.name,
-      component: toComponentName(icon.name),
+      component: toComponentName(icon.name) + (
+        icon.style === "solid" ? "Solid" :
+        icon.style === "sharp" ? "Sharp" : ""
+      ),
+      style: icon.style,
       category: icon.category,
+      group: icon.category,
       file: icon.file,
       tree: parsed.root,
       tags: entry.tags ?? [],

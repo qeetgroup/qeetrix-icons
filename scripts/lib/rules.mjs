@@ -92,6 +92,23 @@ const REQUIRED_ROOT_ATTRS = {
   "stroke-linejoin": "round",
 };
 
+/** Root attrs for filled icons (style === "solid"). */
+const REQUIRED_ROOT_ATTRS_SOLID = {
+  xmlns: "http://www.w3.org/2000/svg",
+  fill: "currentColor",
+  stroke: "none",
+};
+
+/** Root attrs for sharp stroke icons (style === "sharp"). */
+const REQUIRED_ROOT_ATTRS_SHARP = {
+  xmlns: "http://www.w3.org/2000/svg",
+  fill: "none",
+  stroke: "currentColor",
+  "stroke-width": "2",
+  "stroke-linecap": "square",
+  "stroke-linejoin": "miter",
+};
+
 /**
  * Names whose glyph carries a *horizontal* direction and so must mirror in RTL.
  *
@@ -177,7 +194,11 @@ export function validateIcon(icon, parsed) {
     }
   }
 
-  for (const [attr, expected] of Object.entries(REQUIRED_ROOT_ATTRS)) {
+  const requiredRootAttrs =
+    icon.style === "solid" ? REQUIRED_ROOT_ATTRS_SOLID :
+    icon.style === "sharp" ? REQUIRED_ROOT_ATTRS_SHARP :
+    REQUIRED_ROOT_ATTRS;
+  for (const [attr, expected] of Object.entries(requiredRootAttrs)) {
     const found = root.attributes[attr];
     if (found === expected) continue;
     errors.push(
@@ -364,10 +385,14 @@ export function validateSet(icons, metadata) {
   const errors = [];
   const warnings = [];
 
-  // Duplicate canonical name across two categories.
-  const byName = new Map();
+  // Duplicate canonical name within the same style.
+  // The same name in outline/ and solid/ is intentional — each produces a
+  // distinct component (Add vs AddSolid), so cross-style collisions are fine.
+  const byName = new Map(); // name → first icon seen (for metadata checks below)
+  const byStyleAndName = new Map(); // "style:name" → icon
   for (const icon of icons) {
-    const seen = byName.get(icon.name);
+    const key = `${icon.style}:${icon.name}`;
+    const seen = byStyleAndName.get(key);
     if (seen) {
       errors.push(
         issue(
@@ -378,16 +403,19 @@ export function validateSet(icons, metadata) {
       );
       continue;
     }
-    byName.set(icon.name, icon);
+    byStyleAndName.set(key, icon);
+    if (!byName.has(icon.name)) byName.set(icon.name, icon);
   }
 
-  // Two different filenames that produce the same React export. `user-add.svg`
-  // and `user_add.svg` both want to be `UserAdd`; one would silently shadow the
-  // other in the barrel.
+  // Two different filenames that produce the same React export. Style suffixes
+  // (Solid, Sharp) ensure outline/add → Add, solid/add → AddSolid, sharp/add → AddSharp.
   const byComponent = new Map();
   for (const icon of icons) {
     if (iconNameError(icon.name)) continue; // already reported
-    const component = toComponentName(icon.name);
+    const component = toComponentName(icon.name) + (
+      icon.style === "solid" ? "Solid" :
+      icon.style === "sharp" ? "Sharp" : ""
+    );
     const seen = byComponent.get(component);
     if (seen) {
       errors.push(

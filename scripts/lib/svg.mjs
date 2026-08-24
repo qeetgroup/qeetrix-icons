@@ -83,6 +83,123 @@ function flatten(node) {
 }
 
 /**
+ * Transform a raw Iconsax-sourced SVG tree into the normalised form expected by
+ * the validator and the emitter, without touching the source file on disk.
+ *
+ * Iconsax ships icons with: fixed width/height, fill="white" paths, a <g
+ * clip-path> wrapper, and a <defs><clipPath> block. None of those are valid in
+ * our pipeline. This function strips or rewrites them in the in-memory tree.
+ *
+ * @param {ParsedSvg} parsed Result of parseSvg on the raw source.
+ * @param {"outline"|"solid"|string} style Determines root attrs and fill-rule.
+ * @returns {ParsedSvg}
+ */
+export function transformRawIconsax(parsed, style) {
+  if (!parsed.root) return parsed;
+
+  const root = transformNode(parsed.root, style, true);
+  return { root, elements: flatten(root), error: null };
+}
+
+const ROOT_ATTRS_OUTLINE = {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  "stroke-width": "2",
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+};
+
+const ROOT_ATTRS_SOLID = {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24",
+  fill: "currentColor",
+  stroke: "none",
+};
+
+const ROOT_ATTRS_SHARP = {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  "stroke-width": "2",
+  "stroke-linecap": "square",
+  "stroke-linejoin": "miter",
+};
+
+/** Stroke presentation attrs that the root supplies — strip from child elements. */
+const ROOT_STROKE_ATTRS = new Set([
+  "stroke-width",
+  "stroke-linecap",
+  "stroke-linejoin",
+  "stroke-miterlimit",
+]);
+
+function transformNode(node, style, isRoot) {
+  if (node.type !== "element") return node;
+
+  const attrs = { ...node.attributes };
+
+  if (isRoot) {
+    // Replace all root attrs with the canonical set for this style.
+    const required =
+      style === "solid" ? ROOT_ATTRS_SOLID :
+      style === "sharp" ? ROOT_ATTRS_SHARP :
+      ROOT_ATTRS_OUTLINE;
+    return {
+      ...node,
+      attributes: required,
+      children: transformChildren(node.children, style),
+    };
+  }
+
+  // Remove id (clip-path ids collide when multiple icons appear in one document).
+  delete attrs.id;
+
+  // Rewrite hard-coded Iconsax colours to currentColor.
+  if (attrs.fill === "white") attrs.fill = "currentColor";
+  if (attrs.stroke === "white") attrs.stroke = "currentColor";
+
+  // For sharp icons, strip per-element stroke attrs that the root already
+  // supplies (stroke-width, stroke-linecap, stroke-linejoin, stroke-miterlimit)
+  // so the root values take effect and produce square/miter rendering.
+  if (style === "sharp") {
+    for (const attr of ROOT_STROKE_ATTRS) delete attrs[attr];
+  }
+
+  // Add fill-rule="evenodd" to solid compound paths so inner cutouts render
+  // as transparent holes rather than filled regions.
+  if (style === "solid" && node.name === "path" && attrs.d) {
+    const mCount = (attrs.d.match(/[Mm]/g) ?? []).length;
+    if (mCount > 1 && !attrs["fill-rule"]) {
+      attrs["fill-rule"] = "evenodd";
+    }
+  }
+
+  return {
+    ...node,
+    attributes: attrs,
+    children: transformChildren(node.children, style),
+  };
+}
+
+function transformChildren(children, style) {
+  const out = [];
+  for (const child of children) {
+    if (child.type !== "element") continue;
+    if (child.name === "defs") continue; // strip <defs> (clip-path definitions)
+    if (child.name === "g" && child.attributes["clip-path"]) {
+      // Unwrap <g clip-path="url(#...)">: promote its children in place.
+      out.push(...transformChildren(child.children, style));
+    } else {
+      out.push(transformNode(child, style, false));
+    }
+  }
+  return out;
+}
+
+/**
  * Serialise a node's children back to JSX-ready descriptors.
  *
  * Attribute names are mapped to their React (camelCase) spelling here, so the
