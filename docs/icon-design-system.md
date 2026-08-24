@@ -224,8 +224,8 @@ renders at 0.67px — below one device pixel on a non-retina screen.
 **Check `-plus`/`-check`/`-x` overlay families first.** The overlay is the smallest thing in the set
 and the first to turn to mud.
 
-Use `bun run explorer` and look at the 16px row. The explorer renders every icon at 16, 20, 24 and 32
-side by side for exactly this reason.
+Run the example app (`cd example && bun run dev`) and set **Size** to 16px. It renders the whole set
+at one size against a light, dark or checkerboard background for exactly this reason.
 
 ---
 

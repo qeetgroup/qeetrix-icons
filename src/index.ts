@@ -1,17 +1,19 @@
 /**
  * `@qeetrix/icons` — the Qeet Group icon library.
  *
- * Every component is generated from `icons/<style>/<category>/<name>.svg` by
+ * Every component is generated from `icons/<shape>-<variant>/<category>/<name>.svg` by
  * `scripts/generate.mjs`, and holds that file's SVG markup byte for byte. There
  * is no shared `<svg>` shell and no runtime: each component is a plain function
  * returning the source SVG, so what ships is what a designer exported.
  *
- * One component per icon name, with the style behind a `variant` prop:
+ * One component per icon name, with style on two independent props — `variant`
+ * for strokes vs fills, `shape` for rounded vs squared corners:
  *
  *   import { Activity } from "@qeetrix/icons";
  *
- *   <Activity />                      // outline (the default)
+ *   <Activity />                                 // round + outline (defaults)
  *   <Activity variant="solid" />
+ *   <Activity shape="sharp" variant="solid" />   // once sharp artwork lands
  *   <Activity width={20} height={20} />
  *   <Activity className="size-5" />
  *
@@ -29,4 +31,4 @@
 // Every icon component. GENERATED — see src/icons/index.ts.
 export * from "./icons/index.js";
 // Public types.
-export type { IconVariant, QeetrixIconProps } from "./types.js";
+export type { IconShape, IconVariant, QeetrixIcon, QeetrixIconProps } from "./types.js";

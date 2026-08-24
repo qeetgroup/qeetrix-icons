@@ -38,9 +38,10 @@ same identifier and silently shadow one another in the barrel.
 | `arrow left.svg`, `arrow.left.svg` | Space or dot. |
 | `2fa-token.svg` | Leading digit — `2faToken` is not a legal JavaScript identifier. |
 | `index.svg` | Would overwrite the generated `src/icons/index.ts` barrel. |
-| `icon-base.svg`, `icon-metadata.svg` | Collides with an existing package export. |
+| `types.svg` | Collides with an existing module in `src/`. |
 
-Every one of these is a build error, not a review note. See `scripts/lib/naming.mjs`.
+Every one of these is a build error, not a review note. See `toComponentName` in
+`scripts/generate.mjs`.
 
 ## Choosing a good name
 

@@ -1,7 +1,7 @@
-/* GENERATED from icons/outline/crypto/ontology-knowledge-structure-concept-map-relationship-data-model.svg by scripts/generate.mjs. Do not edit by hand. */
+/* GENERATED from icons/round-outline/crypto/ontology-knowledge-structure-concept-map-relationship-data-model.svg by scripts/generate.mjs. Do not edit by hand. */
 import type { SVGProps } from "react";
 
-export function OntologyKnowledgeStructureConceptMapRelationshipDataModel({ variant: _variant = "outline", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" }) {
+export function OntologyKnowledgeStructureConceptMapRelationshipDataModel({ variant: _variant = "outline", shape: _shape = "round", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline"; shape?: "round" }) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="white" {...props}>
       <g clipPath="url(#clip0_4418_7741)">

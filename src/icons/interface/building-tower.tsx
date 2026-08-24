@@ -1,7 +1,7 @@
-/* GENERATED from icons/outline/interface/building-tower.svg, icons/solid/interface/building-tower.svg by scripts/generate.mjs. Do not edit by hand. */
+/* GENERATED from icons/round-outline/interface/building-tower.svg, icons/round-solid/interface/building-tower.svg by scripts/generate.mjs. Do not edit by hand. */
 import type { SVGProps } from "react";
 
-export function BuildingTower({ variant = "outline", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid" }) {
+export function BuildingTower({ variant = "outline", shape: _shape = "round", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid"; shape?: "round" }) {
   if (variant === "solid") {
     return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="white" {...props}>

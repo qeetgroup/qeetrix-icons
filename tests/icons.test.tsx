@@ -3,7 +3,26 @@ import { join } from "node:path";
 import { render } from "@testing-library/react";
 import type { ComponentType, SVGProps } from "react";
 import { describe, expect, it } from "vitest";
+import type { QeetrixIcon } from "../src/index.js";
 import * as pkg from "../src/index.js";
+import { Activity, ArrowLeft, Litecoin, PresentionChart } from "../src/index.js";
+
+/**
+ * `QeetrixIcon` must accept every icon, whatever it narrows its axes to.
+ *
+ * This is a compile-time assertion with no runtime body — if the type regresses,
+ * `bun run typecheck` fails here. It exists because the obvious-looking
+ * `ComponentType<QeetrixIconProps>` does *not* work: props are contravariant, so
+ * an icon narrowing `shape` to `"round"` is not assignable to one accepting
+ * `"round" | "sharp"`. Every icon shape below is a different narrowing.
+ */
+const _anyIcon: QeetrixIcon[] = [
+  Activity, // both variants
+  Litecoin, // outline only
+  PresentionChart, // solid only
+  ArrowLeft,
+];
+void _anyIcon;
 
 const PKG = join(import.meta.dirname, "..");
 
@@ -21,13 +40,30 @@ const PKG = join(import.meta.dirname, "..");
  * style, a prop that fails to reach the root element.
  */
 
-type IconProps = SVGProps<SVGSVGElement> & { variant?: string };
+type IconProps = SVGProps<SVGSVGElement> & { variant?: string; shape?: string };
 type Icon = ComponentType<IconProps>;
 
-/** Every source SVG, keyed by `<style>/<category>/<name>`. */
+type Artwork = {
+  name: string;
+  /** Directory this came from, e.g. `round-outline`. */
+  style: string;
+  shape: string;
+  variant: string;
+  category: string;
+  source: string;
+};
+
+/**
+ * Every source SVG, keyed by `<shape>-<variant>/<category>/<name>`.
+ *
+ * Style lives in the directory name as `<shape>-<variant>`, and the two axes map
+ * onto the two props. An empty style directory (a `sharp-*` awaiting artwork)
+ * simply contributes nothing.
+ */
 function sources() {
-  const out = new Map<string, { name: string; style: string; category: string; source: string }>();
+  const out = new Map<string, Artwork>();
   for (const style of readdirSync(join(PKG, "icons"))) {
+    const [shape, variant] = style.split("-");
     for (const category of readdirSync(join(PKG, "icons", style))) {
       const dir = join(PKG, "icons", style, category);
       for (const file of readdirSync(dir)) {
@@ -36,6 +72,8 @@ function sources() {
         out.set(`${style}/${category}/${name}`, {
           name,
           style,
+          shape,
+          variant,
           category,
           source: readFileSync(join(dir, file), "utf8").trim(),
         });
@@ -70,14 +108,14 @@ const JSX_ATTRS: Record<string, string> = {
 };
 
 /** Flatten an element tree to `tag|attr=value,…` lines, in document order. */
-function shape(el: Element): string[] {
+function flatten(el: Element): string[] {
   const attrs = [...el.attributes]
     // jsdom lowercases attribute names, so normalise before comparing.
     .map((a) => `${JSX_ATTRS[a.name.replace(/-/g, "")] ?? a.name}=${a.value}`)
     .sort();
   return [
     `${el.tagName.toLowerCase()}|${attrs.join(",")}`,
-    ...[...el.children].flatMap((child) => shape(child)),
+    ...[...el.children].flatMap((child) => flatten(child)),
   ];
 }
 
@@ -90,7 +128,7 @@ function shape(el: Element): string[] {
  * touched any other attribute, the expected and actual shapes diverge and the
  * test names the file.
  */
-function shapeOfSource(source: string): string[] {
+function flattenSource(source: string): string[] {
   const doc = new DOMParser().parseFromString(source, "image/svg+xml");
   const root = doc.documentElement;
 
@@ -110,19 +148,20 @@ function shapeOfSource(source: string): string[] {
   };
   for (const child of [...root.children]) recolour(child, false);
 
-  return shape(root);
+  return flatten(root);
 }
 
 describe("every component holds its source SVG, byte for byte", () => {
-  const cases = [...ALL.values()].map((s) => [`${s.style}/${s.name}`, s] as const);
+  const cases = [...ALL.values()].map((a) => [`${a.style}/${a.name}`, a] as const);
 
-  it.each(cases)("%s", (_label, { name, style, source }) => {
+  it.each(cases)("%s", (_label, { name, shape, variant, source }) => {
     const Icon = componentOf(name);
     expect(Icon, `${name} is not exported`).toBeTypeOf("function");
-    const { container } = render(<Icon variant={style} />);
+    // Ask for this exact artwork by its two axes.
+    const { container } = render(<Icon shape={shape} variant={variant} />);
     const svg = container.querySelector("svg");
     expect(svg, name).not.toBeNull();
-    expect(shape(svg as Element)).toEqual(shapeOfSource(source));
+    expect(flatten(svg as Element)).toEqual(flattenSource(source));
   });
 });
 
@@ -196,9 +235,9 @@ describe("colour is themeable, and white by default", () => {
     // Selector is `defs rect`, not `clipPath rect`: jsdom ASCII-lowercases type
     // selectors, so the camelCase `clipPath` never matches one.
     let checked = 0;
-    for (const { name, style } of ALL.values()) {
+    for (const { name, style, shape, variant } of ALL.values()) {
       const Icon = componentOf(name);
-      const { container } = render(<Icon variant={style} />);
+      const { container } = render(<Icon shape={shape} variant={variant} />);
       for (const rect of container.querySelectorAll("defs rect")) {
         expect(rect.getAttribute("fill"), `${style}/${name}`).toBe("white");
         expect(rect.parentElement?.tagName, `${style}/${name}`).toBe("clipPath");
@@ -208,6 +247,60 @@ describe("colour is themeable, and white by default", () => {
     // The audit counted 2175 of them; assert the floor so a regression that
     // silently drops the masks cannot pass.
     expect(checked).toBe(2175);
+  });
+});
+
+describe("the source set holds its invariants", () => {
+  // There is no separate validator — the generator preserves whatever it is
+  // given. These two checks are therefore the whole guardrail against the two
+  // mistakes that would otherwise pass silently: artwork that cannot be themed,
+  // and artwork that does not sit on the shared grid.
+
+  it("draws every icon on the 24×24 grid", () => {
+    // A different viewBox is not rejected by the generator, and the byte-for-byte
+    // test would happily confirm the wrong grid was faithfully copied. Nothing
+    // else would notice until an icon visibly failed to line up.
+    const wrong: string[] = [];
+    for (const { style, name, source } of ALL.values()) {
+      const viewBox = source.match(/viewBox="([^"]*)"/)?.[1];
+      if (viewBox !== "0 0 24 24") wrong.push(`${style}/${name}: viewBox="${viewBox}"`);
+    }
+    expect(wrong).toEqual([]);
+  });
+
+  it("paints every icon in flat white, so the colour swap can reach all of it", () => {
+    // The generator only rewrites the exact value `white`. A hex, rgb() or named
+    // colour survives untouched and silently produces an unthemeable icon, so
+    // catch it at the source rather than in review.
+    const offenders: string[] = [];
+    for (const { style, name, source } of ALL.values()) {
+      for (const m of source.matchAll(/(fill|stroke)="([^"]*)"/g)) {
+        const [, attr, value] = m;
+        if (!["white", "none", "currentColor"].includes(value)) {
+          offenders.push(`${style}/${name}: ${attr}="${value}"`);
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it("routes every rendered icon's paint through currentColor", () => {
+    // The sampled version above covers six icons; this covers all 2307 artworks,
+    // which is what actually catches a stray colour in a newly added file.
+    const offenders: string[] = [];
+    for (const { style, name, shape, variant } of ALL.values()) {
+      const Icon = componentOf(name);
+      const { container } = render(<Icon shape={shape} variant={variant} />);
+      for (const el of container.querySelectorAll("path, g")) {
+        for (const attr of ["fill", "stroke"]) {
+          const v = el.getAttribute(attr);
+          if (v !== null && !["currentColor", "none"].includes(v)) {
+            offenders.push(`${style}/${name}: ${attr}="${v}"`);
+          }
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
   });
 });
 
@@ -243,18 +336,18 @@ describe("the exported set matches the source tree", () => {
 });
 
 describe("the variant prop selects the style", () => {
-  // Icons shipping both styles, so switching is actually observable. Capped at
-  // 40 because the byte-for-byte block above already covers all 2307 files;
-  // this block is about the branching, not the geometry.
+  // Icons shipping both variants of the same shape, so switching is observable.
+  // Capped at 40 because the byte-for-byte block above already covers all 2307
+  // files; this block is about the branching, not the geometry.
   const paired = [...ALL.values()]
-    .flatMap((s) => {
-      if (s.style !== "outline") return [];
-      const solid = ALL.get(`solid/${s.category}/${s.name}`);
-      return solid ? [{ name: s.name, solidSource: solid.source }] : [];
+    .flatMap((a) => {
+      if (a.variant !== "outline") return [];
+      const solid = ALL.get(`${a.shape}-solid/${a.category}/${a.name}`);
+      return solid ? [{ name: a.name, solidSource: solid.source }] : [];
     })
     .slice(0, 40);
 
-  it("has icons shipping both styles to test with", () => {
+  it("has icons shipping both variants to test with", () => {
     expect(paired.length).toBeGreaterThan(10);
   });
 
@@ -271,9 +364,50 @@ describe("the variant prop selects the style", () => {
       // And solid is genuinely the other file, not a re-render of the same one.
       expect(solid).not.toBe(outline);
       const rendered = render(<Icon variant="solid" />).container.querySelector("svg");
-      expect(shape(rendered as Element)).toEqual(shapeOfSource(solidSource));
+      expect(flatten(rendered as Element)).toEqual(flattenSource(solidSource));
     },
   );
+});
+
+describe("the shape axis", () => {
+  const shapes = [...new Set([...ALL.values()].map((a) => a.shape))].sort();
+  const variants = [...new Set([...ALL.values()].map((a) => a.variant))].sort();
+
+  it("only exposes shapes that have artwork on disk", () => {
+    // `sharp-outline/` and `sharp-solid/` exist but are empty until the sharp
+    // artwork lands, so `sharp` must not be reachable yet. When those directories
+    // are populated this assertion is the one that will fail, which is the point:
+    // it forces the docs and the example to be updated alongside.
+    const styleDirs = readdirSync(join(PKG, "icons")).sort();
+    const populated = styleDirs.filter((d) => [...ALL.values()].some((a) => a.style === d));
+    expect(styleDirs).toEqual(["round-outline", "round-solid", "sharp-outline", "sharp-solid"]);
+    expect(populated).toEqual(["round-outline", "round-solid"]);
+    expect(shapes).toEqual(["round"]);
+    expect(variants).toEqual(["outline", "solid"]);
+  });
+
+  it("accepts the shape prop without it reaching the DOM", () => {
+    // While only one shape exists the prop is inert, but it must still be
+    // accepted so generic call sites compile, and must never leak as an attribute.
+    for (const name of ["activity", "user", "search"]) {
+      const Icon = componentOf(name);
+      if (typeof Icon !== "function") continue;
+      const { container } = render(<Icon shape="round" />);
+      const svg = container.querySelector("svg");
+      expect(svg?.hasAttribute("shape"), name).toBe(false);
+      // And it renders the same thing as omitting it.
+      expect(container.innerHTML).toBe(render(<Icon />).container.innerHTML);
+    }
+  });
+
+  it("names every source directory as <shape>-<variant>", () => {
+    for (const dir of readdirSync(join(PKG, "icons"))) {
+      const parts = dir.split("-");
+      expect(parts.length, dir).toBe(2);
+      expect(["round", "sharp"], dir).toContain(parts[0]);
+      expect(["outline", "solid"], dir).toContain(parts[1]);
+    }
+  });
 });
 
 describe("props reach the root svg", () => {

@@ -1,47 +1,93 @@
 # Icon guidelines
 
-The **technical** specification every Qeetrix icon follows, and every rule the build enforces.
+The **technical** specification for a source SVG, and what the build actually enforces.
 
 For the **visual** language — how to make a new glyph look like it belongs to the family rather than
-merely validate — see [icon-design-system.md](icon-design-system.md). This document is what the
-validator checks; that one is what review checks.
+merely work — see [icon-design-system.md](icon-design-system.md). This document is what the test suite
+checks; that one is what review checks.
 
 ## The specification
 
 ```text
 Canvas        24 × 24
 ViewBox       0 0 24 24
-Style         outline / stroke
-Stroke width  2
-Line cap      round
-Line join     round
-Colour        currentColor
-Fill          none
+Shape axis    round | sharp          → icons/<shape>-<variant>/
+Variant axis  outline | solid
+Paint         flat white             → becomes currentColor in the component
 ```
 
-Every source file therefore looks like this, and nothing else:
+A source file is a designer's export, kept as exported. This is a real one, unmodified:
 
 ```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M20 12H4" />
-  <path d="M10 6 4 12l6 6" />
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_4418_7621)">
+    <path d="M15 22.75H9C3.57 22.75 1.25 20.43 1.25 15V9C1.25 3.57…" fill="white"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_4418_7621">
+      <rect width="24" height="24" fill="white"/>
+    </clipPath>
+  </defs>
 </svg>
 ```
 
-The root attributes are **required**, even though `<IconBase>` supplies them again at render time.
-Two reasons: a source file opens correctly on its own in a browser or design tool, and a contributor
-who writes `stroke-width="1"` gets an error instead of having it silently discarded by the generator.
+> [!IMPORTANT]
+> **Do not tidy a source file.** `width`/`height`, the `<g clip-path>` wrapper, the `<defs>`/`<clipPath>`
+> block and the generated `id` are all kept deliberately. The component holds this markup byte for
+> byte, and `tests/icons.test.tsx` compares the rendered DOM back against the file — so "cleaning up"
+> an SVG is a test failure, not an improvement.
+
+## What the generator changes
+
+Exactly three things, and nothing else:
+
+| Change | Why |
+|:--|:--|
+| Seven kebab attributes take their JSX spelling (`clip-path` → `clipPath`) | JSX has no other way to write them |
+| `{...props}` appended to the root `<svg>` | Lets a consumer override anything |
+| Visible `fill`/`stroke` of `white` → `currentColor`, and the root gains `color="white"` | Makes the icon themeable while rendering identically by default |
+
+The colour swap applies **only outside `<defs>`**. The `<rect fill="white">` inside each `<clipPath>`
+is a mask — never painted — so recolouring it would be meaningless. It is left as authored.
+
+The seven renamed attributes are `clip-path`, `clip-rule`, `fill-rule`, `stroke-width`,
+`stroke-linecap`, `stroke-linejoin`, `stroke-miterlimit`. **If you add artwork using a kebab-case
+attribute outside that list, add it to `JSX_ATTRS` in `scripts/generate.mjs`.**
+
+## What the build enforces
+
+There is no separate validator. The generator preserves whatever it is given, so the guardrails live
+in `bun run test`:
+
+| Enforced | How it fails |
+|:--|:--|
+| `viewBox` is exactly `0 0 24 24` | Test names the file |
+| Every `fill`/`stroke` is `white`, `none` or `currentColor` | Test names the file and the value |
+| No rendered path carries a literal colour | Test names the file, across all 2,307 artworks |
+| Each `<clipPath>` mask stays `fill="white"` | Test asserts the exact count |
+| The component matches its source SVG, tag for tag | Test names the file |
+| Directory is named `<shape>-<variant>` | Generator throws |
+| `style="…"` attribute | **TypeScript error** — a string is not a valid JSX `style` |
+| Committed output drifted from source | `bun run generate:check` fails |
+
+Two of these are worth understanding, because they are the mistakes that would otherwise ship quietly:
+
+**A hard-coded colour is not rejected — it is untestable to spot by eye.** The generator only rewrites
+the literal value `white`. A `#f26d0e` or `rgb(0 0 0)` survives untouched, producing an icon that
+ignores `color` and breaks dark mode. That is why the flat-white check exists.
+
+**A wrong `viewBox` is not rejected either.** The byte-for-byte test would happily confirm the wrong
+grid was faithfully copied. Nothing else would notice until an icon visibly failed to line up.
 
 ## Drawing on the grid
 
-**Keep inside the live area.** Centrelines belong in `3 → 21`; only a stroke that must span the full
-width (`menu`, `minus`, `arrow-left`) reaches the `2 → 22` bleed. A 2px stroke centred at `2` already
-touches the canvas edge. The bands are defined in
+**Keep inside the live area.** Centrelines belong in `3 → 21`; only a shape that must span the full
+width reaches the `2 → 22` bleed. The bands are defined in
 [icon-design-system.md §1](icon-design-system.md#1-the-grid).
 
-**Land on whole pixels where you can.** A vertical line at `x=12` renders crisply; at `x=12.5` a 2px
-stroke straddles two pixel rows and blurs at 16px. Decimals are legal — `settings` uses them for its
-45° teeth, because the alternative is a visibly lopsided gear — but reach for integers first.
+**Land on whole pixels where you can.** A vertical edge at `x=12` renders crisply; at `x=12.5` it
+straddles two pixel rows and blurs at 16px. Decimals are legal and common in this set, but reach for
+integers first.
 
 **Optical balance beats mathematical centring.** A triangle centred by its bounding box looks
 left-heavy; nudge it until it looks right.
@@ -52,105 +98,59 @@ the size most UI actually uses. If a feature disappears, remove it rather than s
 **Match the family.** A new arrow should share the existing arrows' head angle and shaft length. Open
 the neighbours before you start.
 
-## Stroke, not fill
-
-The set is outline-only. Use `fill="none"` and let the stroke carry the shape.
-
-Where a shape must read as solid, still do not use a colour: `fill="currentColor"` inherits like the
-stroke does. `fill="none"`, `currentColor`, `inherit` and `transparent` are the only four accepted
-values — anything else is a build error.
-
 ## Colour
 
-Never write a colour. Not a hex, not `rgb()`, not `hsl()`, not `oklch()`, not a CSS colour name.
+Paint in flat `white`, and nothing else. Never a hex, `rgb()`, `hsl()`, `oklch()` or a CSS colour name.
 
-Icons inherit from the surrounding text, which is what makes them work automatically in light mode,
-dark mode, on a coloured button, and after a re-brand:
+White is not arbitrary: it is the value the generator rewrites to `currentColor`, which is what makes
+an icon inherit from its surroundings and work in light mode, dark mode, on a coloured button, and
+after a re-brand.
 
 ```tsx
 <span className="text-red-600">
-  <ShieldCheck />  {/* red, with no icon-specific styling at all */}
+  <ShieldTick />  {/* red, with no icon-specific styling at all */}
 </span>
 ```
 
-Validation enforces this with an allowlist rather than by hunting for colour syntax — which is why
-`#f26d0e`, `rgb(0 0 0)`, `oklch(0.7 0.1 40)` and `rebeccapurple` are all rejected without any of them
-appearing in the rule set.
-
-## What is rejected
-
-`bun run validate` fails the build on all of the following. Every rule exists to stop one specific
-thing reaching a consumer.
-
-| Rejected | Why |
-|:--|:--|
-| `viewBox` other than `0 0 24 24` | Breaks the shared grid; sizing stops being predictable. |
-| `width`/`height` on the root | Size is a render-time prop. A baked-in size silently overrides `size`. |
-| Root spec attributes missing or wrong | Would be silently discarded by the generator. |
-| Hard-coded colours | Icon stops inheriting; breaks dark mode and re-branding. |
-| `<image>`, `data:` URIs, base64 | Raster content does not scale and bloats the package. |
-| `url(...)`, `href`, `xlink:href` | External references break when inlined or served cross-origin. |
-| `<style>` or `style=` | Styling is the consumer's concern; inline styles cannot be overridden. |
-| `<title>`, `<desc>`, `<metadata>` | Editor leftovers. Accessible names are set at render time, per usage. |
-| `sodipodi:`/`inkscape:`/`xmlns:*` attributes | Editor metadata. |
-| `id` attributes | Ids collide when many icons render in one document. Outline icons never need one. |
-| `class` attributes | Consumers style via `className` on the component. |
-| Elements outside the allowlist | Only `svg g path circle ellipse line polyline polygon rect`. |
-| Attributes outside the allowlist | Blocks `onclick` and every other script vector. |
-| `transform` anywhere | A transform makes source coordinates disagree with what renders, so reviewing geometry means composing matrices in your head, and two icons that look aligned can have unrelated path data. Author absolute coordinates. |
-| An alias claimed by two icons | An alias asserts "this icon is also called X"; two owners make the query ambiguous. Tags may be shared. |
-| An icon's own name as a tag or alias | The canonical name is always searched. |
-| An alias that is also a real icon name | The query would be ambiguous between two glyphs. |
-| A `priority` outside `P0`–`P3` | Would silently drop the icon from the coverage matrix. |
-| Stray text content | Usually a leftover `<title>` or a copy-paste accident. |
-| A `DOCTYPE` or CDATA | Entity-expansion surface, and never needed. |
-| An empty icon | Draws nothing. |
-
-Thirty rules are errors. Four things are **warnings** rather than errors, because "drop in one SVG and
-it works" has to stay true: an icon with no tags, a horizontally-directional icon not marked
-`mirror`, an alias restated as a tag, and a missing `priority`.
-
-The mirror warning knows about two exceptions and stays quiet for both: symmetric names
-(`arrow-left-right` — flipping it is a no-op) and the `media` category (`skip-forward` points right
-in every locale, because playback direction is not reading direction).
+See [usage.md](usage.md#colour-and-dark-mode) for the consumer side.
 
 ## Exporting from a design tool
 
-Design tools add a lot of what the list above rejects. The reliable route is to export, then hand-fix:
-
 1. Set the frame to exactly 24 × 24.
-2. Outline strokes only if you must — prefer real strokes so `strokeWidth` stays adjustable.
-3. Export as SVG with "include id attributes" **off**.
-4. Delete the `width`/`height`, `<title>`, `<desc>`, `<metadata>` and every `id`.
-5. Replace the root attributes with the canonical block above.
-6. Remove `fill`/`stroke` from children unless they are genuinely `none` or `currentColor`.
-7. **Flatten every `transform`.** Design tools emit them constantly and they are rejected. Most
-   tools have a "flatten"/"outline" step; otherwise apply the translation to the coordinates by hand.
-8. Run `bun run validate` and fix what it names, then `bun run explorer` and look at it beside its
-   siblings at 16px.
+2. Paint every shape flat white.
+3. Export as SVG. Leave `width`/`height` and any `id` alone — they are expected.
+4. Drop the file at `icons/<shape>-<variant>/<category>/<name>.svg`.
+5. Run `bun run generate && bun run test`.
+6. Look at it beside its siblings at 16px: `cd example && bun run dev`.
 
-The validator is a faster reviewer than a person. Lean on it.
+The one thing to strip is a `style=""` attribute — it is invalid in JSX and will fail `bun run
+typecheck` rather than render. Move whatever it did into real attributes.
 
 ## RTL mirroring
 
-Icons with a horizontal direction must flip under `dir="rtl"` — a "next" arrow points the other way
-in Arabic or Hebrew. Record that in `icon-metadata.json`:
+Icons with a horizontal direction should flip under `dir="rtl"` — a "next" arrow points the other way
+in Arabic or Hebrew. Vertical direction is **not** mirrored: `arrow-up` means the same thing in both.
 
-```json
-"arrow-left": { "tags": ["back", "previous"], "aliases": ["arrow-back"], "mirror": true }
+This package ships no mirror metadata and does not read layout direction; there is no
+`icon-metadata.json` any more. Mirroring is the consumer's call, applied in CSS where the direction is
+known:
+
+```css
+[dir="rtl"] .icon-mirror { transform: scaleX(-1); }
 ```
 
-Vertical direction is **not** mirrored: `arrow-up` and `chevron-down` mean the same thing in both
-directions, so they stay `false`.
+```tsx
+<ArrowLeft className="icon-mirror" />
+```
 
-The flag is metadata, not behaviour — this package does not read layout direction. A consumer applies
-it, typically with `rtl:-scale-x-100` or by swapping the icon.
+Media transport controls are the standing exception: `forward` points right in every locale, because
+playback direction is not reading direction.
 
 ## Accessibility
 
-Icons are decorative by default and carry `aria-hidden="true"`. Passing `aria-label` or
-`aria-labelledby` makes an icon a named graphic (`role="img"`) and drops `aria-hidden` automatically.
+Nothing is decided for you — a source file carries no accessible name, and it should not. The same
+glyph means different things in different places (`close-circle` is "Close" in a dialog and "Remove"
+in a chip), so the name belongs at the usage site.
 
-Do not add a `<title>` to a source file to try to name an icon. The same glyph means different things
-in different places — `x` is "Close" in a dialog and "Remove" in a chip — so the name belongs at the
-usage site. See the README's accessibility section for the patterns.
+Do **not** add a `<title>` to a source file to name an icon. See
+[usage.md](usage.md#accessibility) for the decorative and meaningful patterns.

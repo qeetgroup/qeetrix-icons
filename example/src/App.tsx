@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { allVariants, categories, type Icon, icons, stats } from "./catalogue.js";
+import { allShapes, allVariants, categories, type Icon, icons, stats } from "./catalogue.js";
 
 /**
  * A visual check for the whole icon set.
@@ -19,6 +19,7 @@ export function App() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
   const [variant, setVariant] = useState("outline");
+  const [shape, setShape] = useState(allShapes[0] ?? "round");
   const [size, setSize] = useState(32);
   const [bg, setBg] = useState<Bg>("dark");
   const [colour, setColour] = useState("");
@@ -73,6 +74,10 @@ export function App() {
             <dt>solid only</dt>
             <dd>{stats.solidOnly}</dd>
           </div>
+          <div>
+            <dt>sharp</dt>
+            <dd>{stats.sharp}</dd>
+          </div>
         </dl>
 
         <div className="controls">
@@ -107,6 +112,26 @@ export function App() {
                 </option>
               ))}
               <option value="both">both, side by side</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Shape</span>
+            <select
+              value={shape}
+              onChange={(e) => setShape(e.target.value)}
+              disabled={allShapes.length < 2}
+              title={
+                allShapes.length < 2
+                  ? "Only round artwork exists so far — sharp is not populated yet"
+                  : undefined
+              }
+            >
+              {allShapes.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -163,6 +188,7 @@ export function App() {
             key={icon.name}
             icon={icon}
             variant={variant}
+            shape={shape}
             size={size}
             colour={colour.trim()}
             onCopy={() => {
@@ -181,37 +207,52 @@ export function App() {
 function Cell({
   icon,
   variant,
+  shape,
   size,
   colour,
   onCopy,
 }: {
   icon: Icon;
   variant: string;
+  shape: string;
   size: number;
   colour: string;
   onCopy: () => void;
 }) {
-  const { Component, variants } = icon;
+  const { Component, variants, shapes } = icon;
   // `content-visibility: auto` on the cell keeps 1166 inline SVGs cheap without
   // reaching for a virtualiser, so Cmd-F still finds every name on the page.
   const style = { contentVisibility: "auto", containIntrinsicSize: `${size + 44}px` } as const;
   const paint = colour ? { color: colour } : undefined;
 
+  // Fall back to what the icon has, so a gap shows as an annotation rather than
+  // a blank cell.
+  const drawShape = shapes.includes(shape) ? shape : shapes[0];
   const shown =
     variant === "both" ? variants : [variants.includes(variant) ? variant : variants[0]];
-  const substituted = variant !== "both" && !variants.includes(variant);
+  const missingVariant = variant !== "both" && !variants.includes(variant);
+  const missingShape = !shapes.includes(shape);
 
   return (
     <button type="button" className="cell" style={style} onClick={onCopy} title="Copy import">
       <span className="art">
         {shown.map((v) => (
-          <Component key={v} variant={v} width={size} height={size} style={paint} aria-hidden />
+          <Component
+            key={v}
+            variant={v}
+            shape={drawShape}
+            width={size}
+            height={size}
+            style={paint}
+            aria-hidden
+          />
         ))}
       </span>
       <span className="name">{icon.name}</span>
       <span className="meta">
         {icon.category}
-        {substituted && <em> · no {variant}</em>}
+        {missingShape && <em> · no {shape}</em>}
+        {missingVariant && <em> · no {variant}</em>}
         {variant === "both" && variants.length === 1 && <em> · {variants[0]} only</em>}
       </span>
     </button>

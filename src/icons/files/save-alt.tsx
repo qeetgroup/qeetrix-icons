@@ -1,7 +1,7 @@
-/* GENERATED from icons/outline/files/save-alt.svg, icons/solid/files/save-alt.svg by scripts/generate.mjs. Do not edit by hand. */
+/* GENERATED from icons/round-outline/files/save-alt.svg, icons/round-solid/files/save-alt.svg by scripts/generate.mjs. Do not edit by hand. */
 import type { SVGProps } from "react";
 
-export function SaveAlt({ variant = "outline", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid" }) {
+export function SaveAlt({ variant = "outline", shape: _shape = "round", ...props }: SVGProps<SVGSVGElement> & { variant?: "outline" | "solid"; shape?: "round" }) {
   if (variant === "solid") {
     return (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="white" {...props}>

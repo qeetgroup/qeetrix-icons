@@ -1,26 +1,16 @@
 <div align="center">
 
-# ✨ Qeetrix Icons
+# ✨ Qeetrix Icons 
 
 ### The Qeet Group icon library — one grid, two styles, every product
 
-**1,166 icons** · **2,307 SVGs** · **20 categories** · outline + solid behind one prop
+**1,166 icons** · **2,307 SVGs** · **20 categories** · outline + solid on two style props
 
 [![npm](https://img.shields.io/npm/v/@qeetrix/icons?style=flat-square&color=b45309)](https://www.npmjs.com/package/@qeetrix/icons)
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](./LICENSE)
 [![react](https://img.shields.io/badge/react-%E2%89%A519-149eca?style=flat-square)](https://react.dev)
 
-```tsx
-import { ArrowLeft, ShieldTick, Trash } from "@qeetrix/icons";
-
-<ArrowLeft />
-<ShieldTick variant="solid" />
-<Trash className="size-5 text-red-500" />
-```
-
 </div>
-
----
 
 ## ✨ What it is
 
@@ -31,12 +21,12 @@ including `<g clip-path>`, `<defs>` and `<clipPath>`.
 | | |
 |:--|:--|
 | **1,166 components** | One per icon name, generated from 2,307 source SVGs |
-| **Two styles** | `outline` and `solid`, selected by a `variant` prop — not two exports |
+| **Two style axes** | `variant` (outline/solid) and `shape` (round/sharp) — not separate exports |
 | **24 × 24 grid** | Every icon shares one `viewBox`, so they align without nudging |
 | **Themeable** | All visible paint routes through `currentColor` |
 | **Tree-shakeable** | `sideEffects: false`, one module per icon |
 | **Zero dependencies** | React ≥ 19 as the only peer |
-| **Typed** | Each component narrows `variant` to the styles it actually ships |
+| **Typed** | Each component narrows both axes to the artwork it actually ships |
 
 ---
 
@@ -54,10 +44,13 @@ React ≥ 19 is a peer dependency and is not bundled.
 
 ## 🎨 Props
 
-Every icon accepts **everything valid on an `<svg>` element**, plus `variant`:
+Every icon accepts **everything valid on an `<svg>` element**, plus `variant` and `shape`:
 
 ```ts
-type Props = React.SVGProps<SVGSVGElement> & { variant?: "outline" | "solid" };
+type Props = React.SVGProps<SVGSVGElement> & {
+  variant?: "outline" | "solid"; // strokes or filled shapes
+  shape?: "round" | "sharp"; // rounded or squared corners
+};
 ```
 
 That is the whole API. There is no custom prop surface to learn — `className`, `style`, `width`,
@@ -68,7 +61,8 @@ on the root `<svg>`.
 
 | Prop | Type | Default | What it does |
 |:--|:--|:--|:--|
-| `variant` | `"outline" \| "solid"` | `"outline"` | Which style to draw. Narrowed per icon — see [Variants](#-variants). |
+| `variant` | `"outline" \| "solid"` | `"outline"` | Strokes or filled shapes. Narrowed per icon — see [Style axes](#-style-axes). |
+| `shape` | `"round" \| "sharp"` | `"round"` | Corner treatment. `"sharp"` is not populated yet. |
 | `color` | `string` | `"white"` | Retints the whole glyph. **This is the colour knob.** |
 | `width` / `height` | `number \| string` | `24` | Rendered size. Set both. |
 | `className` | `string` | — | Beats `color` and `width`/`height`, so utility classes win. |
@@ -150,24 +144,35 @@ Because the paint follows `color`, a theme class is all you need:
 
 ---
 
-## 🔀 Variants
+## 🔀 Style axes
 
-One component per icon name; the style is a prop, not a separate export:
+One component per icon name. Style is **two independent props**, not a compound value and not
+separate exports — so adding a new corner treatment never renames anything:
 
 ```tsx
 import { Activity } from "@qeetrix/icons";
 
-<Activity />                    // outline — the default
-<Activity variant="outline" />  // the same thing, explicit
-<Activity variant="solid" />    // solid
+<Activity />                                  // round + outline (both defaults)
+<Activity variant="outline" />                // the same thing, explicit
+<Activity variant="solid" />                  // round + solid
+<Activity shape="sharp" variant="solid" />    // sharp + solid, once it lands
 ```
 
-**1,141 of 1,166** icons ship both styles. The rest ship one, and the type reflects it — so a
-single-style icon rejects the variant it does not have, at compile time:
+Each axis maps to a source directory, `icons/<shape>-<variant>/`:
+
+| | `outline` | `solid` |
+|:--|:--|:--|
+| **`round`** | `round-outline/` — 1,154 | `round-solid/` — 1,153 |
+| **`sharp`** | `sharp-outline/` — *empty* | `sharp-solid/` — *empty* |
+
+### Both unions are per-icon
+
+Neither prop is a fixed type. Each is derived from the artwork that actually exists for that icon, so
+a combination it does not ship is **not expressible**:
 
 | Coverage | Count | `variant` accepts |
 |:--|--:|:--|
-| Both styles | 1,141 | `"outline" \| "solid"` |
+| Both variants | 1,141 | `"outline" \| "solid"` |
 | Outline only | 13 | `"outline"` |
 | Solid only | 12 | `"solid"` |
 
@@ -176,7 +181,12 @@ single-style icon rejects the variant it does not have, at compile time:
 <PresentionChart variant="solid" /> // ✅ solid-only icon, and its default
 ```
 
-The default is `outline` wherever an outline exists, otherwise the icon's only style.
+`variant` defaults to `outline` wherever an outline exists, otherwise the icon's only variant.
+
+> [!NOTE]
+> **`shape="sharp"` is a type error today.** The `sharp-outline/` and `sharp-solid/` directories exist
+> but hold no artwork yet, so every icon currently narrows `shape` to `"round"`. Drop sharp SVGs in,
+> run `bun run generate`, and the union widens per icon automatically — no code change here.
 
 ---
 
@@ -203,7 +213,7 @@ Category comes from the source directory, never from a metadata file, so it cann
 
 | Entry point | Contents |
 |:--|:--|
-| `@qeetrix/icons` | Every icon, plus the `QeetrixIconProps` and `IconVariant` types |
+| `@qeetrix/icons` | Every icon, plus the `QeetrixIcon`, `QeetrixIconProps`, `IconVariant` and `IconShape` types |
 | `@qeetrix/icons/icons/<category>/<name>` | One icon, bypassing the barrel |
 
 ```tsx
@@ -214,7 +224,7 @@ import { ArrowLeft, ShieldTick } from "@qeetrix/icons";
 import { ArrowLeft } from "@qeetrix/icons/icons/arrows/arrow-left";
 
 // Types
-import type { QeetrixIconProps, IconVariant } from "@qeetrix/icons";
+import type { IconShape, IconVariant, QeetrixIcon, QeetrixIconProps } from "@qeetrix/icons";
 ```
 
 Both forms produce the same component. `sideEffects: false` plus one module per icon means importing
@@ -248,12 +258,14 @@ The icon inherits the button's red because of `color="currentColor"`, including 
 
 ### A typed wrapper
 
+Use `QeetrixIcon` to hold an arbitrary icon:
+
 ```tsx
-import type { ComponentType } from "react";
-import type { QeetrixIconProps } from "@qeetrix/icons";
+import type { QeetrixIcon } from "@qeetrix/icons";
+import { ShieldTick, Trash } from "@qeetrix/icons";
 
 type ButtonProps = {
-  icon: ComponentType<QeetrixIconProps>;
+  icon: QeetrixIcon;
   label: string;
 };
 
@@ -265,8 +277,17 @@ export function IconButton({ icon: Icon, label }: ButtonProps) {
   );
 }
 
-// <IconButton icon={ShieldTick} label="Verify" />
+<IconButton icon={ShieldTick} label="Verify" />;
+
+// Registries work the same way
+const registry: Record<string, QeetrixIcon> = { verify: ShieldTick, delete: Trash };
 ```
+
+> [!WARNING]
+> Do **not** reach for `ComponentType<QeetrixIconProps>` here — no icon is assignable to it. Props are
+> contravariant, and every icon narrows both style axes, so a component accepting only `shape="round"`
+> cannot stand in for one accepting `"round" | "sharp"`. `QeetrixIcon` omits the style axes for exactly
+> this reason; forwarding one means making the wrapper generic over that icon's own props.
 
 ### Switching variant on state
 
@@ -344,7 +365,7 @@ CSS where you know the direction:
 ## 🏗 How it works
 
 ```
-icons/<style>/<category>/<name>.svg      ← source, hand-committed, never modified
+icons/<shape>-<variant>/<category>/<name>.svg   ← source, never modified
         │
         │   scripts/generate.mjs         ← the only script
         ▼
@@ -388,7 +409,7 @@ bun run build           # dist/
 
 ### Adding an icon
 
-Drop the SVG at `icons/<style>/<category>/<name>.svg`, then:
+Drop the SVG at `icons/<shape>-<variant>/<category>/<name>.svg`, then:
 
 ```bash
 bun run generate

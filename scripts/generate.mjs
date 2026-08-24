@@ -42,8 +42,23 @@
  * elements inside `<clipPath>` are masks: they are never painted, so recolouring
  * them would be meaningless. They are left exactly as authored.
  *
- * Layout: icons/<style>/<category>/<name>.svg → src/icons/<category>/<name>.tsx
- * One component per name, with the style selected by a `variant` prop.
+ * ── layout and the two style axes ────────────────────────────────────────────
+ *
+ *   icons/<shape>-<variant>/<category>/<name>.svg
+ *     → src/icons/<category>/<name>.tsx
+ *
+ * Style is two independent axes, so the component takes two props rather than
+ * one compound value. `variant="solid"` therefore means the same thing it always
+ * did, and adding sharp artwork does not rename anything:
+ *
+ *   icons/round-outline/…   <Activity />                        (both defaults)
+ *   icons/round-solid/…     <Activity variant="solid" />
+ *   icons/sharp-outline/…   <Activity shape="sharp" />
+ *   icons/sharp-solid/…     <Activity shape="sharp" variant="solid" />
+ *
+ * Both unions are derived per icon from the files that actually exist, so an
+ * empty `sharp-*` directory contributes nothing and `shape` stays `"round"`.
+ * Drop sharp SVGs in and the type widens on the next run — no edit here needed.
  */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -53,8 +68,9 @@ import { fileURLToPath } from "node:url";
 const PKG = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CHECK = process.argv.includes("--check");
 
-/** Outline first, so it is the default variant wherever it exists. */
-const STYLE_ORDER = ["outline", "solid"];
+/** Preferred order on each axis. The first that exists becomes the default. */
+const SHAPE_ORDER = ["round", "sharp"];
+const VARIANT_ORDER = ["outline", "solid"];
 
 /**
  * The only attribute names that change, and the only reason they do: JSX has no
@@ -81,18 +97,35 @@ const toComponentName = (name) =>
     .join("");
 
 // ── read ──────────────────────────────────────────────────────────────────
-/** Walk `icons/<style>/<category>/<name>.svg`. */
+/**
+ * Walk `icons/<shape>-<variant>/<category>/<name>.svg`.
+ *
+ * The directory name is the contract: exactly one hyphen, `<shape>-<variant>`,
+ * both drawn from SHAPE_ORDER and VARIANT_ORDER. A typo in a folder name is a
+ * hard error rather than a silently ignored directory — otherwise a mistyped
+ * `round-outine` would just make 1154 icons quietly disappear.
+ */
 function discover() {
   const found = [];
   for (const style of readdirSync(join(PKG, "icons"))) {
     const styleDir = join(PKG, "icons", style);
+    const [shape, variant, ...rest] = style.split("-");
+
+    if (rest.length > 0 || !SHAPE_ORDER.includes(shape) || !VARIANT_ORDER.includes(variant)) {
+      throw new Error(
+        `icons/${style}: directory must be named "<shape>-<variant>" with shape one of ` +
+          `${SHAPE_ORDER.join("|")} and variant one of ${VARIANT_ORDER.join("|")}.`,
+      );
+    }
+
     for (const category of readdirSync(styleDir)) {
       const categoryDir = join(styleDir, category);
       for (const file of readdirSync(categoryDir)) {
         if (!file.endsWith(".svg")) continue;
         found.push({
           name: file.slice(0, -4),
-          style,
+          shape,
+          variant,
           category,
           file: `icons/${style}/${category}/${file}`,
           source: readFileSync(join(categoryDir, file), "utf8").trim(),
@@ -167,32 +200,57 @@ function toJsx(source, indent) {
 
 // ── emit ──────────────────────────────────────────────────────────────────
 /**
- * One component, with every available style behind a `variant` prop.
+ * One component, with every artwork it has behind `shape` and `variant` props.
+ *
+ * Each union is only as wide as the files that exist, so a combination the icon
+ * does not ship is not expressible. Where an icon has exactly one value on an
+ * axis, that prop is accepted but unread — generic call sites keep working, and
+ * the `_` prefix marks it deliberate rather than forgotten.
  *
  * @param {string} component PascalCase name.
- * @param {Array<{style: string, file: string, source: string}>} variants
+ * @param {Array<{shape: string, variant: string, file: string, source: string}>} artworks
  */
-function emitComponent(component, variants) {
-  const sources = variants.map((v) => v.file).join(", ");
-  const union = variants.map((v) => JSON.stringify(v.style)).join(" | ");
-  // The default variant is the fall-through, so reading the component bottom-up
-  // shows what `<Icon />` with no props renders.
-  const fallback = variants[0];
-  const branches = variants.slice(1);
+function emitComponent(component, artworks) {
+  const sources = artworks.map((a) => a.file).join(", ");
 
-  // A single-style icon still takes `variant`, so generic call sites keep
-  // working. `_variant` marks it as deliberately unread rather than forgotten.
-  const binding = branches.length === 0 ? "variant: _variant" : "variant";
+  const shapes = SHAPE_ORDER.filter((s) => artworks.some((a) => a.shape === s));
+  const variants = VARIANT_ORDER.filter((v) => artworks.some((a) => a.variant === v));
+  const defaultShape = shapes[0];
+  const defaultVariant = variants[0];
+
+  // The default pair is the fall-through, so reading a component bottom-up shows
+  // what `<Icon />` with no props renders. If the icon happens not to ship that
+  // exact pair, the first artwork stands in.
+  const fallback =
+    artworks.find((a) => a.shape === defaultShape && a.variant === defaultVariant) ?? artworks[0];
+  const branches = artworks.filter((a) => a !== fallback);
+
+  /** Only test an axis that actually varies — a one-value check is dead code. */
+  const condition = (artwork) =>
+    [
+      shapes.length > 1 ? `shape === ${JSON.stringify(artwork.shape)}` : null,
+      variants.length > 1 ? `variant === ${JSON.stringify(artwork.variant)}` : null,
+    ]
+      .filter(Boolean)
+      .join(" && ");
+
+  const bind = (name, values, fallbackValue) =>
+    `${values.length > 1 ? name : `${name}: _${name}`} = ${JSON.stringify(fallbackValue)}`;
+
   const signature =
-    `export function ${component}({ ${binding} = ${JSON.stringify(variants[0].style)}, ...props }: ` +
-    `SVGProps<SVGSVGElement> & { variant?: ${union} }) {`;
+    `export function ${component}({ ` +
+    `${bind("variant", variants, fallback.variant)}, ` +
+    `${bind("shape", shapes, fallback.shape)}, ...props }: ` +
+    "SVGProps<SVGSVGElement> & { " +
+    `variant?: ${variants.map((v) => JSON.stringify(v)).join(" | ")}; ` +
+    `shape?: ${shapes.map((s) => JSON.stringify(s)).join(" | ")} }) {`;
 
   const body = [
-    ...branches.map((variant) =>
+    ...branches.map((artwork) =>
       [
-        `  if (variant === ${JSON.stringify(variant.style)}) {`,
+        `  if (${condition(artwork)}) {`,
         "    return (",
-        toJsx(variant.source, "      "),
+        toJsx(artwork.source, "      "),
         "    );",
         "  }",
       ].join("\n"),
@@ -212,21 +270,29 @@ function emitComponent(component, variants) {
 }
 
 // ── run ───────────────────────────────────────────────────────────────────
-const icons = new Map(); // name → { category, variants: [] }
-for (const icon of discover()) {
-  if (!icons.has(icon.name)) icons.set(icon.name, { category: icon.category, variants: [] });
-  icons.get(icon.name).variants.push(icon);
+const sources = discover();
+
+const icons = new Map(); // name → { category, artworks: [] }
+for (const icon of sources) {
+  if (!icons.has(icon.name)) icons.set(icon.name, { category: icon.category, artworks: [] });
+  icons.get(icon.name).artworks.push(icon);
 }
 
 const files = new Map(); // "src/icons/…" → contents
 const exports = [];
 
-for (const [name, { category, variants }] of [...icons.entries()].sort((a, b) =>
+for (const [name, { category, artworks }] of [...icons.entries()].sort((a, b) =>
   byString(a[0], b[0]),
 )) {
-  variants.sort((a, b) => STYLE_ORDER.indexOf(a.style) - STYLE_ORDER.indexOf(b.style));
+  // Shape first, then variant, so the default pair sorts to the front and the
+  // emitted branch order is stable across runs.
+  artworks.sort(
+    (a, b) =>
+      SHAPE_ORDER.indexOf(a.shape) - SHAPE_ORDER.indexOf(b.shape) ||
+      VARIANT_ORDER.indexOf(a.variant) - VARIANT_ORDER.indexOf(b.variant),
+  );
   const component = toComponentName(name);
-  files.set(`src/icons/${category}/${name}.tsx`, emitComponent(component, variants));
+  files.set(`src/icons/${category}/${name}.tsx`, emitComponent(component, artworks));
   exports.push({ path: `./${category}/${name}.js`, component });
 }
 
@@ -276,7 +342,5 @@ if (CHECK) {
     mkdirSync(dirname(abs), { recursive: true });
     writeFileSync(abs, contents);
   }
-  console.log(
-    `✔ generated ${icons.size} component(s) in src/icons/ from ${discover().length} SVGs.`,
-  );
+  console.log(`✔ generated ${icons.size} component(s) in src/icons/ from ${sources.length} SVGs.`);
 }
