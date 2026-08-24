@@ -5,17 +5,42 @@
  *   node scripts/generate.mjs --check  fail if src/icons/ is out of date
  *
  * The contract is deliberately narrow: the SVG markup inside each component is
- * the source file's markup, byte for byte. Tag names, attribute values, path
- * data, `<g clip-path>`, `<defs>`, `<clipPath>` and `fill="white"` all survive
- * untouched. Two things change, and only these two:
+ * the source file's markup, byte for byte. Tag names, path data, `<g clip-path>`,
+ * `<defs>` and `<clipPath>` all survive untouched. Three things change, and only
+ * these three:
  *
  *   1. Seven kebab-case attribute names become their JSX camelCase spelling
  *      (`clip-path` → `clipPath`), because JSX has no other way to say them.
  *   2. `{...props}` is appended to the root `<svg>` attribute list, so a
- *      consumer can override anything — width, height, fill, className.
+ *      consumer can override anything — width, height, color, className.
+ *   3. On *visible* geometry only, `fill="white"` and `stroke="white"` become
+ *      `currentColor`, and the root gains `color="white"`. See below.
  *
  * Whitespace *between* tags is reflowed for readability. Whitespace between
  * elements is inert in both SVG and JSX, so nothing rendered changes.
+ *
+ * ── why the colour swap, and why it renders identically ───────────────────────
+ *
+ * Every source file paints in a single flat `white` (audited: 8427 fills and 33
+ * strokes, zero multi-tone icons). Hard-coding that in the component makes the
+ * icon un-themeable, because an explicit `fill` on a child beats an inherited
+ * one from the root — so a `fill` prop on the `<svg>` would paint nothing.
+ *
+ * Routing the paint through `currentColor` and defaulting the root to
+ * `color="white"` keeps the default output pixel-identical to the source while
+ * making one knob control the whole icon:
+ *
+ *   <Activity />                        white, exactly as the SVG was drawn
+ *   <Activity color="black" />          any colour, via a plain prop
+ *   <Activity className="text-red-500" />        CSS wins over the default
+ *   <Activity className="text-black dark:text-white" />   dark / light mode
+ *
+ * `color` is a presentation attribute, which CSS outranks — so a Tailwind class
+ * or a stylesheet rule beats the `white` default without `!important`.
+ *
+ * The swap is applied ONLY outside `<defs>`. The 2175 `<rect fill="white">`
+ * elements inside `<clipPath>` are masks: they are never painted, so recolouring
+ * them would be meaningless. They are left exactly as authored.
  *
  * Layout: icons/<style>/<category>/<name>.svg → src/icons/<category>/<name>.tsx
  * One component per name, with the style selected by a `variant` prop.
@@ -91,6 +116,17 @@ const toJsxAttrs = (tag) =>
   tag.replace(/([a-zA-Z-]+)=/g, (_, name) => `${JSX_ATTRS[name] ?? name}=`);
 
 /**
+ * Route flat white paint through `currentColor` so one prop can retheme the icon.
+ *
+ * Only the exact value `white` is touched, and only on `fill`/`stroke`. Callers
+ * must not apply this inside `<defs>` — see the header comment.
+ */
+const toCurrentColor = (tag) => tag.replace(/(fill|stroke)="white"/g, '$1="currentColor"');
+
+/** The name of an element from its opening tag. */
+const tagName = (tag) => tag.match(/^<\/?([a-zA-Z]+)/)?.[1];
+
+/**
  * Re-indent a flat tag sequence, preserving every tag exactly.
  *
  * Returns the markup ready to drop into JSX, indented to sit inside a `return (`.
@@ -101,15 +137,30 @@ function toJsx(source, indent) {
     throw new Error(`not an <svg> document: ${source.slice(0, 60)}`);
   }
 
-  // `{...props}` last, so a consumer's width/height/fill/className wins.
-  const root = toJsxAttrs(tags[0]).replace(/\s*\/?>$/, " {...props}>");
+  // `color="white"` before `{...props}`, so it is the default a consumer's
+  // `color`, `className` or stylesheet overrides rather than fights.
+  const root = toJsxAttrs(tags[0]).replace(/\s*\/?>$/, ' color="white" {...props}>');
 
   const lines = [`${indent}${root}`];
   let depth = 1;
+  // Elements inside <defs> are masks, never painted, so their fills stay as
+  // authored. Track the depth <defs> opened at to know when it closes.
+  let defsDepth = -1;
+
   for (const tag of tags.slice(1)) {
-    if (tag.startsWith("</")) depth -= 1;
-    lines.push(`${indent}${"  ".repeat(depth)}${toJsxAttrs(tag)}`);
-    if (!tag.startsWith("</") && !tag.endsWith("/>")) depth += 1;
+    const closing = tag.startsWith("</");
+    if (closing) {
+      depth -= 1;
+      if (defsDepth === depth) defsDepth = -1;
+    } else if (tagName(tag) === "defs" && defsDepth === -1) {
+      defsDepth = depth;
+    }
+
+    const inDefs = defsDepth !== -1;
+    const body = inDefs ? toJsxAttrs(tag) : toJsxAttrs(toCurrentColor(tag));
+    lines.push(`${indent}${"  ".repeat(depth)}${body}`);
+
+    if (!closing && !tag.endsWith("/>")) depth += 1;
   }
   return lines.join("\n");
 }

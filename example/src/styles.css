@@ -1,0 +1,249 @@
+:root {
+  --bg: #0b0b0f;
+  --panel: #14141a;
+  --line: #2a2a34;
+  --fg: #f4f4f5;
+  --muted: #9b9ba6;
+  --accent: #fbbf24;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.app {
+  min-height: 100vh;
+}
+
+/* ── header ─────────────────────────────────────────────────────────────── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 20px 24px 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.titles {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+}
+
+.sub,
+.hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.hint {
+  margin-top: 12px;
+}
+
+.hint strong {
+  color: var(--fg);
+}
+
+code {
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 12px;
+  background: #ffffff10;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ── stats ──────────────────────────────────────────────────────────────── */
+.stats {
+  display: flex;
+  gap: 22px;
+  margin: 14px 0 0;
+  flex-wrap: wrap;
+}
+
+.stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stats dt {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.stats dd {
+  margin: 0;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* ── controls ───────────────────────────────────────────────────────────── */
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.controls label > span {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+input,
+select {
+  background: #0000003d;
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 7px 9px;
+  font: inherit;
+  font-size: 13px;
+  min-width: 130px;
+}
+
+input:focus-visible,
+select:focus-visible,
+.cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.controls .check {
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 8px;
+}
+
+.controls .check input {
+  min-width: 0;
+  accent-color: var(--accent);
+}
+
+.controls .check span {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12.5px;
+  color: var(--fg);
+}
+
+/* ── grid ───────────────────────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+  gap: 8px;
+  padding: 20px 24px 64px;
+}
+
+.bg-dark {
+  background: #0b0b0f;
+}
+
+.bg-light {
+  background: #ffffff;
+}
+
+.bg-checker {
+  background: repeating-conic-gradient(#c9c9d1 0 25%, #ffffff 0 50%) 50% / 18px 18px;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 6px 9px;
+  background: #80809018;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  overflow: hidden;
+}
+
+.cell:hover {
+  border-color: var(--accent);
+  background: #80809030;
+}
+
+.art {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 34px;
+}
+
+.name,
+.meta {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ui-monospace, "SF Mono", monospace;
+}
+
+.name {
+  font-size: 10.5px;
+}
+
+.meta {
+  font-size: 9px;
+  opacity: 0.6;
+}
+
+.meta em {
+  font-style: normal;
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* On light and checkerboard the labels need a dark ink to stay readable, since
+   the page foreground is tuned for the dark background. */
+.bg-light .cell,
+.bg-checker .cell {
+  color: #18181b;
+  background: #00000010;
+}
+
+.bg-light .cell:hover,
+.bg-checker .cell:hover {
+  background: #00000020;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  padding: 40px 0;
+  text-align: center;
+  color: var(--muted);
+}

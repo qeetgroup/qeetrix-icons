@@ -2,28 +2,21 @@
 
 # ✨ Qeetrix Icons
 
-### The Qeet Group icon library — one grid, one stroke, every product
+### The Qeet Group icon library — one grid, two styles, every product
 
-*Outline · Tree-shakeable · Accessible by default · Generated from canonical SVG*
+**1,166 icons** · **2,307 SVGs** · **20 categories** · outline + solid behind one prop
 
-<br>
+[![npm](https://img.shields.io/npm/v/@qeetrix/icons?style=flat-square&color=b45309)](https://www.npmjs.com/package/@qeetrix/icons)
+[![license](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](./LICENSE)
+[![react](https://img.shields.io/badge/react-%E2%89%A519-149eca?style=flat-square)](https://react.dev)
 
-[![CI](https://github.com/qeetgroup/qeetrix-icons/actions/workflows/ci.yml/badge.svg)](https://github.com/qeetgroup/qeetrix-icons/actions/workflows/ci.yml)
-![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=fff)
-![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=fff)
-![Bun](https://img.shields.io/badge/Bun-1.3-F69220?logo=bun&logoColor=fff)
-![Biome](https://img.shields.io/badge/Biome-2-60A5FA?logo=biome&logoColor=fff)
-![License](https://img.shields.io/badge/License-MIT-green)
+```tsx
+import { ArrowLeft, ShieldTick, Trash } from "@qeetrix/icons";
 
-**[🚀 Install](#-install)** · **[🎨 Usage](#-usage)** · **[🔎 Find an icon](#-finding-an-icon)** · **[♿ Accessibility](#-accessibility)** · **[🏗 How it works](#-how-it-works)** · **[🛠 Develop](#-develop)**
-
-| | | | |
-|:---:|:---:|:---:|:---:|
-| 🎯 **331** icons | 📂 **22** categories | 📦 **0** runtime deps | 🌳 **586 B** for one icon |
-
-> **Status — Phase 3.** A complete enterprise catalogue: **331 icons** across 22 categories,
-> 298 of them rated essential or highly useful. One visual language, every glyph reviewed at
-> 16/20/24/32px. See the [coverage matrix](docs/icon-catalog.md).
+<ArrowLeft />
+<ShieldTick variant="solid" />
+<Trash className="size-5 text-red-500" />
+```
 
 </div>
 
@@ -31,345 +24,351 @@
 
 ## ✨ What it is
 
-A React icon library where **the SVG file is the source of truth**. Everything else — the components,
-the exports, the metadata, the types — is generated from `icons/<category>/<name>.svg` and validated
-on the way through.
+Every component in this package holds its designer's SVG **byte for byte**. There is no shared
+`<svg>` shell, no runtime, and no re-drawing — the markup you ship is the markup that was exported,
+including `<g clip-path>`, `<defs>` and `<clipPath>`.
 
 | | |
 |:--|:--|
-| **One family, not a pile** | A written [visual language](docs/icon-design-system.md) — shared motifs, one badge radius, 45° diagonals — so the set coheres. |
-| **Governed, not accumulated** | Enforced naming (`user-plus`, never `add-user`), unique aliases, and a [catalogue doctor](docs/contributing.md) that reports duplicate semantics. |
-| **One grid** | Every icon is 24 × 24, 2px stroke, round caps. Enforced, not requested. |
-| **Inherits colour** | `currentColor` throughout. Works in dark mode and after a re-brand with no icon-specific styling. |
-| **Adding an icon is one file** | Drop in an SVG, run `bun run generate`. The component, export and metadata appear. |
-| **Invalid icons fail the build** | 30 error rules, 4 warnings. A hard-coded colour, a `transform`, or a stray editor `<title>` cannot ship. |
-| **Genuinely tree-shakeable** | One icon bundles to **586 B**; all 331 to 76 KB — 0.8%. Verified with a real bundler, not assumed. |
-| **Accessible by default** | Decorative unless you name it, and it is impossible to produce a labelled-but-hidden icon. |
+| **1,166 components** | One per icon name, generated from 2,307 source SVGs |
+| **Two styles** | `outline` and `solid`, selected by a `variant` prop — not two exports |
+| **24 × 24 grid** | Every icon shares one `viewBox`, so they align without nudging |
+| **Themeable** | All visible paint routes through `currentColor` |
+| **Tree-shakeable** | `sideEffects: false`, one module per icon |
+| **Zero dependencies** | React ≥ 19 as the only peer |
+| **Typed** | Each component narrows `variant` to the styles it actually ships |
 
 ---
 
 ## 🚀 Install
 
 ```bash
-bun add @qeetrix/icons
+bun add @qeetrix/icons     # bun, as the rest of the workspace uses
+npm  install @qeetrix/icons
+pnpm add @qeetrix/icons
 ```
 
-React 19 or later is a peer dependency. There are no runtime dependencies.
+React ≥ 19 is a peer dependency and is not bundled.
 
 ---
 
-## 🎨 Usage
+## 🎨 Props
 
-```tsx
-import { ArrowLeft } from "@qeetrix/icons";
-
-export function BackButton() {
-  return (
-    <button type="button">
-      <ArrowLeft size={20} />
-      Back
-    </button>
-  );
-}
-```
-
-### Sizing
-
-`size` sets width and height together. The default is `24`.
-
-```tsx
-<ArrowLeft size={16} />
-<ArrowLeft size={20} />
-<ArrowLeft size={24} />
-<ArrowLeft size="1.5rem" />   {/* any CSS length */}
-```
-
-Or size it with CSS, which scales with the surrounding type:
-
-```tsx
-<ArrowLeft className="size-5" />
-```
-
-### Colour
-
-Never set an icon's colour directly — it inherits from `currentColor`:
-
-```tsx
-<span className="text-red-600">
-  <ShieldCheck />   {/* red */}
-</span>
-
-<button className="text-white bg-brand">
-  <Check />         {/* white */}
-</button>
-```
-
-This is why the set needs no dark-mode variant and no re-brand pass.
-
-### Stroke weight
-
-```tsx
-<ArrowLeft strokeWidth={1.5} />   {/* lighter, for large sizes */}
-```
-
-### Everything else
-
-Props are `React.SVGProps<SVGSVGElement>` plus `size`, so every standard SVG and React attribute
-works — `className`, `style`, `onClick`, `data-*`, `ref`, all `aria-*`:
-
-```tsx
-<ArrowLeft
-  size={20}
-  className="shrink-0 text-muted-foreground"
-  aria-label="Go back"
-  onClick={goBack}
-/>
-```
-
-### Types
+Every icon accepts **everything valid on an `<svg>` element**, plus `variant`:
 
 ```ts
-import type { QeetrixIconProps } from "@qeetrix/icons";
-
-type QeetrixIconProps = React.SVGProps<SVGSVGElement> & {
-  size?: number | string;
-};
+type Props = React.SVGProps<SVGSVGElement> & { variant?: "outline" | "solid" };
 ```
 
-> Named `QeetrixIconProps`, not `IconProps`, because `@qeetrix/ui` already exports an `IconProps` for
-> its `<Icon icon={…}>` wrapper. Distinct names let a consumer re-export both packages from one barrel.
+That is the whole API. There is no custom prop surface to learn — `className`, `style`, `width`,
+`height`, `color`, every `aria-*` attribute, every event handler and `ref` all work because they land
+on the root `<svg>`.
 
-### Metadata
+### The props you will actually reach for
 
-For an icon picker, a docs search, or any catalogue UI — importable **without** pulling in a single
-component:
+| Prop | Type | Default | What it does |
+|:--|:--|:--|:--|
+| `variant` | `"outline" \| "solid"` | `"outline"` | Which style to draw. Narrowed per icon — see [Variants](#-variants). |
+| `color` | `string` | `"white"` | Retints the whole glyph. **This is the colour knob.** |
+| `width` / `height` | `number \| string` | `24` | Rendered size. Set both. |
+| `className` | `string` | — | Beats `color` and `width`/`height`, so utility classes win. |
+| `style` | `CSSProperties` | — | Highest priority; use for one-off inline colour. |
+| `aria-label` + `role="img"` | `string` | — | Makes the icon meaningful to a screen reader. |
+| `aria-hidden` | `boolean` | — | Hides a decorative icon. See [Accessibility](#-accessibility). |
 
-```ts
-import { icons, iconNames } from "@qeetrix/icons/metadata";
+Props spread **last** onto the root `<svg>`, so anything you pass overrides the built-in default.
 
-icons.find((icon) => icon.name === "search");
-// {
-//   name: "search",
-//   component: "Search",
-//   category: "interface",
-//   tags: ["find", "magnifier", "lookup", "query", "filter"],
-//   aliases: ["magnifying-glass"],
-//   mirror: true,
-// }
+### ⚠️ Two props that do *not* work the way you would guess
+
+**`fill` does nothing to the artwork.** Visible paths carry their own `fill="currentColor"`, and an
+explicit fill on a child beats an inherited one from the root. Use `color`.
+
+```tsx
+<ArrowLeft fill="red" />      // ❌ no visible effect
+<ArrowLeft color="red" />     // ✅ correct
 ```
 
-`mirror` marks glyphs that must flip under `dir="rtl"` — horizontal directions only, since `arrow-up`
-means the same thing in both reading directions. It is metadata, not behaviour: this package does not
-read layout direction, so apply it yourself (`rtl:-scale-x-100`, or swap the icon).
+**`size` is not a prop.** It was in an earlier version and is gone. Passing it emits an invalid
+`size="20"` attribute and does not resize anything.
+
+```tsx
+<ArrowLeft size={20} />                 // ❌ invalid attribute, no effect
+<ArrowLeft width={20} height={20} />    // ✅ correct
+<ArrowLeft className="size-5" />        // ✅ also correct (Tailwind)
+```
+
+---
+
+## 🌗 Colour, dark mode and light mode
+
+Icons ship **white** by default, matching the source artwork. All visible geometry paints
+`currentColor`, and the root carries `color="white"`:
+
+```tsx
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" color="white" {...props}>
+  <path d="M15 22.75H9C3.57…" fill="currentColor" />
+</svg>
+```
+
+So one value controls the entire glyph. Four ways to set it, in increasing priority:
+
+```tsx
+<ArrowLeft />                             // 1. white — the built-in default
+<ArrowLeft color="black" />               // 2. any CSS colour, via a prop
+<ArrowLeft className="text-red-500" />    // 3. a class — CSS outranks the default
+<ArrowLeft style={{ color: "tomato" }} /> // 4. inline style — highest priority
+```
+
+`color` is a *presentation attribute*, which CSS outranks by design. That is what makes the class
+form work without `!important`.
+
+### Automatic dark / light mode
+
+Because the paint follows `color`, a theme class is all you need:
+
+```tsx
+// Tailwind — flips with the `dark` class or prefers-color-scheme
+<ShieldTick className="text-zinc-900 dark:text-zinc-100" />
+
+// Or inherit the surrounding text, whatever the theme set it to
+<ShieldTick color="currentColor" />
+```
+
+```css
+/* Plain CSS — one rule themes every icon inside */
+.app        { color: #18181b; }
+.app.dark   { color: #fafafa; }
+```
+
+> [!TIP]
+> `color="currentColor"` makes the icon inherit from its parent instead of defaulting to white —
+> usually what you want inside buttons and links, so the icon matches the label automatically.
+
+> [!NOTE]
+> A white icon on a white background is invisible. That is correct behaviour, not a bug. If icons
+> "disappear", set `color` or a text class.
+
+---
+
+## 🔀 Variants
+
+One component per icon name; the style is a prop, not a separate export:
+
+```tsx
+import { Activity } from "@qeetrix/icons";
+
+<Activity />                    // outline — the default
+<Activity variant="outline" />  // the same thing, explicit
+<Activity variant="solid" />    // solid
+```
+
+**1,141 of 1,166** icons ship both styles. The rest ship one, and the type reflects it — so a
+single-style icon rejects the variant it does not have, at compile time:
+
+| Coverage | Count | `variant` accepts |
+|:--|--:|:--|
+| Both styles | 1,141 | `"outline" \| "solid"` |
+| Outline only | 13 | `"outline"` |
+| Solid only | 12 | `"solid"` |
+
+```tsx
+<Litecoin variant="solid" />        // ❌ TS error: outline-only icon
+<PresentionChart variant="solid" /> // ✅ solid-only icon, and its default
+```
+
+The default is `outline` wherever an outline exists, otherwise the icon's only style.
 
 ---
 
 ## 📂 Categories
 
-The category is the source directory and is **browse metadata only** — it is never part of an icon's
-export name, so moving an icon between categories is not a breaking change.
+Category comes from the source directory, never from a metadata file, so it cannot drift.
 
-| Category | Icons |
-|:--|--:|
-| `accessibility` | 6 |
-| `arrows` | 13 |
-| `communication` | 25 |
-| `data` | 14 |
-| `design` | 8 |
-| `development` | 12 |
-| `devices` | 16 |
-| `editing` | 26 |
-| `files` | 34 |
-| `finance` | 12 |
-| `hardware` | 1 |
-| `interface` | 35 |
-| `maps` | 2 |
-| `media` | 14 |
-| `navigation` | 19 |
-| `notifications` | 5 |
-| `security` | 18 |
-| `social` | 7 |
-| `status` | 13 |
-| `time` | 14 |
-| `users` | 16 |
-| `utilities` | 21 |
-
-The category is the source directory and is **browse metadata only** — it is never part of an icon's
-export name, so moving an icon between categories is not a breaking change.
-
-Directional glyphs carry a `mirror` flag for RTL: 72 of 331 icons are marked. Vertical direction never
-mirrors, and media transport controls deliberately do not either — playback direction is not reading
-direction.
+| Category | Icons | Category | Icons |
+|:--|--:|:--|--:|
+| `interface` | 269 | `devices` | 48 |
+| `seasonal` | 120 | `editing` | 43 |
+| `media` | 83 | `security` | 27 |
+| `crypto` | 71 | `travel` | 27 |
+| `files` | 67 | `social` | 25 |
+| `arrows` | 64 | `people` | 24 |
+| `finance` | 60 | `shopping` | 21 |
+| `communication` | 58 | `time` | 21 |
+| `nature` | 51 | `data` | 20 |
+| `design` | 49 | `location` | 18 |
 
 ---
 
-## 🔎 Finding an icon
+## 📦 Import surface
 
-At this size, searching first is the difference between a coherent catalogue and a pile.
+| Entry point | Contents |
+|:--|:--|
+| `@qeetrix/icons` | Every icon, plus the `QeetrixIconProps` and `IconVariant` types |
+| `@qeetrix/icons/icons/<category>/<name>` | One icon, bypassing the barrel |
 
-```bash
-bun run explorer && open .explorer/index.html
+```tsx
+// Named import from the barrel — tree-shaking drops the rest
+import { ArrowLeft, ShieldTick } from "@qeetrix/icons";
+
+// Deep import, if your bundler is weak at tree-shaking a large barrel
+import { ArrowLeft } from "@qeetrix/icons/icons/arrows/arrow-left";
+
+// Types
+import type { QeetrixIconProps, IconVariant } from "@qeetrix/icons";
 ```
 
-The explorer is a single static file with the whole catalogue inlined — no server, no build step.
+Both forms produce the same component. `sideEffects: false` plus one module per icon means importing
+one icon costs one icon.
 
-| | |
-|:--|:--|
-| **Search** | Names, component names, categories, tags and aliases, with deterministic ranking: exact name → prefix → alias → component → substring → tag → category |
-| **Filter** | Category, coverage priority, mirror-only |
-| **Preview** | 16 / 20 / 24 / 32 / 48 / 64 px, on light or dark, grid or list |
-| **Detail** | Full metadata plus copyable import, JSX and component name |
-| **Linkable** | `#icon=shield-check`, `#q=lock&category=security` — every view is shareable |
-| **Keyboard** | Tab and Enter throughout, arrow keys across the grid, `/` to focus search, Escape to close |
+> [!IMPORTANT]
+> Deep imports take **no file extension**. The exports map is `"./icons/*" → "./dist/icons/*.js"`, so
+> adding `.js` yourself resolves to `arrow-left.js.js` and fails:
+>
+> ```tsx
+> import { ArrowLeft } from "@qeetrix/icons/icons/arrows/arrow-left.js"; // ❌ not found
+> import { ArrowLeft } from "@qeetrix/icons/icons/arrows/arrow-left";    // ✅
+> ```
 
-Or read the [coverage matrix](docs/icon-catalog.md), which lists every icon with its tags and
-aliases. Search the **aliases** too — many words you would reach for are aliases rather than names:
+---
 
-| You want | It is called |
-|:--|:--|
-| `delete`, `bin` | `trash` |
-| `add`, `new` | `plus` |
-| `close`, `cancel` | `x` |
-| `gear`, `cog` | `settings` |
-| `stop` | `square` |
-| `sign-in` / `sign-out` | `log-in` / `log-out` |
-| `checkbox` | `check-square` |
-| `hamburger` | `menu` |
-| `spinner` | `loader` |
+## 💡 Examples
 
-Programmatically, `@qeetrix/icons/metadata` carries the same data:
+### In a button
 
-```ts
-import { icons } from "@qeetrix/icons/metadata";
+```tsx
+import { Trash } from "@qeetrix/icons";
 
-const match = (q: string) =>
-  icons.filter((i) => i.name.includes(q) || i.tags.includes(q) || i.aliases.includes(q));
+<button type="button" className="flex items-center gap-2 text-red-600">
+  <Trash width={16} height={16} color="currentColor" aria-hidden="true" />
+  Delete
+</button>
 ```
+
+The icon inherits the button's red because of `color="currentColor"`, including on hover.
+
+### A typed wrapper
+
+```tsx
+import type { ComponentType } from "react";
+import type { QeetrixIconProps } from "@qeetrix/icons";
+
+type ButtonProps = {
+  icon: ComponentType<QeetrixIconProps>;
+  label: string;
+};
+
+export function IconButton({ icon: Icon, label }: ButtonProps) {
+  return (
+    <button type="button" aria-label={label}>
+      <Icon width={20} height={20} color="currentColor" aria-hidden="true" />
+    </button>
+  );
+}
+
+// <IconButton icon={ShieldTick} label="Verify" />
+```
+
+### Switching variant on state
+
+```tsx
+import { Heart } from "@qeetrix/icons";
+
+export function Like({ liked }: { liked: boolean }) {
+  return (
+    <Heart
+      variant={liked ? "solid" : "outline"}
+      color={liked ? "#e11d48" : "currentColor"}
+      aria-label={liked ? "Liked" : "Not liked"}
+      role="img"
+    />
+  );
+}
+```
+
+Solid-when-active is exactly what the two styles are for.
+
+### Sizing with Tailwind
+
+```tsx
+<ArrowLeft className="size-4" />   {/* 16px */}
+<ArrowLeft className="size-5" />   {/* 20px */}
+<ArrowLeft className="size-6" />   {/* 24px */}
+```
+
+Tailwind's `size-*` sets `width`/`height` in CSS, which outranks the baked-in `24` attributes.
 
 ---
 
 ## ♿ Accessibility
 
-An icon is **decorative by default** and carries `aria-hidden="true"`. Passing `aria-label` or
-`aria-labelledby` automatically makes it a named graphic (`role="img"`) and drops `aria-hidden`.
+An icon is either decorative or meaningful, and the two are marked differently. The package does not
+guess — you say which.
 
-That automatic flip is the design: it makes the usual silent bug — an element that is both
-`aria-hidden` and labelled, so the label is never announced — impossible to write.
-
-**Icon beside visible text** — decorative. The text is the label; do nothing.
+**Decorative** — next to a visible text label. Hide it, so a screen reader does not read the label
+twice:
 
 ```tsx
 <button type="button">
-  <ArrowLeft size={20} />
-  Back
+  <Trash width={16} height={16} aria-hidden="true" />
+  Delete
 </button>
 ```
 
-**Icon-only control** — name the *control*, not the icon.
+**Meaningful** — the icon *is* the label. Give it an accessible name and an image role:
 
 ```tsx
-<button type="button" aria-label="Delete row">
-  <Trash size={16} />
+<button type="button">
+  <Trash width={16} height={16} role="img" aria-label="Delete" />
 </button>
 ```
 
-**Standalone meaningful icon** — nothing else conveys it, so name the icon.
+> [!IMPORTANT]
+> `aria-label` alone is not enough. An `<svg>` has no implicit role, so screen readers may ignore the
+> label — pair it with `role="img"`.
 
-```tsx
-<ShieldCheck size={16} aria-label="Verified" />
+### Right-to-left
+
+Directional glyphs need flipping under `dir="rtl"`; symmetric ones must not be touched. Handle it in
+CSS where you know the direction:
+
+```css
+[dir="rtl"] .icon-mirror { transform: scaleX(-1); }
 ```
 
-**Opting out** — pass `aria-hidden={false}` or an explicit `role`.
-
-The suite verifies these patterns with axe inside buttons, links, inputs, navigation, menus,
-tooltips, data tables and form validation messages.
-
-Do **not** put a `<title>` in a source SVG to name an icon. The same glyph means different things in
-different places — `x` is "Close" in a dialog and "Remove" in a chip — so the name belongs at the
-usage site.
+```tsx
+<ArrowLeft className="icon-mirror" />
+```
 
 ---
 
 ## 🏗 How it works
 
-The SVG source is canonical. Everything downstream is derived:
-
-```text
-icons/arrows/arrow-left.svg
-  ↓  bun run generate
-src/icons/arrow-left.tsx          export function ArrowLeft(props: QeetrixIconProps)
-src/icons/index.ts                export { ArrowLeft } from "./arrow-left.js";
-src/metadata.ts                   { name: "arrow-left", component: "ArrowLeft", … }
-  ↓  bun run build
-dist/icons/arrow-left.js + .d.ts
+```
+icons/<style>/<category>/<name>.svg      ← source, hand-committed, never modified
+        │
+        │   scripts/generate.mjs         ← the only script
+        ▼
+src/icons/<category>/<name>.tsx          ← one component, all variants
+src/icons/index.ts                       ← barrel, grouped by category
+        │
+        │   tsc
+        ▼
+dist/                                    ← what ships
 ```
 
-Generated files are **committed** — a reader sees real component source, and a diff shows exactly
-what an icon change did to the public API. `bun run generate:check` proves they still match the
-generator, and CI runs it before the build so a hand-edit is caught rather than overwritten.
+The generator changes exactly three things and nothing else:
 
-Output is deterministic: no timestamps, and all ordering by explicit codepoint comparison rather than
-`localeCompare`, so a tracked file's byte order never depends on the machine that produced it.
+1. Seven kebab-case attributes take their JSX spelling (`clip-path` → `clipPath`) — JSX has no other
+   way to write them.
+2. `{...props}` is appended to the root `<svg>`.
+3. On **visible** geometry only, `fill`/`stroke` of `white` become `currentColor`, and the root gains
+   `color="white"`.
 
-### Layout
+The 2,175 `<rect fill="white">` elements inside `<clipPath>` are masks — never painted — so they keep
+their authored value. Path data, ids, `viewBox` and element order are untouched.
 
-```text
-icons/                  ← source of truth, 22 categories
-icon-metadata.json      ← tags, aliases, RTL mirror flags, coverage priority
-scripts/
-  validate.mjs          ← bun run validate
-  generate.mjs          ← bun run generate [--check]
-  explorer.mjs          ← bun run explorer
-  catalog.mjs           ← bun run catalog [--check]
-  api-docs.mjs          ← bun run api [--check]
-  verify-package.mjs    ← bun run verify:package
-  doctor.mjs            ← bun run doctor
-  clean.mjs
-  config/               categories · package-size baseline · consumer fixture
-  lib/                  discover · svg · rules · naming · emit · io · pipeline · search
-src/
-  index.ts              ← public barrel (hand-written)
-  types.ts              ← QeetrixIconProps, IconMetadata (hand-written)
-  icon-base.tsx         ← the shared <svg> shell + a11y contract (hand-written)
-  metadata.ts           ← GENERATED
-  icons/                ← GENERATED, one module per icon
-tests/
-  fixtures/             valid + invalid SVGs, outside icons/ on purpose
-  icons/ metadata/ build/ visual/ explorer/
-docs/                   icon-catalog · icon-design-system · icon-guidelines · naming · contributing
-```
-
-### Import surface
-
-| Specifier | Resolves to |
-|:--|:--|
-| `@qeetrix/icons` | Every icon, plus `IconBase` and the spec constants |
-| `@qeetrix/icons/metadata` | The catalogue only — no components |
-| `@qeetrix/icons/icons/arrow-left` | A single icon, for bundlers with weak tree-shaking |
-
-No internal paths are exposed. There is no `@qeetrix/icons/dist/…`.
-
----
-
-## ✅ Validation
-
-`bun run validate` enforces the specification in
-**[docs/icon-guidelines.md](docs/icon-guidelines.md)**. Errors fail the build; warnings do not.
-
-Rejected: a `viewBox` other than `0 0 24 24` · `width`/`height` on the root · missing or wrong root
-spec attributes · hard-coded colours · `transform` anywhere · raster or `data:` content · external
-references · `<style>` or `style=` · editor metadata · `id` and `class` attributes · elements or
-attributes outside the allowlist · stray text · `DOCTYPE` or CDATA · empty icons · bad filenames ·
-unknown categories · duplicate names · component-name collisions · orphan metadata · aliases claimed
-twice or colliding with an icon name · an invalid `priority`.
-
-Colour is checked by **allowlist** — only `none`, `currentColor`, `inherit` and `transparent` are
-accepted — so `#f26d0e`, `rgb(0 0 0)`, `oklch(…)` and all 148 CSS colour names are caught without any
-of them appearing in the rule set.
-
-`bun run doctor` adds the catalogue-scale checks: duplicate semantics, half-finished families, naming
-drift, category imbalance, thin or spammy tags. It is advisory and exits 0 — those are judgement
-calls, and a check that blocked a merge over a naming opinion would just get switched off.
+`bun run generate:check` fails if any committed component has drifted from its source SVG, and CI
+runs it on every PR.
 
 ---
 
@@ -377,80 +376,80 @@ calls, and a check that blocked a merge over a naming opinion would just get swi
 
 ```bash
 bun install
-bun run validate      # check every source SVG
-bun run generate      # regenerate components, barrel and metadata
-bun run explorer       # build the explorer and review sheets, then open .explorer/index.html
-bun run catalog       # regenerate docs/icon-catalog.md
-bun run doctor        # catalogue health report (advisory)
+
+bun run generate        # rebuild src/icons from icons/**.svg
+bun run generate:check  # fail if a component drifted from its source
+bun run test            # 2,388 tests
 bun run typecheck
-bun run lint          # Biome — lint and format
-bun run test
-bun run build         # clean → generate → tsc → tsc-alias
+bun run lint            # biome
+bun run format          # biome --write
+bun run build           # dist/
 ```
 
-### The icon explorer
+### Adding an icon
 
-`bun run explorer` writes three artifacts to `.explorer/` (gitignored):
+Drop the SVG at `icons/<style>/<category>/<name>.svg`, then:
 
-| | |
-|:--|:--|
-| `index.html` | The **icon explorer** — ranked search over names, tags and aliases; category, priority and mirror filters; grid or list; preview at 16/20/24/32/48/64; light and dark preview; copy import, JSX or component name; deep-linkable |
-| `contact-sheet.svg` | The whole set on one page. The only way to catch an icon that looks wrong *beside its siblings* |
-| `small-sizes.svg` | Every icon at all four sizes. 16px is where glyphs fall apart |
+```bash
+bun run generate
+```
 
-The last two exist because the most common icon defect is not invalidity — it is an icon that is
-individually fine and collectively wrong. Every glyph in this catalogue was reviewed this way, and
-that review is what caught `settings` reading as a sun, `undo`/`reply` sharing a silhouette, and the
-`mail-*` badges colliding with the envelope.
+The component, the barrel export and the type all follow from the filename —
+`arrow-left.svg` → `ArrowLeft`. Nothing else to register.
 
-Tooling: **bun**, **Biome 2**, **Vitest 4**, **Changesets**, and plain **`tsc`** for the build — no
-bundler, which suits a package whose ideal output is one module per icon anyway. This mirrors
-`@qeetrix/ui`; there is no ESLint and no Prettier anywhere in the workspace.
+> [!WARNING]
+> An icon's component name is its public API. Renaming a source file renames an export and breaks
+> every consuming build, so it is a **major** release. Get the name right when the file lands.
 
-CI runs two jobs. `verify` covers
-`validate → generate:check → build → typecheck → lint → test → explorer → catalog:check → api:check → doctor`.
-`package` runs `verify:package` on its own, so a slow install and bundle measurement does not gate
-every review.
+### Checking the icons render
 
-**Docs**
+```bash
+cd example && bun install && bun run dev
+```
 
-| | |
-|:--|:--|
-| [docs/usage.md](docs/usage.md) | **Start here as a consumer** — install, sizing, colour, accessibility, entry points |
-| [docs/api.md](docs/api.md) | Complete prop reference, generated from the shipped types |
-| [docs/icon-catalog.md](docs/icon-catalog.md) | **The coverage matrix** — every icon, its priority, tags, aliases and RTL flag. Search this before adding one |
-| [docs/releases.md](docs/releases.md) | Changesets, what each bump means, deprecation policy |
-| [docs/icon-design-system.md](docs/icon-design-system.md) | The visual language — grid bands, stroke density, shared motifs, small-size rules |
-| [docs/icon-guidelines.md](docs/icon-guidelines.md) | The technical spec and every validation rule |
-| [docs/naming.md](docs/naming.md) | Naming governance, and tags vs aliases |
-| [docs/contributing.md](docs/contributing.md) | Adding an icon, adding a rule, conventions |
+Renders all 1,166 icons from `../src` — the working tree, not `dist/` — with controls for variant,
+size, colour and background. This is the check unit tests cannot do: jsdom does not resolve SVG
+presentation attributes, so the white default needs a real browser. See
+[example/README.md](./example/README.md).
+
+### Tests
+
+One file, `tests/icons.test.tsx`, 2,388 assertions. The important 2,307 of them reconstruct each
+source SVG from the rendered DOM and compare it tag by tag, attribute by attribute — so
+"the SVG is unchanged" is enforced, not merely intended.
 
 ---
 
-## 🔭 What's next
+## 🚢 Releases
 
-Phase 3 delivered enterprise coverage. Phase 4 should build:
+| Step | What happens |
+|:--|:--|
+| Open a PR | `version.yml` bumps the patch version on your branch — visible in the diff |
+| Merge to `main` | `release.yml` publishes to npm, **then** tags `vX.Y.Z` and opens a Release |
+| Bad release | `rollback.yml` points `latest` back at an older version |
 
-- **`@qeetrix/ui` migration** — replace `lucide-react` and the 10 placeholder brand glyphs. The prop
-  shape is already drop-in compatible, so this is a swap plus a codemod. Land the Tailwind v4 syntax
-  migration sitting uncommitted in that repo first.
-- **Qeet-domain icons** — SAML, OIDC, SCIM, webhook, audit-log, tenant, GST. Deferred deliberately:
-  they need product review, not just drawing.
-- **Coverage audit against real screens** — walk actual Qeet product UIs and record what is still
-  missing, rather than guessing at the next hundred.
-- **Discovery surfaces** — an icon browser in `qeetrix-docs` and Storybook stories, both fed by
-  `@qeetrix/icons/metadata`.
-- **Figma library** published from the same canonical SVG, so design and code cannot drift.
-- **Prove `1.0.0` against a real consumer.** The API is frozen as of 1.0.0 but has not yet
-  been exercised by a product; the migration is where any awkwardness will surface.
+Want a minor or major? Set `version` in `package.json` by hand and the bump leaves it alone. A merge
+that does not change the version publishes nothing. Full detail in [docs/releases.md](./docs/releases.md).
+
+---
+
+## 📚 Docs
+
+| | |
+|:--|:--|
+| [docs/usage.md](./docs/usage.md) | Consuming the package |
+| [docs/releases.md](./docs/releases.md) | Versioning, publishing, rollback |
+| [docs/contributing.md](./docs/contributing.md) | Adding and changing icons |
+| [docs/naming.md](./docs/naming.md) | Why names are frozen, and how to choose one |
+| [docs/icon-guidelines.md](./docs/icon-guidelines.md) | Drawing conventions |
+| [example/](./example/) | Visual check for the whole set |
 
 ---
 
 ## 📄 License
 
-[MIT](LICENSE). The artwork is original to Qeet Group — nothing in this repository is derived from
-lucide, Feather, Heroicons, Material Icons, Font Awesome, Phosphor, Tabler or any other icon set.
+MIT © Qeet Group. See [LICENSE](./LICENSE).
 
-Part of the **[Qeet Group](https://github.com/qeetgroup)** workspace, alongside
-[`@qeetrix/ui`](https://github.com/qeetgroup/qeetrix-ui).
-# qeetrix-icons
+<div align="center">
+<sub>Part of the <a href="https://github.com/qeetgroup">Qeet Group</a> suite — one philosophy, many products.</sub>
+</div>
