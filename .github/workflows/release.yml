@@ -1,5 +1,23 @@
 name: Release
 
+# Publishes @qeetrix/icons to npm on merge to main, then tags the commit — the
+# same shape as qeet-id-server's deploy: the tag is created *after* a successful
+# release, so every `v*` tag is a version that really shipped.
+#
+# The flow end to end:
+#
+#   1. Open a PR. `version.yml` bumps the patch version on your branch, so the
+#      version you are about to ship is visible in the PR diff. Want a minor or
+#      major? Set it by hand in package.json and the bump leaves it alone.
+#   2. Merge to main. This workflow publishes that version to npm, pushes the
+#      matching `vX.Y.Z` tag, and opens a GitHub Release.
+#   3. Bad release? Run `rollback.yml` — it points `latest` back at an older
+#      version. npm will not let a version be republished, so a rollback moves
+#      the tag rather than replacing the package.
+#
+# Re-running is safe: if package.json's version is already on the registry,
+# everything below is skipped.
+
 on:
   push:
     branches: [main]
@@ -12,90 +30,120 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  BUN_VERSION: 1.3.14
-
 jobs:
-  # Not gated on the publish environment: versioning must work whether or not
-  # publishing is configured.
-  version:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    outputs:
-      pending: ${{ steps.changesets.outputs.hasChangesets }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
-      - run: bun install --frozen-lockfile
-
-      # Do not add a `publish:` input here. It makes the action publish on every
-      # push to main, which fails with ENEEDAUTH without credentials. Publishing
-      # is the gated job below.
-      - id: changesets
-        uses: changesets/action@v1
-        with:
-          version: bun run version
-          commit: "chore: version packages"
-          title: "chore: version packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish:
-    needs: version
-    # A pending version PR means changesets are unconsumed, so the version on
-    # main is not the one to release.
-    if: needs.version.outputs.pending != 'true'
+  release:
     runs-on: ubuntu-latest
     environment: npm-publish
     permissions:
-      contents: read
-      id-token: write
+      contents: write # push the version tag after a successful publish
+      id-token: write # npm provenance
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history, so tags are visible
+
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          bun-version: 1.3.14
+
       - uses: actions/setup-node@v4
         with:
           # npm 11, required for trusted publishing. Node 20 ships npm 10.
           node-version: 24
           registry-url: ${{ vars.QEETRIX_NPM_REGISTRY || 'https://registry.npmjs.org' }}
           scope: "@qeetrix"
+
       - run: bun install --frozen-lockfile
+
+      - id: version
+        name: is there anything to release?
+        run: |
+          set -uo pipefail
+          version=$(node -p "require('./package.json').version")
+          name=$(node -p "require('./package.json').name")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version"    >> "$GITHUB_OUTPUT"
+          echo "name=$name"       >> "$GITHUB_OUTPUT"
+
+          if npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "$name@$version is already published — nothing to do."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          elif git rev-parse -q --verify "refs/tags/v$version" >/dev/null; then
+            echo "::error::Tag v$version already exists but $name@$version is not published. Resolve by hand."
+            exit 1
+          else
+            echo "$name@$version is new — releasing."
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Gate before shipping. Nothing below runs if the version is unchanged.
+      - if: steps.version.outputs.release == 'true'
+        name: components match their source SVGs
+        run: bun run generate:check
+      - if: steps.version.outputs.release == 'true'
+        run: bun run lint
+      - if: steps.version.outputs.release == 'true'
+        run: bun run typecheck
+      - if: steps.version.outputs.release == 'true'
+        run: bun run test
+      - if: steps.version.outputs.release == 'true'
+        run: bun run build
 
       # Secrets are unavailable in a step-level `if`, so reduce the decision to
       # a boolean output. Evaluates to "true"/"false" and never prints the token.
       - id: creds
-        name: check for publish credentials
+        if: steps.version.outputs.release == 'true'
+        name: are publish credentials configured?
         run: |
           echo "ready=${{ secrets.NPM_TOKEN != '' || vars.QEETRIX_NPM_TRUSTED_PUBLISHING == 'true' }}" >> "$GITHUB_OUTPUT"
 
+      - id: publish
+        if: steps.version.outputs.release == 'true' && steps.creds.outputs.ready == 'true'
+        name: publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Tag AFTER a successful publish, so every tag is a version that shipped.
+      - if: steps.publish.outcome == 'success'
+        name: tag the release and open a GitHub Release
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --generate-notes \
+            --repo "${{ github.repository }}"
+
+      - if: steps.version.outputs.release == 'false'
+        name: report that the version is unchanged
+        run: |
+          {
+            echo "## Nothing to release"
+            echo
+            echo "\`${{ steps.version.outputs.version }}\` is already on the registry."
+            echo "Open a PR to bump the version, then merge."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       # Succeeds rather than fails: an unpublished package is a legitimate
       # state, and a permanently red workflow gets ignored.
-      - if: steps.creds.outputs.ready != 'true'
+      - if: steps.version.outputs.release == 'true' && steps.creds.outputs.ready != 'true'
         name: report that publishing is not configured
         run: |
           {
             echo "## Publishing skipped"
             echo
-            echo "Versioning ran. Nothing was published because this repository cannot"
-            echo "authenticate to the registry."
+            echo "\`${{ steps.version.outputs.version }}\` built and tested cleanly, but this"
+            echo "repository cannot authenticate to the registry. No tag was created."
             echo
             echo "Add an \`NPM_TOKEN\` secret with publish rights to the \`@qeetrix\` scope,"
             echo "or enable trusted publishing and set \`QEETRIX_NPM_TRUSTED_PUBLISHING=true\`."
             echo "See \`docs/releases.md\`."
           } >> "$GITHUB_STEP_SUMMARY"
           echo "::warning title=Publishing skipped::No NPM_TOKEN and trusted publishing not enabled. See the job summary."
-
-      - if: steps.creds.outputs.ready == 'true'
-        name: build and publish
-        run: bun run release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
