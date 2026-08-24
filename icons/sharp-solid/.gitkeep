@@ -1,0 +1,6 @@
+# Keeps this directory in git while it holds no artwork.
+#
+# git tracks files, not directories, so without this the folder exists only on
+# the machine that made it — it would be absent from every clone and from CI.
+#
+# Delete this file once the first SVG lands here.

@@ -54,6 +54,18 @@ type Artwork = {
 };
 
 /**
+ * Subdirectories of `dir`, ignoring files.
+ *
+ * Mirrors the generator's own filter, and for the same reason: `readdirSync` on a
+ * file throws `ENOTDIR`, so the `.gitkeep` holding an empty `sharp-*` directory in
+ * git — or a stray `.DS_Store` — would otherwise crash the walk.
+ */
+const subdirs = (dir: string) =>
+  readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+
+/**
  * Every source SVG, keyed by `<shape>-<variant>/<category>/<name>`.
  *
  * Style lives in the directory name as `<shape>-<variant>`, and the two axes map
@@ -62,9 +74,9 @@ type Artwork = {
  */
 function sources() {
   const out = new Map<string, Artwork>();
-  for (const style of readdirSync(join(PKG, "icons"))) {
+  for (const style of subdirs(join(PKG, "icons"))) {
     const [shape, variant] = style.split("-");
-    for (const category of readdirSync(join(PKG, "icons", style))) {
+    for (const category of subdirs(join(PKG, "icons", style))) {
       const dir = join(PKG, "icons", style, category);
       for (const file of readdirSync(dir)) {
         if (!file.endsWith(".svg")) continue;
@@ -374,13 +386,17 @@ describe("the shape axis", () => {
   const variants = [...new Set([...ALL.values()].map((a) => a.variant))].sort();
 
   it("only exposes shapes that have artwork on disk", () => {
-    // `sharp-outline/` and `sharp-solid/` exist but are empty until the sharp
-    // artwork lands, so `sharp` must not be reachable yet. When those directories
-    // are populated this assertion is the one that will fail, which is the point:
-    // it forces the docs and the example to be updated alongside.
-    const styleDirs = readdirSync(join(PKG, "icons")).sort();
-    const populated = styleDirs.filter((d) => [...ALL.values()].some((a) => a.style === d));
-    expect(styleDirs).toEqual(["round-outline", "round-solid", "sharp-outline", "sharp-solid"]);
+    // `sharp-outline/` and `sharp-solid/` are reserved but hold no artwork yet, so
+    // `sharp` must not be reachable. When they are populated this is the assertion
+    // that fails, which is the point: it forces the docs, the types and the example
+    // to be updated alongside.
+    //
+    // Asserted on *populated* directories, deliberately not on the directory
+    // listing. git tracks files rather than directories, so an empty reserved
+    // folder is present or absent depending on whether someone added a `.gitkeep`
+    // — a fact about the checkout, not about the icon set. Asserting the listing
+    // made this pass locally and fail in CI.
+    const populated = [...new Set([...ALL.values()].map((a) => a.style))].sort();
     expect(populated).toEqual(["round-outline", "round-solid"]);
     expect(shapes).toEqual(["round"]);
     expect(variants).toEqual(["outline", "solid"]);
@@ -401,7 +417,10 @@ describe("the shape axis", () => {
   });
 
   it("names every source directory as <shape>-<variant>", () => {
-    for (const dir of readdirSync(join(PKG, "icons"))) {
+    // Directories only — a stray file alongside them is not a style.
+    const dirs = subdirs(join(PKG, "icons"));
+    expect(dirs.length).toBeGreaterThan(0);
+    for (const dir of dirs) {
       const parts = dir.split("-");
       expect(parts.length, dir).toBe(2);
       expect(["round", "sharp"], dir).toContain(parts[0]);
