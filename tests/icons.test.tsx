@@ -72,8 +72,7 @@ const JSX_ATTRS: Record<string, string> = {
 /** Flatten an element tree to `tag|attr=value,…` lines, in document order. */
 function shape(el: Element): string[] {
   const attrs = [...el.attributes]
-    // `{...props}` adds nothing when no props are passed, but jsdom lowercases
-    // attribute names, so normalise before comparing.
+    // jsdom lowercases attribute names, so normalise before comparing.
     .map((a) => `${JSX_ATTRS[a.name.replace(/-/g, "")] ?? a.name}=${a.value}`)
     .sort();
   return [
@@ -82,10 +81,36 @@ function shape(el: Element): string[] {
   ];
 }
 
-/** The same flattening, applied to a raw source file via the DOM parser. */
+/**
+ * The source file's shape, with the generator's two documented transforms
+ * applied by hand.
+ *
+ * Modelling the transforms rather than ignoring colour is the point: if the
+ * generator recoloured something inside `<defs>`, missed a visible `white`, or
+ * touched any other attribute, the expected and actual shapes diverge and the
+ * test names the file.
+ */
 function shapeOfSource(source: string): string[] {
   const doc = new DOMParser().parseFromString(source, "image/svg+xml");
-  return shape(doc.documentElement);
+  const root = doc.documentElement;
+
+  // 1. The root gains `color="white"` as the overridable default.
+  root.setAttribute("color", "white");
+
+  // 2. Visible `fill`/`stroke` of exactly `white` become `currentColor`.
+  //    Elements inside <defs> are masks and must keep their authored value.
+  const recolour = (el: Element, inDefs: boolean) => {
+    const isDefs = inDefs || el.tagName.toLowerCase() === "defs";
+    if (!isDefs) {
+      for (const attr of ["fill", "stroke"]) {
+        if (el.getAttribute(attr) === "white") el.setAttribute(attr, "currentColor");
+      }
+    }
+    for (const child of [...el.children]) recolour(child, isDefs);
+  };
+  for (const child of [...root.children]) recolour(child, false);
+
+  return shape(root);
 }
 
 describe("every component holds its source SVG, byte for byte", () => {
@@ -98,6 +123,91 @@ describe("every component holds its source SVG, byte for byte", () => {
     const svg = container.querySelector("svg");
     expect(svg, name).not.toBeNull();
     expect(shape(svg as Element)).toEqual(shapeOfSource(source));
+  });
+});
+
+describe("colour is themeable, and white by default", () => {
+  // These assert the *mechanism*: visible geometry paints `currentColor`, and the
+  // root's `color` is what resolves it.
+  //
+  // A limitation worth stating plainly, so nobody "fixes" it the wrong way:
+  // jsdom does not implement SVG presentation attributes in `getComputedStyle`,
+  // so `getComputedStyle(svg).color` on a default icon reports black rather than
+  // the `color="white"` the element carries. That is a jsdom gap, not a bug in
+  // the icon — `color` is a presentation attribute (SVG 1.1 §6.4), the same class
+  // of thing as the `fill` and `stroke` attributes these icons already rely on.
+  //
+  // So the assertions below check the attribute is present and overridable, which
+  // is what this package controls. Confirming the painted pixel needs a real
+  // engine; `bun run generate` output opened in a browser is the check for that.
+  const sample = ["activity", "user", "search", "lock", "trash", "shield"].filter(
+    (n) => typeof componentOf(n) === "function",
+  );
+
+  it("has sample icons to test with", () => {
+    expect(sample.length).toBeGreaterThan(3);
+  });
+
+  it.each(sample)("%s defaults to white, matching the source artwork", (name) => {
+    const Icon = componentOf(name);
+    const { container } = render(<Icon />);
+    expect(container.querySelector("svg")?.getAttribute("color")).toBe("white");
+  });
+
+  it.each(sample)("%s routes all visible paint through currentColor", (name) => {
+    const Icon = componentOf(name);
+    const { container } = render(<Icon />);
+    const painted = [...container.querySelectorAll("path")];
+    expect(painted.length).toBeGreaterThan(0);
+    for (const el of painted) {
+      for (const attr of ["fill", "stroke"]) {
+        const v = el.getAttribute(attr);
+        // A visible path never carries a literal colour — only currentColor,
+        // `none`, or nothing at all.
+        if (v !== null) expect(["currentColor", "none"], `${name} ${attr}=${v}`).toContain(v);
+      }
+    }
+  });
+
+  it.each(sample)("%s lets the color prop override the default", (name) => {
+    const Icon = componentOf(name);
+    const { container } = render(<Icon color="black" />);
+    const svg = container.querySelector("svg");
+    expect(svg?.getAttribute("color")).toBe("black");
+    // The geometry is unchanged — only the resolution target moved.
+    expect(container.querySelector("path")?.getAttribute("fill")).toBe("currentColor");
+  });
+
+  it.each(sample)("%s accepts a dark/light class instead of a fixed colour", (name) => {
+    const Icon = componentOf(name);
+    const { container } = render(<Icon className="text-black dark:text-white" />);
+    const svg = container.querySelector("svg");
+    expect(svg?.getAttribute("class")).toBe("text-black dark:text-white");
+    // The default stays on the element; CSS outranks a presentation attribute,
+    // so the class wins at paint time without needing !important.
+    expect(svg?.getAttribute("color")).toBe("white");
+  });
+
+  it("never recolours a clipPath mask, which is not painted", () => {
+    // All 2175 masks are <rect fill="white"> inside <defs><clipPath>. They are
+    // never painted, so recolouring them would be meaningless — they must keep
+    // their authored value.
+    //
+    // Selector is `defs rect`, not `clipPath rect`: jsdom ASCII-lowercases type
+    // selectors, so the camelCase `clipPath` never matches one.
+    let checked = 0;
+    for (const { name, style } of ALL.values()) {
+      const Icon = componentOf(name);
+      const { container } = render(<Icon variant={style} />);
+      for (const rect of container.querySelectorAll("defs rect")) {
+        expect(rect.getAttribute("fill"), `${style}/${name}`).toBe("white");
+        expect(rect.parentElement?.tagName, `${style}/${name}`).toBe("clipPath");
+        checked++;
+      }
+    }
+    // The audit counted 2175 of them; assert the floor so a regression that
+    // silently drops the masks cannot pass.
+    expect(checked).toBe(2175);
   });
 });
 

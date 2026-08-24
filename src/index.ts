@@ -15,6 +15,13 @@
  *   <Activity width={20} height={20} />
  *   <Activity className="size-5" />
  *
+ * Colour is white by default, matching the source artwork, and retints from the
+ * `color` prop or any CSS that sets `color` — which is what makes dark and light
+ * mode work:
+ *
+ *   <Activity color="black" />
+ *   <Activity className="text-black dark:text-white" />
+ *
  * Every export is side-effect free (`sideEffects: false`), so a bundler drops
  * every icon a consumer does not import.
  */
