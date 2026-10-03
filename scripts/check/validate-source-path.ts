@@ -1,7 +1,12 @@
 import { categories } from "../../config/categories.js";
 import { iconSystem } from "../../config/icon-system.js";
 import type { IconVariant } from "../../src/types/icon.js";
-import { type Diagnostic, diagnostic, sortDiagnostics } from "../lib/diagnostics.js";
+import {
+  type Diagnostic,
+  diagnostic,
+  formatDiagnostics,
+  sortDiagnostics,
+} from "../lib/diagnostics.js";
 
 export type IconLocation = {
   readonly file: string;
@@ -42,6 +47,12 @@ export function validateIconName(filename: string, file = filename): Diagnostic[
     return [diagnostic("QXI-NAME-001", file, "This filename is reserved on Windows.")];
   }
   return [];
+}
+
+export function componentNameFromFilename(filename: string): string {
+  const diagnostics = validateIconName(filename);
+  if (diagnostics.length > 0) throw new Error(formatDiagnostics(diagnostics));
+  return iconExportName(filename.slice(0, -4));
 }
 
 export function validateSourcePath(file: string): {

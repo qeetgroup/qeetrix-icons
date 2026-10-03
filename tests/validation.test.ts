@@ -1,55 +1,32 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { rmSync, symlinkSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import { categories } from "../config/categories.js";
 import { iconSystem } from "../config/icon-system.js";
-import { validateRepository, validateSources } from "../scripts/check/validate-repository.js";
 import {
+  scanIconSources,
+  validateRepository,
+  validateSources,
+} from "../scripts/check/validate-repository.js";
+import {
+  componentNameFromFilename,
   iconExportName,
   validateIconName,
   validateSourcePath,
 } from "../scripts/check/validate-source-path.js";
 import { maxSvgBytes, validateSvg } from "../scripts/check/validate-svg.js";
 import { diagnostic, formatDiagnostics, sortDiagnostics } from "../scripts/lib/diagnostics.js";
-
-const outlineAttributes = {
-  xmlns: "http://www.w3.org/2000/svg",
-  viewBox: iconSystem.architecture.viewBox,
-  fill: "none",
-  stroke: iconSystem.architecture.color,
-  "stroke-width": String(iconSystem.calibration.strokeWidth),
-  "stroke-linecap": iconSystem.calibration.linecap,
-  "stroke-linejoin": iconSystem.calibration.linejoin,
-};
-
-function syntheticSvg(
-  attributes: Record<string, string | undefined> = {},
-  content = '<path d="M 5 7 L 11 13"/>',
-): string {
-  const serialized = Object.entries({ ...outlineAttributes, ...attributes })
-    .filter(([, value]) => value !== undefined)
-    .map(([name, value]) => `${name}="${value}"`)
-    .join(" ");
-  return `<svg ${serialized}>${content}</svg>`;
-}
+import { createRepositoryFixture, syntheticSvg, writeFixture } from "./helpers.js";
 
 const outlineFile = "icons/outline/actions/fixture.svg";
 
 const temporaryRepositories: string[] = [];
 
-function writeFixture(root: string, file: string, source: string | Uint8Array): void {
-  const absolute = join(root, file);
-  mkdirSync(dirname(absolute), { recursive: true });
-  writeFileSync(absolute, source);
-}
-
 function temporaryRepository(): string {
-  const root = mkdtempSync(join(tmpdir(), "qeetrix-validation-"));
+  const root = createRepositoryFixture();
   temporaryRepositories.push(root);
-  writeFixture(root, "icons/.gitkeep", "");
   return root;
 }
 
@@ -133,6 +110,29 @@ describe("repository-wide identity", () => {
 });
 
 describe("production scanner and fixture isolation", () => {
+  it("captures a sorted source snapshot for validation and generation", () => {
+    const root = temporaryRepository();
+    const first = "icons/outline/actions/fixture-alpha.svg";
+    const last = "icons/outline/actions/fixture-zeta.svg";
+    const source = syntheticSvg();
+    writeFixture(root, last, source);
+    writeFixture(root, first, source);
+    const scan = scanIconSources(root);
+    expect(scan).toEqual({
+      iconCount: 2,
+      sources: [
+        { file: first, source },
+        { file: last, source },
+      ],
+      diagnostics: [],
+    });
+    writeFixture(root, first, "<svg>");
+    expect(validateSources(scan.sources).diagnostics).toEqual([]);
+    expect(validateRepository(root).diagnostics).toEqual([
+      expect.objectContaining({ code: "QXI-XML-001", file: first }),
+    ]);
+  });
+
   it("anchors the CLI to this repository instead of the working directory", () => {
     const root = temporaryRepository();
     writeFixture(root, outlineFile, "<script/>");
@@ -523,6 +523,7 @@ describe("icon names", () => {
   ])("accepts semantic name %s", (filename) => {
     expect(validateIconName(filename)).toEqual([]);
     expect(iconExportName(filename.slice(0, -4))).toMatch(/^[A-Z][A-Za-z0-9]*Icon$/);
+    expect(componentNameFromFilename(filename)).toBe(iconExportName(filename.slice(0, -4)));
   });
 
   it.each([
@@ -551,6 +552,7 @@ describe("icon names", () => {
     expect(validateIconName(filename)).toEqual([
       expect.objectContaining({ code: "QXI-NAME-001", file: filename, severity: "error" }),
     ]);
+    expect(() => componentNameFromFilename(filename)).toThrow("QXI-NAME-001");
   });
 
   it("computes export identities without a category prefix", () => {

@@ -118,7 +118,7 @@ describe("icon-system contract", () => {
   });
 });
 
-describe("Phase 2B source boundary", () => {
+describe("Phase 2C source and output boundary", () => {
   it("contains no SVG artwork", () => {
     const artwork = readdirSync(join(PKG, "icons"), {
       encoding: "utf8",
@@ -127,19 +127,42 @@ describe("Phase 2B source boundary", () => {
     expect(artwork).toEqual([]);
   });
 
-  it.each(["src/generated", "src/runtime", "icon-manifest.json", "playground"])(
-    "does not introduce future-phase infrastructure at %s",
-    (path) => {
-      expect(existsSync(join(PKG, path))).toBe(false);
-    },
-  );
+  it("contains no generated production components", () => {
+    const output = join(PKG, "src/generated/icons");
+    const files = existsSync(output)
+      ? readdirSync(output, { encoding: "utf8", recursive: true, withFileTypes: true }).filter(
+          (entry) => !entry.isDirectory(),
+        )
+      : [];
+    expect(files).toEqual([]);
+  });
+
+  it("keeps the runtime to the single shared props helper", () => {
+    expect(readdirSync(join(PKG, "src/runtime"))).toEqual(["resolve-icon-props.ts"]);
+  });
+
+  it.each([
+    "icon-manifest.json",
+    "playground",
+    "src/generated/index.ts",
+    "src/generated/icons/index.ts",
+  ])("does not introduce Phase 2D or later infrastructure at %s", (path) => {
+    expect(existsSync(join(PKG, path))).toBe(false);
+  });
 });
 
 describe("package manifest", () => {
   const manifest = JSON.parse(readFileSync(join(PKG, "package.json"), "utf8")) as {
     exports: Record<string, unknown>;
     files: string[];
+    dependencies?: Record<string, string>;
+    peerDependencies?: Record<string, string>;
   };
+
+  it("has no runtime dependencies and only React 19 as a peer", () => {
+    expect(manifest.dependencies).toBeUndefined();
+    expect(manifest.peerDependencies).toEqual({ react: "^19.0.0" });
+  });
 
   it("exposes only the root entry point and package.json", () => {
     // The 1.x `./icons/*` deep-import subpath pointed at the removed catalogue.

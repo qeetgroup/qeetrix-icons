@@ -41,7 +41,8 @@ It skips fork PRs (their token is read-only) and never reacts to its own commit.
 Release. The tag comes last on purpose: every `v*` tag is a version that really shipped, the same
 property `qeet-id-server`'s deploy workflow maintains.
 
-Before publishing it runs the full gate: `lint`, `typecheck`, `test`, `check:icons`, `build`. A
+Before publishing it runs the full gate: `lint`, `typecheck`, `test`, `check:icons`,
+`check:generated`, `build`. A
 merge that does not change the version publishes nothing and succeeds, so re-running is always safe.
 
 There is no `bun run release`. Releasing is merging.
@@ -80,7 +81,7 @@ number.
 
 An icon's component name is its public API. The future
 `import { ArrowLeftIcon } from "@qeetrix/icons"` will be a compile-time contract, and renaming it
-would turn consuming builds red. No such component exists in Phase 2B.
+would turn consuming builds red. No such component exists yet.
 
 **Do not rename an icon because a better name occurred to you.** Renaming is a major release, so get
 the name right when the icon lands. Removing an icon carries the same cost.
@@ -91,8 +92,9 @@ the name right when the icon lands. Removing an icon carries the same cost.
 foundation-only implementation.
 
 The following describes pre-existing release automation, not local development commands. Its
-registry lookup, publication, and rollback steps still use the npm CLI. Phase 2B adds only the
-source-validation quality gate; it does not run publishing or change its behavior. Reconciling
+registry lookup, publication, and rollback steps still use the npm CLI. Phases 2B and 2C add only
+the source-validation and generated-output quality gates; they do not run publishing or change its
+behavior. Reconciling
 release tooling with Bun-only development and defining 2.0 release readiness are separate release
 tasks; do not publish these foundations to test the flow.
 

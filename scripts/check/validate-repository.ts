@@ -14,6 +14,10 @@ export type ValidationResult = {
   readonly diagnostics: readonly Diagnostic[];
 };
 
+export type SourceScan = ValidationResult & {
+  readonly sources: readonly IconSource[];
+};
+
 export function validateSources(sources: readonly IconSource[]): ValidationResult {
   const diagnostics: Diagnostic[] = [];
   const variantNames = new Map<string, IconLocation>();
@@ -92,7 +96,7 @@ export function validateSources(sources: readonly IconSource[]): ValidationResul
   return { iconCount: sources.length, diagnostics: sortDiagnostics(diagnostics) };
 }
 
-export function validateRepository(repositoryRoot: string): ValidationResult {
+export function scanIconSources(repositoryRoot: string): SourceScan {
   const sourceRoot = join(repositoryRoot, "icons");
   const sources: IconSource[] = [];
   const diagnostics: Diagnostic[] = [];
@@ -103,6 +107,7 @@ export function validateRepository(repositoryRoot: string): ValidationResult {
     if (!sourceInfo.isDirectory() || sourceInfo.isSymbolicLink()) {
       return {
         iconCount,
+        sources,
         diagnostics: [
           diagnostic(
             "QXI-IO-001",
@@ -115,6 +120,7 @@ export function validateRepository(repositoryRoot: string): ValidationResult {
   } catch {
     return {
       iconCount,
+      sources,
       diagnostics: [
         diagnostic("QXI-IO-001", "icons", "Cannot read the production source directory."),
       ],
@@ -178,6 +184,18 @@ export function validateRepository(repositoryRoot: string): ValidationResult {
   }
   return {
     iconCount,
-    diagnostics: sortDiagnostics([...diagnostics, ...validateSources(sources).diagnostics]),
+    sources: sources.sort((left, right) => compareText(left.file, right.file)),
+    diagnostics: sortDiagnostics(diagnostics),
+  };
+}
+
+export function validateRepository(repositoryRoot: string): ValidationResult {
+  const scan = scanIconSources(repositoryRoot);
+  return {
+    iconCount: scan.iconCount,
+    diagnostics: sortDiagnostics([
+      ...scan.diagnostics,
+      ...validateSources(scan.sources).diagnostics,
+    ]),
   };
 }

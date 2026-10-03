@@ -51,6 +51,26 @@
 - Production artwork remains empty. No React icons, runtime, generator, manifest, playground, or
   public API additions are included.
 
+### SVG to React generation (Phase 2C)
+
+- Added `bun run generate`, which reuses Phase 2B scanning and validation, aborts without writing
+  on any error, and converts validated SVG into one React 19 component per source under
+  `src/generated/icons/<variant>/<category>/<name>.tsx`.
+- Conversion preserves geometry text and drawing order exactly, maps attribute names through one
+  explicit table, and emits already Biome-formatted, deterministic code with a generated-file
+  header. No SVG optimizer, transformer, or formatter dependency is used.
+- Added `bun run check:generated`, which detects missing, edited, out-of-date, and stale generated
+  files without writing or using Git, and runs in CI and the release quality gate.
+- Output writes are limited to `src/generated/icons/` behind a read-only preflight that rejects
+  links, forged paths, and file/directory conflicts; stale files are removed only inside it.
+- Added the internal `IconProps` type and the shared `resolveIconProps` runtime: `size` (number or
+  CSS length, default 24), native SVG props and React 19 refs, and decorative-by-default
+  accessibility that becomes `role="img"` when an accessible name is supplied.
+- React 19 is now the peer dependency; `react`, `react-dom`, and their types are development
+  dependencies for typechecking and rendering tests.
+- Production artwork and generated components remain empty. The root package API, export paths,
+  and version are unchanged; no manifest, public icon exports, or playground are included.
+
 ---
 
 Everything below is **historical** and describes the 1.x line only.

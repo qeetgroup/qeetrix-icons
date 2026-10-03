@@ -1,0 +1,202 @@
+# SVG to React generation
+
+Phase 2C converts validated production SVG into React 19 components. It is a build-time pipeline
+only: there are still zero production icons, so it currently generates zero components, and no
+generated component is a package export yet.
+
+```text
+icons/<variant>/<category>/<name>.svg          human-authored source of truth
+        -> scan + validate (Phase 2B)         one validator, shared with check:icons
+        -> convert + render                   in memory, all-or-nothing
+        -> write                              only inside src/generated/icons/
+src/generated/icons/<variant>/<category>/<name>.tsx
+```
+
+**Design happens in `icons/`. Everything under `src/generated/icons/` is generated: never edit it
+by hand.** Change the SVG and regenerate. Deleting the directory and regenerating recreates
+byte-identical files.
+
+## Commands
+
+```bash
+bun run check:icons       # validate sources only
+bun run generate          # validate, then write src/generated/icons/
+bun run check:generated   # prove committed output matches source; writes nothing
+```
+
+`generate` validates every source before writing anything. Any error aborts with the Phase 2B
+diagnostics and exit status 1, and no generated file is changed:
+
+```text
+QXI-XML-001 "icons/outline/actions/example.svg"
+  Malformed XML: ...
+Generation aborted: icon validation failed with 1 error(s). No generated files were changed.
+```
+
+With no production icons, both commands succeed and report zero:
+
+```text
+Validated 0 production icons.
+Generated 0 React icon components (0 written, 0 stale removed).
+```
+
+`check:generated` regenerates in memory and compares bytes with what is on disk. It reports a
+missing component, an edited or out-of-date component, and any stale file left in the output
+directory, then exits 1. It does not use Git, so it works in any checkout or extracted copy.
+Generated components are committed, so the build compiles them like any other source; it does not
+regenerate. CI and the release gate run `check:icons` and `check:generated` before the build.
+
+Both CLIs, like `check:icons`, are anchored to this repository rather than the working directory.
+
+## Pipeline responsibilities
+
+| Step | Module | Responsibility |
+|:--|:--|:--|
+| Scan | [validate-repository.ts](../scripts/check/validate-repository.ts) `scanIconSources` | Read `icons/` without following links; the same scanner `check:icons` uses |
+| Validate | `validateSources` (Phase 2B) | The only source of SVG rules; generation never re-implements them |
+| Transform | [svg-to-react.ts](../scripts/lib/svg-to-react.ts) | Parse validated XML into a React-named element tree |
+| Render | [component-source.ts](../scripts/lib/component-source.ts) | Print the component module, already Biome-formatted |
+| Plan | [generation-plan.ts](../scripts/lib/generation-plan.ts) | Pair each source with its output path, component name, and code |
+| Write / verify | [generated-output.ts](../scripts/lib/generated-output.ts) | Safe preflight, then write and clean, or compare without writing |
+
+The plan is internal tooling data: source path, variant, category, name, output path, component
+name, and code. It is deliberately not a manifest and is not exported.
+
+Diagnostics extend the Phase 2B codes:
+
+| Rule | Meaning |
+|:--|:--|
+| `QXI-GEN-001` | A validated source could not be converted; nothing is written |
+| `QXI-GEN-002` | Generated output is unsafe or unreadable (link, conflict, forged path, I/O failure) |
+| `QXI-GEN-003` | Generated output is missing, out of date, or stale |
+
+## Conversion rules
+
+Generation converts; it does not redraw or optimize. There is no SVGO step.
+
+- **Geometry is verbatim.** Every value keeps its exact source text, so precision never changes,
+  and child elements keep their drawing order. Nothing is merged, removed, or rewritten.
+- **Comments, whitespace, and the XML declaration are dropped.** They do not render.
+- **Attribute names use one explicit table**, for example `stroke-width` to `strokeWidth`,
+  `fill-rule` to `fillRule`, `clip-rule` to `clipRule`, and `class` to `className`. An attribute
+  without an entry fails generation rather than leaking an invalid JSX name. The table only
+  decides spelling: `clip-rule` and `class` are mapped but still rejected by validation.
+- **Values are always JSX string literals**, such as `strokeWidth="1.75"`, never `{1.75}`, so the
+  source text is preserved exactly. A value that a string literal cannot carry verbatim fails.
+- **Attributes are sorted by React name.** Authoring-tool attribute order is not meaningful in SVG,
+  so it cannot change generated output.
+- **Root attributes come from the source.** Validation already guarantees they match the variant
+  contract, so the generator invents no paint or stroke values. `currentColor` is preserved and
+  no fixed color is ever introduced.
+
+## Generated component shape
+
+Synthetic geometry, as produced from `icons/outline/actions/fixture.svg`:
+
+```tsx
+// Generated by @qeetrix/icons from icons/outline/actions/fixture.svg.
+// Do not edit this file directly. Edit the source SVG and run `bun run generate`.
+
+import { resolveIconProps } from "../../../../runtime/resolve-icon-props.js";
+import type { IconProps } from "../../../../types/icon-props.js";
+
+export function FixtureIcon(props: IconProps) {
+  return (
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.75"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      {...resolveIconProps(props)}
+    >
+      <path d="M 5 7 L 11 13" />
+    </svg>
+  );
+}
+```
+
+- One named function export per file; no default export, no `forwardRef`, no `displayName`
+  (the function name already identifies it), and no `"use client"`. Icons are pure and work in
+  Server Components, Client Components, and SSR.
+- The component name comes from the one canonical converter, `componentNameFromFilename` in
+  [validate-source-path.ts](../scripts/check/validate-source-path.ts), which rejects invalid
+  names instead of producing broken identifiers: `arrow-left.svg` becomes `ArrowLeftIcon`.
+- Outline and filled sources generate into separate variant directories. Both files export the
+  base name, such as `FixtureIcon`; how variants reach the public API is decided in Phase 2D.
+- Directionality is not applied. Geometry is never mirrored, and no `-rtl` names exist; RTL
+  metadata belongs to the later manifest.
+
+## Runtime decision
+
+Each component renders its own `<svg>` directly, with geometry compiled to JSX at generation time.
+The behavior every icon shares lives in one tiny hand-written function,
+[resolveIconProps](../src/runtime/resolve-icon-props.ts), spread last onto the root.
+
+Alternatives considered:
+
+- **Inline logic in every file** repeats the size and accessibility code in each icon, enlarging
+  every bundle that imports several icons and making the behavior testable only through
+  generated fixtures.
+- **A `createIcon` factory or a shared `<Icon>` wrapper** turns geometry into runtime data or adds
+  a component layer to every render. Neither is needed for a fixed, validated SVG subset.
+
+The helper is a pure function with no React import at runtime, no context, registry, hooks, or
+SVG parsing. A bundler includes it once however many icons are imported, and each icon module
+imports only what it renders, so unused icons tree-shake away. Generation emits no barrel.
+
+### Props
+
+`IconProps` is native `SVGProps<SVGSVGElement>` without `children`, plus `size?: number | string`.
+
+- `size` sets `width` and `height`; the default is 24, matching the internal config default.
+  Any number or CSS length works; recommended design sizes are not a restriction.
+- Explicit `width` or `height` wins over `size`.
+- `className`, `style`, `ref`, event handlers, and every other native SVG prop reach the `<svg>`.
+  React 19 passes `ref` as an ordinary prop, so no wrapper is needed.
+- Caller props are spread after the source's root attributes, so they override them.
+
+### Accessibility
+
+Implements the contract in [accessibility.md](accessibility.md):
+
+| Caller provides | Result |
+|:--|:--|
+| No accessible name | `aria-hidden="true"`, `focusable="false"`, no role |
+| Non-empty `aria-label` or `aria-labelledby` | Exposed: no `aria-hidden`, `role="img"`, `focusable="false"` |
+| Blank label, or only `aria-describedby` | Still decorative; neither is a name |
+| Explicit `aria-hidden`, `role`, or `focusable` | Always wins |
+
+No `<title>` is injected and there is no `title` prop: the name comes from the caller, in context.
+
+## Determinism and safety
+
+- Output order follows configured variant order, configured category order, then codepoint name
+  order. It never depends on filesystem enumeration order.
+- No timestamps, absolute paths, machine data, random values, or environment values. LF newlines
+  only. The header names the repository-relative source path.
+- Output is printed directly in Biome's format with Biome's import order, so `generate` leaves it
+  ready. Tests prove Biome would change nothing, including lines at the 100-column limit.
+- Writing is preceded by a read-only preflight. The writer owns only `src/generated/icons/`, and
+  each planned path must equal the canonical output of its own validated source. Symbolic or hard
+  links, special files, file/directory conflicts, and duplicate targets abort before anything is
+  written. Cleanup deletes only stale files inside that directory, then emptied subdirectories.
+- An invalid source aborts the whole run: there is no partially regenerated library.
+
+The `noSvgWithoutTitle` Biome rule is disabled for `src/generated/icons/**` only, because
+accessibility is resolved at runtime and source SVG may not contain `<title>`.
+
+## Package boundary
+
+The generator, validator, plan, and filesystem helpers live in `scripts/` and never enter `dist/`.
+The runtime helper and `IconProps` compile into `dist/` but are not reachable: the package exports
+only `.` and `./package.json`, and the root still exports only the Phase 2A types. React 19 is the
+only peer dependency; there are no runtime dependencies.
+
+## Not in Phase 2C
+
+No production or calibration icons, manifest, public icon exports or barrel, package subpaths,
+variant API, icon metadata, playground, Qeetrix UI integration, or SVG optimization. Those belong
+to Phase 2D and later.

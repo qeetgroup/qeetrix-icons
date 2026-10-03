@@ -1,8 +1,10 @@
 # Accessibility contract
 
-This is the intended contract for future React icon components, not an implemented runtime API.
-The initial defaults are recorded in [config/icon-system.ts](../config/icon-system.ts). Phase 2A
-does not add components, an `IconProps` type, generated titles, or accessibility test fixtures.
+This is the contract for generated React icon components. The defaults are recorded in
+[config/icon-system.ts](../config/icon-system.ts). Since Phase 2C it is implemented by the shared
+runtime helper [resolveIconProps](../src/runtime/resolve-icon-props.ts) and tested in
+[tests/runtime.test.ts](../tests/runtime.test.ts); see [generation.md](generation.md#accessibility).
+There are still no production components or public icon exports, and no generated titles.
 
 ## Decorative by default
 
@@ -44,9 +46,11 @@ Future components must support standard ARIA attributes, particularly `aria-labe
 - The caller owns meaningful label text, localization, and valid, unique referenced IDs. A
   generic automatically generated name such as "shield check icon" is not sufficient context.
 
-Exact prop types and default-merging behavior must be implemented and tested in the runtime phase.
-Do not invent a title-ID scheme or the full component API in Phase 2A. Human-authored source art
-must not introduce a fixed accessible label that would be wrong for other uses or languages.
+The runtime treats an `undefined` prop as not provided, so a wrapper forwarding an unset
+`aria-hidden` keeps the decorative default. Labelled-by references are not resolved at runtime,
+because icons do not query the DOM; any non-empty value counts. There is no title-ID scheme.
+Human-authored source art must not introduce a fixed accessible label that would be wrong for other
+uses or languages.
 
 ## Status and color
 
@@ -58,7 +62,8 @@ an icon must not create an unsolicited live region.
 
 ## Later verification
 
-When runtime components exist, test unnamed decorative icons, named standalone graphics, explicit
-ARIA overrides, valid labelled-by references, and icons inside named buttons and links. Confirm
-that keyboard focus stays on the control, labels are not announced twice, and status information
-survives without color. These are future quality gates, not capabilities claimed by this phase.
+Phase 2C tests cover unnamed decorative icons, named standalone graphics, blank labels, and
+explicit ARIA overrides at the component level. When real icons exist, also test valid labelled-by
+references and icons inside named buttons and links. Confirm that keyboard focus stays on the
+control, labels are not announced twice, and status information survives without color. These are
+future quality gates, not capabilities claimed by this phase.

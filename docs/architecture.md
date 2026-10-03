@@ -1,9 +1,10 @@
 # Architecture and phase boundaries
 
-Phase 2A established the design contract and typed foundations. Phase 2B adds SVG/source validation
-only. There are still no production SVG drawings, React components, normalizers, generators,
-manifest, or playground. The technology direction remains Bun, strict TypeScript, React 19, and
-ESM, with Biome and Vitest. React is not installed because no component or runtime code needs it.
+Phase 2A established the design contract and typed foundations. Phase 2B added SVG/source
+validation. Phase 2C adds the SVG-to-React generation pipeline and the small shared runtime that
+generated components use. There are still no production SVG drawings or generated components, and
+no manifest, public icon exports, or playground. The technology direction remains Bun, strict
+TypeScript, React 19, and ESM, with Biome and Vitest.
 
 ## What exists now
 
@@ -13,18 +14,25 @@ ESM, with Biome and Vitest. React is not installed because no component or runti
 | [config/icon-system.ts](../config/icon-system.ts) | Internal, executable design contract: architecture plus calibration candidates |
 | [config/categories.ts](../config/categories.ts) | Internal category IDs, display labels, purposes, and canonical array order |
 | [src/types/icon.ts](../src/types/icon.ts) | Stable variant and directionality vocabulary |
+| [src/types/icon-props.ts](../src/types/icon-props.ts) | `IconProps` for generated components; not a root export yet |
+| [src/runtime/resolve-icon-props.ts](../src/runtime/resolve-icon-props.ts) | Shared size and accessibility defaults for generated components |
+| `src/generated/icons/` | Generated components; absent while there are no production icons |
 | [src/index.ts](../src/index.ts) | Type-only public entry point |
-| `scripts/check/` | Internal source-path, naming, SVG, variant, and repository collision validation |
-| [scripts/lib/diagnostics.ts](../scripts/lib/diagnostics.ts) | Stable error codes, sorting, and CLI formatting |
-| `docs/` | Authoring, semantic, accessibility, and architectural contracts |
+| `scripts/check/` | Source validation and the `check:icons` and `check:generated` CLIs |
+| `scripts/build/` | The `generate` CLI |
+| `scripts/lib/` | Diagnostics, SVG-to-React conversion, rendering, planning, and safe output |
+| `docs/` | Authoring, semantic, accessibility, generation, and architectural contracts |
 | [tests/repository.test.ts](../tests/repository.test.ts) | Foundation consistency, package boundary, and empty-artwork checks |
 | [tests/validation.test.ts](../tests/validation.test.ts) | Synthetic in-memory cases and isolated temporary scanner fixtures |
+| [tests/generation.test.ts](../tests/generation.test.ts) | Conversion, determinism, Biome/TypeScript output checks, and output safety |
+| [tests/runtime.test.ts](../tests/runtime.test.ts) | Rendering, props, refs, and accessibility of generated components |
 | `dist/` | Compiler output; the only build directory and published payload directory |
 
 The main TypeScript config includes `config/`, `scripts/`, `src/`, tests, and the Vitest configuration
 under strict checking. The build config keeps `rootDir` and `include` limited to `src/`. Internal config
 may import public types, but public source and declarations must not depend on unpublished config.
-This keeps calibration values and taxonomy out of the consumer API and build output.
+This keeps calibration values and taxonomy out of the consumer API and build output. The runtime
+therefore repeats the default size of 24, and tests keep it equal to the config value.
 
 ## Public API now
 
@@ -37,69 +45,70 @@ These types establish vocabulary, not component props or a promise of filled art
 concept. The root JavaScript module exports no runtime values or icons. The existing
 `@qeetrix/icons/package.json` subpath remains; no other package subpaths are added.
 
-There is deliberately no `IconSize` union or full `IconProps` definition. The recommended sizes
-are internal calibration targets, not the allowed values of a future React prop. The later API
-must consider numeric sizes such as `18` and CSS lengths such as `"1em"` (for example, through a
-`number | string` property) without prematurely promising its full semantics here.
+Phase 2C did not change this surface. `IconProps` and the runtime helper compile into `dist/` but
+are not reachable through the package exports. `IconProps` accepts `size?: number | string`, not an
+`IconSize` union: recommended sizes are internal calibration targets, not allowed values. Exposing
+components, props, and variants publicly is Phase 2D work.
 
-## Intended future pipeline
+## Pipeline
 
 ```text
 Human-authored SVG
-        -> SVG + source validation  IMPLEMENTED
-        -> normalization           FUTURE
-        -> React generation        FUTURE
-        -> manifest generation     FUTURE
-        -> icon package exports    FUTURE
-        -> generated/runtime tests FUTURE
+        -> SVG/source validation   IMPLEMENTED  Phase 2B
+        -> React generation        IMPLEMENTED  Phase 2C
+        -> manifest generation     FUTURE       Phase 2D
+        -> public exports/API      FUTURE       Phase 2D
+        -> visual playground       FUTURE
         -> Qeetrix UI / Qeet products
 ```
 
-`bun run check:icons` now validates production sources before later generation. It accepts zero
-icons, reports deterministic errors, and is included in CI and release quality gates. XML parsing
-and explicit allowlists enforce structure, not visual quality; see [validation.md](validation.md)
-for rules and the limited path-token checks. Normalization must later be deterministic and must
-not silently redesign human-authored artwork. SVG remains the artwork source of truth. Exact
-normalization operations, manifest schema, and the emitted icon API remain future work.
+`bun run check:icons` validates production sources. `bun run generate` reuses that validation,
+aborts on any error without writing, and writes components to `src/generated/icons/`.
+`bun run check:generated` proves committed output matches source. All three accept zero icons and
+run in CI and release quality gates. See [validation.md](validation.md) and
+[generation.md](generation.md).
 
-## Future ownership map
+There is no SVG normalization or optimization step. Generation converts validated sources to JSX
+without changing geometry, precision, or drawing order. SVG remains the artwork source of truth.
+The manifest schema and the public icon API remain future work.
 
-The following names describe ownership boundaries. `icons/`, `config/`, and the source checks
-exist today; generated output, runtime, and metadata do not.
+## Ownership map
 
-| Kind | Location | Intended role |
+| Kind | Location | Role |
 |:--|:--|:--|
 | SOURCE | `icons/` | Independently drawn canonical SVG masters |
-| GENERATED | `src/generated/` | Deterministic React output owned by the generator, never hand-edited |
-| RUNTIME | `src/runtime/` | Hand-maintained shared behavior only where generated components need it |
-| METADATA | `icon-manifest.json` | Generated discovery and semantic metadata, including directionality |
-| CONFIG | `config/` | Repository-internal contracts used by future tooling and tests |
-| QUALITY GATES | `scripts/check/` | Implemented source checks; generated-output checks remain future work |
+| GENERATED | `src/generated/icons/` | Deterministic React output owned by the generator, never hand-edited |
+| RUNTIME | `src/runtime/` | Hand-maintained behavior shared by generated components, nothing else |
+| METADATA | `icon-manifest.json` | Future generated discovery and semantic metadata, including directionality |
+| CONFIG | `config/` | Repository-internal contracts used by tooling and tests |
+| QUALITY GATES | `scripts/check/` | Source validation and generated-output drift checks |
+| BUILD TOOLING | `scripts/build/`, `scripts/lib/` | Generation; never published |
 
-The source layout is now `icons/<variant>/<category>/<name>.svg`, using configured variants and
-categories. No empty variant/category hierarchy is created yet. Build tooling under `scripts/build/`,
-a playground, size-specific masters, and generated metadata's authored inputs remain deferred.
+The source layout is `icons/<variant>/<category>/<name>.svg`, using configured variants and
+categories. Generated output mirrors it as `src/generated/icons/<variant>/<category>/<name>.tsx`.
+No empty variant/category hierarchy is created in either tree. The manifest, a playground, and
+size-specific masters remain deferred.
 
 ## Determinism and dependencies
 
-Generators will be the only authors of generated files. Future output must not contain timestamps
-or depend on machine locale. Use explicit codepoint ordering for generated name lists and preserve
-the explicit taxonomy order when displaying categories. These are separate ordering requirements.
-Generated-file drift checks arrive with the generator, not as placeholder scripts now.
+Generators are the only authors of generated files. Output contains no timestamps, absolute paths,
+or machine-dependent values. Generated name ordering uses explicit codepoint comparison, and
+category ordering follows the explicit taxonomy order. These are separate ordering requirements.
+`check:generated` enforces drift detection without relying on Git.
 
-Prefer no runtime dependencies beyond React when components exist. Add React 19 dependencies and
-types only when their implementation needs them. Phase 2B adds the development-only XML parser
-`@xmldom/xmldom`; [validation.md](validation.md) records its maintenance, security, and size review.
-Neither it nor validator/config internals enters `dist/` or the public API. No optimization or
-generation dependencies are added.
+React 19 is the only peer dependency, and there are no runtime dependencies. The runtime helper
+imports React only for types. Development dependencies are the XML parser `@xmldom/xmldom`
+(Phase 2B; see [validation.md](validation.md)) and, from Phase 2C, `react`, `react-dom`, and their
+types, which typecheck generated output and render it in tests. Generation uses no transformer,
+optimizer, or formatter dependency: it prints Biome-formatted code directly.
 
 ## Incremental delivery
 
 | Phase | Scope |
 |:--|:--|
 | 2A, complete | Design contract, internal config, public concepts, and foundation tests |
-| 2B, current | SVG validation architecture, source identity, diagnostics, tests, and quality gates |
-| 2C | SVG-to-React generation pipeline |
+| 2B, complete | SVG validation architecture, source identity, diagnostics, tests, and quality gates |
+| 2C, current | SVG-to-React generation pipeline, shared runtime, and generated-output checks |
 | 2D | Manifest, package exports, and API contracts |
 | 2E | Developer playground and visual QA |
 | 3 | Calibration icon set and evidence-based geometry decisions |
@@ -107,9 +116,9 @@ generation dependencies are added.
 | 5 | Navigation category |
 | 6 onward | Remaining categories, one at a time |
 
-The runtime contracts in [accessibility.md](accessibility.md) and [rtl.md](rtl.md), and the visual
-judgments in [drawing-guidelines.md](drawing-guidelines.md), still await later implementation or
-calibration. Validation uses synthetic geometry only in tests, never production artwork or copied
+The accessibility contract in [accessibility.md](accessibility.md) is now implemented by the
+runtime helper. The RTL contract in [rtl.md](rtl.md) and the visual judgments in
+[drawing-guidelines.md](drawing-guidelines.md) still await later implementation or calibration.
+Validation and generation use synthetic geometry only in tests, never production artwork or copied
 third-party paths. See [releases.md](releases.md) before release work: the 1.x package version and
 publishing behavior remain unchanged, and these foundations must not ship as a patch.
-

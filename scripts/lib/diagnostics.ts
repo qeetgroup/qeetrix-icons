@@ -17,7 +17,10 @@ export type DiagnosticCode =
   | "QXI-DUP-002"
   | "QXI-DUP-003"
   | "QXI-DUP-004"
-  | "QXI-IO-001";
+  | "QXI-IO-001"
+  | "QXI-GEN-001"
+  | "QXI-GEN-002"
+  | "QXI-GEN-003";
 
 export type Diagnostic = {
   readonly code: DiagnosticCode;

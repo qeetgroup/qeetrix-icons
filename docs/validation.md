@@ -174,8 +174,10 @@ QXI-SVG-006 "icons/outline/actions/example.svg"
 
 [validate-source-path.ts](../scripts/check/validate-source-path.ts) exposes `validateIconName` and
 `validateSourcePath`. [validate-svg.ts](../scripts/check/validate-svg.ts) exposes `validateSvg`.
-[validate-repository.ts](../scripts/check/validate-repository.ts) provides pure `validateSources`
-and the filesystem adapter `validateRepository`. The small CLI only anchors the root, formats
+[validate-repository.ts](../scripts/check/validate-repository.ts) provides pure `validateSources`,
+the filesystem scanner `scanIconSources`, and `validateRepository`, which combines them. Generation
+reuses the same scanner and validator rather than re-implementing any rule; see
+[generation.md](generation.md). The small CLI only anchors the root, formats
 diagnostics, and sets the exit status. These are repository-internal APIs, not package exports.
 
 The scanner visits only `icons/`, rejects symlinks without following them, and accepts only SVG

@@ -44,13 +44,22 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check:icons": "bun scripts/check/check-icons.ts",
+    "generate": "bun scripts/build/generate-icons.ts",
+    "check:generated": "bun scripts/check/check-generated.ts",
     "build": "rm -rf dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "prepack": "bun run build"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
     "@types/node": "^22.19.19",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@xmldom/xmldom": "0.9.12",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "tsc-alias": "^1.8.17",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"

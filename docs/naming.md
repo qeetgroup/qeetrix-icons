@@ -11,6 +11,9 @@ The examples here describe the future catalogue. None is an available icon expor
 
 Use lowercase ASCII kebab-case with a `.svg` extension for source filenames. Use PascalCase plus
 `Icon` for future React component exports. Hyphens separate meaningful words, not version labels.
+One converter owns this mapping, `componentNameFromFilename` in
+[validate-source-path.ts](../scripts/check/validate-source-path.ts); it rejects invalid filenames
+rather than producing a broken identifier. Generation and later export phases must reuse it.
 
 | SVG filename | Future component name |
 |:--|:--|
