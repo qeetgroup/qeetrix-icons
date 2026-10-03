@@ -5,8 +5,8 @@
 ### Major Changes
 
 - **Qeetrix Icons 2.0 reset.** The package is being rebuilt from scratch with original
-  Qeetrix-designed artwork. This entry records the reset only; 2.0 icons will be recorded here as they
-  land.
+  Qeetrix-designed artwork. The reset removed the 1.x catalogue; new 2.0 icons will be recorded here
+  as they land.
 
   **Removed**
 
@@ -19,8 +19,23 @@
   - The `react` peer dependency — the package currently contains no React components.
   - The `generate` and `generate:check` scripts, and the example viewer app.
 
-  **Current state.** The `@qeetrix/icons` entry point exports nothing. Do not rely on any 1.x icon
-  name, prop, type or import path for 2.0.
+  **Current state.** The `@qeetrix/icons` entry point exports only the new `IconVariant` and
+  `IconDirectionality` foundational types, with no runtime values or icons. The new vocabulary
+  does not restore the removed component API. Do not rely on any 1.x icon name, prop, type, or
+  import path for 2.0.
+
+### Foundations (Phase 2A)
+
+- Added the internal icon-system contract, separating stable architecture from visual calibration
+  candidates, and an ordered taxonomy of 20 enterprise/product categories.
+- Documented original geometry, optical sizing, typography harmony, semantic naming, selective
+  filled variants, accessibility, RTL behavior, and future pipeline ownership.
+- Added type-only public concepts: `IconVariant = "outline" | "filled"` and
+  `IconDirectionality = "mirror" | "preserve"`. Recommended sizes are not a runtime size restriction.
+- Included internal config in strict typechecking and extended foundation tests for configuration,
+  taxonomy, public boundaries, and the absence of SVG artwork.
+- Added no artwork, runtime, generator, validator, manifest, playground, or dependencies. Package
+  version, export paths, and publishing workflows remain unchanged.
 
 ---
 

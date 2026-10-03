@@ -1,73 +1,88 @@
-# Qeetrix Icons
+# Qeetrix Icons 2.0
 
-The Qeet Group icon library, published as `@qeetrix/icons`.
+`@qeetrix/icons` is Qeet Group's shared icon system for Qeetrix and Qeet products, including Qeet ID,
+Qeet Pay, Qeet Logs, Qeet Notify, Qeet People, Qeet AI, and future products. It is being rebuilt with
+original Qeetrix artwork for enterprise consoles, identity and security, payments, observability,
+data-heavy interfaces, and developer tools.
 
 > [!IMPORTANT]
-> **`@qeetrix/icons` is undergoing a major redesign as Qeetrix Icons 2.0.**
+> **Current development state: Phase 2A, design contract and foundational architecture only.**
 >
 > - The legacy 1.x icon artwork has been removed from this repository.
-> - New, original Qeetrix-designed icons will be introduced incrementally.
-> - Consumers should not rely on the 1.x catalogue — its icon names, props, types or import paths —
->   for the upcoming major release.
+> - There are currently zero production icons, SVG drawings, or React components.
+> - Do not rely on 1.x icon names, props, types, or import paths for the upcoming major release.
+> - Versions already published to the package registry are not changed by this rebuild.
 
 ## Current state
 
-The repository is a clean baseline for 2.0 and contains no icons:
+The repository now defines the icon language, category taxonomy, naming, accessibility, RTL, and
+architecture contracts. [config/icon-system.ts](config/icon-system.ts) separates stable architecture
+from visual calibration candidates; [config/categories.ts](config/categories.ts) defines the 20
+ordered enterprise/product categories. Both are internal and are not package exports.
 
-- The `@qeetrix/icons` entry point exports nothing.
-- The 1.x deep-import subpath, `@qeetrix/icons/icons/*`, has been removed.
-- `icons/` is reserved for 2.0 source artwork and is currently empty.
+`icons/` contains only its empty-directory placeholder. There is no SVG validator, normalizer,
+React generator, manifest, runtime, or playground yet. No category, variant, or size-master source
+folders are created in this phase. The removed `@qeetrix/icons/icons/*` deep imports stay removed.
 
-The 2.0 source format, naming, categories, generation pipeline and component API have not been
-defined yet. They will be documented here as they land.
+## Public foundations
 
-Versions already published to npm are not affected by this reset.
+```ts
+import type { IconDirectionality, IconVariant } from "@qeetrix/icons";
+```
+
+`IconVariant` is `"outline" | "filled"`. `IconDirectionality` is `"mirror" | "preserve"`.
+These are concepts, not component props. The root JavaScript module exports no runtime values or
+icons; the existing package-metadata subpath remains available. There is no restrictive `IconSize`
+type: recommended design sizes do not settle future support for values such as `18` or `"1em"`.
+
+## Design direction
+
+Precise, calm, geometric, and human: simple silhouettes, controlled corners, generous negative
+space, and optical balance. Icons should harmonize with Qeet UI and Qeet Text without overpowering
+medium-weight labels. The system is outline-first; filled drawings are selective, meaningful state
+alternatives, not a required second drawing for every icon.
+
+The canonical master is a 24 x 24 SVG with `viewBox="0 0 24 24"` and `currentColor`. Initial
+calibration candidates are a 1.75 stroke, round caps and joins, a 2-unit painted safe-area inset,
+a default size of 24, and UI review sizes of 14, 16, 20, 24, and 32. These visual candidates still
+need the later calibration set; no separate optical masters or font files are included.
+
+Read [docs/design-principles.md](docs/design-principles.md),
+[docs/drawing-guidelines.md](docs/drawing-guidelines.md), and the [documentation index](docs/README.md).
+
+## Architecture direction
+
+Human-authored SVG will flow through validation, normalization, React generation, manifest
+generation, package exports, and tests into Qeetrix UI and Qeet products. This pipeline is planned,
+not implemented. React 19 is the target for future components; no React dependency is needed yet.
+See [docs/architecture.md](docs/architecture.md) for ownership and phase boundaries.
 
 ## Develop
 
-Bun only — never npm, pnpm or yarn.
+Bun only, pinned to 1.3.14. Use strict TypeScript, ESM, Biome, and Vitest; do not add another package
+manager, linter, or formatter.
 
 ```bash
 bun install
-bun run typecheck   # tsc, strict
-bun run lint        # Biome: lint and format check
-bun run format      # Biome, applying fixes
-bun run test        # Vitest
-bun run build       # dist/
+bun run typecheck
+bun run lint
+bun run test
+bun run build
 ```
 
-See [docs/contributing.md](./docs/contributing.md) for conventions and CI.
+The test script runs Vitest, matching CI. Use `bun run format` for Biome fixes. Contributors must
+keep phase boundaries explicit, update config and docs together, and never hand-edit generated
+files. Do not add artwork during Phase 2A or copy, trace, or slightly modify paths from Lucide,
+Iconsax/Vuesax, or any other third-party icon library. Principles may be studied; geometry must be
+independently drawn. See [docs/contributing.md](docs/contributing.md).
 
 ## Releases
 
-Merging to `main` publishes the version in `package.json`. Read
-[docs/releases.md](./docs/releases.md) before this reset goes anywhere near `main`: as things stand, it
-would ship as a 1.x patch release.
+The package version remains `1.0.4`; this phase changes neither versioning nor release automation.
+The existing workflows patch-bump PRs and publish on merge to `main`. Keep foundation-only work off
+`main` until the major release is prepared, or it could ship as an incompatible 1.x patch. Read
+[docs/releases.md](docs/releases.md) before any release work.
 
 ## License
 
 MIT © Qeet Group. See [LICENSE](./LICENSE).
-
-```
-qeetrix-icons
-├─ .npmrc
-├─ CHANGELOG.md
-├─ LICENSE
-├─ README.md
-├─ biome.json
-├─ bun.lock
-├─ docs
-│  ├─ README.md
-│  ├─ contributing.md
-│  └─ releases.md
-├─ icons
-├─ package.json
-├─ src
-│  └─ index.ts
-├─ tests
-│  └─ repository.test.ts
-├─ tsconfig.build.json
-├─ tsconfig.json
-└─ vitest.config.ts
-
-```

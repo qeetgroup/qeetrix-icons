@@ -2,13 +2,14 @@
 
 What a version number means for an icon library, how a release happens, and how to undo one.
 
-## The 2.0 reset and `main`
+## The 2.0 foundations and `main`
 
 > [!WARNING]
-> The repository is in the Qeetrix Icons 2.0 reset state: the 1.x catalogue is gone and the package
-> exports nothing, but `package.json` still carries a 1.x version. Merged to `main` like this, the flow
-> below would publish that empty package as a **1.x patch release** on the `latest` dist-tag, and every
-> consumer on a `^1` range would receive it on their next install.
+> The repository is in Qeetrix Icons 2.0 foundational development: the 1.x catalogue is gone and
+> the root exports only `IconVariant` and `IconDirectionality` types, with no runtime values or
+> icons. `package.json` still carries a 1.x version. Merged to `main` through the flow below, this
+> could publish the foundation-only package as a **1.x patch release** on `latest`, and consumers
+> on a `^1` range could receive an incompatible package on their next install.
 >
 > Keep the reset off `main` until 2.0 is ready to ship, and set `version` to `2.0.0` by hand when it
 > is. `release.yml` has no pre-release channel — it always publishes with the default dist-tag — so
@@ -77,15 +78,22 @@ number.
 
 ### Why renaming is expensive
 
-An icon's component name is its public API. `import { ArrowLeft } from "@qeetrix/icons"` is a
-compile-time contract, and renaming it turns every consuming build red.
+An icon's component name is its public API. The future
+`import { ArrowLeftIcon } from "@qeetrix/icons"` will be a compile-time contract, and renaming it
+would turn consuming builds red. No such component exists in Phase 2A.
 
 **Do not rename an icon because a better name occurred to you.** Renaming is a major release, so get
 the name right when the icon lands. Removing an icon carries the same cost.
 
 ## Publishing setup
 
-`@qeetrix/icons` is published. `npm view @qeetrix/icons version` shows what is currently `latest`.
+`@qeetrix/icons` is already published; registry versions are separate from this branch's
+foundation-only implementation.
+
+The following describes pre-existing release automation, not local development commands. Its
+registry lookup, publication, and rollback steps still use the npm CLI. Phase 2A neither runs nor
+changes those workflows. Reconciling release tooling with Bun-only development and defining 2.0
+release readiness are separate release tasks; do not publish these foundations to test the flow.
 
 Publishing needs one of these, and `release.yml` checks before trying:
 

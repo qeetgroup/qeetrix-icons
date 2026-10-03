@@ -1,14 +1,9 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
-
-/**
- * Repository health for the Qeetrix Icons 2.0 reset.
- *
- * The 1.x catalogue has been removed and no 2.0 icons exist yet, so these checks
- * pin the reset state: the entry point loads, it exports nothing, and the legacy
- * catalogue has not crept back. Replace them as 2.0 icons land.
- */
+import { describe, expect, expectTypeOf, it } from "vitest";
+import { categories } from "../config/categories.js";
+import { iconSystem } from "../config/icon-system.js";
+import type { IconDirectionality, IconVariant } from "../src/index.js";
 
 const PKG = join(import.meta.dirname, "..");
 
@@ -18,9 +13,118 @@ describe("public entry point", () => {
     expect(pkg).toBeTypeOf("object");
   });
 
-  it("exports nothing while 2.0 is being rebuilt", async () => {
+  it("exports no runtime values during Phase 2A", async () => {
     const pkg = await import("../src/index.js");
     expect(Object.keys(pkg)).toEqual([]);
+  });
+
+  it("exports only the foundational variant and directionality concepts", () => {
+    expectTypeOf<IconVariant>().toEqualTypeOf<"outline" | "filled">();
+    expectTypeOf<IconDirectionality>().toEqualTypeOf<"mirror" | "preserve">();
+  });
+});
+
+describe("category taxonomy", () => {
+  const categoryIds = categories.map((category) => category.id);
+
+  it("has unique stable IDs", () => {
+    expect(new Set(categoryIds).size).toBe(categoryIds.length);
+  });
+
+  it("uses the explicit enterprise taxonomy in canonical display order", () => {
+    expect(categoryIds).toEqual([
+      "actions",
+      "navigation",
+      "status",
+      "identity",
+      "security",
+      "files",
+      "communication",
+      "data",
+      "time",
+      "devices",
+      "development",
+      "infrastructure",
+      "finance",
+      "commerce",
+      "location",
+      "media",
+      "ai",
+      "observability",
+      "organization",
+      "qeet",
+    ]);
+  });
+
+  it("provides usable discovery metadata", () => {
+    for (const category of categories) {
+      expect(category.id).toMatch(/^[a-z]+(?:-[a-z]+)*$/);
+      expect(category.label.trim().length).toBeGreaterThan(0);
+      expect(category.description.trim().length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("icon-system contract", () => {
+  const { architecture, calibration } = iconSystem;
+
+  it("uses an SVG master whose viewBox matches the canonical grid", () => {
+    expect(architecture.sourceFormat).toBe("svg");
+    expect(architecture.grid).toEqual({ width: 24, height: 24 });
+    expect(architecture.viewBox.split(" ").map(Number)).toEqual([
+      0,
+      0,
+      architecture.grid.width,
+      architecture.grid.height,
+    ]);
+  });
+
+  it("is outline-first with inherited color and the public variant vocabulary", () => {
+    expect(architecture.color).toBe("currentColor");
+    expect(architecture.defaultVariant).toBe("outline");
+    expect(architecture.variants).toEqual(["outline", "filled"]);
+    expect(architecture.variants).toContain(architecture.defaultVariant);
+    expectTypeOf<(typeof architecture.variants)[number]>().toEqualTypeOf<IconVariant>();
+  });
+
+  it("is decorative and unfocusable by default", () => {
+    expect(architecture.accessibility).toEqual({
+      decorativeByDefault: true,
+      focusable: false,
+    });
+  });
+
+  it("recommends ordered, unique, positive UI sizes including the default", () => {
+    const sizes = [...calibration.recommendedSizes];
+    expect(new Set(sizes).size).toBe(sizes.length);
+    expect(sizes).toEqual([...sizes].sort((left, right) => left - right));
+    expect(sizes).toContain(calibration.defaultSize);
+    for (const size of sizes) {
+      expect(Number.isInteger(size)).toBe(true);
+      expect(size).toBeGreaterThan(0);
+    }
+  });
+
+  it("leaves usable painted space inside the candidate safe area", () => {
+    expect(Number.isFinite(calibration.safeAreaInset)).toBe(true);
+    expect(Number.isFinite(calibration.strokeWidth)).toBe(true);
+    expect(calibration.safeAreaInset).toBeGreaterThan(0);
+    expect(calibration.strokeWidth).toBeGreaterThan(0);
+    expect(calibration.safeAreaInset * 2 + calibration.strokeWidth).toBeLessThan(
+      Math.min(architecture.grid.width, architecture.grid.height),
+    );
+    expect(["butt", "round", "square"]).toContain(calibration.linecap);
+    expect(["miter", "round", "bevel"]).toContain(calibration.linejoin);
+  });
+});
+
+describe("Phase 2A source boundary", () => {
+  it("contains no SVG artwork", () => {
+    const artwork = readdirSync(join(PKG, "icons"), {
+      encoding: "utf8",
+      recursive: true,
+    }).filter((filename) => filename.toLowerCase().endsWith(".svg"));
+    expect(artwork).toEqual([]);
   });
 });
 

@@ -27,6 +27,6 @@
     },
     "tsBuildInfoFile": "./node_modules/.cache/qeetrix-icons/tsconfig.tsbuildinfo"
   },
-  "include": ["src", "tests", "vitest.config.ts"],
+  "include": ["config", "src", "tests", "vitest.config.ts"],
   "exclude": ["dist"]
 }
