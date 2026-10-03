@@ -48,8 +48,9 @@ actions, command palettes, and headings. Compare baseline placement, perceived s
 in context; do not assume a centered SVG box guarantees a balanced text/icon pair. Qeet Display
 and Fira Code are contextual companions, not reasons to introduce separate icon styles.
 
-No font files are embedded in this repository. Typography comparisons happen in the playground,
-which reports whether Qeet UI and Qeet Text are really available; see [visual-qa.md](visual-qa.md).
+The published package embeds no font files. Typography comparisons happen in the playground, which
+self-hosts Qeet UI and Qeet Text and reports whether each really loaded; see
+[visual-qa.md](visual-qa.md).
 
 ## Outline-first variants
 

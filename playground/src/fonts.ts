@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-/** The Qeet typefaces icons are calibrated against. Font files are never bundled or fetched. */
+/**
+ * The Qeet typefaces icons are calibrated against. The playground self-hosts them from
+ * playground/fonts (see the @font-face rules in styles.css); nothing is fetched from a network.
+ */
 export const typefaces = [
   { family: "Qeet UI", variable: "--font-ui" },
   { family: "Qeet Text", variable: "--font-text" },
@@ -23,18 +26,27 @@ function isAvailable(family: string): boolean {
   });
 }
 
-/** `undefined` until fonts have settled, then availability per family. */
+/**
+ * `undefined` until fonts have settled, then availability per family. Each family is loaded
+ * explicitly first: a declared face that no rendered text uses yet has not loaded, and measuring
+ * it would report the fallback. A failed load resolves too, so the check still reports it.
+ */
 export function useFontAvailability(): Readonly<Record<string, boolean>> | undefined {
   const [availability, setAvailability] = useState<Record<string, boolean>>();
   useEffect(() => {
     let active = true;
-    void document.fonts.ready.then(() => {
-      if (active) {
-        setAvailability(
-          Object.fromEntries(typefaces.map(({ family }) => [family, isAvailable(family)])),
-        );
-      }
-    });
+    const loads = typefaces.map(({ family }) =>
+      document.fonts.load(`16px "${family}"`).catch(() => []),
+    );
+    void Promise.all(loads)
+      .then(() => document.fonts.ready)
+      .then(() => {
+        if (active) {
+          setAvailability(
+            Object.fromEntries(typefaces.map(({ family }) => [family, isAvailable(family)])),
+          );
+        }
+      });
     return () => {
       active = false;
     };

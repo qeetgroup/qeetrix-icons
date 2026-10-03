@@ -62,7 +62,8 @@ alternatives, not a required second drawing for every icon.
 The canonical master is a 24 x 24 SVG with `viewBox="0 0 24 24"` and `currentColor`. Initial
 calibration candidates are a 1.75 stroke, round caps and joins, a 2-unit painted safe-area inset,
 a default size of 24, and UI review sizes of 14, 16, 20, 24, and 32. These visual candidates still
-need the later calibration set; no separate optical masters or font files are included.
+need the later calibration set; no separate optical masters are included, and the package ships no
+font files (the playground self-hosts Qeet UI and Qeet Text for typography review).
 
 Read [docs/design-principles.md](docs/design-principles.md),
 [docs/drawing-guidelines.md](docs/drawing-guidelines.md), and the [documentation index](docs/README.md).

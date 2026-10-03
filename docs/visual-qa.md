@@ -37,22 +37,42 @@ or `icon-manifest.json`.
 Inspection state is shareable in the URL, for example
 `?icon=star&variant=filled&size=16&theme=dark&dir=rtl`. Invalid values fall back to defaults.
 
+### Layout
+
+The playground is styled with the `@qeetrix/ui` tokens (neutral canvas, Qeet orange primary), copied
+into its own stylesheet because it imports no UI kit. Its chrome uses the catalogue's own icons.
+
+- **Top bar:** search, theme (system, light, dark), preview direction (LTR, RTL QA preview), and
+  whether Qeet UI and Qeet Text really loaded.
+- **Sidebar:** every configured category with its count (empty categories are disabled), and the
+  variant and directionality filters.
+- **Catalogue:** grouped by category, or a flat list while searching or filtering, with a 16, 20,
+  24, or 32 px preview-size switch. Tiles flag `mirror` concepts with **RTL**.
+- **Inspector:** opens beside the catalogue (a slide-over drawer below 1240 px wide) with a 112 px
+  showcase, the variant switch, and five tabs.
+
+Keyboard: `/` focuses search, `←` and `→` step through the visible icons while one is open, and
+`Esc` closes the inspector.
+
 ### What each view is for
 
-| View | Use it to check |
-|:--|:--|
-| Recommended sizes | 14, 16, 20, 24, and 32 px from config, plus a custom size from 12 to 64 px. Actual source rendering |
-| Pixel views | 14 and 16 px rasterized at one device pixel per pixel and magnified: merged strokes, blur, crowding |
-| Construction | The 24×24 grid at 10× with unit grid, center axes, canvas edge, and the candidate safe area |
-| Stroke calibration | The outline drawing at each candidate width beside the actual source rendering |
-| Variant comparison | Outline and filled side by side, when both exist |
-| Surfaces and currentColor | Light and dark surfaces side by side, and the icon in each semantic foreground token |
-| Interface contexts | Text button, icon-only control, input prefix, sidebar row, table action, inline label |
-| Typography | Icons beside Qeet UI and Qeet Text at 14 and 16 px |
-| Direction | LTR beside the RTL QA preview |
-| Usage and metadata | Manifest data and the public root and direct imports |
-| Review checklist | The items below, as local checkboxes |
-| Calibration status | Which design values are still provisional |
+| Tab | View | Use it to check |
+|:--|:--|:--|
+| Overview | Recommended sizes | 14, 16, 20, 24, and 32 px from config, plus a custom size from 12 to 64 px. Actual source rendering |
+| Overview | Pixel view | 14 and 16 px rasterized at one device pixel per pixel and magnified: merged strokes, blur, crowding |
+| Overview | Variant comparison | Outline and filled side by side, when both exist |
+| Construction | Construction | The 24×24 grid at 12× with unit grid, center axes, canvas edge, and the candidate safe area |
+| Construction | Stroke calibration | The outline drawing at each candidate width beside the actual source rendering |
+| In context | Surfaces and currentColor | Light and dark surfaces side by side, and the icon in each semantic foreground token |
+| In context | Interface contexts | Text button, icon-only control, input prefix, sidebar row, table action, inline label |
+| In context | Typography | Icons beside Qeet UI and Qeet Text at 14 and 16 px |
+| In context | Direction | LTR beside the RTL QA preview |
+| Code | Import and metadata | The public root and direct imports, and manifest data |
+| Review | Review checklist | The items below, as local checkboxes |
+| Review | Calibration status | Which design values are still provisional |
+
+The 112 px showcase is for reading detail only; its stroke scales with size. Judge sizes in the
+Overview tab, which renders each one as authored.
 
 ### Actual source vs calibration overrides
 
@@ -69,10 +89,15 @@ from it, and the guides are a reference, not a correctness test.
 ### Typography
 
 The playground uses the stacks `"Qeet UI", system-ui, sans-serif` and
-`"Qeet Text", system-ui, sans-serif`. No font files are in this repository and none are fetched.
-The toolbar reports whether each family is really available, by measuring rendered text against
-generic fallbacks. When it says *unavailable — system fallback active*, the typography rows are not
-a Qeet calibration: install the fonts locally before judging icon-to-text harmony.
+`"Qeet Text", system-ui, sans-serif`, and self-hosts both families from
+[playground/fonts/](../playground/fonts/): Qeet UI 400, 500, and 600 and Qeet Text 400 and 500,
+copied from qeet-group and byte-identical to the `@qeetrix/ui` masters. The `@font-face` rules
+in `playground/src/styles.css` mirror `@qeetrix/ui`'s. Vite bundles the files into
+`playground/dist` only; nothing is fetched and nothing reaches the published package.
+
+The top bar still reports whether each family is really available: it loads each face, then
+measures rendered text against generic fallbacks. When it says *unavailable — system fallback
+active*, a font file failed to load, and the typography rows are not a Qeet calibration.
 
 ### RTL
 

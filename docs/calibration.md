@@ -382,6 +382,6 @@ bands and top counter stay open at 14 px. All currentColor tokens rendered the g
 | Stroke width (1.75) | Provisional, moderate-to-high confidence |
 | Round caps and joins | Provisional; suited corners and curves as well |
 | Safe-area inset (2) | Provisional; the lock shackle comes within 0.625 |
-| Typography with Qeet UI and Qeet Text | Pending: fonts unavailable |
+| Typography with Qeet UI and Qeet Text | Pending: the playground now self-hosts both; not yet compared |
 | Filled grammar | Not yet tested |
 | Small-size optical masters | Not needed so far |

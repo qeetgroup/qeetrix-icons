@@ -55,7 +55,8 @@ describe("playground catalogue", () => {
     const real = buildCatalogue(iconManifest, modules);
     expect(real.problems).toEqual([]);
     expect(real.icons.map(({ id }) => id)).toEqual(iconManifest.icons.map(({ id }) => id));
-  });
+    // Imports every generated module; cold transforms of the full catalogue exceed the default.
+  }, 60_000);
 
   it("is empty and consistent with no icons at all", () => {
     expect(buildCatalogue({ schemaVersion: 1, icons: [] }, new Map())).toEqual({

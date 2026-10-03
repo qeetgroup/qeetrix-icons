@@ -119,6 +119,17 @@
 - `playground:build` runs in CI. The playground is never published, writes no generated or source
   file, and needs no network. `vite` is declared as a development dependency (already installed
   through Vitest); no React plugin, UI kit, router, or icon library was added.
+- The playground self-hosts Qeet UI (400, 500, 600) and Qeet Text (400, 500) from
+  `playground/fonts`, copied from qeet-group and byte-identical to the `@qeetrix/ui` masters, so
+  typography rows render in the real faces instead of the system fallback. The availability check
+  now loads each face before measuring it. The fonts are bundled into `playground/dist` only; the
+  published package still contains no font files.
+- Redesigned the playground on the `@qeetrix/ui` tokens: a top bar with search and theme,
+  direction, and typeface status; a category sidebar with counts and stacked filters; a catalogue
+  grouped by category with a preview-size switch; and an inspector panel (a drawer on narrower
+  screens) with a 112 px showcase and Overview, Construction, In context, Code, and Review tabs.
+  Every earlier view is kept. The chrome uses the catalogue's own icons, adds `/`, `←`/`→`, and
+  `Esc` shortcuts, and still imports only React.
 - Production artwork, generated components, and manifest records remain zero. The public package
   API, exports, and version are unchanged.
 
