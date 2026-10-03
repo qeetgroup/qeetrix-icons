@@ -1,9 +1,10 @@
 # Documentation
 
-Qeetrix Icons 2.0 is in Phase 3A, the first calibration batch. The foundations (contracts,
+Qeetrix Icons 2.0 is in Phase 3C, the third calibration batch. The foundations (contracts,
 validation, generation, manifest and public API, and the visual QA playground) are complete, and
-the first four original icons, `plus`, `x`, `check`, and `chevron-down`, exist for calibration.
-The visual system is still provisional.
+twelve original icons exist for calibration: `plus`, `x`, `check`, `chevron-down`, `search`,
+`arrow-left`, `settings`, `user`, `bell`, `lock`, `calendar`, and `database`. The visual system is
+still provisional.
 
 | Document | Purpose |
 |:--|:--|

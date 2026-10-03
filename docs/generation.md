@@ -41,8 +41,8 @@ Generation aborted: icon validation failed with 1 error(s). No generated files w
 On an up-to-date tree, both commands succeed:
 
 ```text
-Validated 4 production icons.
-Generated 4 React icon components, the root exports, and the manifest (0 files written, 0 stale removed).
+Validated 12 production icons.
+Generated 12 React icon components, the root exports, and the manifest (0 files written, 0 stale removed).
 ```
 
 `check:generated` regenerates in memory and compares bytes with what is on disk. It reports a
@@ -101,7 +101,8 @@ icons/filled/status/star.svg    (optional, separately drawn)
   generated path. Each header names its source SVGs.
 - **Category** comes from the source path. **Directionality** defaults to
   `iconSystem.architecture.defaultDirectionality` ("preserve") and can be overridden per concept
-  in [config/icon-metadata.ts](../config/icon-metadata.ts). It is never inferred from a filename.
+  in [config/icon-metadata.ts](../config/icon-metadata.ts), which the CLIs pass to the plan (library
+  functions default to no metadata). It is never inferred from a filename.
   One entry covers every drawing of a concept, and an entry for a missing name fails validation.
 
 ## Conversion rules

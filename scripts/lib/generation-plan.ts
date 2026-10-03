@@ -1,9 +1,10 @@
 import { posix } from "node:path";
 import { categories } from "../../config/categories.js";
-import { type IconMetadataOverride, iconMetadata } from "../../config/icon-metadata.js";
+import type { IconMetadataOverride } from "../../config/icon-metadata.js";
 import { iconSystem } from "../../config/icon-system.js";
 import type { IconDirectionality } from "../../src/types/icon.js";
 import type { IconManifest } from "../../src/types/icon-manifest.js";
+import { noMetadata } from "../check/validate-metadata.js";
 import { type IconSource, scanIconSources, validateSources } from "../check/validate-repository.js";
 import {
   componentNameFromFilename,
@@ -93,7 +94,7 @@ const categoryIds: readonly string[] = categories.map(({ id }) => id);
 export function createGenerationPlan(
   sources: readonly IconSource[],
   scanDiagnostics: readonly Diagnostic[] = [],
-  metadata: Readonly<Record<string, IconMetadataOverride>> = iconMetadata,
+  metadata: Readonly<Record<string, IconMetadataOverride>> = noMetadata,
 ): GenerationPlan {
   const iconCount = sources.length;
   const validation = [...scanDiagnostics, ...validateSources(sources, metadata).diagnostics];

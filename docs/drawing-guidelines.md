@@ -48,8 +48,9 @@ at the viewBox boundary.
 - Use round joins initially, but construct the exterior silhouette deliberately. A stroke join
   does not replace a designed corner radius.
 - Avoid accidental doubled strokes, dark intersections, almost-touching endpoints, and tiny gaps.
-  Shared edges should not create a heavier line than the rest of the drawing. *Observed in Phase
-  3A:* draw strokes that cross as one path; separate elements darken the crossing at 14 and 16 px.
+  Shared edges should not create a heavier line than the rest of the drawing. *Candidate (Phases
+  3A to 3C):* draw strokes that cross or attach as one path; separate elements darken the joint at
+  14 and 16 px.
 - Keep fractional coordinates when they improve the geometry. Integer snapping is not inherently
   crisp after a 24-unit master is scaled to 14px or 16px.
 
@@ -64,7 +65,9 @@ adjustment; do not force all circular concepts to share one radius regardless of
 
 Squares and rectangular forms should retain their geometric structure. Choose controlled corner
 radii, using softer internal details where useful. Do not turn every square into a rounded tile,
-or every rectangle into a capsule. Equally, avoid sharp exterior points that make a calm form look
+or every rectangle into a capsule. *Observed (Phase 3C):* a centerline radius of 2.5, drawn as path
+arcs, suited both containers about 14 units wide; r 3 read as a tile and r 1.5 as sharp. See
+[calibration.md](calibration.md#corner-grammar). Equally, avoid sharp exterior points that make a calm form look
 aggressive without semantic need.
 
 **CALIBRATION REQUIRED:** a repeatable corner-radius vocabulary, circle-versus-square apparent

@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import { categories } from "../config/categories.js";
+import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
 import {
   scanIconSources,
@@ -169,7 +170,7 @@ describe("production scanner and fixture isolation", () => {
     const output = execFileSync("bun", [script], { cwd: root, encoding: "utf8" });
     // The temporary root's invalid fixture is ignored: the CLI validates this repository.
     expect(output.trim()).toBe(
-      `${validateRepository(repositoryRoot).iconCount} production icons validated.`,
+      `${validateRepository(repositoryRoot, iconMetadata).iconCount} production icons validated.`,
     );
   });
 

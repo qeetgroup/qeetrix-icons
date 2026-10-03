@@ -2,9 +2,169 @@
   "schemaVersion": 1,
   "icons": [
     {
+      "id": "add-circle",
+      "name": "add-circle",
+      "componentName": "AddCircleIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
       "id": "check",
       "name": "check",
       "componentName": "CheckIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "check-circle",
+      "name": "check-circle",
+      "componentName": "CheckCircleIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "collapse",
+      "name": "collapse",
+      "componentName": "CollapseIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "copy",
+      "name": "copy",
+      "componentName": "CopyIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cut",
+      "name": "cut",
+      "componentName": "CutIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "download",
+      "name": "download",
+      "componentName": "DownloadIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "drag",
+      "name": "drag",
+      "componentName": "DragIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "edit",
+      "name": "edit",
+      "componentName": "EditIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "expand",
+      "name": "expand",
+      "componentName": "ExpandIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "external-link",
+      "name": "external-link",
+      "componentName": "ExternalLinkIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "filter",
+      "name": "filter",
+      "componentName": "FilterIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "grab",
+      "name": "grab",
+      "componentName": "GrabIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "link",
+      "name": "link",
+      "componentName": "LinkIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "maximize",
+      "name": "maximize",
+      "componentName": "MaximizeIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "minimize",
+      "name": "minimize",
+      "componentName": "MinimizeIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "minus",
+      "name": "minus",
+      "componentName": "MinusIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "more-horizontal",
+      "name": "more-horizontal",
+      "componentName": "MoreHorizontalIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "more-vertical",
+      "name": "more-vertical",
+      "componentName": "MoreVerticalIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "move",
+      "name": "move",
+      "componentName": "MoveIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "paste",
+      "name": "paste",
+      "componentName": "PasteIcon",
       "category": "actions",
       "variants": ["outline"],
       "directionality": "preserve"
@@ -18,6 +178,134 @@
       "directionality": "preserve"
     },
     {
+      "id": "power",
+      "name": "power",
+      "componentName": "PowerIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "redo",
+      "name": "redo",
+      "componentName": "RedoIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "refresh",
+      "name": "refresh",
+      "componentName": "RefreshIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "remove-circle",
+      "name": "remove-circle",
+      "componentName": "RemoveCircleIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "rotate-clockwise",
+      "name": "rotate-clockwise",
+      "componentName": "RotateClockwiseIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "rotate-counterclockwise",
+      "name": "rotate-counterclockwise",
+      "componentName": "RotateCounterclockwiseIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "save",
+      "name": "save",
+      "componentName": "SaveIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "search",
+      "name": "search",
+      "componentName": "SearchIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "settings",
+      "name": "settings",
+      "componentName": "SettingsIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "share",
+      "name": "share",
+      "componentName": "ShareIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "sort-ascending",
+      "name": "sort-ascending",
+      "componentName": "SortAscendingIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "sort-descending",
+      "name": "sort-descending",
+      "componentName": "SortDescendingIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "trash",
+      "name": "trash",
+      "componentName": "TrashIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "undo",
+      "name": "undo",
+      "componentName": "UndoIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "unlink",
+      "name": "unlink",
+      "componentName": "UnlinkIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "upload",
+      "name": "upload",
+      "componentName": "UploadIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
       "id": "x",
       "name": "x",
       "componentName": "XIcon",
@@ -26,10 +314,3554 @@
       "directionality": "preserve"
     },
     {
+      "id": "x-circle",
+      "name": "x-circle",
+      "componentName": "XCircleIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "arrow-back",
+      "name": "arrow-back",
+      "componentName": "ArrowBackIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "arrow-down",
+      "name": "arrow-down",
+      "componentName": "ArrowDownIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "arrow-down-left",
+      "name": "arrow-down-left",
+      "componentName": "ArrowDownLeftIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "arrow-down-right",
+      "name": "arrow-down-right",
+      "componentName": "ArrowDownRightIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "arrow-forward",
+      "name": "arrow-forward",
+      "componentName": "ArrowForwardIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "arrow-left",
+      "name": "arrow-left",
+      "componentName": "ArrowLeftIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "arrow-right",
+      "name": "arrow-right",
+      "componentName": "ArrowRightIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "arrow-up",
+      "name": "arrow-up",
+      "componentName": "ArrowUpIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "arrow-up-left",
+      "name": "arrow-up-left",
+      "componentName": "ArrowUpLeftIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "arrow-up-right",
+      "name": "arrow-up-right",
+      "componentName": "ArrowUpRightIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
       "id": "chevron-down",
       "name": "chevron-down",
       "componentName": "ChevronDownIcon",
       "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chevron-left",
+      "name": "chevron-left",
+      "componentName": "ChevronLeftIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chevron-right",
+      "name": "chevron-right",
+      "componentName": "ChevronRightIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chevron-up",
+      "name": "chevron-up",
+      "componentName": "ChevronUpIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "corner-down-left",
+      "name": "corner-down-left",
+      "componentName": "CornerDownLeftIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "corner-down-right",
+      "name": "corner-down-right",
+      "componentName": "CornerDownRightIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "corner-up-left",
+      "name": "corner-up-left",
+      "componentName": "CornerUpLeftIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "corner-up-right",
+      "name": "corner-up-right",
+      "componentName": "CornerUpRightIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "enter",
+      "name": "enter",
+      "componentName": "EnterIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "exit",
+      "name": "exit",
+      "componentName": "ExitIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "home",
+      "name": "home",
+      "componentName": "HomeIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "log-in",
+      "name": "log-in",
+      "componentName": "LogInIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "log-out",
+      "name": "log-out",
+      "componentName": "LogOutIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "menu",
+      "name": "menu",
+      "componentName": "MenuIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "panel-bottom",
+      "name": "panel-bottom",
+      "componentName": "PanelBottomIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "panel-left",
+      "name": "panel-left",
+      "componentName": "PanelLeftIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "panel-right",
+      "name": "panel-right",
+      "componentName": "PanelRightIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "panel-top",
+      "name": "panel-top",
+      "componentName": "PanelTopIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "route",
+      "name": "route",
+      "componentName": "RouteIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "sidebar-close",
+      "name": "sidebar-close",
+      "componentName": "SidebarCloseIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "sidebar-open",
+      "name": "sidebar-open",
+      "componentName": "SidebarOpenIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "away",
+      "name": "away",
+      "componentName": "AwayIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "badge-alert",
+      "name": "badge-alert",
+      "componentName": "BadgeAlertIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "badge-check",
+      "name": "badge-check",
+      "componentName": "BadgeCheckIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "badge-help",
+      "name": "badge-help",
+      "componentName": "BadgeHelpIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "badge-info",
+      "name": "badge-info",
+      "componentName": "BadgeInfoIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bookmark",
+      "name": "bookmark",
+      "componentName": "BookmarkIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "busy",
+      "name": "busy",
+      "componentName": "BusyIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "circle",
+      "name": "circle",
+      "componentName": "CircleIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "dot",
+      "name": "dot",
+      "componentName": "DotIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "error",
+      "name": "error",
+      "componentName": "ErrorIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "flag",
+      "name": "flag",
+      "componentName": "FlagIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "heart",
+      "name": "heart",
+      "componentName": "HeartIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "help",
+      "name": "help",
+      "componentName": "HelpIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "info",
+      "name": "info",
+      "componentName": "InfoIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "loading",
+      "name": "loading",
+      "componentName": "LoadingIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "offline",
+      "name": "offline",
+      "componentName": "OfflineIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "online",
+      "name": "online",
+      "componentName": "OnlineIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "pending",
+      "name": "pending",
+      "componentName": "PendingIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "progress",
+      "name": "progress",
+      "componentName": "ProgressIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "sparkle",
+      "name": "sparkle",
+      "componentName": "SparkleIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "star",
+      "name": "star",
+      "componentName": "StarIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "success",
+      "name": "success",
+      "componentName": "SuccessIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "unverified",
+      "name": "unverified",
+      "componentName": "UnverifiedIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "verified",
+      "name": "verified",
+      "componentName": "VerifiedIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "warning",
+      "name": "warning",
+      "componentName": "WarningIcon",
+      "category": "status",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "account-switch",
+      "name": "account-switch",
+      "componentName": "AccountSwitchIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "anonymous",
+      "name": "anonymous",
+      "componentName": "AnonymousIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "badge-id",
+      "name": "badge-id",
+      "componentName": "BadgeIdIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "contact",
+      "name": "contact",
+      "componentName": "ContactIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "credential",
+      "name": "credential",
+      "componentName": "CredentialIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "directory",
+      "name": "directory",
+      "componentName": "DirectoryIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "face-id",
+      "name": "face-id",
+      "componentName": "FaceIdIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "fingerprint",
+      "name": "fingerprint",
+      "componentName": "FingerprintIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "guest",
+      "name": "guest",
+      "componentName": "GuestIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "id-card",
+      "name": "id-card",
+      "componentName": "IdCardIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "identity",
+      "name": "identity",
+      "componentName": "IdentityIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "impersonate",
+      "name": "impersonate",
+      "componentName": "ImpersonateIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "passkey",
+      "name": "passkey",
+      "componentName": "PasskeyIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "person-standing",
+      "name": "person-standing",
+      "componentName": "PersonStandingIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "profile",
+      "name": "profile",
+      "componentName": "ProfileIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "scan-face",
+      "name": "scan-face",
+      "componentName": "ScanFaceIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "scan-user",
+      "name": "scan-user",
+      "componentName": "ScanUserIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user",
+      "name": "user",
+      "componentName": "UserIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-check",
+      "name": "user-check",
+      "componentName": "UserCheckIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-circle",
+      "name": "user-circle",
+      "componentName": "UserCircleIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-cog",
+      "name": "user-cog",
+      "componentName": "UserCogIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-key",
+      "name": "user-key",
+      "componentName": "UserKeyIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-lock",
+      "name": "user-lock",
+      "componentName": "UserLockIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-minus",
+      "name": "user-minus",
+      "componentName": "UserMinusIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-plus",
+      "name": "user-plus",
+      "componentName": "UserPlusIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-search",
+      "name": "user-search",
+      "componentName": "UserSearchIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-shield",
+      "name": "user-shield",
+      "componentName": "UserShieldIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-unlock",
+      "name": "user-unlock",
+      "componentName": "UserUnlockIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "user-x",
+      "name": "user-x",
+      "componentName": "UserXIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "users",
+      "name": "users",
+      "componentName": "UsersIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "users-group",
+      "name": "users-group",
+      "componentName": "UsersGroupIcon",
+      "category": "identity",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "access",
+      "name": "access",
+      "componentName": "AccessIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "access-denied",
+      "name": "access-denied",
+      "componentName": "AccessDeniedIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "audit",
+      "name": "audit",
+      "componentName": "AuditIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "authenticator",
+      "name": "authenticator",
+      "componentName": "AuthenticatorIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "certificate",
+      "name": "certificate",
+      "componentName": "CertificateIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "certificate-check",
+      "name": "certificate-check",
+      "componentName": "CertificateCheckIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "certificate-x",
+      "name": "certificate-x",
+      "componentName": "CertificateXIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "decrypted",
+      "name": "decrypted",
+      "componentName": "DecryptedIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "device-trust",
+      "name": "device-trust",
+      "componentName": "DeviceTrustIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "encrypted",
+      "name": "encrypted",
+      "componentName": "EncryptedIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "firewall",
+      "name": "firewall",
+      "componentName": "FirewallIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "key",
+      "name": "key",
+      "componentName": "KeyIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "key-round",
+      "name": "key-round",
+      "componentName": "KeyRoundIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "key-square",
+      "name": "key-square",
+      "componentName": "KeySquareIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "lock",
+      "name": "lock",
+      "componentName": "LockIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mfa",
+      "name": "mfa",
+      "componentName": "MfaIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "otp",
+      "name": "otp",
+      "componentName": "OtpIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "password",
+      "name": "password",
+      "componentName": "PasswordIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "pin-code",
+      "name": "pin-code",
+      "componentName": "PinCodeIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "policy",
+      "name": "policy",
+      "componentName": "PolicyIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "policy-check",
+      "name": "policy-check",
+      "componentName": "PolicyCheckIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "policy-x",
+      "name": "policy-x",
+      "componentName": "PolicyXIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "privacy",
+      "name": "privacy",
+      "componentName": "PrivacyIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "risk",
+      "name": "risk",
+      "componentName": "RiskIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "risk-high",
+      "name": "risk-high",
+      "componentName": "RiskHighIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "risk-low",
+      "name": "risk-low",
+      "componentName": "RiskLowIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "risk-medium",
+      "name": "risk-medium",
+      "componentName": "RiskMediumIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "security-key",
+      "name": "security-key",
+      "componentName": "SecurityKeyIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "session",
+      "name": "session",
+      "componentName": "SessionIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "session-expired",
+      "name": "session-expired",
+      "componentName": "SessionExpiredIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "shield",
+      "name": "shield",
+      "componentName": "ShieldIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "shield-alert",
+      "name": "shield-alert",
+      "componentName": "ShieldAlertIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "shield-check",
+      "name": "shield-check",
+      "componentName": "ShieldCheckIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "shield-key",
+      "name": "shield-key",
+      "componentName": "ShieldKeyIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "shield-lock",
+      "name": "shield-lock",
+      "componentName": "ShieldLockIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "shield-x",
+      "name": "shield-x",
+      "componentName": "ShieldXIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "unlock",
+      "name": "unlock",
+      "componentName": "UnlockIcon",
+      "category": "security",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "archive",
+      "name": "archive",
+      "componentName": "ArchiveIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "attachment",
+      "name": "attachment",
+      "componentName": "AttachmentIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file",
+      "name": "file",
+      "componentName": "FileIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-archive",
+      "name": "file-archive",
+      "componentName": "FileArchiveIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-audio",
+      "name": "file-audio",
+      "componentName": "FileAudioIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-check",
+      "name": "file-check",
+      "componentName": "FileCheckIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-code",
+      "name": "file-code",
+      "componentName": "FileCodeIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-csv",
+      "name": "file-csv",
+      "componentName": "FileCsvIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-download",
+      "name": "file-download",
+      "componentName": "FileDownloadIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-image",
+      "name": "file-image",
+      "componentName": "FileImageIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-json",
+      "name": "file-json",
+      "componentName": "FileJsonIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-lock",
+      "name": "file-lock",
+      "componentName": "FileLockIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-minus",
+      "name": "file-minus",
+      "componentName": "FileMinusIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-pdf",
+      "name": "file-pdf",
+      "componentName": "FilePdfIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-plus",
+      "name": "file-plus",
+      "componentName": "FilePlusIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-search",
+      "name": "file-search",
+      "componentName": "FileSearchIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-text",
+      "name": "file-text",
+      "componentName": "FileTextIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-upload",
+      "name": "file-upload",
+      "componentName": "FileUploadIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-video",
+      "name": "file-video",
+      "componentName": "FileVideoIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "file-x",
+      "name": "file-x",
+      "componentName": "FileXIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "files",
+      "name": "files",
+      "componentName": "FilesIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "folder",
+      "name": "folder",
+      "componentName": "FolderIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "folder-check",
+      "name": "folder-check",
+      "componentName": "FolderCheckIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "folder-lock",
+      "name": "folder-lock",
+      "componentName": "FolderLockIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "folder-minus",
+      "name": "folder-minus",
+      "componentName": "FolderMinusIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "folder-open",
+      "name": "folder-open",
+      "componentName": "FolderOpenIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "folder-plus",
+      "name": "folder-plus",
+      "componentName": "FolderPlusIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "folder-search",
+      "name": "folder-search",
+      "componentName": "FolderSearchIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "folder-x",
+      "name": "folder-x",
+      "componentName": "FolderXIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "inbox",
+      "name": "inbox",
+      "componentName": "InboxIcon",
+      "category": "files",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "announcement",
+      "name": "announcement",
+      "componentName": "AnnouncementIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "at-sign",
+      "name": "at-sign",
+      "componentName": "AtSignIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bell",
+      "name": "bell",
+      "componentName": "BellIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bell-off",
+      "name": "bell-off",
+      "componentName": "BellOffIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bell-ring",
+      "name": "bell-ring",
+      "componentName": "BellRingIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "broadcast",
+      "name": "broadcast",
+      "componentName": "BroadcastIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chat",
+      "name": "chat",
+      "componentName": "ChatIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chat-dots",
+      "name": "chat-dots",
+      "componentName": "ChatDotsIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "forward",
+      "name": "forward",
+      "componentName": "ForwardIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "mail",
+      "name": "mail",
+      "componentName": "MailIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mail-check",
+      "name": "mail-check",
+      "componentName": "MailCheckIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mail-open",
+      "name": "mail-open",
+      "componentName": "MailOpenIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mail-plus",
+      "name": "mail-plus",
+      "componentName": "MailPlusIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mail-x",
+      "name": "mail-x",
+      "componentName": "MailXIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "megaphone",
+      "name": "megaphone",
+      "componentName": "MegaphoneIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mention",
+      "name": "mention",
+      "componentName": "MentionIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "message",
+      "name": "message",
+      "componentName": "MessageIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "message-circle",
+      "name": "message-circle",
+      "componentName": "MessageCircleIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "messages",
+      "name": "messages",
+      "componentName": "MessagesIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "notification",
+      "name": "notification",
+      "componentName": "NotificationIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "notification-off",
+      "name": "notification-off",
+      "componentName": "NotificationOffIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "phone",
+      "name": "phone",
+      "componentName": "PhoneIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "phone-call",
+      "name": "phone-call",
+      "componentName": "PhoneCallIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "phone-incoming",
+      "name": "phone-incoming",
+      "componentName": "PhoneIncomingIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "phone-missed",
+      "name": "phone-missed",
+      "componentName": "PhoneMissedIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "phone-outgoing",
+      "name": "phone-outgoing",
+      "componentName": "PhoneOutgoingIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "reply",
+      "name": "reply",
+      "componentName": "ReplyIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "reply-all",
+      "name": "reply-all",
+      "componentName": "ReplyAllIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "send",
+      "name": "send",
+      "componentName": "SendIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "voicemail",
+      "name": "voicemail",
+      "componentName": "VoicemailIcon",
+      "category": "communication",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "backup",
+      "name": "backup",
+      "componentName": "BackupIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "columns",
+      "name": "columns",
+      "componentName": "ColumnsIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "data-flow",
+      "name": "data-flow",
+      "componentName": "DataFlowIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "data-transfer",
+      "name": "data-transfer",
+      "componentName": "DataTransferIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "database",
+      "name": "database",
+      "componentName": "DatabaseIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "database-check",
+      "name": "database-check",
+      "componentName": "DatabaseCheckIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "database-lock",
+      "name": "database-lock",
+      "componentName": "DatabaseLockIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "database-minus",
+      "name": "database-minus",
+      "componentName": "DatabaseMinusIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "database-plus",
+      "name": "database-plus",
+      "componentName": "DatabasePlusIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "database-search",
+      "name": "database-search",
+      "componentName": "DatabaseSearchIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "database-x",
+      "name": "database-x",
+      "componentName": "DatabaseXIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "dataset",
+      "name": "dataset",
+      "componentName": "DatasetIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "export-data",
+      "name": "export-data",
+      "componentName": "ExportDataIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "grid",
+      "name": "grid",
+      "componentName": "GridIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "hierarchy",
+      "name": "hierarchy",
+      "componentName": "HierarchyIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "import-data",
+      "name": "import-data",
+      "componentName": "ImportDataIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "index",
+      "name": "index",
+      "componentName": "IndexIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "key-value",
+      "name": "key-value",
+      "componentName": "KeyValueIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "lake",
+      "name": "lake",
+      "componentName": "LakeIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "list",
+      "name": "list",
+      "componentName": "ListIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "partition",
+      "name": "partition",
+      "componentName": "PartitionIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "pipeline",
+      "name": "pipeline",
+      "componentName": "PipelineIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "query",
+      "name": "query",
+      "componentName": "QueryIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "relation",
+      "name": "relation",
+      "componentName": "RelationIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "replica",
+      "name": "replica",
+      "componentName": "ReplicaIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "restore",
+      "name": "restore",
+      "componentName": "RestoreIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "rows",
+      "name": "rows",
+      "componentName": "RowsIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "schema",
+      "name": "schema",
+      "componentName": "SchemaIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "table",
+      "name": "table",
+      "componentName": "TableIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "table-columns",
+      "name": "table-columns",
+      "componentName": "TableColumnsIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "table-rows",
+      "name": "table-rows",
+      "componentName": "TableRowsIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tree",
+      "name": "tree",
+      "componentName": "TreeIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "warehouse",
+      "name": "warehouse",
+      "componentName": "WarehouseIcon",
+      "category": "data",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "calendar",
+      "name": "calendar",
+      "componentName": "CalendarIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "calendar-check",
+      "name": "calendar-check",
+      "componentName": "CalendarCheckIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "calendar-clock",
+      "name": "calendar-clock",
+      "componentName": "CalendarClockIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "calendar-days",
+      "name": "calendar-days",
+      "componentName": "CalendarDaysIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "calendar-minus",
+      "name": "calendar-minus",
+      "componentName": "CalendarMinusIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "calendar-plus",
+      "name": "calendar-plus",
+      "componentName": "CalendarPlusIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "calendar-range",
+      "name": "calendar-range",
+      "componentName": "CalendarRangeIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "calendar-x",
+      "name": "calendar-x",
+      "componentName": "CalendarXIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "clock",
+      "name": "clock",
+      "componentName": "ClockIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "clock-alert",
+      "name": "clock-alert",
+      "componentName": "ClockAlertIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "clock-check",
+      "name": "clock-check",
+      "componentName": "ClockCheckIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "clock-plus",
+      "name": "clock-plus",
+      "componentName": "ClockPlusIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "date",
+      "name": "date",
+      "componentName": "DateIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "duration",
+      "name": "duration",
+      "componentName": "DurationIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "history",
+      "name": "history",
+      "componentName": "HistoryIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "hourglass",
+      "name": "hourglass",
+      "componentName": "HourglassIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "recurring",
+      "name": "recurring",
+      "componentName": "RecurringIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "repeat",
+      "name": "repeat",
+      "componentName": "RepeatIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "schedule",
+      "name": "schedule",
+      "componentName": "ScheduleIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "stopwatch",
+      "name": "stopwatch",
+      "componentName": "StopwatchIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "sunrise",
+      "name": "sunrise",
+      "componentName": "SunriseIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "sunset",
+      "name": "sunset",
+      "componentName": "SunsetIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "timer",
+      "name": "timer",
+      "componentName": "TimerIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "timezone",
+      "name": "timezone",
+      "componentName": "TimezoneIcon",
+      "category": "time",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bluetooth",
+      "name": "bluetooth",
+      "componentName": "BluetoothIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "camera",
+      "name": "camera",
+      "componentName": "CameraIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chip",
+      "name": "chip",
+      "componentName": "ChipIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cpu",
+      "name": "cpu",
+      "componentName": "CpuIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "desktop",
+      "name": "desktop",
+      "componentName": "DesktopIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "device-desktop",
+      "name": "device-desktop",
+      "componentName": "DeviceDesktopIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "device-mobile",
+      "name": "device-mobile",
+      "componentName": "DeviceMobileIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "hard-drive",
+      "name": "hard-drive",
+      "componentName": "HardDriveIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "headphones",
+      "name": "headphones",
+      "componentName": "HeadphonesIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "keyboard",
+      "name": "keyboard",
+      "componentName": "KeyboardIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "laptop",
+      "name": "laptop",
+      "componentName": "LaptopIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "memory",
+      "name": "memory",
+      "componentName": "MemoryIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "microphone",
+      "name": "microphone",
+      "componentName": "MicrophoneIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "monitor",
+      "name": "monitor",
+      "componentName": "MonitorIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mouse",
+      "name": "mouse",
+      "componentName": "MouseIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "printer",
+      "name": "printer",
+      "componentName": "PrinterIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "router",
+      "name": "router",
+      "componentName": "RouterIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "scanner",
+      "name": "scanner",
+      "componentName": "ScannerIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "server",
+      "name": "server",
+      "componentName": "ServerIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "smartphone",
+      "name": "smartphone",
+      "componentName": "SmartphoneIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "speaker",
+      "name": "speaker",
+      "componentName": "SpeakerIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tablet",
+      "name": "tablet",
+      "componentName": "TabletIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "terminal-device",
+      "name": "terminal-device",
+      "componentName": "TerminalDeviceIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "usb",
+      "name": "usb",
+      "componentName": "UsbIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "watch",
+      "name": "watch",
+      "componentName": "WatchIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "wifi",
+      "name": "wifi",
+      "componentName": "WifiIcon",
+      "category": "devices",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "api",
+      "name": "api",
+      "componentName": "ApiIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "binary",
+      "name": "binary",
+      "componentName": "BinaryIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "braces",
+      "name": "braces",
+      "componentName": "BracesIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "braces-dot",
+      "name": "braces-dot",
+      "componentName": "BracesDotIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "brackets",
+      "name": "brackets",
+      "componentName": "BracketsIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bug",
+      "name": "bug",
+      "componentName": "BugIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "build",
+      "name": "build",
+      "componentName": "BuildIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "code",
+      "name": "code",
+      "componentName": "CodeIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "code-review",
+      "name": "code-review",
+      "componentName": "CodeReviewIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "code-xml",
+      "name": "code-xml",
+      "componentName": "CodeXmlIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "command",
+      "name": "command",
+      "componentName": "CommandIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "debug",
+      "name": "debug",
+      "componentName": "DebugIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "deploy",
+      "name": "deploy",
+      "componentName": "DeployIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "diff",
+      "name": "diff",
+      "componentName": "DiffIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "flask",
+      "name": "flask",
+      "componentName": "FlaskIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "function",
+      "name": "function",
+      "componentName": "FunctionIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "git-branch",
+      "name": "git-branch",
+      "componentName": "GitBranchIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "git-commit",
+      "name": "git-commit",
+      "componentName": "GitCommitIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "git-fork",
+      "name": "git-fork",
+      "componentName": "GitForkIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "git-merge",
+      "name": "git-merge",
+      "componentName": "GitMergeIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "git-pull-request",
+      "name": "git-pull-request",
+      "componentName": "GitPullRequestIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "hash",
+      "name": "hash",
+      "componentName": "HashIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "merge",
+      "name": "merge",
+      "componentName": "MergeIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "package",
+      "name": "package",
+      "componentName": "PackageIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "package-open",
+      "name": "package-open",
+      "componentName": "PackageOpenIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "regex",
+      "name": "regex",
+      "componentName": "RegexIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "repository",
+      "name": "repository",
+      "componentName": "RepositoryIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "sandbox",
+      "name": "sandbox",
+      "componentName": "SandboxIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "terminal",
+      "name": "terminal",
+      "componentName": "TerminalIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "test-tube",
+      "name": "test-tube",
+      "componentName": "TestTubeIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "variable",
+      "name": "variable",
+      "componentName": "VariableIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "webhook",
+      "name": "webhook",
+      "componentName": "WebhookIcon",
+      "category": "development",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "autoscale",
+      "name": "autoscale",
+      "componentName": "AutoscaleIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bucket",
+      "name": "bucket",
+      "componentName": "BucketIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cache",
+      "name": "cache",
+      "componentName": "CacheIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cloud",
+      "name": "cloud",
+      "componentName": "CloudIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cloud-check",
+      "name": "cloud-check",
+      "componentName": "CloudCheckIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cloud-download",
+      "name": "cloud-download",
+      "componentName": "CloudDownloadIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cloud-lock",
+      "name": "cloud-lock",
+      "componentName": "CloudLockIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cloud-upload",
+      "name": "cloud-upload",
+      "componentName": "CloudUploadIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cloud-x",
+      "name": "cloud-x",
+      "componentName": "CloudXIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cluster",
+      "name": "cluster",
+      "componentName": "ClusterIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "container",
+      "name": "container",
+      "componentName": "ContainerIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "dns",
+      "name": "dns",
+      "componentName": "DnsIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "edge",
+      "name": "edge",
+      "componentName": "EdgeIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "event",
+      "name": "event",
+      "componentName": "EventIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "gateway",
+      "name": "gateway",
+      "componentName": "GatewayIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "globe-network",
+      "name": "globe-network",
+      "componentName": "GlobeNetworkIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "health-check",
+      "name": "health-check",
+      "componentName": "HealthCheckIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "kubernetes",
+      "name": "kubernetes",
+      "componentName": "KubernetesIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "load-balancer",
+      "name": "load-balancer",
+      "componentName": "LoadBalancerIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "microservice",
+      "name": "microservice",
+      "componentName": "MicroserviceIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "network",
+      "name": "network",
+      "componentName": "NetworkIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "node",
+      "name": "node",
+      "componentName": "NodeIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "nodes",
+      "name": "nodes",
+      "componentName": "NodesIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "object-storage",
+      "name": "object-storage",
+      "componentName": "ObjectStorageIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "queue",
+      "name": "queue",
+      "componentName": "QueueIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "region",
+      "name": "region",
+      "componentName": "RegionIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "scaling",
+      "name": "scaling",
+      "componentName": "ScalingIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "server-rack",
+      "name": "server-rack",
+      "componentName": "ServerRackIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "service",
+      "name": "service",
+      "componentName": "ServiceIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "storage",
+      "name": "storage",
+      "componentName": "StorageIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "stream",
+      "name": "stream",
+      "componentName": "StreamIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "subnet",
+      "name": "subnet",
+      "componentName": "SubnetIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "subscription",
+      "name": "subscription",
+      "componentName": "SubscriptionIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "topic",
+      "name": "topic",
+      "componentName": "TopicIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "vpc",
+      "name": "vpc",
+      "componentName": "VpcIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "zone",
+      "name": "zone",
+      "componentName": "ZoneIcon",
+      "category": "infrastructure",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "balance",
+      "name": "balance",
+      "componentName": "BalanceIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bank",
+      "name": "bank",
+      "componentName": "BankIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "banknote",
+      "name": "banknote",
+      "componentName": "BanknoteIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "card",
+      "name": "card",
+      "componentName": "CardIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cash",
+      "name": "cash",
+      "componentName": "CashIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "coin",
+      "name": "coin",
+      "componentName": "CoinIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "coins",
+      "name": "coins",
+      "componentName": "CoinsIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "credit-card",
+      "name": "credit-card",
+      "componentName": "CreditCardIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "currency",
+      "name": "currency",
+      "componentName": "CurrencyIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "discount",
+      "name": "discount",
+      "componentName": "DiscountIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "exchange",
+      "name": "exchange",
+      "componentName": "ExchangeIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "fee",
+      "name": "fee",
+      "componentName": "FeeIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "invoice",
+      "name": "invoice",
+      "componentName": "InvoiceIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "ledger",
+      "name": "ledger",
+      "componentName": "LedgerIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "payment",
+      "name": "payment",
+      "componentName": "PaymentIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "payment-check",
+      "name": "payment-check",
+      "componentName": "PaymentCheckIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "payment-link",
+      "name": "payment-link",
+      "componentName": "PaymentLinkIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "payment-x",
+      "name": "payment-x",
+      "componentName": "PaymentXIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "payout",
+      "name": "payout",
+      "componentName": "PayoutIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "pricing",
+      "name": "pricing",
+      "componentName": "PricingIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "receipt",
+      "name": "receipt",
+      "componentName": "ReceiptIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "refund",
+      "name": "refund",
+      "componentName": "RefundIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "refund-partial",
+      "name": "refund-partial",
+      "componentName": "RefundPartialIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "settlement",
+      "name": "settlement",
+      "componentName": "SettlementIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "subscription-billing",
+      "name": "subscription-billing",
+      "componentName": "SubscriptionBillingIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tax",
+      "name": "tax",
+      "componentName": "TaxIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "transaction",
+      "name": "transaction",
+      "componentName": "TransactionIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "transaction-failed",
+      "name": "transaction-failed",
+      "componentName": "TransactionFailedIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "transaction-pending",
+      "name": "transaction-pending",
+      "componentName": "TransactionPendingIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "transaction-success",
+      "name": "transaction-success",
+      "componentName": "TransactionSuccessIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "transfer",
+      "name": "transfer",
+      "componentName": "TransferIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "wallet",
+      "name": "wallet",
+      "componentName": "WalletIcon",
+      "category": "finance",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bag",
+      "name": "bag",
+      "componentName": "BagIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "barcode",
+      "name": "barcode",
+      "componentName": "BarcodeIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "basket",
+      "name": "basket",
+      "componentName": "BasketIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "box",
+      "name": "box",
+      "componentName": "BoxIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "box-open",
+      "name": "box-open",
+      "componentName": "BoxOpenIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cart",
+      "name": "cart",
+      "componentName": "CartIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cart-check",
+      "name": "cart-check",
+      "componentName": "CartCheckIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cart-minus",
+      "name": "cart-minus",
+      "componentName": "CartMinusIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cart-plus",
+      "name": "cart-plus",
+      "componentName": "CartPlusIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "cart-x",
+      "name": "cart-x",
+      "componentName": "CartXIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "checkout",
+      "name": "checkout",
+      "componentName": "CheckoutIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "coupon",
+      "name": "coupon",
+      "componentName": "CouponIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "delivery",
+      "name": "delivery",
+      "componentName": "DeliveryIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "gift",
+      "name": "gift",
+      "componentName": "GiftIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "inventory",
+      "name": "inventory",
+      "componentName": "InventoryIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "order",
+      "name": "order",
+      "componentName": "OrderIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "order-check",
+      "name": "order-check",
+      "componentName": "OrderCheckIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "order-return",
+      "name": "order-return",
+      "componentName": "OrderReturnIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "order-x",
+      "name": "order-x",
+      "componentName": "OrderXIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "package-box",
+      "name": "package-box",
+      "componentName": "PackageBoxIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "product",
+      "name": "product",
+      "componentName": "ProductIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "qr-code",
+      "name": "qr-code",
+      "componentName": "QrCodeIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "return",
+      "name": "return",
+      "componentName": "ReturnIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "shipping",
+      "name": "shipping",
+      "componentName": "ShippingIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "shop",
+      "name": "shop",
+      "componentName": "ShopIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "store",
+      "name": "store",
+      "componentName": "StoreIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tag",
+      "name": "tag",
+      "componentName": "TagIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tags",
+      "name": "tags",
+      "componentName": "TagsIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "truck",
+      "name": "truck",
+      "componentName": "TruckIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "warehouse-stock",
+      "name": "warehouse-stock",
+      "componentName": "WarehouseStockIcon",
+      "category": "commerce",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "building-location",
+      "name": "building-location",
+      "componentName": "BuildingLocationIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "compass",
+      "name": "compass",
+      "componentName": "CompassIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "crosshair",
+      "name": "crosshair",
+      "componentName": "CrosshairIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "directions",
+      "name": "directions",
+      "componentName": "DirectionsIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "earth",
+      "name": "earth",
+      "componentName": "EarthIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "geofence",
+      "name": "geofence",
+      "componentName": "GeofenceIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "globe",
+      "name": "globe",
+      "componentName": "GlobeIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "home-location",
+      "name": "home-location",
+      "componentName": "HomeLocationIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "location",
+      "name": "location",
+      "componentName": "LocationIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "location-check",
+      "name": "location-check",
+      "componentName": "LocationCheckIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "location-search",
+      "name": "location-search",
+      "componentName": "LocationSearchIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "location-x",
+      "name": "location-x",
+      "componentName": "LocationXIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "map",
+      "name": "map",
+      "componentName": "MapIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "map-pin",
+      "name": "map-pin",
+      "componentName": "MapPinIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "navigation-compass",
+      "name": "navigation-compass",
+      "componentName": "NavigationCompassIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "office-location",
+      "name": "office-location",
+      "componentName": "OfficeLocationIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "pin",
+      "name": "pin",
+      "componentName": "PinIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "radar",
+      "name": "radar",
+      "componentName": "RadarIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "route-map",
+      "name": "route-map",
+      "componentName": "RouteMapIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "satellite",
+      "name": "satellite",
+      "componentName": "SatelliteIcon",
+      "category": "location",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "camera-off",
+      "name": "camera-off",
+      "componentName": "CameraOffIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "captions",
+      "name": "captions",
+      "componentName": "CaptionsIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "fast-forward",
+      "name": "fast-forward",
+      "componentName": "FastForwardIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "film",
+      "name": "film",
+      "componentName": "FilmIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "fullscreen",
+      "name": "fullscreen",
+      "componentName": "FullscreenIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "image",
+      "name": "image",
+      "componentName": "ImageIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "images",
+      "name": "images",
+      "componentName": "ImagesIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mic",
+      "name": "mic",
+      "componentName": "MicIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mic-off",
+      "name": "mic-off",
+      "componentName": "MicOffIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "music",
+      "name": "music",
+      "componentName": "MusicIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "music-note",
+      "name": "music-note",
+      "componentName": "MusicNoteIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "mute",
+      "name": "mute",
+      "componentName": "MuteIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "pause",
+      "name": "pause",
+      "componentName": "PauseIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "picture-in-picture",
+      "name": "picture-in-picture",
+      "componentName": "PictureInPictureIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "play",
+      "name": "play",
+      "componentName": "PlayIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "record",
+      "name": "record",
+      "componentName": "RecordIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "rewind",
+      "name": "rewind",
+      "componentName": "RewindIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "skip-back",
+      "name": "skip-back",
+      "componentName": "SkipBackIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "skip-forward",
+      "name": "skip-forward",
+      "componentName": "SkipForwardIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "stop",
+      "name": "stop",
+      "componentName": "StopIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "subtitles",
+      "name": "subtitles",
+      "componentName": "SubtitlesIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "video",
+      "name": "video",
+      "componentName": "VideoIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "volume",
+      "name": "volume",
+      "componentName": "VolumeIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "volume-high",
+      "name": "volume-high",
+      "componentName": "VolumeHighIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "volume-low",
+      "name": "volume-low",
+      "componentName": "VolumeLowIcon",
+      "category": "media",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "volume-x",
+      "name": "volume-x",
+      "componentName": "VolumeXIcon",
+      "category": "media",
       "variants": ["outline"],
       "directionality": "preserve"
     }

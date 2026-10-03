@@ -184,10 +184,12 @@ QXI-SVG-006 "icons/outline/actions/example.svg"
 `validateSourcePath`. [validate-svg.ts](../scripts/check/validate-svg.ts) exposes `validateSvg`.
 [validate-repository.ts](../scripts/check/validate-repository.ts) provides pure `validateSources`,
 the filesystem scanner `scanIconSources`, and `validateRepository`, which combines them.
-`validateSources` also checks [config/icon-metadata.ts](../config/icon-metadata.ts) through
-[validate-metadata.ts](../scripts/check/validate-metadata.ts). Generation reuses the same scanner
-and validator rather than re-implementing any rule; see [generation.md](generation.md). The small CLI only anchors the root, formats
-diagnostics, and sets the exit status. These are repository-internal APIs, not package exports.
+`validateSources` checks authored metadata through
+[validate-metadata.ts](../scripts/check/validate-metadata.ts). Library functions default to no
+metadata; the CLIs pass this repository's [config/icon-metadata.ts](../config/icon-metadata.ts).
+Generation reuses the same scanner and validator rather than re-implementing any rule; see
+[generation.md](generation.md). The small CLI only anchors the root, formats diagnostics, and sets
+the exit status. These are repository-internal APIs, not package exports.
 
 The scanner visits only `icons/`, rejects symlinks without following them, and accepts only SVG
 files plus the root `.gitkeep` placeholder. Filesystem or decoding failures are diagnostics, not

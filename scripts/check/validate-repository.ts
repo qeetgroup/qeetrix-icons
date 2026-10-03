@@ -1,9 +1,9 @@
 import { type Dirent, lstatSync, readdirSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
-import { type IconMetadataOverride, iconMetadata } from "../../config/icon-metadata.js";
+import type { IconMetadataOverride } from "../../config/icon-metadata.js";
 import { iconSystem } from "../../config/icon-system.js";
 import { compareText, type Diagnostic, diagnostic, sortDiagnostics } from "../lib/diagnostics.js";
-import { validateMetadata } from "./validate-metadata.js";
+import { noMetadata, validateMetadata } from "./validate-metadata.js";
 import { type IconLocation, iconExportName, validateSourcePath } from "./validate-source-path.js";
 import { maxSvgBytes, validateSvg } from "./validate-svg.js";
 
@@ -23,7 +23,7 @@ export type SourceScan = ValidationResult & {
 
 export function validateSources(
   sources: readonly IconSource[],
-  metadata: Readonly<Record<string, IconMetadataOverride>> = iconMetadata,
+  metadata: Readonly<Record<string, IconMetadataOverride>> = noMetadata,
 ): ValidationResult {
   const diagnostics: Diagnostic[] = [];
   const variantNames = new Map<string, IconLocation>();
@@ -213,13 +213,16 @@ export function scanIconSources(repositoryRoot: string): SourceScan {
   };
 }
 
-export function validateRepository(repositoryRoot: string): ValidationResult {
+export function validateRepository(
+  repositoryRoot: string,
+  metadata: Readonly<Record<string, IconMetadataOverride>> = noMetadata,
+): ValidationResult {
   const scan = scanIconSources(repositoryRoot);
   return {
     iconCount: scan.iconCount,
     diagnostics: sortDiagnostics([
       ...scan.diagnostics,
-      ...validateSources(scan.sources).diagnostics,
+      ...validateSources(scan.sources, metadata).diagnostics,
     ]),
   };
 }

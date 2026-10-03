@@ -13,4 +13,26 @@ export type IconMetadataOverride = {
  * covers every variant of that name. An entry for a name with no source fails validation, so a
  * rename or removal cannot leave stale metadata behind. See docs/rtl.md before adding one.
  */
-export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = {};
+export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = {
+  // Semantic concepts that follow reading direction (docs/rtl.md). Physical directions such as
+  // arrow-left, chevron-right, and corner-* keep the default "preserve".
+  undo: { directionality: "mirror" },
+  redo: { directionality: "mirror" },
+  "arrow-back": { directionality: "mirror" },
+  "arrow-forward": { directionality: "mirror" },
+  "sidebar-open": { directionality: "mirror" },
+  "sidebar-close": { directionality: "mirror" },
+  "log-in": { directionality: "mirror" },
+  "log-out": { directionality: "mirror" },
+  enter: { directionality: "mirror" },
+  exit: { directionality: "mirror" },
+  // A progress bar fills from the reading start.
+  progress: { directionality: "mirror" },
+  // "Act as" another user: the arrow enters the person like log-in.
+  impersonate: { directionality: "mirror" },
+  send: { directionality: "mirror" },
+  reply: { directionality: "mirror" },
+  "reply-all": { directionality: "mirror" },
+  // Forwarding a message, not media fast-forward.
+  forward: { directionality: "mirror" },
+};

@@ -3,6 +3,12 @@ import { compareText, type Diagnostic, diagnostic } from "../lib/diagnostics.js"
 
 export const metadataFile = "config/icon-metadata.ts";
 
+/**
+ * No authored exceptions. The default for library functions, which validate whatever sources they
+ * are given; only the repository CLIs pass this repository's `iconMetadata`.
+ */
+export const noMetadata: Readonly<Record<string, IconMetadataOverride>> = {};
+
 const directionalities: readonly string[] = ["mirror", "preserve"];
 
 /**

@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import { iconMetadata } from "../../config/icon-metadata.js";
 import { formatDiagnostics } from "../lib/diagnostics.js";
 import { writeGenerationPlan } from "../lib/generated-output.js";
 import { planRepositoryGeneration } from "../lib/generation-plan.js";
@@ -6,7 +7,7 @@ import { planRepositoryGeneration } from "../lib/generation-plan.js";
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 
 try {
-  const plan = planRepositoryGeneration(repositoryRoot);
+  const plan = planRepositoryGeneration(repositoryRoot, iconMetadata);
   if (plan.diagnostics.length > 0) {
     const reason = plan.diagnostics.some(({ code }) => code === "QXI-GEN-001")
       ? "components could not be generated"

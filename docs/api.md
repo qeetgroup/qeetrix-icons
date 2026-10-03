@@ -1,9 +1,10 @@
 # Public API
 
 The contract for consuming `@qeetrix/icons` 2.0. It is implemented and tested against a packed
-tarball. The only icons today are the four Phase 3A calibration primitives, `PlusIcon`, `XIcon`,
-`CheckIcon`, and `ChevronDownIcon`, all outline-only; names such as `SearchIcon`, `StarIcon`, and
-`BookmarkIcon` below illustrate the contract and do not exist yet.
+tarball. The only icons today are twelve outline-only calibration concepts: `PlusIcon`, `XIcon`,
+`CheckIcon`, `ChevronDownIcon`, `SearchIcon`, `ArrowLeftIcon`, `SettingsIcon`, `UserIcon`,
+`BellIcon`, `LockIcon`, `CalendarIcon`, and `DatabaseIcon`.
+Names such as `StarIcon` and `BookmarkIcon` below illustrate the contract and do not exist yet.
 
 ## Importing icons
 

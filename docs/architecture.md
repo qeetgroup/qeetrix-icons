@@ -5,18 +5,18 @@ validation. Phase 2C added the SVG-to-React generation pipeline and its shared r
 added the manifest, the generated root exports, per-icon subpaths, and the public API contract in
 [api.md](api.md): one component per icon concept, with a `variant` prop typed to its drawings.
 Phase 2E added the developer playground for human visual QA ([visual-qa.md](visual-qa.md)).
-Phase 3A adds the first original artwork: four outline-only calibration primitives, logged in
-[calibration.md](calibration.md). The visual system is not yet calibrated. The
+Phases 3A to 3C add the first original artwork: twelve outline-only calibration concepts, logged
+in [calibration.md](calibration.md). The visual system is not yet calibrated. The
 technology direction remains Bun, strict TypeScript, React 19, and ESM, with Biome and Vitest.
 
 ## What exists now
 
 | Surface | Responsibility |
 |:--|:--|
-| `icons/` | Human-authored SVG sources; currently the four Phase 3A calibration drawings |
+| `icons/` | Human-authored SVG sources; currently the twelve Phase 3A–3C calibration drawings |
 | [config/icon-system.ts](../config/icon-system.ts) | Internal, executable design contract: architecture plus calibration candidates |
 | [config/categories.ts](../config/categories.ts) | Internal category IDs, display labels, purposes, and canonical array order |
-| [config/icon-metadata.ts](../config/icon-metadata.ts) | Authored exceptions to derived metadata; currently only directionality, currently empty |
+| [config/icon-metadata.ts](../config/icon-metadata.ts) | Authored exceptions to derived metadata; currently only directionality, for `arrow-left` |
 | [src/types/icon.ts](../src/types/icon.ts) | Stable variant and directionality vocabulary |
 | [src/types/icon-props.ts](../src/types/icon-props.ts) | Public `IconProps` |
 | [src/types/icon-manifest.ts](../src/types/icon-manifest.ts) | Public manifest schema types |
@@ -73,7 +73,7 @@ Human-authored variant SVGs
         -> public exports          IMPLEMENTED  Phase 2D
         -> developer playground    IMPLEMENTED  Phase 2E
         -> human visual QA         READY        docs/visual-qa.md
-        -> calibration artwork     IN PROGRESS  Phase 3A: plus, x, check, chevron-down
+        -> calibration artwork     IN PROGRESS  Phases 3A–3C: 12 concepts
         -> Qeetrix UI / Qeet products
 ```
 
@@ -133,7 +133,9 @@ exported or published: `files` ships only `dist/`, and the playground builds to 
 | 2C, complete | SVG-to-React generation pipeline, shared runtime, and generated-output checks |
 | 2D, complete | Manifest, package exports, and API contracts |
 | 2E, complete | Developer playground and visual QA foundation |
-| 3A, current | First calibration batch: plus, x, check, chevron-down |
+| 3A, complete | First calibration batch: plus, x, check, chevron-down |
+| 3B, complete | Second calibration batch: search, arrow-left, settings, user |
+| 3C, current | Third calibration batch: bell, lock, calendar, database |
 | 3 | Calibration icon set and evidence-based geometry decisions |
 | 4 | Actions category |
 | 5 | Navigation category |

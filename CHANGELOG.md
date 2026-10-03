@@ -135,6 +135,34 @@
 - Tests now check the calibration concepts, their outline-only typing, and per-concept
   tree-shaking of the real icons in the packed package. The version is unchanged.
 
+### Second calibration batch (Phase 3B)
+
+- Added four more outline-only originals: `SearchIcon` and `SettingsIcon` in `actions`,
+  `ArrowLeftIcon` in `navigation`, and `UserIcon` in `identity`. `arrow-left` is the first `mirror`
+  concept, set through `config/icon-metadata.ts`; [docs/rtl.md](docs/rtl.md) records why it serves
+  as the back arrow. No Phase 3A icon changed.
+- Findings on circles, attached strokes, arrow heads, dense radial geometry, and curves are recorded
+  in [docs/calibration.md](docs/calibration.md). Stroke 1.75 remains provisional, now at moderate
+  confidence; real Qeet typography calibration is still pending.
+- Fixed a latent coupling: `validateSources`, `validateRepository`, `createGenerationPlan`, and
+  `planRepositoryGeneration` defaulted to this repository's authored metadata even for arbitrary
+  sources, so the first metadata entry made unrelated source sets fail. They now default to no
+  metadata, and the CLIs pass `config/icon-metadata.ts` explicitly.
+- Tests cover all eight calibration concepts, their categories, directionality, outline-only
+  typing, and per-concept packed-package tree shaking. The version is unchanged.
+
+### Third calibration batch (Phase 3C)
+
+- Added four more outline-only originals: `BellIcon` in `communication`, `LockIcon` in `security`,
+  `CalendarIcon` in `time`, and `DatabaseIcon` in `data`. All keep the default `preserve`
+  directionality; no metadata entry was added. No Phase 3A or 3B icon changed.
+- Findings on rounded rectangles and a shared container corner radius, stacked ellipses, bell
+  curves, enclosed details, and container weight are recorded in
+  [docs/calibration.md](docs/calibration.md). Stroke 1.75 remains provisional; real Qeet typography
+  calibration is still pending.
+- Tests cover all twelve calibration concepts, their categories, directionality, outline-only
+  typing, and per-concept packed-package tree shaking. The version is unchanged.
+
 ---
 
 Everything below is **historical** and describes the 1.x line only.

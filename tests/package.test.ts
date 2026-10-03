@@ -11,6 +11,7 @@ import {
 import { tmpdir } from "node:os";
 import { join, relative, sep } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { iconMetadata } from "../config/icon-metadata.js";
 import { iconManifest } from "../src/manifest.js";
 import { apiFixtureMetadata, apiFixtures, writeFixture } from "./helpers.js";
 
@@ -25,16 +26,36 @@ import { apiFixtureMetadata, apiFixtures, writeFixture } from "./helpers.js";
 const PKG = join(import.meta.dirname, "..");
 /** The real production concepts, packed alongside the synthetic fixtures. */
 const production = iconManifest.icons;
-/** Each real concept's geometry strings, read from its generated module, to trace it in bundles. */
+const generatedSource = (id: string) =>
+  readFileSync(join(PKG, "src/generated/icons", `${id}.tsx`), "utf8");
+/** Each real concept's path data, read from its generated module; distinctive enough to exclude. */
 const geometry = new Map(
   production.map(({ id }) => [
     id,
-    [
-      ...readFileSync(join(PKG, "src/generated/icons", `${id}.tsx`), "utf8").matchAll(
-        /\b(?:d|points)="([^"]+)"/g,
-      ),
-    ].map(([, value]) => value),
+    [...generatedSource(id).matchAll(/\b(?:d|points)="([^"]+)"/g)].map(([, value]) => value),
   ]),
+);
+/**
+ * Patterns that find a concept in rendered markup or a minified bundle. Path data is matched
+ * literally; shape elements without path data (dot grids, for example) are matched by their
+ * attribute values in order, whatever the quoting: `cx="6" cy="12"` and `cx:"6",cy:"12"` both match.
+ */
+const traces = new Map(
+  production.map(({ id }) => {
+    const shapes = [...generatedSource(id).matchAll(/<(?:circle|ellipse|rect|line)\b([^>]*?)\/>/g)];
+    const shapePatterns = shapes.map(
+      ([, attributes]) =>
+        new RegExp(
+          [...attributes.matchAll(/(\w+)="([^"]+)"/g)]
+            .map(([, name, value]) => `${name}\\W+${value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`)
+            .join("\\W+"),
+        ),
+    );
+    const pathPatterns = (geometry.get(id) ?? []).map(
+      (value) => new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+    );
+    return [id, [...pathPatterns, ...shapePatterns]];
+  }),
 );
 let workspace = "";
 let consumer = "";
@@ -74,7 +95,7 @@ beforeAll(() => {
     "config/icon-metadata.ts",
     `import type { IconDirectionality } from "../src/types/icon.js";
 export type IconMetadataOverride = { readonly directionality: IconDirectionality };
-export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = ${JSON.stringify(apiFixtureMetadata)};
+export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = ${JSON.stringify({ ...iconMetadata, ...apiFixtureMetadata })};
 `,
   );
   run("bun", ["scripts/build/generate-icons.ts"], repository);
@@ -196,7 +217,7 @@ describe("packed @qeetrix/icons", () => {
       expect(result.markup).toBe(result.outline);
       expect(result.markup).toContain('stroke="currentColor"');
       expect(result.markup).not.toContain("variant");
-      for (const value of geometry.get(id) ?? []) expect(result.markup).toContain(value);
+      for (const pattern of traces.get(id) ?? []) expect(result.markup).toMatch(pattern);
     },
   );
 
@@ -382,11 +403,12 @@ export const usage = [
         ["build", "entry.js", "--minify", "--external", "react", "--external", "react/jsx-runtime"],
         consumer,
       );
-      expect(geometry.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
-      for (const value of geometry.get(id) ?? []) expect(output).toContain(value);
+      expect(traces.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
+      for (const pattern of traces.get(id) ?? []) expect(output).toMatch(pattern);
       for (const [other, values] of geometry) {
         if (other === id) continue;
-        for (const value of values) expect(output, `${other} in ${id}`).not.toContain(value);
+        // Whole quoted attribute values: one icon's path may legitimately extend another's.
+        for (const value of values) expect(output, `${other} in ${id}`).not.toContain(`"${value}"`);
       }
       for (const excluded of ["schemaVersion", "directionality", "fixture-"]) {
         expect(output, excluded).not.toContain(excluded);

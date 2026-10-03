@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join, relative, sep } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { categories } from "../config/categories.js";
+import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
 import {
   buildCatalogue,
@@ -273,7 +274,7 @@ describe("playground build", () => {
       "config/icon-metadata.ts",
       `import type { IconDirectionality } from "../src/types/icon.js";
 export type IconMetadataOverride = { readonly directionality: IconDirectionality };
-export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = ${JSON.stringify(apiFixtureMetadata)};
+export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = ${JSON.stringify({ ...iconMetadata, ...apiFixtureMetadata })};
 `,
     );
     const run = (args: string[]) =>

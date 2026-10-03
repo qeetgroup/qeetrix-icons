@@ -18,9 +18,18 @@ is still no direction detection, CSS mirroring, React direction prop, or runtime
 ## Logical versus physical direction
 
 Back and forward in a reading-order workflow can reverse with direction. Physical left and right,
-vertical movement, time, and conventional media symbols normally do not. Do not treat a fixed
-`arrow-left` as a synonym for logical `arrow-back`; select the correct semantic concept at the
-call site rather than mirroring every horizontal arrow.
+vertical movement, time, and conventional media symbols normally do not. Select the semantic
+concept at the call site rather than mirroring every horizontal arrow.
+
+**Decision (catalogue):** the catalogue has both physical and semantic arrows, so they are
+separate concepts. Physical directions (`arrow-left`, `arrow-right`, the diagonal arrows,
+`chevron-*`, `corner-*`, `panel-left`, `panel-right`, rotations, media transport) are `preserve`.
+Semantic reading-direction concepts are `mirror`: `arrow-back`, `arrow-forward`, `undo`, `redo`,
+`reply`, `reply-all`, `forward`, `send`, `log-in`, `log-out`, `enter`, `exit`, `join`, `leave`,
+`sidebar-open`, `sidebar-close`, and `progress` (a progress bar fills from the reading start).
+Phase 3B had briefly made `arrow-left` `mirror` because no `arrow-back` existed yet; that temporary
+rule is withdrawn now that `arrow-back` does. Use `arrow-back` for "back" in headers, breadcrumbs,
+and drawers, and `arrow-left` only where the direction is physical.
 
 | Concept that may mirror | Reason to review |
 |:--|:--|

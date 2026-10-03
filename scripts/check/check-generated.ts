@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import { iconMetadata } from "../../config/icon-metadata.js";
 import { formatDiagnostics } from "../lib/diagnostics.js";
 import { checkGenerationPlan } from "../lib/generated-output.js";
 import { planRepositoryGeneration } from "../lib/generation-plan.js";
@@ -6,7 +7,7 @@ import { planRepositoryGeneration } from "../lib/generation-plan.js";
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 
 try {
-  const plan = planRepositoryGeneration(repositoryRoot);
+  const plan = planRepositoryGeneration(repositoryRoot, iconMetadata);
   const diagnostics = checkGenerationPlan(repositoryRoot, plan);
   if (diagnostics.length > 0) {
     console.error(formatDiagnostics(diagnostics));

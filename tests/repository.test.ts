@@ -1,15 +1,27 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, expectTypeOf, it } from "vitest";
+import { plannedCatalogue } from "../config/catalogue.js";
 import { categories } from "../config/categories.js";
+import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
+import { iconExportName, validateIconName } from "../scripts/check/validate-source-path.js";
+import { createGenerationPlan } from "../scripts/lib/generation-plan.js";
 import {
+  ArrowLeftIcon,
+  BellIcon,
+  CalendarIcon,
   CheckIcon,
   ChevronDownIcon,
+  DatabaseIcon,
   type IconDirectionality,
   type IconProps,
   type IconVariant,
+  LockIcon,
   PlusIcon,
+  SearchIcon,
+  SettingsIcon,
+  UserIcon,
   XIcon,
 } from "../src/index.js";
 import { iconManifest } from "../src/manifest.js";
@@ -86,6 +98,55 @@ describe("category taxonomy", () => {
       expect(category.id).toMatch(/^[a-z]+(?:-[a-z]+)*$/);
       expect(category.label.trim().length).toBeGreaterThan(0);
       expect(category.description.trim().length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("planned catalogue", () => {
+  const planned = Object.entries(plannedCatalogue).flatMap(([category, names]) =>
+    names.map((name) => ({ category, name })),
+  );
+
+  it.each([
+    ["actions", 40],
+    ["navigation", 31],
+    ["status", 25],
+    ["identity", 31],
+    ["security", 37],
+    ["files", 30],
+    ["communication", 30],
+    ["data", 33],
+    ["time", 24],
+    ["devices", 26],
+    ["development", 32],
+    ["infrastructure", 36],
+    ["finance", 32],
+    ["commerce", 30],
+    ["location", 20],
+    ["media", 26],
+    ["ai", 32],
+    ["observability", 33],
+    ["organization", 30],
+    ["qeet", 20],
+  ] as const)("plans %s with %i concepts", (category, count) => {
+    expect(plannedCatalogue[category]).toHaveLength(count);
+  });
+
+  it("plans 598 concepts in exactly the canonical categories, in their order", () => {
+    expect(planned).toHaveLength(598);
+    expect(Object.keys(plannedCatalogue)).toEqual(categories.map(({ id }) => id));
+  });
+
+  it("uses valid, globally unique names and component names", () => {
+    const names = planned.map(({ name }) => name);
+    expect(new Set(names).size).toBe(names.length);
+    expect(new Set(names.map(iconExportName)).size).toBe(names.length);
+    for (const name of names) expect(validateIconName(`${name}.svg`), name).toEqual([]);
+  });
+
+  it("ships only planned concepts, each in its planned category", () => {
+    for (const { name, category } of iconManifest.icons) {
+      expect(planned, name).toContainEqual({ category, name });
     }
   });
 });
@@ -251,38 +312,104 @@ describe("the 1.x catalogue stays removed", () => {
   });
 });
 
-describe("Phase 3A calibration concepts", () => {
+describe("calibration concepts", () => {
   it.each([
-    ["plus", "PlusIcon", "actions"],
-    ["x", "XIcon", "actions"],
-    ["check", "CheckIcon", "actions"],
-    ["chevron-down", "ChevronDownIcon", "navigation"],
-  ])("ships %s as outline-only %s in %s, preserved in RTL", (id, componentName, category) => {
+    ["plus", "PlusIcon", "actions", "preserve"],
+    ["x", "XIcon", "actions", "preserve"],
+    ["check", "CheckIcon", "actions", "preserve"],
+    ["chevron-down", "ChevronDownIcon", "navigation", "preserve"],
+    ["search", "SearchIcon", "actions", "preserve"],
+    ["arrow-left", "ArrowLeftIcon", "navigation", "preserve"],
+    ["settings", "SettingsIcon", "actions", "preserve"],
+    ["user", "UserIcon", "identity", "preserve"],
+    ["bell", "BellIcon", "communication", "preserve"],
+    ["lock", "LockIcon", "security", "preserve"],
+    ["calendar", "CalendarIcon", "time", "preserve"],
+    ["database", "DatabaseIcon", "data", "preserve"],
+  ])("ships %s as outline-only %s in %s, %s in RTL", (id, componentName, category, direction) => {
     expect(iconManifest.icons).toContainEqual({
       id,
       name: id,
       componentName,
       category,
       variants: ["outline"],
-      directionality: "preserve",
+      directionality: direction,
     });
     expect(existsSync(join(PKG, "src/generated/icons", `${id}.tsx`))).toBe(true);
   });
 
   it("types every calibration icon as outline-only", () => {
-    for (const Icon of [PlusIcon, XIcon, CheckIcon, ChevronDownIcon]) {
-      expect(Icon).toBeTypeOf("function");
+    const icons = [
+      PlusIcon,
+      XIcon,
+      CheckIcon,
+      ChevronDownIcon,
+      SearchIcon,
+      ArrowLeftIcon,
+      SettingsIcon,
+      UserIcon,
+      BellIcon,
+      LockIcon,
+      CalendarIcon,
+      DatabaseIcon,
+    ];
+    for (const Icon of icons) expect(Icon).toBeTypeOf("function");
+    type Variant<T extends (props: never) => unknown> = NonNullable<Parameters<T>[0]>["variant"];
+    expectTypeOf<Variant<typeof PlusIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof XIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof CheckIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof ChevronDownIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof SearchIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof ArrowLeftIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof SettingsIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof UserIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof BellIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof LockIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof CalendarIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof DatabaseIcon>>().toEqualTypeOf<"outline" | undefined>();
+  });
+
+  it("mirrors only semantic reading-direction concepts, never physical directions", () => {
+    // docs/rtl.md: back/forward, reply, send, undo/redo, sign-in/out and similar follow reading
+    // direction; physical arrows, chevrons, corners, and panels keep their orientation.
+    const semantic = new Set([
+      "undo",
+      "redo",
+      "arrow-back",
+      "arrow-forward",
+      "sidebar-open",
+      "sidebar-close",
+      "log-in",
+      "log-out",
+      "enter",
+      "exit",
+      "progress",
+      "reply",
+      "reply-all",
+      "forward",
+      "send",
+      "join",
+      "leave",
+      "impersonate",
+    ]);
+    for (const [name, { directionality }] of Object.entries(iconMetadata)) {
+      expect(semantic.has(name), name).toBe(true);
+      expect(directionality, name).toBe("mirror");
     }
-    expectTypeOf<Parameters<typeof PlusIcon>[0]["variant"]>().toEqualTypeOf<
-      "outline" | undefined
-    >();
-    expectTypeOf<Parameters<typeof XIcon>[0]["variant"]>().toEqualTypeOf<"outline" | undefined>();
-    expectTypeOf<Parameters<typeof CheckIcon>[0]["variant"]>().toEqualTypeOf<
-      "outline" | undefined
-    >();
-    expectTypeOf<Parameters<typeof ChevronDownIcon>[0]["variant"]>().toEqualTypeOf<
-      "outline" | undefined
-    >();
+    for (const physical of ["arrow-left", "arrow-right", "chevron-left", "chevron-right"]) {
+      expect(iconMetadata[physical], physical).toBeUndefined();
+    }
+  });
+
+  it("applies authored metadata only when the caller passes it", () => {
+    // Library functions validate whatever they are given; the CLIs pass this repository's config.
+    const source = readFileSync(join(PKG, "icons/outline/actions/undo.svg"), "utf8");
+    const sources = [{ file: "icons/outline/actions/undo.svg", source }];
+    const authored = { undo: iconMetadata.undo };
+    expect(createGenerationPlan(sources).manifest.icons[0].directionality).toBe("preserve");
+    expect(createGenerationPlan(sources, [], authored).manifest.icons[0].directionality).toBe(
+      "mirror",
+    );
   });
 
   it("has no filled drawings yet", () => {

@@ -6,11 +6,13 @@ original Qeetrix artwork for enterprise consoles, identity and security, payment
 data-heavy interfaces, and developer tools.
 
 > [!IMPORTANT]
-> **Current development state: Phase 3A, first calibration batch.**
+> **Current development state: Phase 3C, third calibration batch.**
 >
 > - The legacy 1.x icon artwork has been removed from this repository.
-> - The first four original icons exist for calibration only: `PlusIcon`, `XIcon`, `CheckIcon`, and
->   `ChevronDownIcon`. The visual system is not calibrated yet; do not migrate products to them.
+> - Twelve original icons exist for calibration only: `PlusIcon`, `XIcon`, `CheckIcon`,
+>   `ChevronDownIcon`, `SearchIcon`, `ArrowLeftIcon`, `SettingsIcon`, `UserIcon`, `BellIcon`,
+>   `LockIcon`, `CalendarIcon`, and `DatabaseIcon`. The visual system is not calibrated yet; do not
+>   migrate products to them.
 > - Do not rely on 1.x icon names, props, types, or import paths for the upcoming major release.
 > - Versions already published to the package registry are not changed by this rebuild.
 
@@ -22,15 +24,16 @@ from visual calibration candidates; [config/categories.ts](config/categories.ts)
 ordered enterprise/product categories. Both are internal and are not package exports.
 
 Validation, SVG-to-React generation, the generated root exports, the manifest, and the visual QA
-playground are implemented. `icons/` holds the Phase 3A calibration batch: four outline-only
-primitives in `actions` and `navigation`. Stroke width, safe area, and the rest of the visual
-system remain provisional; findings are logged in [docs/calibration.md](docs/calibration.md). See
-also [docs/validation.md](docs/validation.md) and [docs/generation.md](docs/generation.md).
+playground are implemented. `icons/` holds the Phase 3A, 3B, and 3C calibration batches: twelve
+outline-only concepts in `actions`, `navigation`, `identity`, `security`, `communication`, `data`,
+and `time`. Stroke width, safe area, corners, and the rest of the visual system remain provisional;
+findings are logged in [docs/calibration.md](docs/calibration.md). See also
+[docs/validation.md](docs/validation.md) and [docs/generation.md](docs/generation.md).
 
 ## Public API
 
-The contract is in [docs/api.md](docs/api.md). `PlusIcon`, `XIcon`, `CheckIcon`, and
-`ChevronDownIcon` exist today; `SearchIcon` and `StarIcon` below illustrate future icons:
+The contract is in [docs/api.md](docs/api.md). The twelve calibration icons listed above exist
+today; `StarIcon` below illustrates a future icon with a filled drawing:
 
 ```tsx
 import { SearchIcon, StarIcon, type IconProps } from "@qeetrix/icons";

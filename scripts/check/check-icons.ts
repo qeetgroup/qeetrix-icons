@@ -1,9 +1,10 @@
 import { fileURLToPath } from "node:url";
+import { iconMetadata } from "../../config/icon-metadata.js";
 import { formatDiagnostics } from "../lib/diagnostics.js";
 import { validateRepository } from "./validate-repository.js";
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
-const result = validateRepository(repositoryRoot);
+const result = validateRepository(repositoryRoot, iconMetadata);
 
 if (result.diagnostics.length > 0) {
   console.error(formatDiagnostics(result.diagnostics));

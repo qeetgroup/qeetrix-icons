@@ -5,11 +5,11 @@ What a version number means for an icon library, how a release happens, and how 
 ## The 2.0 foundations and `main`
 
 > [!WARNING]
-> The repository is in Qeetrix Icons 2.0 foundational development: the 1.x catalogue is gone and
-> the root exports only the `IconProps`, `IconVariant`, and `IconDirectionality` types, with no
-> runtime values or icons. `package.json` still carries a 1.x version. Merged to `main` through the flow below, this
-> could publish the foundation-only package as a **1.x patch release** on `latest`, and consumers
-> on a `^1` range could receive an incompatible package on their next install.
+> The repository is in Qeetrix Icons 2.0 calibration: the 1.x catalogue is gone and the root
+> exports only the twelve uncalibrated 2.0 icons and the public types. `package.json` still carries
+> a 1.x version. Merged to `main` through the flow below, this could publish the incompatible 2.0
+> work as a **1.x patch release** on `latest`, and consumers on a `^1` range could receive it on
+> their next install.
 >
 > Keep the reset off `main` until 2.0 is ready to ship, and set `version` to `2.0.0` by hand when it
 > is. `release.yml` has no pre-release channel — it always publishes with the default dist-tag — so

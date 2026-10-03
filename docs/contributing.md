@@ -1,7 +1,7 @@
 # Contributing to `@qeetrix/icons`
 
 > [!NOTE]
-> Phase 3A adds the first calibration icons. New artwork arrives only in planned calibration
+> Phases 3A to 3C add the first calibration icons. New artwork arrives only in planned calibration
 > batches; every icon passes [visual-qa.md](visual-qa.md) review and findings go to
 > [calibration.md](calibration.md). Production icon contributions are not open yet;
 > synthetic geometry is allowed only in isolated tests. Do not add production SVGs or future-phase
@@ -56,9 +56,11 @@ ownership map are in [architecture.md](architecture.md).
 
 After changing an SVG or [config/icon-metadata.ts](../config/icon-metadata.ts), run
 `bun run generate` and commit the result; see [generation.md](generation.md). Public names are
-semver API; read [api.md](api.md) before adding, renaming, or removing an icon. Run `bun run check:icons` for the one primary source gate. It accepts the current empty production
-root and never scans test fixtures. See [validation.md](validation.md) for rule codes, the exact
-source contract, and what still requires visual review. Tests continue to use the canonical
+semver API; read [api.md](api.md) before adding, renaming, or removing an icon.
+
+Run `bun run check:icons` for the one primary source gate. It scans only the production `icons/`
+root and never test fixtures. See [validation.md](validation.md) for rule codes, the exact source
+contract, and what still requires visual review. Tests continue to use the canonical
 `bun run test` Vitest script rather than a second test runner.
 
 ## CI
@@ -84,9 +86,11 @@ publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
   Recommended design sizes must not accidentally restrict a later runtime size property.
 - **Calibrate explicitly.** Change provisional values in the shared config and documentation
   together, explaining the visual evidence. Do not silently introduce a per-icon geometry system.
-- **Respect phase scope.** Phase 3A adds only `plus`, `x`, `check`, and `chevron-down`. No other
-  icons, filled drawings, Storybook, Figma integration, screenshot testing, or product migration.
-  Review every new icon in the playground as described in [visual-qa.md](visual-qa.md). Synthetic geometry belongs only to tests; temporary filesystem
+- **Respect phase scope.** Calibration batches add only their planned concepts (3C: `bell`,
+  `lock`, `calendar`, `database`). No other icons, filled drawings, Storybook, Figma
+  integration, screenshot testing, or product migration. Review every new icon in the playground as
+  described in [visual-qa.md](visual-qa.md). Synthetic geometry belongs only to tests; temporary
+  filesystem
   fixtures must be cleaned up. Later steps require their own implementation and verification.
 - **Dependencies need a concrete purpose.** Phase 2B added a development-only XML parser, justified
   in the validation guide. Phase 2C made React 19 the peer dependency and added `react`, `react-dom`,

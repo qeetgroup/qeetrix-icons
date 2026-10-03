@@ -16,6 +16,7 @@ import { fileURLToPath } from "node:url";
 import { DOMParser, XMLSerializer } from "@xmldom/xmldom";
 import ts from "typescript";
 import { afterEach, describe, expect, it } from "vitest";
+import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
 import { checkGenerationPlan, writeGenerationPlan } from "../scripts/lib/generated-output.js";
 import {
@@ -417,7 +418,7 @@ export { FixtureStarIcon } from "./icons/fixture-star.js";
   });
 
   it("matches the committed generated artifacts in this repository", () => {
-    for (const { path, contents } of planRepositoryGeneration(PKG).files) {
+    for (const { path, contents } of planRepositoryGeneration(PKG, iconMetadata).files) {
       expect(readFileSync(join(PKG, path), "utf8"), path).toBe(contents);
     }
   });
@@ -997,7 +998,7 @@ describe("generation CLIs", () => {
   it("check:generated passes on this repository without writing", () => {
     const script = join(PKG, "scripts/check/check-generated.ts");
     const output = execFileSync("bun", [script], { cwd: temporaryDirectory(), encoding: "utf8" });
-    const plan = planRepositoryGeneration(PKG);
+    const plan = planRepositoryGeneration(PKG, iconMetadata);
     expect(output.trim()).toBe(
       `Generated output is up to date: ${plan.concepts.length} React icon components, the root exports, and the manifest from ${plan.iconCount} production icons.`,
     );
