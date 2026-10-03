@@ -2,6 +2,18 @@
 
 What a version number means for an icon library, how a release happens, and how to undo one.
 
+## The 2.0 reset and `main`
+
+> [!WARNING]
+> The repository is in the Qeetrix Icons 2.0 reset state: the 1.x catalogue is gone and the package
+> exports nothing, but `package.json` still carries a 1.x version. Merged to `main` like this, the flow
+> below would publish that empty package as a **1.x patch release** on the `latest` dist-tag, and every
+> consumer on a `^1` range would receive it on their next install.
+>
+> Keep the reset off `main` until 2.0 is ready to ship, and set `version` to `2.0.0` by hand when it
+> is. `release.yml` has no pre-release channel — it always publishes with the default dist-tag — so
+> shipping 2.0 pre-releases would first need a change to that workflow.
+
 ## How a release happens
 
 Three workflows, and you drive all of it by opening a PR.
@@ -28,7 +40,7 @@ It skips fork PRs (their token is read-only) and never reacts to its own commit.
 Release. The tag comes last on purpose: every `v*` tag is a version that really shipped, the same
 property `qeet-id-server`'s deploy workflow maintains.
 
-Before publishing it runs the full gate — `generate:check`, `lint`, `typecheck`, `test`, `build`. A
+Before publishing it runs the full gate — `lint`, `typecheck`, `test`, `build`. A
 merge that does not change the version publishes nothing and succeeds, so re-running is always safe.
 
 There is no `bun run release`. Releasing is merging.
@@ -53,12 +65,9 @@ change when the public API is a list of component names.
 | Change | Bump | Why |
 |:--|:--|:--|
 | New icon | **minor** | Additive. Nothing that compiled stops compiling. |
-| New style variant on an existing icon | **minor** | Additive: widens the `variant` union. |
 | Visual correction to an existing icon | **patch** | The name and props are unchanged. |
-| Icon moved between categories | **patch** | Category is a directory, not part of the export name. |
 | **Icon renamed** | **major** | A named export disappeared. Someone's build breaks. |
 | **Icon removed** | **major** | Same. |
-| **A style variant removed** | **major** | `variant="solid"` stops type-checking. |
 | **Prop removed or retyped** | **major** | Same. |
 
 A visual correction is only a patch because it changes what renders without changing any API — the
@@ -71,13 +80,8 @@ number.
 An icon's component name is its public API. `import { ArrowLeft } from "@qeetrix/icons"` is a
 compile-time contract, and renaming it turns every consuming build red.
 
-**Do not rename an icon because a better name occurred to you.** The name comes from the source
-filename (`icons/round-outline/arrows/arrow-left.svg` → `ArrowLeft`), so renaming means renaming the SVG,
-which means a major release. Get it right when the file lands — see [naming.md](naming.md).
-
-Removing an icon is the same cost. There is deliberately no deprecation mechanism: at this catalogue
-size an unused icon costs a few hundred bytes that tree-shaking already discards for anyone not
-importing it, and removing one costs a broken build. The asymmetry says keep it.
+**Do not rename an icon because a better name occurred to you.** Renaming is a major release, so get
+the name right when the icon lands. Removing an icon carries the same cost.
 
 ## Publishing setup
 

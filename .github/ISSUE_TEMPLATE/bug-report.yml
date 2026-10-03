@@ -13,8 +13,6 @@ body:
         - Package exports or resolution
         - Accessibility
         - Tree-shaking / bundle size
-        - Validation (bun run validate)
-        - Generation (bun run generate)
         - Build (bun run build)
         - Other
     validations:

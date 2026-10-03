@@ -2,7 +2,7 @@
   "name": "@qeetrix/icons",
   "version": "1.0.4",
   "private": false,
-  "description": "Qeetrix Icons — the Qeet Group icon library. Outline icons on a 24×24 grid, generated from canonical SVG.",
+  "description": "Qeetrix Icons — the Qeet Group icon library. Being rebuilt as Qeetrix Icons 2.0.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -15,7 +15,6 @@
   "keywords": [
     "icons",
     "svg",
-    "react",
     "qeet",
     "qeetrix",
     "design-system"
@@ -36,39 +35,20 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./icons/*": {
-      "types": "./dist/icons/*.d.ts",
-      "import": "./dist/icons/*.js",
-      "default": "./dist/icons/*.js"
-    },
     "./package.json": "./package.json"
   },
   "scripts": {
-    "generate": "node scripts/generate.mjs",
-    "generate:check": "node scripts/generate.mjs --check",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "biome check .",
     "format": "biome check --write .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "rm -rf dist && node scripts/generate.mjs && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "prepack": "bun run build"
-  },
-  "peerDependencies": {
-    "react": ">=19"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@types/jsdom": "^30.0.0",
     "@types/node": "^22.19.19",
-    "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.2",
-    "jsdom": "^29.1.1",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
     "tsc-alias": "^1.8.17",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"

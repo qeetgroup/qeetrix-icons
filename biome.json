@@ -50,30 +50,5 @@
   },
   "files": {
     "includes": ["**", "!icons", "!dist"]
-  },
-  "overrides": [
-    {
-      "includes": ["src/icons/**"],
-      "formatter": {
-        "enabled": false
-      },
-      "assist": {
-        "actions": {
-          "source": {
-            "organizeImports": "off"
-          }
-        }
-      },
-      "linter": {
-        "rules": {
-          "a11y": {
-            "noSvgWithoutTitle": "off"
-          },
-          "suspicious": {
-            "noShadowRestrictedNames": "off"
-          }
-        }
-      }
-    }
-  ]
+  }
 }

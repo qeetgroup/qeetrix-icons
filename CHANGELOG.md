@@ -1,5 +1,35 @@
 # @qeetrix/icons
 
+## Unreleased — 2.0.0
+
+### Major Changes
+
+- **Qeetrix Icons 2.0 reset.** The package is being rebuilt from scratch with original
+  Qeetrix-designed artwork. This entry records the reset only; 2.0 icons will be recorded here as they
+  land.
+
+  **Removed**
+
+  - The entire 1.x icon catalogue: every icon component, and the source SVGs under
+    `icons/round-outline/` and `icons/round-solid/` (plus the empty `icons/sharp-outline/` and
+    `icons/sharp-solid/`).
+  - The `@qeetrix/icons/icons/<category>/<name>` deep-import subpath.
+  - The `QeetrixIcon`, `QeetrixIconProps`, `IconVariant` and `IconShape` types, and with them the
+    `variant` and `shape` props and the white default colour.
+  - The `react` peer dependency — the package currently contains no React components.
+  - The `generate` and `generate:check` scripts, and the example viewer app.
+
+  **Current state.** The `@qeetrix/icons` entry point exports nothing. Do not rely on any 1.x icon
+  name, prop, type or import path for 2.0.
+
+---
+
+Everything below is **historical** and describes the 1.x line only.
+
+Releases after 1.0.0 were not recorded in this file. By 1.0.4, the icon set described under 1.0.0 had
+been replaced by the catalogue that the 2.0 reset removes: 1,166 icon components with `variant` and
+`shape` props, white by default.
+
 ## 1.0.0
 
 ### Major Changes
