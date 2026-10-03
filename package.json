@@ -43,12 +43,14 @@
     "format": "biome check --write .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "check:icons": "bun scripts/check/check-icons.ts",
     "build": "rm -rf dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "prepack": "bun run build"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
     "@types/node": "^22.19.19",
+    "@xmldom/xmldom": "0.9.12",
     "tsc-alias": "^1.8.17",
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"

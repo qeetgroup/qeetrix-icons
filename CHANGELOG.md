@@ -37,6 +37,20 @@
 - Added no artwork, runtime, generator, validator, manifest, playground, or dependencies. Package
   version, export paths, and publishing workflows remain unchanged.
 
+### Source validation (Phase 2B)
+
+- Added `bun run check:icons` for source paths, semantic filenames, variants, configured categories,
+  and repository-wide canonical-name, case-insensitive, and normalized-export collisions.
+- Added strict XML parsing and explicit SVG element/attribute allowlists, inherited-color and
+  outline-calibration checks, minimal filled rules, and numeric/path-token checks. Visual bounds,
+  optical quality, and a full path grammar remain deferred.
+- Added deterministic error diagnostics, production-root-only scanning, fixture isolation, and
+  positive/negative tests using synthetic in-memory geometry and temporary repositories.
+- Added the development-only `@xmldom/xmldom` parser, internal tooling typechecking, and the source
+  gate in CI and existing release quality checks. Publishing behavior and version are unchanged.
+- Production artwork remains empty. No React icons, runtime, generator, manifest, playground, or
+  public API additions are included.
+
 ---
 
 Everything below is **historical** and describes the 1.x line only.

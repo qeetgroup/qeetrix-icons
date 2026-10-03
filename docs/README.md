@@ -1,8 +1,8 @@
 # Documentation
 
-Qeetrix Icons 2.0 is in Phase 2A: design contracts and typed foundations. There are no SVG drawings
-or React components yet. These documents define how later work should proceed; they do not claim
-that the validator, generator, manifest, runtime, or visual QA tooling already exists.
+Qeetrix Icons 2.0 is in Phase 2B: design contracts, typed foundations, and SVG/source validation.
+There are no production SVG drawings or React components yet. Generation, manifest, runtime, and
+visual QA tooling remain future work.
 
 | Document | Purpose |
 |:--|:--|
@@ -12,6 +12,7 @@ that the validator, generator, manifest, runtime, or visual QA tooling already e
 | [accessibility.md](accessibility.md) | Decorative defaults, named controls, and meaningful standalone icons |
 | [rtl.md](rtl.md) | Semantic directionality and intended mirror/preserve behavior |
 | [architecture.md](architecture.md) | Current public boundary, future pipeline, ownership, and phase sequence |
+| [validation.md](validation.md) | Implemented source rules, diagnostics, parser decision, and deferred visual checks |
 | [contributing.md](contributing.md) | Bun setup, commands, conventions, and CI |
 | [releases.md](releases.md) | Existing release behavior and why foundation-only work must not reach `main` yet |
 

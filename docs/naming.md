@@ -68,8 +68,10 @@ When category boundaries overlap, use the concept's primary meaning:
 - `finance` covers money and payments; `commerce` covers products, orders, and purchases.
 - `qeet` is for genuinely Qeet-specific concepts, not generic icons used by a Qeet product.
 
-Do not duplicate drawings in several categories for discovery. Source category/variant directory
-layout will be settled with the later pipeline; Phase 2A creates no category or variant folders.
+Do not duplicate drawings in several categories for discovery. Phase 2B defines the source layout
+as `icons/<variant>/<category>/<name>.svg`, without creating empty folders or production artwork.
+See [validation.md](validation.md) for enforced filename rules, collision checks, and the boundary
+between semantic numerals and duplicate suffixes. The component API remains deferred.
 
 ## Stability review
 

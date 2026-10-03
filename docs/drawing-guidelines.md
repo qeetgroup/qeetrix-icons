@@ -1,8 +1,9 @@
 # Drawing guidelines
 
-These are authoring rules for future original artwork, not an SVG validator. Phase 2A keeps
-`icons/` empty. The executable source of truth is [config/icon-system.ts](../config/icon-system.ts):
-`architecture` records stable decisions and `calibration` records provisional visual values.
+These are authoring rules for future original artwork. Production `icons/` remains empty. Phase 2B
+adds the structural gate documented in [validation.md](validation.md), not visual enforcement.
+The source of truth is [config/icon-system.ts](../config/icon-system.ts): `architecture` records
+stable decisions and `calibration` records provisional visual values.
 
 ## Master and initial candidates
 

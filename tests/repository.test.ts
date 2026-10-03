@@ -13,7 +13,7 @@ describe("public entry point", () => {
     expect(pkg).toBeTypeOf("object");
   });
 
-  it("exports no runtime values during Phase 2A", async () => {
+  it("exports no runtime values during foundational development", async () => {
     const pkg = await import("../src/index.js");
     expect(Object.keys(pkg)).toEqual([]);
   });
@@ -118,7 +118,7 @@ describe("icon-system contract", () => {
   });
 });
 
-describe("Phase 2A source boundary", () => {
+describe("Phase 2B source boundary", () => {
   it("contains no SVG artwork", () => {
     const artwork = readdirSync(join(PKG, "icons"), {
       encoding: "utf8",
@@ -126,6 +126,13 @@ describe("Phase 2A source boundary", () => {
     }).filter((filename) => filename.toLowerCase().endsWith(".svg"));
     expect(artwork).toEqual([]);
   });
+
+  it.each(["src/generated", "src/runtime", "icon-manifest.json", "playground"])(
+    "does not introduce future-phase infrastructure at %s",
+    (path) => {
+      expect(existsSync(join(PKG, path))).toBe(false);
+    },
+  );
 });
 
 describe("package manifest", () => {
@@ -141,6 +148,15 @@ describe("package manifest", () => {
 
   it("publishes only dist", () => {
     expect(manifest.files).toEqual(["dist"]);
+  });
+
+  it("keeps config, validators, and fixtures outside the production build", () => {
+    const build = JSON.parse(readFileSync(join(PKG, "tsconfig.build.json"), "utf8")) as {
+      include: string[];
+      compilerOptions: { rootDir: string };
+    };
+    expect(build.include).toEqual(["src"]);
+    expect(build.compilerOptions.rootDir).toBe("src");
   });
 });
 

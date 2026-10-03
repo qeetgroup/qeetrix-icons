@@ -6,10 +6,10 @@ original Qeetrix artwork for enterprise consoles, identity and security, payment
 data-heavy interfaces, and developer tools.
 
 > [!IMPORTANT]
-> **Current development state: Phase 2A, design contract and foundational architecture only.**
+> **Current development state: Phase 2B, SVG/source validation architecture only.**
 >
 > - The legacy 1.x icon artwork has been removed from this repository.
-> - There are currently zero production icons, SVG drawings, or React components.
+> - There are currently zero production SVG icons or React icon components.
 > - Do not rely on 1.x icon names, props, types, or import paths for the upcoming major release.
 > - Versions already published to the package registry are not changed by this rebuild.
 
@@ -20,9 +20,10 @@ architecture contracts. [config/icon-system.ts](config/icon-system.ts) separates
 from visual calibration candidates; [config/categories.ts](config/categories.ts) defines the 20
 ordered enterprise/product categories. Both are internal and are not package exports.
 
-`icons/` contains only its empty-directory placeholder. There is no SVG validator, normalizer,
-React generator, manifest, runtime, or playground yet. No category, variant, or size-master source
-folders are created in this phase. The removed `@qeetrix/icons/icons/*` deep imports stay removed.
+`icons/` contains only its empty-directory placeholder. SVG/source validation is now implemented;
+normalization, React generation, manifest, runtime, and playground remain future work. No category,
+variant, or size-master source folders are created yet. The removed `@qeetrix/icons/icons/*` deep
+imports stay removed. See [docs/validation.md](docs/validation.md) for the structural gate and its limits.
 
 ## Public foundations
 
@@ -53,8 +54,8 @@ Read [docs/design-principles.md](docs/design-principles.md),
 ## Architecture direction
 
 Human-authored SVG will flow through validation, normalization, React generation, manifest
-generation, package exports, and tests into Qeetrix UI and Qeet products. This pipeline is planned,
-not implemented. React 19 is the target for future components; no React dependency is needed yet.
+generation, package exports, and tests into Qeetrix UI and Qeet products. Only source validation is
+implemented so far. React 19 is the target for future components; no React dependency is needed yet.
 See [docs/architecture.md](docs/architecture.md) for ownership and phase boundaries.
 
 ## Develop
@@ -67,18 +68,19 @@ bun install
 bun run typecheck
 bun run lint
 bun run test
+bun run check:icons
 bun run build
 ```
 
 The test script runs Vitest, matching CI. Use `bun run format` for Biome fixes. Contributors must
 keep phase boundaries explicit, update config and docs together, and never hand-edit generated
-files. Do not add artwork during Phase 2A or copy, trace, or slightly modify paths from Lucide,
+files. Do not add production artwork during Phase 2B or copy, trace, or slightly modify paths from Lucide,
 Iconsax/Vuesax, or any other third-party icon library. Principles may be studied; geometry must be
 independently drawn. See [docs/contributing.md](docs/contributing.md).
 
 ## Releases
 
-The package version remains `1.0.4`; this phase changes neither versioning nor release automation.
+The package version remains `1.0.4`; this phase adds a quality gate, not a change to publishing policy.
 The existing workflows patch-bump PRs and publish on merge to `main`. Keep foundation-only work off
 `main` until the major release is prepared, or it could ship as an incompatible 1.x patch. Read
 [docs/releases.md](docs/releases.md) before any release work.
