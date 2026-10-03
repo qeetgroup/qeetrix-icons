@@ -18,6 +18,9 @@ export type DiagnosticCode =
   | "QXI-DUP-003"
   | "QXI-DUP-004"
   | "QXI-IO-001"
+  | "QXI-META-001"
+  | "QXI-META-002"
+  | "QXI-VAR-001"
   | "QXI-GEN-001"
   | "QXI-GEN-002"
   | "QXI-GEN-003";

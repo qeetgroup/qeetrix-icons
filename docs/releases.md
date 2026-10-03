@@ -6,8 +6,8 @@ What a version number means for an icon library, how a release happens, and how 
 
 > [!WARNING]
 > The repository is in Qeetrix Icons 2.0 foundational development: the 1.x catalogue is gone and
-> the root exports only `IconVariant` and `IconDirectionality` types, with no runtime values or
-> icons. `package.json` still carries a 1.x version. Merged to `main` through the flow below, this
+> the root exports only the `IconProps`, `IconVariant`, and `IconDirectionality` types, with no
+> runtime values or icons. `package.json` still carries a 1.x version. Merged to `main` through the flow below, this
 > could publish the foundation-only package as a **1.x patch release** on `latest`, and consumers
 > on a `^1` range could receive an incompatible package on their next install.
 >
@@ -81,7 +81,8 @@ number.
 
 An icon's component name is its public API. The future
 `import { ArrowLeftIcon } from "@qeetrix/icons"` will be a compile-time contract, and renaming it
-would turn consuming builds red. No such component exists yet.
+would turn consuming builds red. No such component exists yet. Removing a filled drawing breaks
+`variant="filled"` the same way. [api.md](api.md#versioning) lists which changes are major.
 
 **Do not rename an icon because a better name occurred to you.** Renaming is a major release, so get
 the name right when the icon lands. Removing an icon carries the same cost.

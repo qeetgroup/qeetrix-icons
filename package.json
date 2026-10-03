@@ -35,10 +35,20 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./icons/*": {
+      "types": "./dist/generated/icons/*.d.ts",
+      "import": "./dist/generated/icons/*.js",
+      "default": "./dist/generated/icons/*.js"
+    },
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "import": "./dist/manifest.js",
+      "default": "./dist/manifest.js"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p playground/tsconfig.json --noEmit",
     "lint": "biome check .",
     "format": "biome check --write .",
     "test": "vitest run",
@@ -47,6 +57,8 @@
     "generate": "bun scripts/build/generate-icons.ts",
     "check:generated": "bun scripts/check/check-generated.ts",
     "build": "rm -rf dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "playground": "vite --config playground/vite.config.ts",
+    "playground:build": "vite build --config playground/vite.config.ts",
     "prepack": "bun run build"
   },
   "peerDependencies": {
@@ -62,6 +74,7 @@
     "react-dom": "^19.3.0",
     "tsc-alias": "^1.8.17",
     "typescript": "^6.0.3",
+    "vite": "^8.2.2",
     "vitest": "^4.1.9"
   },
   "publishConfig": {

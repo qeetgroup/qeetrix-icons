@@ -1,7 +1,8 @@
 # Drawing guidelines
 
-These are authoring rules for future original artwork. Production `icons/` remains empty. Phase 2B
-adds the structural gate documented in [validation.md](validation.md), not visual enforcement.
+These are authoring rules for original artwork. The structural gate is documented in
+[validation.md](validation.md); visual findings from each calibration batch are recorded in
+[calibration.md](calibration.md) before any of them becomes a rule here.
 The source of truth is [config/icon-system.ts](../config/icon-system.ts): `architecture` records
 stable decisions and `calibration` records provisional visual values.
 
@@ -47,7 +48,8 @@ at the viewBox boundary.
 - Use round joins initially, but construct the exterior silhouette deliberately. A stroke join
   does not replace a designed corner radius.
 - Avoid accidental doubled strokes, dark intersections, almost-touching endpoints, and tiny gaps.
-  Shared edges should not create a heavier line than the rest of the drawing.
+  Shared edges should not create a heavier line than the rest of the drawing. *Observed in Phase
+  3A:* draw strokes that cross as one path; separate elements darken the crossing at 14 and 16 px.
 - Keep fractional coordinates when they improve the geometry. Integer snapping is not inherently
   crisp after a 24-unit master is scaled to 14px or 16px.
 

@@ -3,7 +3,16 @@ import { join } from "node:path";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import { categories } from "../config/categories.js";
 import { iconSystem } from "../config/icon-system.js";
-import type { IconDirectionality, IconVariant } from "../src/index.js";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  type IconDirectionality,
+  type IconProps,
+  type IconVariant,
+  PlusIcon,
+  XIcon,
+} from "../src/index.js";
+import { iconManifest } from "../src/manifest.js";
 
 const PKG = join(import.meta.dirname, "..");
 
@@ -13,14 +22,30 @@ describe("public entry point", () => {
     expect(pkg).toBeTypeOf("object");
   });
 
-  it("exports no runtime values during foundational development", async () => {
+  it("exports exactly one component per manifest concept, and nothing else at runtime", async () => {
     const pkg = await import("../src/index.js");
-    expect(Object.keys(pkg)).toEqual([]);
+    expect(Object.keys(pkg).sort()).toEqual(
+      iconManifest.icons.map(({ componentName }) => componentName).sort(),
+    );
   });
 
-  it("exports only the foundational variant and directionality concepts", () => {
+  it("exports the variant, directionality, and variant-generic props types", () => {
     expectTypeOf<IconVariant>().toEqualTypeOf<"outline" | "filled">();
     expectTypeOf<IconDirectionality>().toEqualTypeOf<"mirror" | "preserve">();
+    expectTypeOf<IconProps["size"]>().toEqualTypeOf<number | string | undefined>();
+    expectTypeOf<IconProps["variant"]>().toEqualTypeOf<IconVariant | undefined>();
+    expectTypeOf<IconProps<"outline">["variant"]>().toEqualTypeOf<"outline" | undefined>();
+  });
+
+  it("re-exports generated icons and never imports catalogue metadata", () => {
+    const root = readFileSync(join(PKG, "src/index.ts"), "utf8");
+    const imports = [...root.matchAll(/from "([^"]+)"/g)].map(([, source]) => source);
+    expect(imports.sort()).toEqual([
+      "./generated/index.js",
+      "./types/icon-props.js",
+      "./types/icon.js",
+    ]);
+    expect(readFileSync(join(PKG, "src/generated/index.ts"), "utf8")).not.toContain("manifest");
   });
 });
 
@@ -105,6 +130,14 @@ describe("icon-system contract", () => {
     }
   });
 
+  it("compares ordered, unique stroke candidates that include the current width", () => {
+    const candidates = [...calibration.strokeCandidates];
+    expect(new Set(candidates).size).toBe(candidates.length);
+    expect(candidates).toEqual([...candidates].sort((left, right) => left - right));
+    expect(candidates).toContain(calibration.strokeWidth);
+    for (const candidate of candidates) expect(candidate).toBeGreaterThan(0);
+  });
+
   it("leaves usable painted space inside the candidate safe area", () => {
     expect(Number.isFinite(calibration.safeAreaInset)).toBe(true);
     expect(Number.isFinite(calibration.strokeWidth)).toBe(true);
@@ -118,37 +151,43 @@ describe("icon-system contract", () => {
   });
 });
 
-describe("Phase 2C source and output boundary", () => {
-  it("contains no SVG artwork", () => {
-    const artwork = readdirSync(join(PKG, "icons"), {
-      encoding: "utf8",
-      recursive: true,
-    }).filter((filename) => filename.toLowerCase().endsWith(".svg"));
-    expect(artwork).toEqual([]);
+describe("production sources and generated output", () => {
+  const drawings = readdirSync(join(PKG, "icons"), { encoding: "utf8", recursive: true })
+    .filter((file) => file.endsWith(".svg"))
+    .sort();
+
+  it("has one drawing per manifest variant", () => {
+    expect(drawings).toEqual(
+      iconManifest.icons
+        .flatMap(({ name, category, variants }) =>
+          variants.map((variant) => `${variant}/${category}/${name}.svg`),
+        )
+        .sort(),
+    );
   });
 
-  it("contains no generated production components", () => {
-    const output = join(PKG, "src/generated/icons");
-    const files = existsSync(output)
-      ? readdirSync(output, { encoding: "utf8", recursive: true, withFileTypes: true }).filter(
-          (entry) => !entry.isDirectory(),
-        )
-      : [];
-    expect(files).toEqual([]);
+  it("has exactly one generated module per manifest concept", () => {
+    expect(readdirSync(join(PKG, "src/generated/icons")).sort()).toEqual(
+      iconManifest.icons.map(({ id }) => `${id}.tsx`).sort(),
+    );
   });
 
   it("keeps the runtime to the single shared props helper", () => {
     expect(readdirSync(join(PKG, "src/runtime"))).toEqual(["resolve-icon-props.ts"]);
   });
 
-  it.each([
-    "icon-manifest.json",
-    "playground",
-    "src/generated/index.ts",
-    "src/generated/icons/index.ts",
-  ])("does not introduce Phase 2D or later infrastructure at %s", (path) => {
-    expect(existsSync(join(PKG, path))).toBe(false);
+  it("keeps the manifest JSON and typed module in sync", () => {
+    const json = JSON.parse(readFileSync(join(PKG, "icon-manifest.json"), "utf8"));
+    expect(json.schemaVersion).toBe(1);
+    expect(iconManifest).toEqual(json);
   });
+
+  it.each([".storybook", "src/generated/icons/index.ts", "src/generated/categories"])(
+    "does not introduce Storybook or extra barrels at %s",
+    (path) => {
+      expect(existsSync(join(PKG, path))).toBe(false);
+    },
+  );
 });
 
 describe("package manifest", () => {
@@ -164,9 +203,25 @@ describe("package manifest", () => {
     expect(manifest.peerDependencies).toEqual({ react: "^19.0.0" });
   });
 
-  it("exposes only the root entry point and package.json", () => {
-    // The 1.x `./icons/*` deep-import subpath pointed at the removed catalogue.
-    expect(Object.keys(manifest.exports).sort()).toEqual([".", "./package.json"]);
+  it("exposes only the root, per-icon, manifest, and package.json entry points", () => {
+    expect(manifest.exports).toEqual({
+      ".": { types: "./dist/index.d.ts", import: "./dist/index.js", default: "./dist/index.js" },
+      "./icons/*": {
+        types: "./dist/generated/icons/*.d.ts",
+        import: "./dist/generated/icons/*.js",
+        default: "./dist/generated/icons/*.js",
+      },
+      "./manifest": {
+        types: "./dist/manifest.d.ts",
+        import: "./dist/manifest.js",
+        default: "./dist/manifest.js",
+      },
+      "./package.json": "./package.json",
+    });
+  });
+
+  it("declares every published module free of side effects", () => {
+    expect((manifest as { sideEffects?: unknown }).sideEffects).toBe(false);
   });
 
   it("publishes only dist", () => {
@@ -193,5 +248,44 @@ describe("the 1.x catalogue stays removed", () => {
 
   it("has no generated src/icons tree", () => {
     expect(existsSync(join(PKG, "src", "icons"))).toBe(false);
+  });
+});
+
+describe("Phase 3A calibration concepts", () => {
+  it.each([
+    ["plus", "PlusIcon", "actions"],
+    ["x", "XIcon", "actions"],
+    ["check", "CheckIcon", "actions"],
+    ["chevron-down", "ChevronDownIcon", "navigation"],
+  ])("ships %s as outline-only %s in %s, preserved in RTL", (id, componentName, category) => {
+    expect(iconManifest.icons).toContainEqual({
+      id,
+      name: id,
+      componentName,
+      category,
+      variants: ["outline"],
+      directionality: "preserve",
+    });
+    expect(existsSync(join(PKG, "src/generated/icons", `${id}.tsx`))).toBe(true);
+  });
+
+  it("types every calibration icon as outline-only", () => {
+    for (const Icon of [PlusIcon, XIcon, CheckIcon, ChevronDownIcon]) {
+      expect(Icon).toBeTypeOf("function");
+    }
+    expectTypeOf<Parameters<typeof PlusIcon>[0]["variant"]>().toEqualTypeOf<
+      "outline" | undefined
+    >();
+    expectTypeOf<Parameters<typeof XIcon>[0]["variant"]>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Parameters<typeof CheckIcon>[0]["variant"]>().toEqualTypeOf<
+      "outline" | undefined
+    >();
+    expectTypeOf<Parameters<typeof ChevronDownIcon>[0]["variant"]>().toEqualTypeOf<
+      "outline" | undefined
+    >();
+  });
+
+  it("has no filled drawings yet", () => {
+    expect(existsSync(join(PKG, "icons/filled"))).toBe(false);
   });
 });

@@ -1,6 +1,9 @@
 import { posix } from "node:path";
 import { categories } from "../../config/categories.js";
+import { type IconMetadataOverride, iconMetadata } from "../../config/icon-metadata.js";
 import { iconSystem } from "../../config/icon-system.js";
+import type { IconDirectionality } from "../../src/types/icon.js";
+import type { IconManifest } from "../../src/types/icon-manifest.js";
 import { type IconSource, scanIconSources, validateSources } from "../check/validate-repository.js";
 import {
   componentNameFromFilename,
@@ -9,97 +12,179 @@ import {
 } from "../check/validate-source-path.js";
 import { renderComponentSource } from "./component-source.js";
 import { compareText, type Diagnostic, diagnostic, sortDiagnostics } from "./diagnostics.js";
+import { renderBarrel, renderManifestJson, renderManifestModule } from "./package-sources.js";
 import { svgToReact } from "./svg-to-react.js";
 
-/** The only directory generation owns. Nothing outside it is ever written or deleted. */
+/** Owned entirely by generation: every file inside is generated, and anything else is stale. */
+export const generatedDirectory = "src/generated";
 export const generatedIconsDirectory = "src/generated/icons";
+export const barrelPath = "src/generated/index.ts";
+export const manifestModulePath = "src/generated/manifest.ts";
+/** The one generated file outside `src/generated/`. */
+export const manifestJsonPath = "icon-manifest.json";
+
+/** Fixed-path artifacts; every other generated file is a concept's component at its canonical path. */
+export const packageArtifactPaths: readonly string[] = [
+  barrelPath,
+  manifestJsonPath,
+  manifestModulePath,
+];
 
 /**
- * One planned component: the validated source identity (`file` is the source path), where its
- * module goes, and the module's exact contents. Internal tooling data, not a manifest.
+ * One semantic icon concept: every drawing of one name, generated as one component. Internal
+ * tooling data that drives the component, the barrel, and the manifest, which is its public
+ * projection.
  */
-export type GeneratedIcon = IconLocation & {
-  readonly outputPath: string;
+export type PlannedConcept = {
+  /** Public id: the direct-import subpath and file name. Equal to `name`. */
+  readonly id: string;
+  readonly name: string;
   readonly componentName: string;
-  readonly code: string;
+  readonly category: IconLocation["category"];
+  readonly directionality: IconDirectionality;
+  /** One validated source per drawing, in configured variant order; the default comes first. */
+  readonly sources: readonly IconLocation[];
+  readonly outputPath: string;
+};
+
+export type GeneratedFile = {
+  readonly path: string;
+  readonly contents: string;
 };
 
 export type GenerationPlan = {
-  /** Production SVG files scanned, matching `check:icons`. */
+  /** Production SVG files scanned, matching `check:icons`. Drawings, not concepts. */
   readonly iconCount: number;
-  /** Empty whenever `diagnostics` is not: a plan is all-or-nothing. */
-  readonly files: readonly GeneratedIcon[];
+  /** In manifest order. */
+  readonly concepts: readonly PlannedConcept[];
+  readonly manifest: IconManifest;
+  /** Every generated file, in path order. Empty whenever `diagnostics` is not. */
+  readonly files: readonly GeneratedFile[];
   readonly diagnostics: readonly Diagnostic[];
 };
 
-export function generatedOutputPath(location: IconLocation): string {
-  return posix.join(
-    generatedIconsDirectory,
-    location.variant,
-    location.category,
-    `${location.name}.tsx`,
-  );
+/** One flat, category-free module per concept, so `./icons/*` can target it directly. */
+export function generatedOutputPath(name: string): string {
+  return `${generatedIconsDirectory}/${name}.tsx`;
 }
 
-function planIcon(source: IconSource): GeneratedIcon {
-  const location = validateSourcePath(source.file).location;
-  if (!location) throw new Error("Validated source has no resolved location.");
-  const outputPath = generatedOutputPath(location);
-  const componentName = componentNameFromFilename(posix.basename(source.file));
-  const code = renderComponentSource({
-    sourcePath: source.file,
-    outputPath,
-    componentName,
-    svg: svgToReact(source.source),
-  });
-  return { ...location, outputPath, componentName, code };
+function failedPlan(iconCount: number, diagnostics: readonly Diagnostic[]): GenerationPlan {
+  return {
+    iconCount,
+    concepts: [],
+    manifest: { schemaVersion: 1, icons: [] },
+    files: [],
+    diagnostics: sortDiagnostics(diagnostics),
+  };
 }
+
+const { variants, defaultDirectionality } = iconSystem.architecture;
+const categoryIds: readonly string[] = categories.map(({ id }) => id);
 
 /**
- * Validates every source with the Phase 2B validator, then converts them all in memory.
+ * Validates every source and the authored metadata with the Phase 2B validator, groups the
+ * drawings into concepts, then builds every generated artifact in memory from those concepts:
+ * one component per concept, the root barrel, and the manifest as a typed module and as JSON.
  *
- * Nothing is written here. Any scan, validation, or conversion error yields a plan with no files,
- * so a writer can never act on part of a library. Output order follows configured variant order,
- * then configured category order, then codepoint name order, never discovery order.
+ * Validation guarantees each concept has exactly one default-variant drawing, at most one of each
+ * other variant, and one category. Nothing is written here. Any scan, validation, or conversion
+ * error yields a plan with no files, so a writer can never act on part of a library.
  */
 export function createGenerationPlan(
   sources: readonly IconSource[],
   scanDiagnostics: readonly Diagnostic[] = [],
+  metadata: Readonly<Record<string, IconMetadataOverride>> = iconMetadata,
 ): GenerationPlan {
   const iconCount = sources.length;
-  const validation = [...scanDiagnostics, ...validateSources(sources).diagnostics];
-  if (validation.length > 0) {
-    return { iconCount, files: [], diagnostics: sortDiagnostics(validation) };
+  const validation = [...scanDiagnostics, ...validateSources(sources, metadata).diagnostics];
+  if (validation.length > 0) return failedPlan(iconCount, validation);
+
+  const drawings = new Map<string, { location: IconLocation; source: string }[]>();
+  for (const { file, source } of sources) {
+    const location = validateSourcePath(file).location;
+    if (!location) {
+      const message = "Cannot generate component: validated source has no resolved location.";
+      return failedPlan(iconCount, [diagnostic("QXI-GEN-001", file, message)]);
+    }
+    drawings.set(location.name, [...(drawings.get(location.name) ?? []), { location, source }]);
   }
 
-  const files: GeneratedIcon[] = [];
+  const concepts: PlannedConcept[] = [];
+  const components: GeneratedFile[] = [];
   const diagnostics: Diagnostic[] = [];
-  for (const source of sources) {
+  for (const [name, group] of drawings) {
+    group.sort(
+      (left, right) =>
+        variants.indexOf(left.location.variant) - variants.indexOf(right.location.variant),
+    );
+    const [primary] = group;
     try {
-      files.push(planIcon(source));
+      const concept: PlannedConcept = {
+        id: name,
+        name,
+        componentName: componentNameFromFilename(posix.basename(primary.location.file)),
+        category: primary.location.category,
+        // Own keys only, so a name such as `constructor` never reads Object.prototype.
+        directionality: Object.hasOwn(metadata, name)
+          ? metadata[name].directionality
+          : defaultDirectionality,
+        sources: group.map(({ location }) => location),
+        outputPath: generatedOutputPath(name),
+      };
+      components.push({
+        path: concept.outputPath,
+        contents: renderComponentSource({
+          outputPath: concept.outputPath,
+          componentName: concept.componentName,
+          variants: group.map(({ location, source }) => ({
+            variant: location.variant,
+            sourcePath: location.file,
+            svg: svgToReact(source),
+          })),
+        }),
+      });
+      concepts.push(concept);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      diagnostics.push(
-        diagnostic("QXI-GEN-001", source.file, `Cannot generate component: ${message}`),
-      );
+      for (const { location } of group) {
+        diagnostics.push(
+          diagnostic("QXI-GEN-001", location.file, `Cannot generate component: ${message}`),
+        );
+      }
     }
   }
-  if (diagnostics.length > 0) {
-    return { iconCount, files: [], diagnostics: sortDiagnostics(diagnostics) };
-  }
+  if (diagnostics.length > 0) return failedPlan(iconCount, diagnostics);
 
-  const { variants } = iconSystem.architecture;
-  const categoryIds: readonly string[] = categories.map(({ id }) => id);
-  files.sort(
+  concepts.sort(
     (left, right) =>
-      variants.indexOf(left.variant) - variants.indexOf(right.variant) ||
       categoryIds.indexOf(left.category) - categoryIds.indexOf(right.category) ||
       compareText(left.name, right.name),
   );
-  return { iconCount, files, diagnostics: [] };
+  const manifest: IconManifest = {
+    schemaVersion: 1,
+    icons: concepts.map(({ id, name, componentName, category, sources, directionality }) => ({
+      id,
+      name,
+      componentName,
+      category,
+      variants: sources.map(({ variant }) => variant),
+      directionality,
+    })),
+  };
+  const barrel = [...concepts].sort((left, right) => compareText(left.id, right.id));
+  const files: GeneratedFile[] = [
+    ...components,
+    { path: barrelPath, contents: renderBarrel(barrel) },
+    { path: manifestModulePath, contents: renderManifestModule(manifest) },
+    { path: manifestJsonPath, contents: renderManifestJson(manifest) },
+  ].sort((left, right) => compareText(left.path, right.path));
+  return { iconCount, concepts, manifest, files, diagnostics: [] };
 }
 
-export function planRepositoryGeneration(repositoryRoot: string): GenerationPlan {
+export function planRepositoryGeneration(
+  repositoryRoot: string,
+  metadata?: Readonly<Record<string, IconMetadataOverride>>,
+): GenerationPlan {
   const scan = scanIconSources(repositoryRoot);
-  return createGenerationPlan(scan.sources, scan.diagnostics);
+  return createGenerationPlan(scan.sources, scan.diagnostics, metadata);
 }

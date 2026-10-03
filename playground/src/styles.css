@@ -1,0 +1,646 @@
+/*
+ * Playground-local tokens. Not part of @qeetrix/icons. Color tokens use `light-dark()` and are
+ * re-declared on the surface panels, so each resolves against its own `color-scheme` and the
+ * side-by-side panels can force light or dark regardless of the page theme.
+ */
+:root {
+  color-scheme: light dark;
+}
+
+:root,
+.surface-light,
+.surface-dark {
+  --surface: light-dark(#ffffff, #131417);
+  --surface-subtle: light-dark(#f6f7f8, #1a1c20);
+  --foreground: light-dark(#15171b, #e9ebee);
+  --foreground-muted: light-dark(#5d6370, #9aa1ac);
+  --border: light-dark(#e1e4e8, #2b2e34);
+  --border-strong: light-dark(#c7ccd3, #3e424a);
+  --brand: light-dark(#2457e6, #7fa2ff);
+  --success: light-dark(#18794e, #4cc38a);
+  --warning: light-dark(#a35200, #f0a04b);
+  --danger: light-dark(#c4262e, #ff6b6b);
+  --focus: light-dark(#2457e6, #7fa2ff);
+  --guide-grid: light-dark(rgb(36 87 230 / 0.18), rgb(127 162 255 / 0.22));
+  --guide-axis: light-dark(rgb(196 38 46 / 0.6), rgb(255 107 107 / 0.7));
+  --guide-safe: light-dark(rgb(163 82 0 / 0.85), rgb(240 160 75 / 0.85));
+}
+
+:root {
+  --radius: 4px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --font-ui: "Qeet UI", system-ui, sans-serif;
+  --font-text: "Qeet Text", system-ui, sans-serif;
+  --font-mono: "Fira Code", ui-monospace, monospace;
+}
+
+:root[data-theme="light"],
+.surface-light {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"],
+.surface-dark {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--foreground);
+  font: 14px / 1.45 var(--font-ui);
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+dl,
+dd,
+ol,
+ul {
+  margin: 0;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+select,
+input[type="search"],
+input[type="text"],
+input[type="number"] {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: var(--space-1) var(--space-2);
+}
+
+button {
+  cursor: pointer;
+}
+
+label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  font-weight: 600;
+  padding: 0;
+}
+
+.muted,
+figcaption {
+  color: var(--foreground-muted);
+  font-size: 12px;
+}
+
+/* Layout */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.toolbar h1 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-inline-end: auto;
+}
+
+.toolbar h1 span {
+  color: var(--foreground-muted);
+  font-weight: 400;
+}
+
+.font-status {
+  display: flex;
+  gap: var(--space-3);
+  list-style: none;
+  padding: 0;
+  font-size: 12px;
+  color: var(--foreground-muted);
+}
+
+.font-status [data-available="false"] {
+  color: var(--warning);
+}
+
+.notice {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-subtle);
+  color: var(--danger);
+  padding: var(--space-2) var(--space-4);
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) 1fr;
+  min-height: calc(100vh - 49px);
+}
+
+.catalogue {
+  border-inline-end: 1px solid var(--border);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.filters {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.filters label {
+  display: grid;
+  gap: var(--space-1);
+  font-size: 12px;
+  color: var(--foreground-muted);
+}
+
+.filters input,
+.filters select {
+  width: 100%;
+  color: var(--foreground);
+  font-size: 14px;
+}
+
+.count {
+  font-size: 12px;
+  color: var(--foreground-muted);
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: var(--space-1);
+  list-style: none;
+  padding: 0;
+}
+
+.icon-card {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-3) var(--space-1) var(--space-2);
+  border-color: transparent;
+  background: none;
+}
+
+.icon-card:hover {
+  border-color: var(--border);
+}
+
+.icon-card[aria-current="true"] {
+  border-color: var(--brand);
+  background: var(--surface-subtle);
+}
+
+.icon-card-name {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.icon-card-meta {
+  font-size: 11px;
+  color: var(--foreground-muted);
+}
+
+.stage {
+  padding: var(--space-4) var(--space-6);
+  min-width: 0;
+}
+
+.empty,
+.placeholder {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 640px;
+}
+
+.empty h2,
+.placeholder h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.empty h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: var(--space-2);
+}
+
+.empty ol {
+  padding-inline-start: var(--space-6);
+  display: grid;
+  gap: var(--space-1);
+}
+
+/* Inspector */
+
+.inspector {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.inspector-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+}
+
+.inspector-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.segmented {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.segmented legend {
+  float: left;
+  margin-inline-end: var(--space-2);
+}
+
+.size-control input[type="number"] {
+  width: 64px;
+}
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.panel > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+}
+
+.panel h3 {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.glyph {
+  display: inline-flex;
+}
+
+.glyph.mirrored {
+  transform: scaleX(-1);
+}
+
+.glyph svg {
+  display: block;
+}
+
+.size-strip,
+.pixel-strip,
+.compare,
+.stroke-grid,
+.surfaces {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-6);
+}
+
+.size-strip figure,
+.pixel figure,
+.compare figure,
+.stroke-grid figure {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+}
+
+.size-strip figure.critical {
+  outline: 1px dashed var(--border-strong);
+  outline-offset: 6px;
+}
+
+.size-strip figure.critical figcaption {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.size-strip .custom {
+  margin-inline-start: auto;
+}
+
+.pixel {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.pixel canvas {
+  image-rendering: pixelated;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.compare-art {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.stroke-grid .source .compare-art {
+  border-color: var(--foreground-muted);
+}
+
+/* Render-time calibration override: CSS outranks the SVG attributes, in this preview only. */
+.stroke-override svg,
+.stroke-override svg * {
+  stroke-width: var(--qa-stroke);
+}
+
+.construction-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.construction {
+  position: relative;
+  border: 1px solid var(--border);
+}
+
+.construction > svg {
+  position: absolute;
+  inset: 0;
+}
+
+.guides {
+  pointer-events: none;
+  fill: none;
+}
+
+.guides line,
+.guides rect {
+  vector-effect: non-scaling-stroke;
+}
+
+.guide-grid line {
+  stroke: var(--guide-grid);
+  stroke-width: 1;
+}
+
+.guide-axis line {
+  stroke: var(--guide-axis);
+  stroke-width: 1;
+}
+
+.guide-safe {
+  stroke: var(--guide-safe);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+}
+
+.guide-canvas {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.surface {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--foreground);
+}
+
+.surface-name {
+  font-size: 12px;
+  color: var(--foreground-muted);
+  min-width: 36px;
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+
+.swatches li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12px;
+}
+
+/* Representative interface contexts: local HTML and CSS, not Qeetrix UI components. */
+
+.contexts,
+.type-samples {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.contexts figure,
+.type-samples figure {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+
+.demo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  font-weight: 500;
+  padding: 6px 12px;
+}
+
+.demo-icon-button {
+  display: inline-grid;
+  place-items: center;
+  justify-self: start;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+
+.demo-input {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 0 var(--space-2);
+  color: var(--foreground-muted);
+}
+
+.demo-input input {
+  border: 0;
+  padding: 6px 0;
+  min-width: 0;
+  background: none;
+  outline: none;
+  color: var(--foreground);
+}
+
+.demo-nav {
+  display: grid;
+  gap: 2px;
+}
+
+.demo-nav-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px var(--space-2);
+  border-radius: var(--radius);
+  color: var(--foreground-muted);
+}
+
+.demo-nav-row[data-active="true"] {
+  background: var(--surface-subtle);
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.demo-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.demo-table td {
+  border-block: 1px solid var(--border);
+  padding: var(--space-1) var(--space-2);
+  vertical-align: middle;
+}
+
+.demo-table td:last-child {
+  text-align: end;
+}
+
+.demo-inline,
+.type-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.metadata {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-1) var(--space-4);
+}
+
+.metadata > div {
+  display: contents;
+}
+
+.metadata dt {
+  color: var(--foreground-muted);
+}
+
+.snippet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.snippet .muted {
+  min-width: 96px;
+}
+
+.snippet code {
+  background: var(--surface-subtle);
+  padding: 2px 6px;
+  border-radius: var(--radius);
+}
+
+.badge {
+  font-size: 11px;
+  color: var(--warning);
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  padding: 0 4px;
+  margin-inline-start: var(--space-1);
+}
+
+.checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+.checklist fieldset {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+}
+
+.checklist label {
+  align-items: flex-start;
+}
+
+@media (max-width: 860px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .catalogue {
+    border-inline-end: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stage {
+    padding: var(--space-4);
+  }
+}

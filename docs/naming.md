@@ -10,10 +10,19 @@ The examples here describe the future catalogue. None is an available icon expor
 ## Source filenames and component names
 
 Use lowercase ASCII kebab-case with a `.svg` extension for source filenames. Use PascalCase plus
-`Icon` for future React component exports. Hyphens separate meaningful words, not version labels.
+`Icon` for React component exports. Hyphens separate meaningful words, not version labels.
 One converter owns this mapping, `componentNameFromFilename` in
 [validate-source-path.ts](../scripts/check/validate-source-path.ts); it rejects invalid filenames
-rather than producing a broken identifier. Generation and later export phases must reuse it.
+rather than producing a broken identifier. Generated components, root exports, direct-import
+subpaths, and the manifest all use it.
+
+A name identifies a concept, not a drawing. `star.svg` under `icons/outline/` and `star.svg`
+under `icons/filled/` are two separately drawn masters of **one** concept, and together they
+generate **one** component, `StarIcon`, selected with `variant="outline"` (the default) or
+`variant="filled"`, and importable from `@qeetrix/icons/icons/star`. The variant directory
+distinguishes the artwork; the filename never does. Every concept needs its outline drawing, and
+the filled drawing must use the same name and category. Variant words are therefore reserved: a
+source name may not end in `-filled` or `-outline`. See [api.md](api.md#one-component-per-concept).
 
 | SVG filename | Future component name |
 |:--|:--|
@@ -48,9 +57,9 @@ descriptions.
 - Physical directions such as `left` and `right` are not interchangeable with logical concepts
   such as `back` and `forward`. Choose the concept before deciding RTL behavior.
 
-Outline and filled artwork for one concept are not unrelated names. The exact filled-export or
-variant-prop strategy remains deferred to the later API contract phase; these rules do not commit
-to either. Search aliases and manifest schema are also future work, not extra exports to add now.
+Outline and filled artwork for one concept are not unrelated names: they share the canonical
+name and one component, and `variant` chooses between them. Search aliases and
+keywords are future catalogue work, not extra exports to add now.
 
 ## Categories are organization, not names
 

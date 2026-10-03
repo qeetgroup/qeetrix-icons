@@ -4,7 +4,8 @@ This is the contract for generated React icon components. The defaults are recor
 [config/icon-system.ts](../config/icon-system.ts). Since Phase 2C it is implemented by the shared
 runtime helper [resolveIconProps](../src/runtime/resolve-icon-props.ts) and tested in
 [tests/runtime.test.ts](../tests/runtime.test.ts); see [generation.md](generation.md#accessibility).
-There are still no production components or public icon exports, and no generated titles.
+`IconProps` is a public type, the Phase 3A calibration icons use this runtime, and there are no
+generated titles. Every drawing selected by `variant` gets identical accessibility handling.
 
 ## Decorative by default
 

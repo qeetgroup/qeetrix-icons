@@ -1,8 +1,9 @@
 # Documentation
 
-Qeetrix Icons 2.0 is in Phase 2C: design contracts, typed foundations, SVG/source validation, and
-the SVG-to-React generation pipeline. There are no production SVG drawings or generated components
-yet. The manifest, public icon exports, and visual QA tooling remain future work.
+Qeetrix Icons 2.0 is in Phase 3A, the first calibration batch. The foundations (contracts,
+validation, generation, manifest and public API, and the visual QA playground) are complete, and
+the first four original icons, `plus`, `x`, `check`, and `chevron-down`, exist for calibration.
+The visual system is still provisional.
 
 | Document | Purpose |
 |:--|:--|
@@ -13,7 +14,10 @@ yet. The manifest, public icon exports, and visual QA tooling remain future work
 | [rtl.md](rtl.md) | Semantic directionality and intended mirror/preserve behavior |
 | [architecture.md](architecture.md) | Current public boundary, future pipeline, ownership, and phase sequence |
 | [validation.md](validation.md) | Implemented source rules, diagnostics, parser decision, and deferred visual checks |
-| [generation.md](generation.md) | SVG-to-React pipeline, runtime decision, props, accessibility, and output safety |
+| [api.md](api.md) | Public imports, names, `IconProps`, manifest, entry points, tree shaking, and semver |
+| [calibration.md](calibration.md) | Calibration log: accepted geometry, observations, and what is still provisional |
+| [visual-qa.md](visual-qa.md) | The playground, the human review workflow, and the per-icon checklist |
+| [generation.md](generation.md) | Generation pipeline, generated files, metadata, runtime decision, and output safety |
 | [contributing.md](contributing.md) | Bun setup, commands, conventions, and CI |
 | [releases.md](releases.md) | Existing release behavior and why foundation-only work must not reach `main` yet |
 

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "icons": [
+    {
+      "id": "check",
+      "name": "check",
+      "componentName": "CheckIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "plus",
+      "name": "plus",
+      "componentName": "PlusIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "x",
+      "name": "x",
+      "componentName": "XIcon",
+      "category": "actions",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chevron-down",
+      "name": "chevron-down",
+      "componentName": "ChevronDownIcon",
+      "category": "navigation",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    }
+  ]
+}

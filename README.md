@@ -6,10 +6,11 @@ original Qeetrix artwork for enterprise consoles, identity and security, payment
 data-heavy interfaces, and developer tools.
 
 > [!IMPORTANT]
-> **Current development state: Phase 2C, SVG-to-React generation pipeline.**
+> **Current development state: Phase 3A, first calibration batch.**
 >
 > - The legacy 1.x icon artwork has been removed from this repository.
-> - There are currently zero production SVG icons and zero generated React icon components.
+> - The first four original icons exist for calibration only: `PlusIcon`, `XIcon`, `CheckIcon`, and
+>   `ChevronDownIcon`. The visual system is not calibrated yet; do not migrate products to them.
 > - Do not rely on 1.x icon names, props, types, or import paths for the upcoming major release.
 > - Versions already published to the package registry are not changed by this rebuild.
 
@@ -20,23 +21,33 @@ architecture contracts. [config/icon-system.ts](config/icon-system.ts) separates
 from visual calibration candidates; [config/categories.ts](config/categories.ts) defines the 20
 ordered enterprise/product categories. Both are internal and are not package exports.
 
-`icons/` contains only its empty-directory placeholder. SVG/source validation and deterministic
-SVG-to-React generation are implemented, with a small shared runtime for size and accessibility
-defaults; the manifest, public icon exports, and playground remain future work. No category,
-variant, or size-master source folders are created yet. The removed `@qeetrix/icons/icons/*` deep
-imports stay removed. See [docs/validation.md](docs/validation.md) and
-[docs/generation.md](docs/generation.md).
+Validation, SVG-to-React generation, the generated root exports, the manifest, and the visual QA
+playground are implemented. `icons/` holds the Phase 3A calibration batch: four outline-only
+primitives in `actions` and `navigation`. Stroke width, safe area, and the rest of the visual
+system remain provisional; findings are logged in [docs/calibration.md](docs/calibration.md). See
+also [docs/validation.md](docs/validation.md) and [docs/generation.md](docs/generation.md).
 
-## Public foundations
+## Public API
 
-```ts
-import type { IconDirectionality, IconVariant } from "@qeetrix/icons";
+The contract is in [docs/api.md](docs/api.md). `PlusIcon`, `XIcon`, `CheckIcon`, and
+`ChevronDownIcon` exist today; `SearchIcon` and `StarIcon` below illustrate future icons:
+
+```tsx
+import { SearchIcon, StarIcon, type IconProps } from "@qeetrix/icons";
+import { iconManifest } from "@qeetrix/icons/manifest";
+
+<SearchIcon size={20} aria-label="Search" />
+<StarIcon />
+<StarIcon variant="filled" />
 ```
 
-`IconVariant` is `"outline" | "filled"`. `IconDirectionality` is `"mirror" | "preserve"`.
-These are concepts, not component props. The root JavaScript module exports no runtime values or
-icons; the existing package-metadata subpath remains available. There is no restrictive `IconSize`
-type: recommended design sizes do not settle future support for values such as `18` or `"1em"`.
+Each icon concept is one component, also importable as `@qeetrix/icons/icons/<id>`. `variant`
+defaults to `"outline"` and is typed to the drawings that exist, so `<SearchIcon variant="filled" />`
+is a type error unless a filled search drawing is added. Outline and filled stay separately drawn
+SVGs. Categories never appear in names or import paths. `size` takes any number or CSS
+length; 14, 16, 20, 24, and 32 are recommendations, not limits. Today the root exports only the
+`IconProps`, `IconVariant`, and `IconDirectionality` types, and the manifest is empty. The 1.x
+`@qeetrix/icons/icons/<category>/<name>` paths are gone; 2.0 subpaths are category-free.
 
 ## Design direction
 
@@ -55,9 +66,9 @@ Read [docs/design-principles.md](docs/design-principles.md),
 
 ## Architecture direction
 
-Human-authored SVG flows through validation and React generation, then later manifest generation
-and package exports, into Qeetrix UI and Qeet products. Validation and generation are implemented.
-Generated components target React 19, the package's only peer dependency, and are not exported yet.
+Human-authored SVG flows through validation, React generation, manifest generation, and package
+exports into Qeetrix UI and Qeet products; all four are implemented. Generated components target
+React 19, the package's only peer dependency.
 See [docs/architecture.md](docs/architecture.md) for ownership and phase boundaries.
 
 ## Develop
@@ -74,14 +85,17 @@ bun run check:icons      # validate production SVG sources
 bun run generate         # validate, then regenerate src/generated/icons/
 bun run check:generated  # prove generated output matches source
 bun run build
+bun run playground       # internal visual QA playground (not published)
+bun run playground:build # prove the playground builds
 ```
 
 SVG is the source of truth: edit `icons/`, run `bun run generate`, and never hand-edit
-`src/generated/`. Details are in [docs/generation.md](docs/generation.md).
+`src/generated/` or `icon-manifest.json`. Details are in [docs/generation.md](docs/generation.md);
+the human review process is in [docs/visual-qa.md](docs/visual-qa.md).
 
 The test script runs Vitest, matching CI. Use `bun run format` for Biome fixes. Contributors must
 keep phase boundaries explicit, update config and docs together, and never hand-edit generated
-files. Do not add production artwork during Phase 2C or copy, trace, or slightly modify paths from Lucide,
+files. Add artwork only through the calibration phases, and never copy, trace, or slightly modify paths from Lucide,
 Iconsax/Vuesax, or any other third-party icon library. Principles may be studied; geometry must be
 independently drawn. See [docs/contributing.md](docs/contributing.md).
 

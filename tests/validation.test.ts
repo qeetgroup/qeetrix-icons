@@ -21,6 +21,7 @@ import { diagnostic, formatDiagnostics, sortDiagnostics } from "../scripts/lib/d
 import { createRepositoryFixture, syntheticSvg, writeFixture } from "./helpers.js";
 
 const outlineFile = "icons/outline/actions/fixture.svg";
+const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
 
 const temporaryRepositories: string[] = [];
 
@@ -41,16 +42,41 @@ describe("repository-wide identity", () => {
     expect(validateSources([])).toEqual({ iconCount: 0, diagnostics: [] });
   });
 
-  it("allows selective variants and correctly matched counterparts", () => {
+  it("allows outline-only concepts and one matched filled counterpart per name", () => {
     const sources = [
       { file: outlineFile, source: syntheticSvg() },
       { file: "icons/filled/actions/fixture.svg", source: syntheticSvg({ fill: "currentColor" }) },
+      { file: "icons/outline/status/other-fixture.svg", source: syntheticSvg() },
+    ];
+    expect(validateSources(sources)).toEqual({ iconCount: 3, diagnostics: [] });
+  });
+
+  it("rejects a filled drawing without its outline drawing", () => {
+    const result = validateSources([
+      { file: outlineFile, source: syntheticSvg() },
       {
         file: "icons/filled/status/other-fixture.svg",
         source: syntheticSvg({ fill: "currentColor" }),
       },
-    ];
-    expect(validateSources(sources)).toEqual({ iconCount: 3, diagnostics: [] });
+    ]);
+    expect(result.diagnostics).toEqual([
+      expect.objectContaining({
+        code: "QXI-VAR-001",
+        file: "icons/filled/status/other-fixture.svg",
+        message: expect.stringContaining("icons/outline/status/other-fixture.svg"),
+      }),
+    ]);
+  });
+
+  it("rejects a duplicate drawing of the same name and variant", () => {
+    const result = validateSources([
+      { file: "icons/filled/actions/fixture.svg", source: syntheticSvg({ fill: "currentColor" }) },
+      { file: "icons/filled/data/fixture.svg", source: syntheticSvg({ fill: "currentColor" }) },
+      { file: outlineFile, source: syntheticSvg() },
+    ]);
+    expect(result.diagnostics).toEqual(
+      expect.arrayContaining([expect.objectContaining({ code: "QXI-DUP-001" })]),
+    );
   });
 
   it("rejects duplicate canonical names across categories", () => {
@@ -87,10 +113,13 @@ describe("repository-wide identity", () => {
     expect(result.diagnostics).toEqual([expect.objectContaining({ code: "QXI-DUP-003" })]);
   });
 
-  it("requires counterpart categories to match", () => {
+  it.each([
+    ["outline first", "icons/outline/status/fixture.svg", "icons/filled/actions/fixture.svg"],
+    ["filled first", "icons/outline/actions/fixture.svg", "icons/filled/status/fixture.svg"],
+  ])("requires counterpart categories to match (%s)", (_, outline, filled) => {
     const result = validateSources([
-      { file: outlineFile, source: syntheticSvg() },
-      { file: "icons/filled/status/fixture.svg", source: syntheticSvg({ fill: "currentColor" }) },
+      { file: outline, source: syntheticSvg() },
+      { file: filled, source: syntheticSvg({ fill: "currentColor" }) },
     ]);
     expect(result.diagnostics).toEqual([expect.objectContaining({ code: "QXI-DUP-004" })]);
   });
@@ -138,7 +167,10 @@ describe("production scanner and fixture isolation", () => {
     writeFixture(root, outlineFile, "<script/>");
     const script = fileURLToPath(new URL("../scripts/check/check-icons.ts", import.meta.url));
     const output = execFileSync("bun", [script], { cwd: root, encoding: "utf8" });
-    expect(output.trim()).toBe("0 production icons validated.");
+    // The temporary root's invalid fixture is ignored: the CLI validates this repository.
+    expect(output.trim()).toBe(
+      `${validateRepository(repositoryRoot).iconCount} production icons validated.`,
+    );
   });
 
   it("passes an empty source root and never scans test fixtures", () => {
@@ -547,6 +579,8 @@ describe("icon names", () => {
     "../search.svg",
     "con.svg",
     "com1.svg",
+    "star-filled.svg",
+    "star-outline.svg",
     "",
   ])("rejects invalid name %s", (filename) => {
     expect(validateIconName(filename)).toEqual([
@@ -559,6 +593,58 @@ describe("icon names", () => {
     expect(iconExportName("file-text")).toBe("FileTextIcon");
     expect(iconExportName("map")).toBe("MapIcon");
     expect(iconExportName("file-3d")).toBe(iconExportName("file3d"));
+  });
+
+  it("derives one component name per concept, never from variant or category", () => {
+    expect(componentNameFromFilename("star.svg")).toBe("StarIcon");
+    expect(componentNameFromFilename("shield-check.svg")).toBe("ShieldCheckIcon");
+    for (const variant of iconSystem.architecture.variants) {
+      const location = validateSourcePath(`icons/${variant}/status/star.svg`).location;
+      expect(location?.variant).toBe(variant);
+      expect(componentNameFromFilename(`${location?.name}.svg`)).toBe("StarIcon");
+    }
+    expect(componentNameFromFilename("star.svg")).not.toMatch(/Outline|Filled|Solid|Status/);
+  });
+});
+
+describe("authored metadata", () => {
+  const star = { file: outlineFile, source: syntheticSvg() };
+  const filledStar = {
+    file: "icons/filled/actions/fixture.svg",
+    source: syntheticSvg({ fill: "currentColor" }),
+  };
+
+  it("accepts overrides for existing names, covering every variant of the name", () => {
+    expect(
+      validateSources([star, filledStar], { fixture: { directionality: "mirror" } }).diagnostics,
+    ).toEqual([]);
+  });
+
+  it("rejects metadata for a name with no source", () => {
+    expect(
+      validateSources([star], { "fixture-renamed": { directionality: "mirror" } }).diagnostics,
+    ).toEqual([
+      expect.objectContaining({
+        code: "QXI-META-001",
+        file: "config/icon-metadata.ts",
+        message: expect.stringContaining('"fixture-renamed"'),
+      }),
+    ]);
+  });
+
+  it("rejects unsupported directionality values", () => {
+    const metadata = JSON.parse('{ "fixture": { "directionality": "auto" } }');
+    expect(validateSources([star], metadata).diagnostics).toEqual([
+      expect.objectContaining({ code: "QXI-META-002", file: "config/icon-metadata.ts" }),
+    ]);
+  });
+
+  it("does not treat inherited object properties as metadata", () => {
+    const constructorIcon = {
+      file: "icons/outline/actions/constructor.svg",
+      source: syntheticSvg(),
+    };
+    expect(validateSources([constructorIcon], {}).diagnostics).toEqual([]);
   });
 });
 

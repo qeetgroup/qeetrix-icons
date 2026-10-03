@@ -4,13 +4,16 @@ Directionality belongs to an icon's meaning, not its category, a filename substr
 the drawing contains an arrow. The foundational public type in
 [src/types/icon.ts](../src/types/icon.ts) is `IconDirectionality = "mirror" | "preserve"`.
 
-Future manifest metadata should record `directionality` explicitly for each concept:
+The generated manifest records `directionality` for every drawing:
 
 - `mirror`: a logical action follows reading direction and may need horizontal mirroring in RTL.
 - `preserve`: the authored orientation carries fixed meaning and remains unchanged in RTL.
 
-Phase 2A defines that vocabulary only. There is no manifest, direction detection, CSS mirroring,
-React direction prop, or runtime implementation yet.
+Every concept is `preserve` unless [config/icon-metadata.ts](../config/icon-metadata.ts) lists it,
+for example `"arrow-back": { directionality: "mirror" }`. One entry covers the concept's outline
+and filled drawings. Directionality is never inferred from a filename, and an entry for a name with
+no source fails validation. The manifest exposes the value through `@qeetrix/icons/manifest`; there
+is still no direction detection, CSS mirroring, React direction prop, or runtime mirroring.
 
 ## Logical versus physical direction
 
@@ -49,7 +52,9 @@ once to the icon, not to its containing text or entire control. Keep the canonic
 unchanged. Accessible names must continue to describe the action in context, not merely its
 current arrow orientation.
 
-Later visual QA must compare logical navigation, conversations, indentation, and panels in LTR
-and RTL, while verifying that preserve-oriented icons remain unchanged. Check compound marks,
-optical balance, and alignment after mirroring. How direction is passed or detected and how
-transforms are applied remain implementation decisions for later phases.
+Visual QA must compare logical navigation, conversations, indentation, and panels in LTR and RTL,
+while verifying that preserve-oriented icons remain unchanged. Check compound marks, optical
+balance, and alignment after mirroring. The playground shows LTR beside an **RTL QA preview**
+driven only by manifest directionality; its mirroring is a CSS preview and is not package
+behavior. See [visual-qa.md](visual-qa.md#rtl). How the runtime passes or detects direction and
+applies transforms remains an implementation decision for a later phase.

@@ -1,6 +1,9 @@
 import { type Dirent, lstatSync, readdirSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
+import { type IconMetadataOverride, iconMetadata } from "../../config/icon-metadata.js";
+import { iconSystem } from "../../config/icon-system.js";
 import { compareText, type Diagnostic, diagnostic, sortDiagnostics } from "../lib/diagnostics.js";
+import { validateMetadata } from "./validate-metadata.js";
 import { type IconLocation, iconExportName, validateSourcePath } from "./validate-source-path.js";
 import { maxSvgBytes, validateSvg } from "./validate-svg.js";
 
@@ -18,7 +21,10 @@ export type SourceScan = ValidationResult & {
   readonly sources: readonly IconSource[];
 };
 
-export function validateSources(sources: readonly IconSource[]): ValidationResult {
+export function validateSources(
+  sources: readonly IconSource[],
+  metadata: Readonly<Record<string, IconMetadataOverride>> = iconMetadata,
+): ValidationResult {
   const diagnostics: Diagnostic[] = [];
   const variantNames = new Map<string, IconLocation>();
   const canonicalNames = new Map<string, IconLocation>();
@@ -79,6 +85,7 @@ export function validateSources(sources: readonly IconSource[]): ValidationResul
       foldedNames.set(foldedName, location);
     }
 
+    // Variants of one name share its export; only distinct names can collide.
     const exportName = iconExportName(location.name);
     const previousExport = exportNames.get(exportName);
     if (previousExport && previousExport.name !== location.name) {
@@ -93,6 +100,23 @@ export function validateSources(sources: readonly IconSource[]): ValidationResul
       exportNames.set(exportName, location);
     }
   }
+  // Outline-first: every concept needs its default-variant drawing; other variants are optional.
+  const { defaultVariant } = iconSystem.architecture;
+  for (const location of variantNames.values()) {
+    if (
+      location.variant !== defaultVariant &&
+      !variantNames.has(`${defaultVariant}/${location.name}`)
+    ) {
+      diagnostics.push(
+        diagnostic(
+          "QXI-VAR-001",
+          location.file,
+          `A ${location.variant} drawing needs the ${defaultVariant} drawing icons/${defaultVariant}/${location.category}/${location.name}.svg.`,
+        ),
+      );
+    }
+  }
+  diagnostics.push(...validateMetadata(metadata, new Set(canonicalNames.keys())));
   return { iconCount: sources.length, diagnostics: sortDiagnostics(diagnostics) };
 }
 

@@ -18,7 +18,7 @@ try {
     process.exitCode = 1;
   } else {
     console.log(
-      `Generated output is up to date: ${plan.files.length} React icon components from ${plan.iconCount} production icons.`,
+      `Generated output is up to date: ${plan.concepts.length} React icon components, the root exports, and the manifest from ${plan.iconCount} production icons.`,
     );
   }
 } catch (error) {

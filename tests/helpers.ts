@@ -34,3 +34,38 @@ export function createRepositoryFixture(): string {
   writeFixture(root, "icons/.gitkeep", "");
   return root;
 }
+
+/** Root attributes for a filled synthetic source. */
+export const filledAttributes = {
+  fill: "currentColor",
+  stroke: undefined,
+  "stroke-width": undefined,
+  "stroke-linecap": undefined,
+  "stroke-linejoin": undefined,
+};
+
+/**
+ * A synthetic, test-only source set spanning categories, both variants of one concept, and one
+ * authored directionality override. Each drawing has distinct geometry so bundles can be inspected.
+ * Never written to the production `icons/` tree.
+ */
+export const apiFixtures = [
+  {
+    file: "icons/outline/actions/fixture-search.svg",
+    source: syntheticSvg({}, '<path d="M 3.125 7 L 11 13"/>'),
+  },
+  {
+    file: "icons/outline/status/fixture-star.svg",
+    source: syntheticSvg({}, '<circle cx="12" cy="12" r="6.25"/>'),
+  },
+  {
+    file: "icons/filled/status/fixture-star.svg",
+    source: syntheticSvg(filledAttributes, '<circle cx="12" cy="12" r="7.5"/>'),
+  },
+  {
+    file: "icons/outline/navigation/fixture-arrow.svg",
+    source: syntheticSvg({}, '<polyline points="9.375,6 15,12 9.375,18"/>'),
+  },
+] as const;
+
+export const apiFixtureMetadata = { "fixture-arrow": { directionality: "mirror" } } as const;

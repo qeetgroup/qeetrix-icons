@@ -27,7 +27,7 @@ try {
     } else {
       console.log(`Validated ${plan.iconCount} production icons.`);
       console.log(
-        `Generated ${result.generatedCount} React icon components (${result.changedCount} written, ${result.removedCount} stale removed).`,
+        `Generated ${result.generatedCount} React icon components, the root exports, and the manifest (${result.changedCount} files written, ${result.removedCount} stale removed).`,
       );
     }
   }

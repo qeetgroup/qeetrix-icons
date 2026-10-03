@@ -2,8 +2,8 @@
 
 Phase 2B implements the gate between human-authored SVG and later generation. It validates source
 organization, names, XML, a deliberately small SVG vocabulary, and repository-wide identity.
-It does not draw, normalize, optimize, generate, or rewrite anything. Production artwork is still
-empty, and the public package still exports only the Phase 2A foundational types.
+It does not draw, normalize, optimize, generate, or rewrite anything. Since Phase 2D it also
+validates authored metadata and the outline-required variant rule.
 
 ## Run the gate
 
@@ -34,15 +34,20 @@ The future file contract is `icons/<variant>/<category>/<name>.svg`:
   A semantic base name such as `copy` is allowed. Internal semantic numerals such as
   `layout-2-columns`, `file-3d`, and `protocol-v2` are allowed. A genuinely semantic trailing
   integer will need a deliberate future naming-policy decision, not an automatic exception now.
+- Names ending in a variant word, `-filled` or `-outline`, fail: the filled drawing of `star` is
+  `icons/filled/<category>/star.svg`, and both drawings belong to the one `StarIcon`. See
+  [api.md](api.md#one-component-per-concept).
 - Windows device filenames (`con`, `prn`, `aux`, `nul`, `com1`-`com9`, `lpt1`-`lpt9`) fail so source
   names remain portable. The initial letter requirement also ensures a valid eventual JavaScript
   identifier when converted to PascalCase plus `Icon`.
 - Within a variant, canonical names are unique across the whole catalogue, not per category.
-  Case-insensitive filename collisions and distinct names that become the same PascalCase-plus-
-  `Icon` identifier also fail. For example, `file-3d` and `file3d` both become `File3dIcon`.
-- Outline and filled counterparts are optional. When the same name exists in both, its category
-  must agree. Both represent one semantic concept; no component-generation or filled-export API
-  is chosen here. Differently named drawings cannot be automatically identified as synonyms.
+  Case-insensitive filename collisions and distinct names that become the same public export also
+  fail. For example, `file-3d` and `file3d` both become `File3dIcon`. The same name once per
+  variant is one concept, not a collision.
+- Every concept needs an outline drawing; a filled drawing is an optional addition. A filled
+  source without `icons/outline/<category>/<name>.svg` fails (`QXI-VAR-001`). When both exist, the
+  category must agree (`QXI-DUP-004`); both are drawings of one concept and generate one component.
+  Differently named drawings cannot be automatically identified as synonyms.
 
 Path functions accept repository-relative forward-slash paths; the scanner builds these paths
 independently of host separators. Collision checks operate on strings, not filesystem casing
@@ -169,15 +174,19 @@ QXI-SVG-006 "icons/outline/actions/example.svg"
 | `QXI-DUP-003` | Normalized component-name collision | Error |
 | `QXI-DUP-004` | Cross-variant category disagreement | Error |
 | `QXI-IO-001` | Unreadable/invalid UTF-8 input, invalid root, symlink, or unexpected file | Error |
+| `QXI-META-001` | Authored metadata names an icon with no source SVG | Error |
+| `QXI-META-002` | Authored metadata has an unsupported value | Error |
+| `QXI-VAR-001` | A non-outline drawing without its outline drawing | Error |
 
 ## API and fixture isolation
 
 [validate-source-path.ts](../scripts/check/validate-source-path.ts) exposes `validateIconName` and
 `validateSourcePath`. [validate-svg.ts](../scripts/check/validate-svg.ts) exposes `validateSvg`.
 [validate-repository.ts](../scripts/check/validate-repository.ts) provides pure `validateSources`,
-the filesystem scanner `scanIconSources`, and `validateRepository`, which combines them. Generation
-reuses the same scanner and validator rather than re-implementing any rule; see
-[generation.md](generation.md). The small CLI only anchors the root, formats
+the filesystem scanner `scanIconSources`, and `validateRepository`, which combines them.
+`validateSources` also checks [config/icon-metadata.ts](../config/icon-metadata.ts) through
+[validate-metadata.ts](../scripts/check/validate-metadata.ts). Generation reuses the same scanner
+and validator rather than re-implementing any rule; see [generation.md](generation.md). The small CLI only anchors the root, formats
 diagnostics, and sets the exit status. These are repository-internal APIs, not package exports.
 
 The scanner visits only `icons/`, rejects symlinks without following them, and accepts only SVG

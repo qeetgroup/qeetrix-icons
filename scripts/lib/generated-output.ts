@@ -11,25 +11,40 @@ import {
   writeFileSync,
 } from "node:fs";
 import { dirname, join, posix } from "node:path";
+import { iconSystem } from "../../config/icon-system.js";
 import { validateSourcePath } from "../check/validate-source-path.js";
 import { compareText, type Diagnostic, diagnostic, sortDiagnostics } from "./diagnostics.js";
 import {
-  type GeneratedIcon,
+  barrelPath,
   type GenerationPlan,
-  generatedIconsDirectory,
+  generatedDirectory,
   generatedOutputPath,
+  manifestJsonPath,
+  manifestModulePath,
+  packageArtifactPaths,
 } from "./generation-plan.js";
 
-/** What currently exists inside the generated-icons directory, as repository-relative paths. */
+/** Generated files outside the owned directory. Written and compared, never deleted. */
+const ownedRootFiles: readonly string[] = [manifestJsonPath];
+
+/** Written after every component, in this order. */
+const writeLast: readonly string[] = [barrelPath, manifestModulePath, manifestJsonPath];
+
+type ChangedFile = { readonly path: string; readonly contents: string; readonly missing: boolean };
+
+/** What currently exists in generated locations, as repository-relative paths. */
 type Inventory = {
   readonly root: string;
+  /** Files inside the owned directory. */
   readonly files: ReadonlySet<string>;
   readonly directories: ReadonlySet<string>;
+  /** Owned root files that currently exist. */
+  readonly rootFiles: ReadonlySet<string>;
 };
 
 type PreparedOutput = {
   readonly inventory: Inventory;
-  readonly changed: readonly { readonly icon: GeneratedIcon; readonly missing: boolean }[];
+  readonly changed: readonly ChangedFile[];
   readonly stale: readonly string[];
 };
 
@@ -58,26 +73,44 @@ function statIfPresent(path: string): Stats | undefined {
   }
 }
 
+/** Writing through a symlink or hard link would modify data outside the boundary. */
+function assertRegularFile(file: string, info: Stats): void {
+  if (info.isSymbolicLink() || !info.isFile()) {
+    throw new OutputError(file, "Links and special files are not allowed as generated output.");
+  }
+  if (info.nlink > 1) {
+    throw new OutputError(file, "Hard-linked files are not allowed as generated output.");
+  }
+}
+
 /**
- * Lists the generated-icons directory without following links. Every ancestor must be a real
- * directory, and the tree may hold only regular, singly linked files: writing through a symlink or
- * hard link would modify data outside the boundary.
+ * Lists generated locations without following links. Every ancestor of the owned directory must be
+ * a real directory, and generated files must be regular, singly linked files.
  */
 function inspectOutput(repositoryRoot: string): Inventory {
   const root = realpathSync(repositoryRoot);
   const files = new Set<string>();
   const directories = new Set<string>();
+  const rootFiles = new Set<string>();
+
+  for (const file of ownedRootFiles) {
+    const info = statIfPresent(join(root, file));
+    if (!info) continue;
+    assertRegularFile(file, info);
+    rootFiles.add(file);
+  }
+
   let ancestor = "";
-  for (const part of generatedIconsDirectory.split("/")) {
+  for (const part of generatedDirectory.split("/")) {
     ancestor = posix.join(ancestor, part);
     const info = statIfPresent(join(root, ancestor));
-    if (!info) return { root, files, directories };
+    if (!info) return { root, files, directories, rootFiles };
     if (info.isSymbolicLink() || !info.isDirectory()) {
       throw new OutputError(ancestor, "Generated-output ancestors must be real directories.");
     }
   }
 
-  const pending = [generatedIconsDirectory];
+  const pending = [generatedDirectory];
   while (pending.length > 0) {
     const directory = pending.pop();
     if (!directory) break;
@@ -85,85 +118,113 @@ function inspectOutput(repositoryRoot: string): Inventory {
     for (const name of readdirSync(join(root, directory), { encoding: "utf8" }).sort(compareText)) {
       const file = posix.join(directory, name);
       const info = lstatSync(join(root, file));
-      if (info.isSymbolicLink() || (!info.isDirectory() && !info.isFile())) {
-        throw new OutputError(file, "Links and special files are not allowed in generated output.");
-      }
-      if (info.isDirectory()) {
+      if (info.isDirectory() && !info.isSymbolicLink()) {
         pending.push(file);
-      } else if (info.nlink > 1) {
-        throw new OutputError(file, "Hard-linked files are not allowed in generated output.");
       } else {
+        assertRegularFile(file, info);
         files.add(file);
       }
     }
   }
-  return { root, files, directories };
+  return { root, files, directories, rootFiles };
 }
 
-/** Proves every planned path is the canonical output of its own validated source. */
-function assertPlannedPaths(plan: GenerationPlan): Set<string> {
-  const expected = new Set<string>();
-  for (const icon of plan.files) {
-    const source = validateSourcePath(icon.file);
-    if (
-      !source.location ||
-      source.diagnostics.length > 0 ||
-      !icon.outputPath.startsWith(`${generatedIconsDirectory}/`) ||
-      icon.outputPath !== posix.normalize(icon.outputPath) ||
-      icon.outputPath !== generatedOutputPath(source.location)
-    ) {
+/**
+ * Proves the plan writes exactly the canonical set: one module per concept at the path derived from
+ * its validated sources (which must agree on name and category, default variant first), plus the
+ * fixed package artifacts, each once.
+ */
+function expectedFiles(plan: GenerationPlan): Map<string, string> {
+  const allowed = new Set(packageArtifactPaths);
+  for (const concept of plan.concepts) {
+    const canonical =
+      concept.id === concept.name &&
+      concept.outputPath === generatedOutputPath(concept.name) &&
+      concept.sources[0]?.variant === iconSystem.architecture.defaultVariant &&
+      concept.sources.every(({ file, name, category, variant }) => {
+        const source = validateSourcePath(file);
+        return (
+          source.diagnostics.length === 0 &&
+          source.location?.name === name &&
+          source.location.category === category &&
+          source.location.variant === variant &&
+          name === concept.name &&
+          category === concept.category
+        );
+      });
+    if (!canonical) {
       throw new OutputError(
-        icon.outputPath,
-        `Planned output is not the canonical location for ${JSON.stringify(icon.file)}.`,
+        concept.outputPath,
+        `Planned output is not the canonical module for concept ${JSON.stringify(concept.name)}.`,
       );
     }
-    if (expected.has(icon.outputPath)) {
-      throw new OutputError(icon.outputPath, "Duplicate generated output path.");
+    if (allowed.has(concept.outputPath)) {
+      throw new OutputError(concept.outputPath, "Duplicate generated output path.");
     }
-    expected.add(icon.outputPath);
+    allowed.add(concept.outputPath);
+  }
+
+  const expected = new Map<string, string>();
+  for (const file of plan.files) {
+    if (!allowed.has(file.path)) {
+      throw new OutputError(file.path, "Planned file is not a canonical generated path.");
+    }
+    if (expected.has(file.path)) {
+      throw new OutputError(file.path, "Duplicate generated output path.");
+    }
+    expected.set(file.path, file.contents);
+  }
+  for (const path of allowed) {
+    if (!expected.has(path)) throw new OutputError(path, "The plan omits a generated file.");
   }
   return expected;
 }
 
 /** Read-only preflight shared by the writer and the checker. */
 function prepareOutput(repositoryRoot: string, plan: GenerationPlan): PreparedOutput {
-  const expected = assertPlannedPaths(plan);
+  const expected = expectedFiles(plan);
   const inventory = inspectOutput(repositoryRoot);
-  const changed: { icon: GeneratedIcon; missing: boolean }[] = [];
-  for (const icon of plan.files) {
-    if (inventory.directories.has(icon.outputPath)) {
-      throw new OutputError(icon.outputPath, "A directory occupies a planned component file.");
+  const changed: ChangedFile[] = [];
+  for (const [path, contents] of expected) {
+    if (inventory.directories.has(path)) {
+      throw new OutputError(path, "A directory occupies a planned generated file.");
     }
     for (
-      let parent = posix.dirname(icon.outputPath);
-      parent !== generatedIconsDirectory;
+      let parent = posix.dirname(path);
+      parent.startsWith(`${generatedDirectory}/`);
       parent = posix.dirname(parent)
     ) {
       if (inventory.files.has(parent)) {
         throw new OutputError(parent, "A file occupies a planned output directory.");
       }
     }
-    const missing = !inventory.files.has(icon.outputPath);
+    const missing = !inventory.files.has(path) && !inventory.rootFiles.has(path);
     if (
       missing ||
-      !readFileSync(join(inventory.root, icon.outputPath)).equals(Buffer.from(icon.code, "utf8"))
+      !readFileSync(join(inventory.root, path)).equals(Buffer.from(contents, "utf8"))
     ) {
-      changed.push({ icon, missing });
+      changed.push({ path, contents, missing });
     }
   }
+  // Components first and the catalogue last, so an interrupted write never leaves the barrel or
+  // manifest describing components that were not written.
+  const order = (path: string) => writeLast.indexOf(path);
+  changed.sort(
+    (left, right) => order(left.path) - order(right.path) || compareText(left.path, right.path),
+  );
   const stale = [...inventory.files].filter((file) => !expected.has(file)).sort(compareText);
   return { inventory, changed, stale };
 }
 
 function outputDiagnostic(error: unknown, prefix: string): Diagnostic {
-  const file = error instanceof OutputError ? error.file : generatedIconsDirectory;
+  const file = error instanceof OutputError ? error.file : generatedDirectory;
   const message = error instanceof Error ? error.message : String(error);
   return diagnostic("QXI-GEN-002", file, `${prefix}: ${message}`);
 }
 
 /**
  * Compares the plan with what is on disk, byte for byte, without writing anything. Reports
- * missing, edited or out-of-date, and stale files. Independent of Git.
+ * missing, edited or out-of-date, and stale generated files. Independent of Git.
  */
 export function checkGenerationPlan(
   repositoryRoot: string,
@@ -177,11 +238,11 @@ export function checkGenerationPlan(
     return [outputDiagnostic(error, "Unsafe or unreadable generated output")];
   }
   return sortDiagnostics([
-    ...prepared.changed.map(({ icon, missing }) =>
+    ...prepared.changed.map(({ path, missing }) =>
       diagnostic(
         "QXI-GEN-003",
-        icon.outputPath,
-        `Generated component is ${missing ? "missing" : "out of date"}; run bun run generate.`,
+        path,
+        `Generated file is ${missing ? "missing" : "out of date"}; run bun run generate.`,
       ),
     ),
     ...prepared.stale.map((file) =>
@@ -191,9 +252,9 @@ export function checkGenerationPlan(
 }
 
 /**
- * Makes the generated-icons directory match the plan: writes changed components, deletes stale
- * files, and removes emptied subdirectories. Refuses an invalid plan, and runs the full read-only
- * preflight before the first write, so a rejected run changes nothing.
+ * Makes generated locations match the plan: writes changed files, deletes stale files inside
+ * `src/generated/`, and removes emptied subdirectories. Refuses an invalid plan, and runs the full
+ * read-only preflight before the first write, so a rejected run changes nothing.
  */
 export function writeGenerationPlan(
   repositoryRoot: string,
@@ -216,10 +277,10 @@ export function writeGenerationPlan(
 
   const { inventory, changed, stale } = prepared;
   try {
-    for (const { icon } of changed) {
-      const absolute = join(inventory.root, icon.outputPath);
+    for (const { path, contents } of changed) {
+      const absolute = join(inventory.root, path);
       mkdirSync(dirname(absolute), { recursive: true });
-      writeFileSync(absolute, icon.code, "utf8");
+      writeFileSync(absolute, contents, "utf8");
       result.changedCount += 1;
     }
     for (const file of stale) {
@@ -231,7 +292,7 @@ export function writeGenerationPlan(
       (left, right) => right.length - left.length || compareText(right, left),
     );
     for (const directory of directories) {
-      if (directory === generatedIconsDirectory) continue;
+      if (directory === generatedDirectory) continue;
       const absolute = join(inventory.root, directory);
       if (readdirSync(absolute).length === 0) rmdirSync(absolute);
     }
@@ -241,5 +302,5 @@ export function writeGenerationPlan(
       diagnostics: [outputDiagnostic(error, "Writing generated output failed")],
     };
   }
-  return { ...result, generatedCount: plan.files.length, diagnostics: [] };
+  return { ...result, generatedCount: plan.concepts.length, diagnostics: [] };
 }

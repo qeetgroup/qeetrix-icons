@@ -1,8 +1,9 @@
 # Dependencies
 node_modules
 
-# Build output — dist/ is the only build directory
+# Build output: the package's dist/ and the playground's playground/dist/
 dist
+playground/dist
 *.tsbuildinfo
 
 # Packed tarballs (produced by `bun pm pack` during verification)

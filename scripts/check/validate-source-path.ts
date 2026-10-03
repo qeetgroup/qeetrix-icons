@@ -15,6 +15,7 @@ export type IconLocation = {
   readonly variant: IconVariant;
 };
 
+/** PascalCase plus `Icon`: `user-plus` → `UserPlusIcon`. The only PascalCase conversion. */
 export function iconExportName(name: string): string {
   return `${name
     .split("-")
@@ -43,12 +44,27 @@ export function validateIconName(filename: string, file = filename): Diagnostic[
       ),
     ];
   }
+  if (iconSystem.architecture.variants.some((variant) => name.endsWith(`-${variant}`))) {
+    return [
+      diagnostic(
+        "QXI-NAME-001",
+        file,
+        "Variant suffixes are reserved; put filled artwork in icons/filled/ under the same name.",
+      ),
+    ];
+  }
   if (/^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])$/.test(name)) {
     return [diagnostic("QXI-NAME-001", file, "This filename is reserved on Windows.")];
   }
   return [];
 }
 
+/**
+ * The canonical public component name for a source filename. Variant never affects it:
+ * `outline/…/star.svg` and `filled/…/star.svg` are both the one `StarIcon`. Generation, exports,
+ * and the manifest all use this. Throws on an invalid filename rather than producing a broken
+ * identifier.
+ */
 export function componentNameFromFilename(filename: string): string {
   const diagnostics = validateIconName(filename);
   if (diagnostics.length > 0) throw new Error(formatDiagnostics(diagnostics));

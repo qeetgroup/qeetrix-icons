@@ -19,10 +19,10 @@
   - The `react` peer dependency — the package currently contains no React components.
   - The `generate` and `generate:check` scripts, and the example viewer app.
 
-  **Current state.** The `@qeetrix/icons` entry point exports only the new `IconVariant` and
-  `IconDirectionality` foundational types, with no runtime values or icons. The new vocabulary
-  does not restore the removed component API. Do not rely on any 1.x icon name, prop, type, or
-  import path for 2.0.
+  **Current state.** The `@qeetrix/icons` root exports the `IconProps`, `IconVariant`, and
+  `IconDirectionality` types and, once icons exist, every generated icon component. There are no
+  production icons yet. The new API does not restore the removed one. Do not rely on any 1.x icon
+  name, prop, type, or import path for 2.0.
 
 ### Foundations (Phase 2A)
 
@@ -70,6 +70,70 @@
   dependencies for typechecking and rendering tests.
 - Production artwork and generated components remain empty. The root package API, export paths,
   and version are unchanged; no manifest, public icon exports, or playground are included.
+
+### Manifest, package exports, and public API (Phase 2D)
+
+- Locked the public API to one component per icon concept: `<StarIcon />` renders the outline
+  drawing, and `<StarIcon variant="filled" />` selects the filled one where it exists. Each
+  generated component types `variant` to its own drawings (`IconProps<"outline">` or
+  `IconProps<"outline" | "filled">`), so an unavailable or unknown variant is a type error, and
+  `variant` never reaches the DOM. Outline is the stable default. No export name or import path
+  contains a category or variant.
+- Outline and filled remain separately drawn SVGs. Every concept now requires its outline drawing
+  (`QXI-VAR-001`); filled is optional and must share the outline's category (`QXI-DUP-004`). Source
+  names ending in `-filled` or `-outline` are rejected.
+- `bun run generate` groups drawings into concepts and writes one flat module per concept,
+  `src/generated/icons/<id>.tsx`, plus a generated root barrel of static re-exports, a typed
+  manifest module, and `icon-manifest.json`, all from the same validated plan. `check:generated`
+  covers every generated file, and generation now owns all of `src/generated/`.
+- Added the concept-level manifest schema (`schemaVersion` 1: `id`, `name`, `componentName`,
+  `category`, `variants`, `directionality`) and `config/icon-metadata.ts` for authored exceptions.
+  Directionality defaults to `preserve`; overrides for missing icons fail validation
+  (`QXI-META-001`/`002`).
+- Package exports: `@qeetrix/icons` (icons plus `IconProps`, `IconVariant`, `IconDirectionality`),
+  `@qeetrix/icons/icons/<id>`, `@qeetrix/icons/manifest`, and `package.json`. Everything else is
+  unreachable. `IconProps` is now public and generic over variants. The root never imports the
+  manifest, and the manifest never imports an icon.
+- Added packed-tarball tests for Node ESM and TypeScript `bundler`/`nodenext` resolution, typed
+  variants, blocked internal paths, published contents, and per-concept bundler tree shaking, plus
+  [docs/api.md](docs/api.md).
+- Revised before release: an earlier local draft of this phase exposed filled drawings as separate
+  `<Name>FilledIcon` exports with `-filled` subpaths and one manifest record per drawing. That
+  model was replaced by the `variant` prop and concept-level manifest above and never shipped.
+- Production artwork, generated components, and manifest records remain zero. Version, release
+  triggers, and dependencies are unchanged; no playground or Storybook catalogue is included.
+
+### Developer playground and visual QA (Phase 2E)
+
+- Added the internal playground (`bun run playground`, `bun run playground:build`): a Vite + React
+  19 tool that derives its catalogue from the generated manifest and modules, with search, category
+  (in configured order), variant, and directionality filters, and shareable URL state.
+- The inspector shows recommended sizes from config with emphasized 14 and 16 px pixel views, a
+  custom size, a 24×24 construction view with unit grid, center axes, and the candidate safe area,
+  a labelled stroke-calibration comparison beside the actual source rendering, outline/filled
+  comparison, light/dark surfaces, currentColor tokens, representative interface contexts, Qeet UI
+  and Qeet Text typography rows with real font-availability detection, an LTR/RTL QA preview, public
+  imports, a review checklist, and the provisional calibration values.
+- Added internal `calibration.strokeCandidates` to the icon-system config, used only by the
+  playground, and [docs/visual-qa.md](docs/visual-qa.md) for the human review process.
+- `playground:build` runs in CI. The playground is never published, writes no generated or source
+  file, and needs no network. `vite` is declared as a development dependency (already installed
+  through Vitest); no React plugin, UI kit, router, or icon library was added.
+- Production artwork, generated components, and manifest records remain zero. The public package
+  API, exports, and version are unchanged.
+
+### First calibration batch (Phase 3A)
+
+- Added the first original Qeetrix artwork, four outline-only primitives: `PlusIcon`, `XIcon`, and
+  `CheckIcon` in `actions`, and `ChevronDownIcon` in `navigation`. All use the configured 1.75
+  stroke, round caps and joins, and `preserve` directionality. No filled drawings.
+- Geometry was constructed on the 24-unit grid and reviewed in the playground at every recommended
+  size, at 1× pixels, on the construction grid, against stroke candidates, on light and dark
+  surfaces, and beside text. Findings are recorded in [docs/calibration.md](docs/calibration.md).
+- Stroke width, safe area, caps and joins, and the rest of the visual system remain provisional.
+  These icons are for calibration and are not ready for product migration.
+- Tests now check the calibration concepts, their outline-only typing, and per-concept
+  tree-shaking of the real icons in the packed package. The version is unchanged.
 
 ---
 

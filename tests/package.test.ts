@@ -1,0 +1,402 @@
+import { execFileSync } from "node:child_process";
+import {
+  cpSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  symlinkSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join, relative, sep } from "node:path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { iconManifest } from "../src/manifest.js";
+import { apiFixtureMetadata, apiFixtures, writeFixture } from "./helpers.js";
+
+/**
+ * The published contract, proved against a real tarball.
+ *
+ * A temporary copy of this repository gets the synthetic fixtures, runs the real `generate` CLI
+ * and `bun pm pack` (which builds), and the tarball is installed into a throwaway consumer. Nothing
+ * here touches the production `icons/`, `src/generated/`, or manifest.
+ */
+
+const PKG = join(import.meta.dirname, "..");
+/** The real production concepts, packed alongside the synthetic fixtures. */
+const production = iconManifest.icons;
+/** Each real concept's geometry strings, read from its generated module, to trace it in bundles. */
+const geometry = new Map(
+  production.map(({ id }) => [
+    id,
+    [
+      ...readFileSync(join(PKG, "src/generated/icons", `${id}.tsx`), "utf8").matchAll(
+        /\b(?:d|points)="([^"]+)"/g,
+      ),
+    ].map(([, value]) => value),
+  ]),
+);
+let workspace = "";
+let consumer = "";
+let tarball = "";
+
+const run = (command: string, args: string[], cwd: string) =>
+  execFileSync(command, args, { cwd, encoding: "utf8", stdio: "pipe" });
+
+function linkDependency(name: string): void {
+  mkdirSync(join(consumer, "node_modules", name, ".."), { recursive: true });
+  symlinkSync(join(PKG, "node_modules", name), join(consumer, "node_modules", name), "junction");
+}
+
+/**
+ * Runs an ES module in the consumer under Node specifically, so resolution follows Node's exports
+ * semantics whichever runtime executes the test suite. (Bun's resolver is more lenient: it also
+ * resolves an extension-bearing `@qeetrix/icons/icons/<id>.js`, which is not part of the contract.)
+ */
+function node(script: string): unknown {
+  return JSON.parse(run("node", ["--input-type=module", "-e", script], consumer));
+}
+
+beforeAll(() => {
+  workspace = mkdtempSync(join(tmpdir(), "qeetrix-icons-package-"));
+  const repository = join(workspace, "repository");
+  cpSync(PKG, repository, {
+    recursive: true,
+    filter: (source) =>
+      !relative(PKG, source)
+        .split(sep)
+        .some((part) => ["node_modules", "dist", ".git", "coverage"].includes(part)),
+  });
+  symlinkSync(join(PKG, "node_modules"), join(repository, "node_modules"), "junction");
+  for (const { file, source } of apiFixtures) writeFixture(repository, file, source);
+  writeFixture(
+    repository,
+    "config/icon-metadata.ts",
+    `import type { IconDirectionality } from "../src/types/icon.js";
+export type IconMetadataOverride = { readonly directionality: IconDirectionality };
+export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = ${JSON.stringify(apiFixtureMetadata)};
+`,
+  );
+  run("bun", ["scripts/build/generate-icons.ts"], repository);
+  tarball = run("bun", ["pm", "pack", "--quiet", "--destination", workspace], repository)
+    .trim()
+    .split("\n")
+    .pop() as string;
+  if (!tarball.startsWith(sep)) tarball = join(workspace, tarball);
+
+  consumer = join(workspace, "consumer");
+  const installed = join(consumer, "node_modules/@qeetrix/icons");
+  mkdirSync(installed, { recursive: true });
+  run("tar", ["-xzf", tarball, "-C", installed, "--strip-components=1"], workspace);
+  for (const name of ["react", "react-dom", "@types/react", "@types/react-dom"])
+    linkDependency(name);
+  writeFixture(
+    consumer,
+    "package.json",
+    '{ "name": "consumer", "private": true, "type": "module" }',
+  );
+}, 120_000);
+
+afterAll(() => {
+  if (workspace) rmSync(workspace, { recursive: true, force: true });
+});
+
+describe("packed @qeetrix/icons", () => {
+  it("ships only built output and package metadata", () => {
+    const entries = run("tar", ["-tzf", tarball], workspace)
+      .trim()
+      .split("\n")
+      .map((entry) => entry.replace(/^package\//, ""))
+      .sort();
+    for (const entry of entries) {
+      expect(
+        ["package.json", "README.md", "LICENSE"].includes(entry) || entry.startsWith("dist/"),
+        entry,
+      ).toBe(true);
+      expect(entry, entry).not.toMatch(
+        /\.svg$|(?<!\.d)\.tsx?$|icon-manifest\.json|scripts\/|config\//,
+      );
+    }
+    expect(entries).toEqual(
+      expect.arrayContaining([
+        "dist/index.js",
+        "dist/index.d.ts",
+        "dist/manifest.js",
+        "dist/manifest.d.ts",
+        "dist/generated/icons/fixture-search.js",
+        "dist/generated/icons/fixture-search.d.ts",
+        "dist/generated/icons/fixture-star.js",
+        "dist/generated/icons/fixture-star.d.ts",
+      ]),
+    );
+    expect(entries.filter((entry) => entry.includes("filled"))).toEqual([]);
+  });
+
+  it("resolves one component per concept from root, direct, and manifest entry points", () => {
+    const result = node(`
+      import * as root from "@qeetrix/icons";
+      import { FixtureSearchIcon } from "@qeetrix/icons/icons/fixture-search";
+      import { FixtureStarIcon } from "@qeetrix/icons/icons/fixture-star";
+      import { iconManifest } from "@qeetrix/icons/manifest";
+      import { createElement } from "react";
+      import { renderToStaticMarkup } from "react-dom/server";
+      const render = (Icon, props) => renderToStaticMarkup(createElement(Icon, props));
+      console.log(JSON.stringify({
+        root: Object.keys(root).sort(),
+        hasFilledExport: "FixtureStarFilledIcon" in root,
+        sameModules: root.FixtureSearchIcon === FixtureSearchIcon && root.FixtureStarIcon === FixtureStarIcon,
+        byDefault: render(FixtureStarIcon, { size: 20 }),
+        outline: render(FixtureStarIcon, { size: 20, variant: "outline" }),
+        filled: render(FixtureStarIcon, { size: 20, variant: "filled", "aria-label": "Starred" }),
+        manifest: iconManifest.icons
+          .filter(({ id }) => id.startsWith("fixture-"))
+          .map(({ id, componentName, variants, directionality }) => [id, componentName, variants, directionality]),
+        production: iconManifest.icons.filter(({ id }) => !id.startsWith("fixture-")),
+      }));
+    `) as Record<string, unknown>;
+    const outline =
+      '<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" focusable="false" aria-hidden="true"><circle cx="12" cy="12" r="6.25"></circle></svg>';
+    expect(result).toEqual({
+      root: [
+        "FixtureArrowIcon",
+        "FixtureSearchIcon",
+        "FixtureStarIcon",
+        ...production.map(({ componentName }) => componentName),
+      ].sort(),
+      hasFilledExport: false,
+      sameModules: true,
+      byDefault: outline,
+      outline,
+      filled:
+        '<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Starred" width="20" height="20" focusable="false" role="img"><circle cx="12" cy="12" r="7.5"></circle></svg>',
+      manifest: [
+        ["fixture-search", "FixtureSearchIcon", ["outline"], "preserve"],
+        ["fixture-arrow", "FixtureArrowIcon", ["outline"], "mirror"],
+        ["fixture-star", "FixtureStarIcon", ["outline", "filled"], "preserve"],
+      ],
+      production,
+    });
+  });
+
+  it.each(production.map(({ id, componentName }) => [id, componentName]))(
+    "serves production concept %s from the root and its direct subpath",
+    (id, componentName) => {
+      const result = node(`
+        import * as root from "@qeetrix/icons";
+        import { ${componentName} } from "@qeetrix/icons/icons/${id}";
+        import { createElement } from "react";
+        import { renderToStaticMarkup } from "react-dom/server";
+        console.log(JSON.stringify({
+          same: root.${componentName} === ${componentName},
+          markup: renderToStaticMarkup(createElement(${componentName})),
+          outline: renderToStaticMarkup(createElement(${componentName}, { variant: "outline" })),
+        }));
+      `) as { same: boolean; markup: string; outline: string };
+      expect(result.same).toBe(true);
+      expect(result.markup).toBe(result.outline);
+      expect(result.markup).toContain('stroke="currentColor"');
+      expect(result.markup).not.toContain("variant");
+      for (const value of geometry.get(id) ?? []) expect(result.markup).toContain(value);
+    },
+  );
+
+  it("refuses internal, category, layout, and extension-bearing subpaths", () => {
+    const specifiers = [
+      "@qeetrix/icons/runtime/resolve-icon-props",
+      "@qeetrix/icons/types/icon-props",
+      "@qeetrix/icons/generated/index",
+      "@qeetrix/icons/generated/icons/fixture-alpha",
+      "@qeetrix/icons/config/icon-system",
+      "@qeetrix/icons/scripts/lib/generation-plan",
+      "@qeetrix/icons/dist/index.js",
+      "@qeetrix/icons/icon-manifest.json",
+      "@qeetrix/icons/actions",
+      "@qeetrix/icons/icons/status/fixture-star",
+      "@qeetrix/icons/icons/outline/status/fixture-star",
+      "@qeetrix/icons/icons/fixture-search.js",
+      "@qeetrix/icons/icons/fixture-star-filled",
+      "@qeetrix/icons/icons/../runtime/resolve-icon-props",
+    ];
+    const result = node(`
+      const outcomes = {};
+      for (const specifier of ${JSON.stringify(specifiers)}) {
+        try { await import(specifier); outcomes[specifier] = "resolved"; }
+        catch (error) { outcomes[specifier] = error.code; }
+      }
+      console.log(JSON.stringify(outcomes));
+    `) as Record<string, string>;
+    for (const specifier of specifiers) {
+      expect(result[specifier], specifier).toMatch(
+        /^ERR_(PACKAGE_PATH_NOT_EXPORTED|MODULE_NOT_FOUND|INVALID_MODULE_SPECIFIER)$/,
+      );
+    }
+  });
+
+  it.each(["bundler", "nodenext"])(
+    "typechecks a strict consumer against the shipped declarations with %s resolution",
+    (moduleResolution) => {
+      writeFixture(
+        consumer,
+        `tsconfig.${moduleResolution}.json`,
+        JSON.stringify({
+          compilerOptions: {
+            target: "ES2022",
+            lib: ["ES2022", "DOM"],
+            module: moduleResolution === "bundler" ? "ESNext" : "NodeNext",
+            moduleResolution,
+            jsx: "react-jsx",
+            strict: true,
+            noEmit: true,
+            skipLibCheck: false,
+            types: [],
+          },
+          files: ["app.tsx"],
+        }),
+      );
+      writeFixture(
+        consumer,
+        "app.tsx",
+        `import { createRef } from "react";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  PlusIcon,
+  XIcon,
+  FixtureSearchIcon,
+  FixtureStarIcon,
+  type IconDirectionality,
+  type IconProps,
+  type IconVariant,
+} from "@qeetrix/icons";
+import { FixtureArrowIcon } from "@qeetrix/icons/icons/fixture-arrow";
+import { PlusIcon as DirectPlusIcon } from "@qeetrix/icons/icons/plus";
+import { ChevronDownIcon as DirectChevronDownIcon } from "@qeetrix/icons/icons/chevron-down";
+import { FixtureStarIcon as DirectStarIcon } from "@qeetrix/icons/icons/fixture-star";
+import { type IconManifest, type IconManifestEntry, iconManifest } from "@qeetrix/icons/manifest";
+// @ts-expect-error runtime internals are not exported
+import { resolveIconProps } from "@qeetrix/icons/runtime/resolve-icon-props";
+// @ts-expect-error categories are not part of import paths
+import { FixtureStarIcon as ByCategory } from "@qeetrix/icons/icons/status/fixture-star";
+// @ts-expect-error filled drawings have no subpath of their own
+import { FixtureStarFilledIcon as BySubpath } from "@qeetrix/icons/icons/fixture-star-filled";
+// @ts-expect-error filled drawings are a variant, never a separate export
+import { FixtureStarFilledIcon } from "@qeetrix/icons";
+// @ts-expect-error the manifest is not a root export
+import { iconManifest as rootManifest } from "@qeetrix/icons";
+
+declare const saved: boolean;
+const ref = createRef<SVGSVGElement>();
+const props: IconProps<"outline"> = { size: "1em", "aria-label": "Fixture" };
+const manifest: IconManifest = iconManifest;
+const entry: IconManifestEntry | undefined = manifest.icons[0];
+const variants: readonly IconVariant[] | undefined = entry?.variants;
+const directionality: IconDirectionality | undefined = entry?.directionality;
+export const usage = [
+  <PlusIcon key="p1" />,
+  <XIcon key="p2" variant="outline" />,
+  <CheckIcon key="p3" size={16} aria-label="Done" />,
+  <ChevronDownIcon key="p4" ref={ref} />,
+  <DirectPlusIcon key="p5" size="1em" />,
+  <DirectChevronDownIcon key="p6" />,
+  // @ts-expect-error the calibration icons are outline-only
+  <PlusIcon key="p7" variant="filled" />,
+  // @ts-expect-error the calibration icons are outline-only
+  <ChevronDownIcon key="p8" variant="filled" />,
+  <FixtureSearchIcon key="a" ref={ref} {...props} />,
+  <FixtureSearchIcon key="b" variant="outline" />,
+  // @ts-expect-error FixtureSearch has no filled drawing
+  <FixtureSearchIcon key="c" variant="filled" />,
+  <FixtureStarIcon key="d" />,
+  <FixtureStarIcon key="e" variant="filled" size={18} className="x" />,
+  <DirectStarIcon key="f" variant={saved ? "filled" : "outline"} ref={ref} />,
+  // @ts-expect-error not a Qeetrix variant
+  <FixtureStarIcon key="g" variant="solid" />,
+  <FixtureArrowIcon key="h" aria-labelledby="label" />,
+  variants,
+  directionality,
+  resolveIconProps,
+  ByCategory,
+  BySubpath,
+  FixtureStarFilledIcon,
+  rootManifest,
+];
+`,
+      );
+      const tsc = join(PKG, "node_modules/typescript/bin/tsc");
+      run(process.execPath, [tsc, "-p", `tsconfig.${moduleResolution}.json`], consumer);
+    },
+    60_000,
+  );
+
+  it("tree-shakes per concept: one icon ships its own drawings only, never the manifest", () => {
+    const bundle = (entry: string) => {
+      writeFixture(consumer, "entry.js", entry);
+      return run(
+        "bun",
+        ["build", "entry.js", "--minify", "--external", "react", "--external", "react/jsx-runtime"],
+        consumer,
+      );
+    };
+    const occurrences = (output: string, text: string) => output.split(text).length - 1;
+
+    for (const entry of [
+      'import { FixtureSearchIcon } from "@qeetrix/icons"; console.log(FixtureSearchIcon);',
+      'import { FixtureSearchIcon } from "@qeetrix/icons/icons/fixture-search"; console.log(FixtureSearchIcon);',
+    ]) {
+      const output = bundle(entry);
+      expect(output).toContain("M 3.125 7 L 11 13");
+      expect(output).toContain("aria-hidden");
+      for (const excluded of ["6.25", "7.5", "9.375", "schemaVersion", "directionality"]) {
+        expect(output, excluded).not.toContain(excluded);
+      }
+    }
+
+    // Both drawings of the imported concept ship together; nothing else does. Mixing root and
+    // direct imports still bundles the concept module once.
+    const star = bundle(
+      'import { FixtureStarIcon } from "@qeetrix/icons"; import { FixtureStarIcon as Direct } from "@qeetrix/icons/icons/fixture-star"; console.log(FixtureStarIcon, Direct);',
+    );
+    expect(occurrences(star, '"6.25"')).toBe(1);
+    expect(occurrences(star, '"7.5"')).toBe(1);
+    for (const excluded of ["3.125", "9.375", "schemaVersion", "directionality"]) {
+      expect(star, excluded).not.toContain(excluded);
+    }
+
+    const manifestOnly = bundle(
+      'import { iconManifest } from "@qeetrix/icons/manifest"; console.log(iconManifest);',
+    );
+    expect(manifestOnly).toContain("fixture-star");
+    expect(manifestOnly).not.toMatch(/3\.125|6\.25|aria-hidden|viewBox/);
+  });
+
+  it.each(production.map(({ id, componentName }) => [id, componentName]))(
+    "tree-shakes production concept %s away from every other concept and the manifest",
+    (id, componentName) => {
+      writeFixture(
+        consumer,
+        "entry.js",
+        `import { ${componentName} } from "@qeetrix/icons"; console.log(${componentName});`,
+      );
+      const output = run(
+        "bun",
+        ["build", "entry.js", "--minify", "--external", "react", "--external", "react/jsx-runtime"],
+        consumer,
+      );
+      expect(geometry.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
+      for (const value of geometry.get(id) ?? []) expect(output).toContain(value);
+      for (const [other, values] of geometry) {
+        if (other === id) continue;
+        for (const value of values) expect(output, `${other} in ${id}`).not.toContain(value);
+      }
+      for (const excluded of ["schemaVersion", "directionality", "fixture-"]) {
+        expect(output, excluded).not.toContain(excluded);
+      }
+    },
+  );
+
+  it("leaves the production tree free of fixtures", () => {
+    const files = readdirSync(join(PKG, "icons"), { encoding: "utf8", recursive: true });
+    expect(files.filter((file) => file.includes("fixture"))).toEqual([]);
+    expect(production.filter(({ id }) => id.startsWith("fixture-"))).toEqual([]);
+  });
+});
