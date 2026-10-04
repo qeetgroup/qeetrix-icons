@@ -393,19 +393,51 @@ export function relativeLuminance(color: string): number {
 
 /** Below this luminance a colour has under 2.5:1 contrast against black: dark artwork. */
 export const darkLuminance = 0.075;
-/** Above this luminance a colour has under 1.6:1 contrast against white: light artwork. */
+/** Above this luminance a grey has under 1.6:1 contrast against white: light artwork. */
 export const lightLuminance = 0.6;
+/** Saturated colours stand out from white by hue too, so they count as light only above this. */
+export const chromaticLightLuminance = 0.8;
+
+export type BrandTone = "dark" | "mid" | "light";
+
+/** A colour's tone: dark, light (near-white, or very bright when saturated), or mid. */
+export function brandTone(color: string): BrandTone {
+  const luminance = relativeLuminance(color);
+  if (luminance < darkLuminance) return "dark";
+  const rgba = color === "currentColor" ? undefined : parseCssColor(color);
+  const chroma = rgba ? Math.max(rgba.r, rgba.g, rgba.b) - Math.min(rgba.r, rgba.g, rgba.b) : 0;
+  return luminance > (chroma < 0.2 ? lightLuminance : chromaticLightLuminance) ? "light" : "mid";
+}
 
 /**
- * Classifies painted colours: all dark → `light` (dark artwork for light backgrounds); all light →
- * `dark`; anything colourful, mid-tone or mixed, raster content, or no paint at all → `any`.
+ * Classifies painted colours by tone (dark, mid, light):
+ *
+ * - only dark → `light` (dark artwork for light backgrounds); only light → `dark`; only mid-tone
+ *   or colourful → `any`.
+ * - Mixed artwork that carries its own contrast → `any`: drawn on a tile (`tile`: the first painted
+ *   shape spans the artwork, as in badges and app icons), or with the extreme tone carried by the
+ *   rest (`contained`: white details on a coloured mark; see `extremesContained`).
+ * - Other mixed artwork suits the background its extreme tone needs: dark with mid-tones (black
+ *   text beside a coloured mark) → `light`; light with mid-tones → `dark`; dark with light → `any`.
+ * - Raster content cannot be measured, and no paint at all says nothing → `any`.
  */
-export function brandBackground(colors: readonly string[], raster = false): BrandBackground {
+export function brandBackground(
+  colors: readonly string[],
+  {
+    raster = false,
+    tile = false,
+    contained = false,
+  }: { readonly raster?: boolean; readonly tile?: boolean; readonly contained?: boolean } = {},
+): BrandBackground {
   if (raster || colors.length === 0) return "any";
-  const luminances = colors.map(relativeLuminance);
-  if (luminances.every((value) => value < darkLuminance)) return "light";
-  if (luminances.every((value) => value > lightLuminance)) return "dark";
-  return "any";
+  const tones = new Set(colors.map(brandTone));
+  const dark = tones.has("dark");
+  const light = tones.has("light");
+  const mid = tones.has("mid");
+  if (dark && !light && !mid) return "light";
+  if (light && !dark && !mid) return "dark";
+  if (tile || contained || dark === light) return "any";
+  return dark ? "light" : "dark";
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -696,7 +728,7 @@ function parseStylesheets(document: Document): CssRule[] {
   const pending: Element[] = [document.documentElement as Element];
   while (pending.length > 0) {
     const element = pending.pop() as Element;
-    pending.push(...childElements(element));
+    for (const child of childElements(element)) pending.push(child);
     if (localName(element) !== "style") continue;
     const css = (element.textContent ?? "").replace(/\/\*[\s\S]*?\*\//g, "");
     for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
@@ -770,8 +802,343 @@ type PaintContext = {
   readonly ids: ReadonlyMap<string, Element>;
   readonly colors: Set<string>;
   readonly active: Set<Element>;
+  readonly viewBox: Box | undefined;
+  /** Painted shapes in paint order, with the colours each contributes. */
+  readonly painted: PaintedShape[];
+  /** Where `addPaint` collects colours: the current shape's set, else `colors`. */
+  sink: Set<string>;
+  /** Above zero while walking pattern content, whose shapes belong to the shape they paint. */
+  serverDepth: number;
   raster: boolean;
 };
+
+type PaintedShape = {
+  /** Bounding box, or undefined for text, whose extent is not measured. */
+  readonly box: Box | undefined;
+  /** One box per subpath. */
+  readonly parts: readonly Box[];
+  readonly colors: ReadonlySet<string>;
+  readonly fills: boolean;
+};
+
+// Geometry, only precise enough to tell whether the first painted shape spans the artwork.
+
+type Box = {
+  readonly minX: number;
+  readonly minY: number;
+  readonly maxX: number;
+  readonly maxY: number;
+};
+type Matrix = readonly [number, number, number, number, number, number];
+const identity: Matrix = [1, 0, 0, 1, 0, 0];
+
+function multiply([a, b, c, d, e, f]: Matrix, [g, h, i, j, k, l]: Matrix): Matrix {
+  return [
+    a * g + c * h,
+    b * g + d * h,
+    a * i + c * j,
+    b * i + d * j,
+    a * k + c * l + e,
+    b * k + d * l + f,
+  ];
+}
+
+function parseTransform(value: string | null): Matrix {
+  let matrix = identity;
+  for (const match of (value ?? "").matchAll(
+    /(matrix|translate|scale|rotate|skewX|skewY)\s*\(([^)]*)\)/g,
+  )) {
+    const n = (match[2] ?? "")
+      .trim()
+      .split(/[\s,]+/)
+      .filter(Boolean)
+      .map(Number);
+    if (!n.every(Number.isFinite)) return identity;
+    const [p = 0, q, r, t, u, v] = n;
+    const radians = (p * Math.PI) / 180;
+    let next: Matrix = identity;
+    switch (match[1]) {
+      case "matrix":
+        next = [p, q ?? 0, r ?? 0, t ?? 1, u ?? 0, v ?? 0];
+        break;
+      case "translate":
+        next = [1, 0, 0, 1, p, q ?? 0];
+        break;
+      case "scale":
+        next = [p, 0, 0, q ?? p, 0, 0];
+        break;
+      case "rotate": {
+        const cos = Math.cos(radians);
+        const sin = Math.sin(radians);
+        const [cx, cy] = [q ?? 0, r ?? 0];
+        next = [cos, sin, -sin, cos, cx - cos * cx + sin * cy, cy - sin * cx - cos * cy];
+        break;
+      }
+      case "skewX":
+        next = [1, 0, Math.tan(radians), 1, 0, 0];
+        break;
+      case "skewY":
+        next = [1, Math.tan(radians), 0, 1, 0, 0];
+        break;
+    }
+    matrix = multiply(matrix, next);
+  }
+  return matrix;
+}
+
+/** Points that bound each subpath: end points, control points, and samples along arcs. */
+function pathPoints(d: string): [number, number][][] {
+  const subpaths: [number, number][][] = [];
+  let points: [number, number][] = [];
+  let index = 0;
+  const skip = () => {
+    while (index < d.length && /[\s,]/.test(d.charAt(index))) index += 1;
+  };
+  const number = (): number | undefined => {
+    skip();
+    const match = /^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/.exec(d.slice(index, index + 64));
+    if (!match) return undefined;
+    index += match[0].length;
+    return Number(match[0]);
+  };
+  const flag = (): number | undefined => {
+    skip();
+    const character = d.charAt(index);
+    if (character !== "0" && character !== "1") return undefined;
+    index += 1;
+    return Number(character);
+  };
+  const numbers = (count: number): number[] | undefined => {
+    const values: number[] = [];
+    for (let read = 0; read < count; read += 1) {
+      const value = number();
+      if (value === undefined) return undefined;
+      values.push(value);
+    }
+    return values;
+  };
+  let [x, y, startX, startY] = [0, 0, 0, 0];
+  let command = "";
+  while (index < d.length) {
+    skip();
+    if (index >= d.length) break;
+    const character = d.charAt(index);
+    if (/[A-Za-z]/.test(character)) {
+      command = character;
+      index += 1;
+      if (command === "Z" || command === "z") {
+        [x, y] = [startX, startY];
+        continue;
+      }
+    } else if (!command || command === "Z" || command === "z") break;
+    const relative = command === command.toLowerCase();
+    const [ox, oy] = relative ? [x, y] : [0, 0];
+    const upper = command.toUpperCase();
+    if (upper === "H" || upper === "V") {
+      const value = number();
+      if (value === undefined) break;
+      if (upper === "H") x = (relative ? x : 0) + value;
+      else y = (relative ? y : 0) + value;
+      points.push([x, y]);
+      continue;
+    }
+    if (upper === "A") {
+      const radii = numbers(3);
+      const large = flag();
+      const sweep = flag();
+      const end = numbers(2);
+      if (!radii || large === undefined || sweep === undefined || !end) break;
+      const [x1, y1] = [ox + (end[0] ?? 0), oy + (end[1] ?? 0)];
+      points.push(
+        ...arcPoints(x, y, radii[0] ?? 0, radii[1] ?? 0, radii[2] ?? 0, large, sweep, x1, y1),
+      );
+      [x, y] = [x1, y1];
+      continue;
+    }
+    const count = { M: 2, L: 2, T: 2, S: 4, Q: 4, C: 6 }[upper];
+    const values = count ? numbers(count) : undefined;
+    if (!values) break;
+    for (let pair = 0; pair < values.length; pair += 2) {
+      points.push([ox + (values[pair] ?? 0), oy + (values[pair + 1] ?? 0)]);
+    }
+    if (upper === "M") {
+      // Each moveto starts a subpath; its first point is the moveto's own pair.
+      const [first, ...rest] = points.splice(points.length - values.length / 2);
+      points = first ? [first] : [];
+      subpaths.push(points);
+      for (const point of rest) points.push(point);
+    }
+    const last = points.at(-1) ?? [x, y];
+    [x, y] = last;
+    if (upper === "M") {
+      [startX, startY] = [x, y];
+      command = relative ? "l" : "L";
+    }
+  }
+  return subpaths.filter((subpath) => subpath.length > 0);
+}
+
+/** Samples an SVG arc after converting it to centre form (SVG 1.1, appendix F.6.5). */
+function arcPoints(
+  x0: number,
+  y0: number,
+  radiusX: number,
+  radiusY: number,
+  degrees: number,
+  large: number,
+  sweep: number,
+  x1: number,
+  y1: number,
+): [number, number][] {
+  let [rx, ry] = [Math.abs(radiusX), Math.abs(radiusY)];
+  if (rx === 0 || ry === 0) return [[x1, y1]];
+  const phi = (degrees * Math.PI) / 180;
+  const [cos, sin] = [Math.cos(phi), Math.sin(phi)];
+  const dx = (x0 - x1) / 2;
+  const dy = (y0 - y1) / 2;
+  const px = cos * dx + sin * dy;
+  const py = -sin * dx + cos * dy;
+  const lambda = (px * px) / (rx * rx) + (py * py) / (ry * ry);
+  if (lambda > 1) [rx, ry] = [rx * Math.sqrt(lambda), ry * Math.sqrt(lambda)];
+  const numerator = rx * rx * ry * ry - rx * rx * py * py - ry * ry * px * px;
+  const denominator = rx * rx * py * py + ry * ry * px * px;
+  const coefficient =
+    (large === sweep ? -1 : 1) * Math.sqrt(Math.max(0, numerator / (denominator || 1)));
+  const cxp = (coefficient * rx * py) / ry;
+  const cyp = (-coefficient * ry * px) / rx;
+  const cx = cos * cxp - sin * cyp + (x0 + x1) / 2;
+  const cy = sin * cxp + cos * cyp + (y0 + y1) / 2;
+  const angle = (ux: number, uy: number, vx: number, vy: number) =>
+    Math.atan2(ux * vy - uy * vx, ux * vx + uy * vy);
+  const start = angle(1, 0, (px - cxp) / rx, (py - cyp) / ry);
+  let delta = angle((px - cxp) / rx, (py - cyp) / ry, (-px - cxp) / rx, (-py - cyp) / ry);
+  if (!sweep && delta > 0) delta -= 2 * Math.PI;
+  if (sweep && delta < 0) delta += 2 * Math.PI;
+  const points: [number, number][] = [];
+  for (let step = 1; step <= 8; step += 1) {
+    const theta = start + (delta * step) / 8;
+    points.push([
+      cx + rx * cos * Math.cos(theta) - ry * sin * Math.sin(theta),
+      cy + rx * sin * Math.cos(theta) + ry * cos * Math.sin(theta),
+    ]);
+  }
+  return points;
+}
+
+type ShapeExtent = { readonly box: Box; readonly parts: readonly Box[] };
+
+function boundsOf(points: readonly (readonly [number, number])[]): Box | undefined {
+  let [minX, minY, maxX, maxY] = [
+    Number.POSITIVE_INFINITY,
+    Number.POSITIVE_INFINITY,
+    Number.NEGATIVE_INFINITY,
+    Number.NEGATIVE_INFINITY,
+  ];
+  for (const [x, y] of points) {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+  }
+  return minX <= maxX ? { minX, minY, maxX, maxY } : undefined;
+}
+
+/**
+ * A shape's bounding box in root user space, with one box per subpath for paths, or undefined for
+ * text and unknown shapes.
+ */
+function shapeBox(
+  element: Element,
+  name: string,
+  matrix: Matrix,
+  viewBox: Box | undefined,
+): ShapeExtent | undefined {
+  const length = (attribute: string, axis: "x" | "y") => {
+    const value = element.getAttribute(attribute)?.trim() ?? "";
+    const parsed = Number.parseFloat(value);
+    if (!Number.isFinite(parsed)) return 0;
+    if (!value.endsWith("%") || !viewBox) return parsed;
+    const size = axis === "x" ? viewBox.maxX - viewBox.minX : viewBox.maxY - viewBox.minY;
+    return (parsed / 100) * size;
+  };
+  let points: [number, number][] = [];
+  if (name === "rect") {
+    const [x, y] = [length("x", "x"), length("y", "y")];
+    points = [
+      [x, y],
+      [x + length("width", "x"), y + length("height", "y")],
+    ];
+  } else if (name === "circle" || name === "ellipse") {
+    const [cx, cy] = [length("cx", "x"), length("cy", "y")];
+    const rx = name === "circle" ? length("r", "x") : length("rx", "x");
+    const ry = name === "circle" ? rx : length("ry", "y");
+    points = [
+      [cx - rx, cy - ry],
+      [cx + rx, cy + ry],
+    ];
+  } else if (name === "line") {
+    points = [
+      [length("x1", "x"), length("y1", "y")],
+      [length("x2", "x"), length("y2", "y")],
+    ];
+  } else if (name === "polygon" || name === "polyline") {
+    const values = (element.getAttribute("points") ?? "")
+      .trim()
+      .split(/[\s,]+/)
+      .map(Number);
+    for (let index = 0; index + 1 < values.length; index += 2) {
+      points.push([values[index] ?? 0, values[index + 1] ?? 0]);
+    }
+  }
+  // Rectangles and ellipses need all four corners once rotated or skewed.
+  if (name === "rect" || name === "circle" || name === "ellipse") {
+    const [[x0, y0], [x1, y1]] = points as [[number, number], [number, number]];
+    points.push([x0, y1], [x1, y0]);
+  }
+  const subpaths = name === "path" ? pathPoints(element.getAttribute("d") ?? "") : [points];
+  const [a, b, c, d, e, f] = matrix;
+  const parts = subpaths.flatMap((subpath) => {
+    const part = boundsOf(subpath.map(([x, y]) => [a * x + c * y + e, b * x + d * y + f] as const));
+    return part ? [part] : [];
+  });
+  const box = boundsOf(
+    parts.flatMap((part) => [[part.minX, part.minY] as const, [part.maxX, part.maxY] as const]),
+  );
+  return box ? { box, parts } : undefined;
+}
+
+/**
+ * Share of the artwork's width and height the first painted shape must cover to count as a tile.
+ * AWS category icons draw a 24-unit tile in a 32-unit viewBox (75%).
+ */
+export const tileCoverage = 0.7;
+
+/** Whether a box covers at least `tileCoverage` of the artwork's width and height. */
+function spansArtwork(box: Box | undefined, artwork: Box | undefined): boolean {
+  if (!box || !artwork) return false;
+  const width = artwork.maxX - artwork.minX;
+  const height = artwork.maxY - artwork.minY;
+  if (!(width > 0 && height > 0)) return false;
+  const coveredX = Math.min(box.maxX, artwork.maxX) - Math.max(box.minX, artwork.minX);
+  const coveredY = Math.min(box.maxY, artwork.maxY) - Math.max(box.minY, artwork.minY);
+  return coveredX >= tileCoverage * width && coveredY >= tileCoverage * height;
+}
+
+/** The artwork's extent: the root viewBox, else its numeric width and height. */
+function artworkBox(root: Element): Box | undefined {
+  const viewBox = (root.getAttribute("viewBox") ?? "")
+    .trim()
+    .split(/[\s,]+/)
+    .map(Number);
+  if (viewBox.length === 4 && viewBox.every(Number.isFinite)) {
+    const [x = 0, y = 0, width = 0, height = 0] = viewBox;
+    if (width > 0 && height > 0) return { minX: x, minY: y, maxX: x + width, maxY: y + height };
+  }
+  const width = Number.parseFloat(root.getAttribute("width") ?? "");
+  const height = Number.parseFloat(root.getAttribute("height") ?? "");
+  return width > 0 && height > 0 ? { minX: 0, minY: 0, maxX: width, maxY: height } : undefined;
+}
 
 /** Not rendered where they stand: definitions, masks, clip paths, filters, metadata, scripts. */
 const unrenderedElements = new Set([
@@ -847,11 +1214,11 @@ function addPaint(value: string, state: PaintState, context: PaintContext, depth
   if (lower === "currentcolor") {
     if (state.color && state.color.toLowerCase() !== "currentcolor") {
       addPaint(state.color, { ...state, color: undefined }, context, depth + 1);
-    } else context.colors.add("currentColor");
+    } else context.sink.add("currentColor");
     return;
   }
   const rgba = parseCssColor(text);
-  if (rgba && rgba.a > 0) context.colors.add(toHex(rgba));
+  if (rgba && rgba.a > 0) context.sink.add(toHex(rgba));
 }
 
 /** Gradient stops (following `href` chains for inherited stops) and pattern content. */
@@ -878,7 +1245,11 @@ function paintServer(target: Element, context: PaintContext, depth: number): voi
       );
     }
   } else if (name === "pattern") {
-    for (const child of childElements(target)) walkPaint(child, initialState, context, depth + 1);
+    context.serverDepth += 1;
+    for (const child of childElements(target)) {
+      walkPaint(child, initialState, identity, context, depth + 1);
+    }
+    context.serverDepth -= 1;
   }
   context.active.delete(target);
 }
@@ -886,6 +1257,7 @@ function paintServer(target: Element, context: PaintContext, depth: number): voi
 function walkPaint(
   element: Element,
   parent: PaintState,
+  parentMatrix: Matrix,
   context: PaintContext,
   depth: number,
   viaUse = false,
@@ -903,6 +1275,7 @@ function walkPaint(
     strokeOpacity: inherited(style.get("stroke-opacity"), parent.strokeOpacity),
     visibility: inherited(style.get("visibility"), parent.visibility),
   };
+  const matrix = multiply(parentMatrix, parseTransform(element.getAttribute("transform")));
   if (name === "image") {
     context.raster = true;
     return;
@@ -911,8 +1284,16 @@ function walkPaint(
     const id = referencedId(element);
     const target = id ? context.ids.get(id) : undefined;
     if (target && !context.active.has(target)) {
+      const offset: Matrix = [
+        1,
+        0,
+        0,
+        1,
+        Number.parseFloat(element.getAttribute("x") ?? "") || 0,
+        Number.parseFloat(element.getAttribute("y") ?? "") || 0,
+      ];
       context.active.add(target);
-      walkPaint(target, state, context, depth + 1, true);
+      walkPaint(target, state, multiply(matrix, offset), context, depth + 1, true);
       context.active.delete(target);
     }
     return;
@@ -923,21 +1304,34 @@ function walkPaint(
       : false;
   if (paints) {
     // fill's initial value is black; a line has no interior to fill.
-    if (name !== "line" && !isZero(state.fillOpacity)) {
-      addPaint(state.fill ?? "black", state, context, 0);
-    }
-    if (state.stroke !== undefined && !isZero(state.strokeOpacity)) {
-      addPaint(state.stroke, state, context, 0);
+    const fill = state.fill ?? "black";
+    const fills =
+      name !== "line" && !isZero(state.fillOpacity) && !/^(?:none|transparent)$/i.test(fill.trim());
+    const strokes =
+      state.stroke !== undefined &&
+      !isZero(state.strokeOpacity) &&
+      !/^(?:none|transparent)$/i.test(state.stroke.trim());
+    const outer = context.sink;
+    const own = new Set<string>();
+    context.sink = own;
+    if (fills) addPaint(fill, state, context, 0);
+    if (strokes && state.stroke !== undefined) addPaint(state.stroke, state, context, 0);
+    context.sink = outer;
+    for (const color of own) outer.add(color);
+    if (own.size > 0 && context.serverDepth === 0) {
+      const extent = shapeBox(element, name, matrix, context.viewBox);
+      context.painted.push({ box: extent?.box, parts: extent?.parts ?? [], colors: own, fills });
     }
   }
-  for (const child of childElements(element)) walkPaint(child, state, context, depth + 1);
+  for (const child of childElements(element)) walkPaint(child, state, matrix, context, depth + 1);
 }
 
 /**
  * Measures which colours a logo paints: fills (black where none is set, as SVG renders it),
  * strokes, gradient stops and pattern content, with `<style>` rules, inheritance, `<use>` and
  * `currentColor` resolved. Masks, clip paths, filters and unreferenced definitions do not paint.
- * Raster `<image>` content cannot be measured, so it makes the background `any`.
+ * Raster `<image>` content cannot be measured, so it makes the background `any`. It also notes
+ * whether the first painted shape is a filled tile spanning the artwork (see `brandBackground`).
  */
 export function analyseBrandPaint(document: Document): BrandPaint {
   const root = document.documentElement;
@@ -948,18 +1342,82 @@ export function analyseBrandPaint(document: Document): BrandPaint {
     const element = pending.pop() as Element;
     const id = element.getAttribute("id");
     if (id && !ids.has(id)) ids.set(id, element);
-    pending.push(...childElements(element));
+    for (const child of childElements(element)) pending.push(child);
   }
+  const colors = new Set<string>();
   const context: PaintContext = {
     rules: parseStylesheets(document),
     ids,
-    colors: new Set(),
+    colors,
     active: new Set(),
+    viewBox: artworkBox(root),
+    painted: [],
+    sink: colors,
+    serverDepth: 0,
     raster: false,
   };
-  walkPaint(root, initialState, context, 0);
-  const colors = [...context.colors].sort(compareText);
-  return { background: brandBackground(colors, context.raster), colors };
+  walkPaint(root, initialState, identity, context, 0);
+  const sorted = [...colors].sort(compareText);
+  const [first] = context.painted;
+  return {
+    background: brandBackground(sorted, {
+      raster: context.raster,
+      tile: first?.fills === true && spansArtwork(first.box, context.viewBox),
+      contained: extremesContained(context.painted, context.viewBox),
+    }),
+    colors: sorted,
+  };
+}
+
+/** Exposed extreme-tone shapes below this share of the painted area do not decide the background. */
+export const exposedExtremeShare = 0.2;
+
+/**
+ * For artwork mixing one extreme tone with mid-tones: whether the shapes painted only in the
+ * extreme tone are carried by the rest. A subpath is carried when it lies within the box of a
+ * filled shape of another tone, as white details on (or showing through) a coloured mark do and
+ * white text beside a mark does not. Exposed shapes covering under `exposedExtremeShare` of the painted
+ * box area (a small grey foot under a coloured icon) are carried too. Text, whose extent is not
+ * measured, is always exposed.
+ */
+function extremesContained(painted: readonly PaintedShape[], artwork: Box | undefined): boolean {
+  const tones = painted.map((shape) => new Set([...shape.colors].map(brandTone)));
+  const all = new Set(tones.flatMap((set) => [...set]));
+  if (!all.has("mid") || all.has("dark") === all.has("light")) return false;
+  const extreme: BrandTone = all.has("dark") ? "dark" : "light";
+  const slackX = artwork ? 0.02 * (artwork.maxX - artwork.minX) : 0;
+  const slackY = artwork ? 0.02 * (artwork.maxY - artwork.minY) : 0;
+  const area = (box: Box | undefined) =>
+    box ? (box.maxX - box.minX) * (box.maxY - box.minY) : Number.POSITIVE_INFINITY;
+  let total = 0;
+  let exposed = 0;
+  for (const [index, shape] of painted.entries()) {
+    total += area(shape.box);
+    const shapeTones = tones[index] as Set<BrandTone>;
+    if (shapeTones.size !== 1 || !shapeTones.has(extreme)) continue;
+    if (!shape.box) {
+      exposed = Number.POSITIVE_INFINITY;
+      continue;
+    }
+    for (const part of shape.parts) {
+      const carried = painted.some((host, hostIndex) => {
+        const hostBox = host.box;
+        return (
+          hostIndex !== index &&
+          hostBox !== undefined &&
+          host.fills &&
+          [...(tones[hostIndex] as Set<BrandTone>)].some((value) => value !== extreme) &&
+          part.minX >= hostBox.minX - slackX &&
+          part.maxX <= hostBox.maxX + slackX &&
+          part.minY >= hostBox.minY - slackY &&
+          part.maxY <= hostBox.maxY + slackY
+        );
+      });
+      if (!carried) exposed += area(part);
+    }
+  }
+  if (exposed === Number.POSITIVE_INFINITY) return false;
+  return total > 0 && exposed < exposedExtremeShare * total;
 }
 
 /**

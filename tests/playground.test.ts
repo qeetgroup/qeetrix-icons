@@ -27,6 +27,7 @@ import {
   serializeUrlState,
   sizeRange,
 } from "../playground/src/url-state.js";
+import { brandSourceDirectory } from "../scripts/check/validate-repository.js";
 import { createGenerationPlan } from "../scripts/lib/generation-plan.js";
 import { iconManifest } from "../src/manifest.js";
 import type { IconManifest } from "../src/types/icon-manifest.js";
@@ -322,7 +323,9 @@ describe("playground build", () => {
     workspace = mkdtempSync(join(tmpdir(), "qeetrix-icons-playground-"));
     cpSync(PKG, workspace, {
       recursive: true,
+      // Brand logo sources feed their own pipeline, never icon generation or the playground.
       filter: (source) =>
+        relative(PKG, source).split(sep).join("/") !== brandSourceDirectory &&
         !relative(PKG, source)
           .split(sep)
           .some((part) => ["node_modules", "dist", ".git", "coverage"].includes(part)),

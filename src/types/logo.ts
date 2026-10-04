@@ -1,23 +1,26 @@
-import type { ReactElement, SVGProps } from "react";
+import type { ComponentPropsWithRef, ReactElement } from "react";
 
 /**
  * Props accepted by brand logo components such as `GithubLogo`.
  *
- * Native `<svg>` props, including `ref`, plus `variant`. Children are excluded because a logo
- * renders its own artwork.
+ * A logo renders its published SVG file, unmodified, as an `<img>`. Native `<img>` props pass
+ * through (`className`, `style`, `loading`, `decoding`, `draggable`, `title`, `ref`, …) except
+ * `src`, `srcSet` and `sizes`, which the logo owns.
  *
- * - `variant` selects one of the logo's drawings and defaults to the logo's default variant.
- *   Every generated component narrows `V` to the variants that exist for that logo, so an
- *   unavailable variant is a type error.
+ * - `variant` selects one of the logo's files and defaults to the logo's default variant. Every
+ *   generated component narrows `V` to the variants that exist for that logo, so an unavailable
+ *   variant is a type error.
  * - `height` is any number of pixels or CSS length and defaults to 24. `width` follows from the
- *   artwork's aspect ratio unless given; when only `width` is given, `height` follows from it.
- *
- * Logos keep their original colours. See docs for the accessibility contract, which is the same
- * as for icons: decorative by default, `role="img"` once named.
+ *   file's own aspect ratio unless given; when only `width` is given, `height` follows from it.
+ *   Pixel numbers become the `width`/`height` attributes; CSS lengths such as `"2em"` go to
+ *   `style`, which a caller `style` overrides.
+ * - Decorative by default: `alt=""` and `aria-hidden="true"`. A non-empty `alt` or `aria-label`
+ *   names the logo: it becomes the `alt` text and `aria-hidden` is dropped. A non-empty
+ *   `aria-labelledby` also drops `aria-hidden`. An explicit `aria-hidden` always wins.
  */
 export type LogoProps<V extends string = string> = Omit<
-  SVGProps<SVGSVGElement>,
-  "children" | "dangerouslySetInnerHTML" | "height" | "width"
+  ComponentPropsWithRef<"img">,
+  "children" | "dangerouslySetInnerHTML" | "src" | "srcSet" | "sizes" | "height" | "width"
 > & {
   variant?: V;
   height?: number | string;
@@ -30,42 +33,19 @@ export type LogoComponent<V extends string = string> = (props: LogoProps<V>) => 
 /** Which background a variant is drawn for. `"any"` works on both. */
 export type LogoBackground = "light" | "dark" | "any";
 
-/**
- * One prop value of a logo element: an attribute string, or a style object whose keys are React
- * (camelCase) CSS property names.
- */
-export type LogoPropValue = string | { readonly [property: string]: string };
-
-/** Props of one logo element, keyed by React prop name. */
-export type LogoNodeProps = { readonly [name: string]: LogoPropValue };
-
-/**
- * One SVG element of a logo's artwork, as `[tag, props, ...children]`. Children are elements or
- * text. Instance-scoped ids and references to them contain `logoIdMarker` (U+0001).
- */
-export type LogoNode = readonly [
-  tag: string,
-  props: LogoNodeProps | null,
-  ...children: (LogoNode | string)[],
-];
-
-/** One drawing of a logo, ready to render. */
+/** One published file of a logo. */
 export interface LogoVariantData {
-  /** `[minX, minY, width, height]` of the artwork; the aspect ratio is `width / height`. */
-  readonly viewBox: readonly [number, number, number, number];
-  /** Root `<svg>` props of the artwork, by React prop name; caller props win over these. */
-  readonly props?: LogoNodeProps;
   /**
-   * The artwork's elements, or the JSON text of that array. Generated modules use JSON text so
-   * TypeScript checks one string instead of typing every element; it is parsed once, when the
-   * drawing first renders.
+   * The file as a `data:image/svg+xml,` URI. Percent-decoding it yields the published file byte
+   * for byte; only bytes a URI cannot carry verbatim are escaped.
    */
-  readonly children: readonly LogoNode[] | string;
+  readonly src: string;
   /**
-   * `true` when the drawing defines ids (gradients, clip paths, masks, filters, `<use>` targets).
-   * Rendering replaces `logoIdMarker` (U+0001) in every string with an instance prefix.
+   * The file's intrinsic size, read from it without modification: its root `width` and `height`
+   * when both are absolute lengths, otherwise its `viewBox` size. Only the ratio is used.
    */
-  readonly scoped?: boolean;
+  readonly width: number;
+  readonly height: number;
 }
 
 /** Everything a generated logo component renders. `V` is the union of its variant names. */
@@ -74,7 +54,7 @@ export interface LogoData<V extends string = string> {
   readonly variants: { readonly [K in V]: LogoVariantData };
 }
 
-/** One drawing of a logo, as listed in the manifest. */
+/** One file of a logo, as listed in the manifest. */
 export type LogoManifestVariant = {
   readonly name: string;
   readonly background: LogoBackground;
@@ -89,7 +69,7 @@ export type LogoManifestEntry = {
   readonly collection: string;
   readonly variants: readonly LogoManifestVariant[];
   readonly defaultVariant: string;
-  /** Primary brand colour as six uppercase hex digits without `#`, when upstream records one. */
+  /** Primary brand colour as six hex digits without `#`, when upstream records one. */
   readonly hex: string | null;
   readonly categories: readonly string[];
   readonly aliases: readonly string[];

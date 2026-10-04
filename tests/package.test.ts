@@ -13,6 +13,7 @@ import { join, relative, sep } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
+import { brandSourceDirectory } from "../scripts/check/validate-repository.js";
 import { iconManifest } from "../src/manifest.js";
 import { apiFixtureMetadata, apiFixtures, sharpApiFixtures, writeFixture } from "./helpers.js";
 
@@ -132,7 +133,9 @@ beforeAll(() => {
   const repository = join(workspace, "repository");
   cpSync(PKG, repository, {
     recursive: true,
+    // Brand logo sources feed their own pipeline, never icon generation or the build.
     filter: (source) =>
+      relative(PKG, source).split(sep).join("/") !== brandSourceDirectory &&
       !relative(PKG, source)
         .split(sep)
         .some((part) => ["node_modules", "dist", ".git", "coverage"].includes(part)),
@@ -173,7 +176,9 @@ export const iconMetadata: Readonly<Record<string, IconMetadata>> = ${JSON.strin
     "package.json",
     '{ "name": "consumer", "private": true, "type": "module" }',
   );
-}, 120_000);
+  // Copies the repository, generates, and packs, which builds every module under src/: the icon
+  // components and, alongside them, the generated logo modules.
+}, 300_000);
 
 afterAll(() => {
   if (workspace) rmSync(workspace, { recursive: true, force: true });

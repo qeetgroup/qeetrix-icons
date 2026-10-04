@@ -12,7 +12,7 @@ import {
   type PlannedLogo,
   type PlannedLogoVariant,
 } from "./logo-module.js";
-import { convertLogoSvg, LogoSourceError } from "./logo-source.js";
+import { LogoSourceError, readSvgIntrinsicSize, svgDataUri } from "./logo-source.js";
 
 /** The brand catalogue written by `sync:brands`, relative to the repository root. */
 export const brandsConfigPath = "config/brands.json";
@@ -25,6 +25,8 @@ export type LogoPlan = {
   /** Repository-relative path to contents, every file the generator owns. */
   readonly files: ReadonlyMap<string, string>;
   readonly diagnostics: readonly string[];
+  /** Sources that are embedded as published but will not display as expected. */
+  readonly warnings: readonly string[];
 };
 
 const slugPattern = /^[a-z0-9]+(?:-+[a-z0-9]+)*$/;
@@ -49,9 +51,13 @@ export function resolveBrandSource(file: string): string | undefined {
   return path.startsWith(`${brandSourceDirectory}/`) && path.endsWith(".svg") ? path : undefined;
 }
 
-/** Validates `config/brands.json` and converts every variant of every logo. */
+/**
+ * Validates `config/brands.json` and embeds every variant of every logo: the file's bytes as a
+ * lossless data URI, and its intrinsic size, read without modifying it.
+ */
 export function planLogoGeneration(repositoryRoot: string): LogoPlan {
   const diagnostics: string[] = [];
+  const warnings: string[] = [];
   const configFile = join(repositoryRoot, brandsConfigPath);
   if (!existsSync(configFile)) {
     return {
@@ -59,6 +65,7 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
       logos: [],
       files: new Map(),
       diagnostics: [`${brandsConfigPath}: missing. Run \`bun run sync:brands\` first.`],
+      warnings,
     };
   }
   const config: unknown = JSON.parse(readFileSync(configFile, "utf8"));
@@ -68,6 +75,7 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
       logos: [],
       files: new Map(),
       diagnostics: [`${brandsConfigPath}: expected an object with a "logos" object.`],
+      warnings,
     };
   }
   const str = (value: unknown) => (typeof value === "string" ? value : "");
@@ -136,8 +144,19 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
         continue;
       }
       try {
-        const converted = convertLogoSvg(readFileSync(absolute, "utf8"));
-        variants.push({ name, background: background as LogoBackground, file, converted });
+        const bytes = readFileSync(absolute);
+        const size = readSvgIntrinsicSize(bytes);
+        if (!size.namespaced) {
+          warnings.push(`${file}: the root does not declare the SVG namespace, so browsers will not display it as an image.`);
+        }
+        variants.push({
+          name,
+          background: background as LogoBackground,
+          file,
+          src: svgDataUri(bytes),
+          width: size.width,
+          height: size.height,
+        });
       } catch (error) {
         if (!(error instanceof LogoSourceError)) throw error;
         diagnostics.push(`${file}: ${error.message}`);
@@ -173,5 +192,5 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
     files.set(logoBarrelPath, logoBarrelSource(logos, upstream));
     files.set(logoManifestPath, logoManifestSource(logos, upstream));
   }
-  return { upstream, logos, files, diagnostics };
+  return { upstream, logos, files, diagnostics, warnings };
 }

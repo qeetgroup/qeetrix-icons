@@ -24,6 +24,7 @@ try {
     process.exitCode = 1;
   } else {
     const variants = plan.logos.reduce((sum, logo) => sum + logo.variants.length, 0);
+    for (const message of plan.warnings) console.warn(`warning: ${message}`);
     const seconds = ((performance.now() - started) / 1000).toFixed(1);
     if (check) {
       const result = compareLogoOutput(repositoryRoot, plan.files);

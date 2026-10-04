@@ -140,15 +140,50 @@ describe("classifyBrandSvg", () => {
     expect(classifyBrandSvg(svg(square('fill="none" stroke="#eee"'))).background).toBe("dark");
   });
 
-  it("reads colourful, mid-tone and mixed artwork as any", () => {
+  it("reads colourful, mid-tone and self-contained artwork as any", () => {
     expect(classifyBrandSvg(svg(square('fill="#1877F2"'))).background).toBe("any");
     expect(classifyBrandSvg(svg(square('fill="#808080"'))).background).toBe("any");
+    // Saturated bright colours are colourful, not light; pure yellow is light.
+    expect(classifyBrandSvg(svg(square('fill="#42e8ca"'))).background).toBe("any");
+    expect(classifyBrandSvg(svg(square('fill="#ffff00"'))).background).toBe("dark");
+    // A tile (the first painted shape spans the artwork) carries its own contrast.
     expect(
-      classifyBrandSvg(svg(`${square('fill="#000"')}<circle r="4" fill="#fff"/>`)).background,
+      classifyBrandSvg(svg(`${square('fill="#000"')}<circle cx="12" cy="12" r="4" fill="#fff"/>`))
+        .background,
+    ).toBe("any");
+    expect(
+      classifyBrandSvg(
+        svg('<circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M8 8h8v8H8z" fill="#fff"/>'),
+      ).background,
     ).toBe("any");
     expect(classifyBrandSvg(svg('<image href="data:image/png;base64,AA=="/>')).background).toBe(
       "any",
     );
+  });
+
+  it("reads mixed artwork by its exposed extreme tone", () => {
+    const wide = 'viewBox="0 0 64 16"';
+    const mark = '<path d="M0 0h16v16H0z" fill="#0061fe"/>';
+    // Dark text beside a coloured mark needs a light background, white text a dark one.
+    expect(
+      classifyBrandSvg(svg(`${mark}<path d="M20 2h44v12H20z" fill="#1e1919"/>`, wide)).background,
+    ).toBe("light");
+    expect(
+      classifyBrandSvg(svg(`${mark}<path d="M20 2h44v12H20z" fill="#fff"/>`, wide)).background,
+    ).toBe("dark");
+    // White details on the mark, even in one path with several subpaths, are carried by it.
+    expect(
+      classifyBrandSvg(
+        svg(
+          `${mark}<path d="M20 2h44v12H20z" fill="#0061fe"/><path d="M4 4h8v8H4zM30 6h4v4h-4z" fill="#fff"/>`,
+          wide,
+        ),
+      ).background,
+    ).toBe("any");
+    // A sliver of exposed white (under a fifth of the painted area) does not decide.
+    expect(
+      classifyBrandSvg(svg(`${mark}<path d="M18 0h2v2h-2z" fill="#fff"/>`, wide)).background,
+    ).toBe("any");
   });
 
   it("follows gradients, stylesheets, inheritance and <use>", () => {

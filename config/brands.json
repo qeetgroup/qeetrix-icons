@@ -981,7 +981,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#244c4e", "#337d63", "#804b35", "#89ba4f", "#9eea6c"],
           "file": "icons/brand-icons/brands/abacatepay/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -1589,7 +1589,7 @@
       "title": "act",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#231f20", "#ef3d42"],
           "file": "icons/brand-icons/community/act/default.svg",
           "upstreamKeys": ["default"]
@@ -2579,13 +2579,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#a2050d", "#c31a13", "#e22f19", "#f86920", "#fa9326", "#fcbf2d"],
           "file": "icons/brand-icons/brands/aero/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#a2050d", "#c31a13", "#e22f19", "#f86920", "#fa9326", "#fcbf2d", "#ffffff"],
           "file": "icons/brand-icons/brands/aero/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -2845,7 +2845,7 @@
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#4a4af4"],
           "file": "icons/brand-icons/brands/affirm/default.svg",
           "upstreamKeys": ["default"]
@@ -3072,13 +3072,13 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#4569d4", "#ffffff"],
           "file": "icons/brand-icons/brands/ahooks/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#4569d4", "#ffffff"],
           "file": "icons/brand-icons/brands/ahooks/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -3113,13 +3113,13 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#ff8800", "#ffffff"],
           "file": "icons/brand-icons/brands/ahrefs/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#ff8800", "#ffffff"],
           "file": "icons/brand-icons/brands/ahrefs/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -3369,13 +3369,13 @@
       "title": "AiMass (紫东太初)",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "light",
           "colors": ["#003e97", "#d70d19"],
           "file": "icons/brand-icons/brands/aimass/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#003e97", "#d70d19"],
           "file": "icons/brand-icons/brands/aimass/default.svg",
           "upstreamKeys": []
@@ -4324,7 +4324,7 @@
       "title": "Akuity",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1b0c3b", "#4e3cdb"],
           "file": "icons/brand-icons/community/akuity/default.svg",
           "upstreamKeys": ["default"]
@@ -4399,7 +4399,7 @@
       "title": "Alamy",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ff7b"],
           "file": "icons/brand-icons/brands/alamy/default.svg",
           "upstreamKeys": ["default"]
@@ -4486,7 +4486,7 @@
       "title": "Alby",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffdf6f"],
           "file": "icons/brand-icons/brands/alby/default.svg",
           "upstreamKeys": ["default"]
@@ -5268,7 +5268,7 @@
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#101010", "#fcd72b"],
           "file": "icons/brand-icons/brands/alpaca/default.svg",
           "upstreamKeys": ["default"]
@@ -5384,7 +5384,7 @@
       "title": "Alpine.js",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#2d3441", "#77c1d2"],
           "file": "icons/brand-icons/community/alpinejs/default.svg",
           "upstreamKeys": ["default"]
@@ -5465,7 +5465,7 @@
       "title": "Amazon",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#221f1f", "#ff9900"],
           "file": "icons/brand-icons/brands/amazon/default.svg",
           "upstreamKeys": ["default"]
@@ -5534,7 +5534,7 @@
       "title": "Amazon Kindle",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#ff9900"],
           "file": "icons/brand-icons/brands/amazon-kindle/default.svg",
           "upstreamKeys": ["default"]
@@ -5632,19 +5632,19 @@
       "title": "Amazon Web Services",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#ff9900", "#ffffff"],
           "file": "icons/brand-icons/brands/amazon-web-services/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#ff9900", "#ffffff"],
           "file": "icons/brand-icons/brands/amazon-web-services/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#252f3e", "#ff9900"],
           "file": "icons/brand-icons/brands/amazon-web-services/light.svg",
           "upstreamKeys": ["light"]
@@ -6467,7 +6467,7 @@
       "title": "AnkerMake",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#88f387"],
           "file": "icons/brand-icons/brands/ankermake/default.svg",
           "upstreamKeys": ["default"]
@@ -7424,7 +7424,7 @@
       "title": "Apache Druid",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#29f1fb"],
           "file": "icons/brand-icons/brands/apache-druid/default.svg",
           "upstreamKeys": ["default"]
@@ -8179,7 +8179,7 @@
       "title": "Apache Tomcat",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f8dc75"],
           "file": "icons/brand-icons/brands/apache-tomcat/default.svg",
           "upstreamKeys": ["default"]
@@ -9306,7 +9306,7 @@
       "title": "ArangoDB",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#dddf72"],
           "file": "icons/brand-icons/brands/arangodb/default.svg",
           "upstreamKeys": ["default"]
@@ -10037,7 +10037,7 @@
       "title": "Armory",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#00bcdd", "#0c4062"],
           "file": "icons/brand-icons/community/armory/default.svg",
           "upstreamKeys": ["default"]
@@ -10292,19 +10292,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0d0e10", "#f06a6a"],
           "file": "icons/brand-icons/brands/asana/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f06a6a", "#ffffff"],
           "file": "icons/brand-icons/brands/asana/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0d0e10", "#f06a6a"],
           "file": "icons/brand-icons/brands/asana/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -10797,13 +10797,13 @@
       "title": "Astro",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d83333", "#f041ff", "#ffffff"],
           "file": "icons/brand-icons/brands/astro/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d83333", "#f041ff", "#ffffff"],
           "file": "icons/brand-icons/brands/astro/default.svg",
           "upstreamKeys": ["default"]
@@ -10821,13 +10821,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d83333", "#f041ff", "#ffffff"],
           "file": "icons/brand-icons/brands/astro/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d83333", "#f041ff", "#ffffff"],
           "file": "icons/brand-icons/brands/astro/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -12361,7 +12361,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0c0d0c", "#17b582"],
           "file": "icons/brand-icons/brands/avanza/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -12730,7 +12730,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0a094d", "#e70000"],
           "file": "icons/brand-icons/brands/awk/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -12753,13 +12753,13 @@
       "title": "AWS",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "light",
           "colors": ["#ff9900", "currentColor"],
           "file": "icons/brand-icons/brands/aws/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#ff9900", "currentColor"],
           "file": "icons/brand-icons/brands/aws/default.svg",
           "upstreamKeys": []
@@ -35834,7 +35834,7 @@
       "title": "Axure",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#009cd9", "#272727", "#74bb11", "#eb2084"],
           "file": "icons/brand-icons/brands/axure/default.svg",
           "upstreamKeys": ["default"]
@@ -37257,7 +37257,7 @@
       "title": "Azure A",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0078d4", "#0669bc", "#114a8b", "#2892df", "#3ccbf4"],
           "file": "icons/brand-icons/azure/azure-azure-a/default.svg",
           "upstreamKeys": ["default"]
@@ -38147,7 +38147,7 @@
       "title": "Azure Firewall Manager",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#6bb9f2",
             "#821010",
@@ -40170,7 +40170,7 @@
       "title": "Cache Redis",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#005ba1", "#0060a9", "#0071c8", "#0078d4", "#32bedd", "#50e6ff", "#e8e8e8"],
           "file": "icons/brand-icons/azure/azure-cache-redis/default.svg",
           "upstreamKeys": ["default"]
@@ -40236,7 +40236,7 @@
       "title": "Capacity Reservation Groups",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#59285f", "#a33a85", "#ce74b6", "#dc92bf"],
           "file": "icons/brand-icons/azure/azure-capacity-reservation-groups/default.svg",
           "upstreamKeys": ["default"]
@@ -41297,7 +41297,7 @@
       "title": "Cost Management and Billing",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": [
             "#258277",
             "#5e9624",
@@ -42383,7 +42383,7 @@
       "title": "Defender Sensor",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#003067",
             "#0078d4",
@@ -45164,7 +45164,7 @@
       "title": "IcM Troubleshooting",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#999999", "#b3b3b3", "#cccccc", "#cecece", "#e6e6e6", "#f2f2f2"],
           "file": "icons/brand-icons/azure/azure-icm-troubleshooting/default.svg",
           "upstreamKeys": ["default"]
@@ -46716,7 +46716,7 @@
       "title": "Machine Learning Studio Workspaces",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": [
             "#0078d4",
             "#198ab3",
@@ -46974,7 +46974,7 @@
       "title": "Managed Identities",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": [
             "#1988d9",
             "#2a93e0",
@@ -47373,7 +47373,7 @@
       "title": "Microsoft Defender for IoT",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#50e6ff", "#9cebff", "#e6e6e6", "#ffffff"],
           "file": "icons/brand-icons/azure/azure-microsoft-defender-for-iot/default.svg",
           "upstreamKeys": ["default"]
@@ -49857,7 +49857,7 @@
       "title": "SCVMM Management Servers",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#005ba1", "#0078d4", "#50e6ff", "#5ea0ef", "#c3f1ff", "#ffffff"],
           "file": "icons/brand-icons/azure/azure-scvmm-management-servers/default.svg",
           "upstreamKeys": ["default"]
@@ -53325,7 +53325,7 @@
       "title": "Babel",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f9dc3e"],
           "file": "icons/brand-icons/brands/babel/default.svg",
           "upstreamKeys": ["default"]
@@ -54380,7 +54380,7 @@
       "title": "Basecamp",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe000", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/basecamp-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -54946,7 +54946,7 @@
       "title": "Beatport",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#01ff95"],
           "file": "icons/brand-icons/brands/beatport/default.svg",
           "upstreamKeys": ["default"]
@@ -55120,7 +55120,7 @@
       "title": "Beekeeper Studio",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fad83b"],
           "file": "icons/brand-icons/brands/beekeeper-studio/default.svg",
           "upstreamKeys": ["default"]
@@ -55734,7 +55734,7 @@
       "title": "Betterment",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc729", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/betterment-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -56388,7 +56388,7 @@
       "title": "Bitazza",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#10f48b", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/bitazza-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -59372,7 +59372,7 @@
       "title": "Bricks",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffd54d"],
           "file": "icons/brand-icons/brands/bricks/default.svg",
           "upstreamKeys": ["default"]
@@ -60687,7 +60687,7 @@
       "title": "Buy Me A Coffee",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0d0c22", "#ffdd00"],
           "file": "icons/brand-icons/brands/buy-me-a-coffee/default.svg",
           "upstreamKeys": ["default"]
@@ -60774,7 +60774,7 @@
       "title": "BVG",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f0d722"],
           "file": "icons/brand-icons/brands/bvg/default.svg",
           "upstreamKeys": ["default"]
@@ -60803,7 +60803,7 @@
       "title": "Bybit",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#15182a", "#f6a500"],
           "file": "icons/brand-icons/brands/bybit/default.svg",
           "upstreamKeys": ["default"]
@@ -62509,7 +62509,7 @@
       "title": "Caterpillar",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcd11"],
           "file": "icons/brand-icons/brands/caterpillar/default.svg",
           "upstreamKeys": ["default"]
@@ -63326,7 +63326,7 @@
       "title": "Chart.js",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#36a2eb", "#e7e9ed", "#fe6184", "#ffce56"],
           "file": "icons/brand-icons/brands/chartdotjs/default.svg",
           "upstreamKeys": ["default"]
@@ -63355,7 +63355,7 @@
       "title": "Chart.js",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#36a2eb", "#e7e9ed", "#fe6184", "#ffce56"],
           "file": "icons/brand-icons/community/chartjs/default.svg",
           "upstreamKeys": ["default"]
@@ -63622,7 +63622,7 @@
       "title": "Checkly",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#002652", "#0075ff"],
           "file": "icons/brand-icons/community/checkly/default.svg",
           "upstreamKeys": ["default"]
@@ -65070,7 +65070,7 @@
       "title": "Clastix",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#24456f", "#d81d56"],
           "file": "icons/brand-icons/community/clastix/default.svg",
           "upstreamKeys": ["default"]
@@ -65140,19 +65140,19 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d97757", "#ffffff"],
           "file": "icons/brand-icons/brands/claude-ai/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d97757", "#ffffff"],
           "file": "icons/brand-icons/brands/claude-ai/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#121212", "#d97757"],
           "file": "icons/brand-icons/brands/claude-ai/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -65344,7 +65344,7 @@
       "title": "ClickHouse",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcc01"],
           "file": "icons/brand-icons/brands/clickhouse/default.svg",
           "upstreamKeys": ["default"]
@@ -65865,7 +65865,7 @@
       "title": "Cloudcraft",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#22496e", "#241200", "#30689c", "#4286c5", "#c08a07", "#e4a409", "#f6b71f"],
           "file": "icons/brand-icons/community/cloudcraft/default.svg",
           "upstreamKeys": ["default"]
@@ -65946,7 +65946,7 @@
           "upstreamKeys": []
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f4811f", "#faad3f", "#ffffff"],
           "file": "icons/brand-icons/brands/cloudflare/default.svg",
           "upstreamKeys": ["default"]
@@ -65964,7 +65964,7 @@
           "upstreamKeys": []
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#f6821f", "#fbad41"],
           "file": "icons/brand-icons/brands/cloudflare/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -66305,7 +66305,7 @@
       "title": "Clubhouse",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe450"],
           "file": "icons/brand-icons/brands/clubhouse/default.svg",
           "upstreamKeys": ["default"]
@@ -67115,7 +67115,7 @@
       "title": "CodeceptJS",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f6e05e"],
           "file": "icons/brand-icons/brands/codeceptjs/default.svg",
           "upstreamKeys": ["default"]
@@ -68638,7 +68638,7 @@
       "title": "Colgate",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#002a46", "#0068ff"],
           "file": "icons/brand-icons/brands/colgate/default.svg",
           "upstreamKeys": ["default"]
@@ -68789,7 +68789,7 @@
       "title": "comma",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#51ff00"],
           "file": "icons/brand-icons/brands/comma/default.svg",
           "upstreamKeys": ["default"]
@@ -68853,7 +68853,7 @@
       "title": "Commerzbank",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcc33"],
           "file": "icons/brand-icons/brands/commerzbank/default.svg",
           "upstreamKeys": ["default"]
@@ -69021,7 +69021,7 @@
       "title": "Commonwealth Bank",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000002", "#ffcc00"],
           "file": "icons/brand-icons/brands/commonwealth-bank/default.svg",
           "upstreamKeys": ["default"]
@@ -69512,7 +69512,7 @@
       "title": "Construct 3",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ffda"],
           "file": "icons/brand-icons/brands/construct-3/default.svg",
           "upstreamKeys": ["default"]
@@ -70010,19 +70010,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#8d2676", "#ee342f", "#f3b01c", "#ffffff"],
           "file": "icons/brand-icons/brands/convex/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#8d2676", "#ee342f", "#f3b01c", "#ffffff"],
           "file": "icons/brand-icons/brands/convex/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#111111", "#8d2676", "#ee342f", "#f3b01c"],
           "file": "icons/brand-icons/brands/convex/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -72282,7 +72282,7 @@
       "title": "Cube",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#141446", "#7a77ff", "#a14474", "#ff6492"],
           "file": "icons/brand-icons/community/cube/default.svg",
           "upstreamKeys": ["default"]
@@ -72637,7 +72637,7 @@
       "title": "CVS Health",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#cc0000"],
           "file": "icons/brand-icons/brands/cvs/default.svg",
           "upstreamKeys": ["default"]
@@ -72793,7 +72793,7 @@
       "title": "Cypress",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1b1e2e", "#58d09e", "#69d3a7"],
           "file": "icons/brand-icons/brands/cypress/default.svg",
           "upstreamKeys": ["default"]
@@ -72822,7 +72822,7 @@
       "title": "Cytoscape.js",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f7df1e"],
           "file": "icons/brand-icons/brands/cytoscapedotjs/default.svg",
           "upstreamKeys": ["default"]
@@ -73083,7 +73083,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#000064", "#0091ff", "#1746ff", "#4edaff"],
           "file": "icons/brand-icons/brands/dai-ichi-life-holdings/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -73228,13 +73228,13 @@
       "title": "DALL·E (OpenAI)",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#3c46ff", "#43ffff", "#51da4b", "#ff6e3d", "#ffff67"],
           "file": "icons/brand-icons/brands/dall-e-openai/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#3c46ff", "#43ffff", "#51da4b", "#ff6e3d", "#ffff67"],
           "file": "icons/brand-icons/brands/dall-e-openai/default.svg",
           "upstreamKeys": []
@@ -73687,7 +73687,7 @@
       "title": "DataCamp",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#03ef62"],
           "file": "icons/brand-icons/brands/datacamp/default.svg",
           "upstreamKeys": ["default"]
@@ -74661,7 +74661,7 @@
       "title": "Deepgram",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#13ef93"],
           "file": "icons/brand-icons/brands/deepgram/default.svg",
           "upstreamKeys": ["default"]
@@ -75050,7 +75050,7 @@
       "title": "Delinea",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ff5a", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/delinea-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -75589,7 +75589,7 @@
       "title": "Deskera",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc64a"],
           "file": "icons/brand-icons/brands/deskera/default.svg",
           "upstreamKeys": ["default"]
@@ -75728,7 +75728,7 @@
       "title": "Deutsche Post",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcc00"],
           "file": "icons/brand-icons/brands/deutsche-post/default.svg",
           "upstreamKeys": ["default"]
@@ -76169,7 +76169,7 @@
       "title": "Dewaweb",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#bcd85f", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/dewaweb-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -76221,7 +76221,7 @@
       "title": "DHL",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcc00"],
           "file": "icons/brand-icons/brands/dhl/default.svg",
           "upstreamKeys": ["default"]
@@ -76308,7 +76308,7 @@
       "title": "DIaLOGIKa",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#3a3850", "#e41d2d"],
           "file": "icons/brand-icons/brands/dialogika/default.svg",
           "upstreamKeys": ["default"]
@@ -76937,13 +76937,13 @@
       "title": "Discloud",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#57f287"],
           "file": "icons/brand-icons/brands/discloud/default.svg",
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#57f287"],
           "file": "icons/brand-icons/brands/discloud/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -77250,7 +77250,7 @@
       "title": "Disney+",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#0000fe",
             "#0001fa",
@@ -78114,7 +78114,7 @@
       "title": "Docusign",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#4c00ff", "#ff5252"],
           "file": "icons/brand-icons/brands/docusign/default.svg",
           "upstreamKeys": ["default"]
@@ -78265,7 +78265,7 @@
       "title": "DoiT",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000433", "#fc3165"],
           "file": "icons/brand-icons/community/doit/default.svg",
           "upstreamKeys": ["default"]
@@ -78560,7 +78560,7 @@
       "title": "Domino's Pizza",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0090e2", "#ff0000", "#ffffff"],
           "file": "icons/brand-icons/brands/dominos-pizza/default.svg",
           "upstreamKeys": ["default"]
@@ -79452,7 +79452,7 @@
       "title": "Drizzle",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#c5f74f"],
           "file": "icons/brand-icons/brands/drizzle/default.svg",
           "upstreamKeys": ["default"]
@@ -79487,13 +79487,13 @@
       "title": "Drizzle ORM",
       "variants": {
         "dark": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#c5f74f"],
           "file": "icons/brand-icons/brands/drizzle-orm/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#c5f74f"],
           "file": "icons/brand-icons/brands/drizzle-orm/default.svg",
           "upstreamKeys": ["default"]
@@ -79627,7 +79627,7 @@
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0061fe", "#1e1919"],
           "file": "icons/brand-icons/brands/dropbox/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -80957,7 +80957,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#77bf43"],
           "file": "icons/brand-icons/brands/ecto/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -81145,7 +81145,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#003770", "#e74e0f"],
           "file": "icons/brand-icons/brands/edison/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -82756,7 +82756,7 @@
       "title": "Envato",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#87e64b"],
           "file": "icons/brand-icons/brands/envato/default.svg",
           "upstreamKeys": ["default"]
@@ -83375,13 +83375,13 @@
       "title": "ESLint",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#9ea3a8", "#ffffff"],
           "file": "icons/brand-icons/brands/eslint/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#9ea3a8", "#ffffff"],
           "file": "icons/brand-icons/brands/eslint/default.svg",
           "upstreamKeys": ["default"]
@@ -83399,19 +83399,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#9ea3a8", "#ffffff"],
           "file": "icons/brand-icons/brands/eslint/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#9ea3a8", "#ffffff"],
           "file": "icons/brand-icons/brands/eslint/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#101828", "#4b32c3", "#8080f2"],
           "file": "icons/brand-icons/brands/eslint/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -85749,7 +85749,7 @@
       "title": "Fastlane",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00f200"],
           "file": "icons/brand-icons/brands/fastlane/default.svg",
           "upstreamKeys": ["default"]
@@ -86061,7 +86061,7 @@
       "title": "Feast",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#036aea", "#2c2c2c"],
           "file": "icons/brand-icons/community/feast/default.svg",
           "upstreamKeys": ["default"]
@@ -86084,13 +86084,13 @@
       "title": "Featherless.ai",
       "variants": {
         "color": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe184"],
           "file": "icons/brand-icons/brands/featherlessdotai/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe184"],
           "file": "icons/brand-icons/brands/featherlessdotai/default.svg",
           "upstreamKeys": []
@@ -86437,13 +86437,13 @@
       "title": "FGO",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#20a7b3", "#353535"],
           "file": "icons/brand-icons/brands/fgo/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#20a7b3", "#ffffff"],
           "file": "icons/brand-icons/brands/fgo/light.svg",
           "upstreamKeys": ["light"]
@@ -86658,7 +86658,7 @@
           "upstreamKeys": []
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0acf83", "#1abcfe", "#a259ff", "#f24e1e", "#ff7262"],
           "file": "icons/brand-icons/brands/figma/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -86774,7 +86774,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#008f6e", "#00f0c0", "#0a0e12", "currentColor"],
           "file": "icons/brand-icons/brands/filagram/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -87057,7 +87057,7 @@
       "title": "Fillout",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc738"],
           "file": "icons/brand-icons/brands/fillout/default.svg",
           "upstreamKeys": ["default"]
@@ -87307,7 +87307,7 @@
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#262626", "#fa5d19"],
           "file": "icons/brand-icons/brands/firecrawl/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -87920,7 +87920,7 @@
       "title": "Flagger",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1a1a1a", "#7bb09f"],
           "file": "icons/brand-icons/community/flagger/default.svg",
           "upstreamKeys": ["default"]
@@ -88251,7 +88251,7 @@
       "title": "Flipt",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#000000",
             "#4c1d95",
@@ -90649,7 +90649,7 @@
       "title": "Frequência Invisível",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d59629", "#ffffff"],
           "file": "icons/brand-icons/brands/frequencia-invisivel/default.svg",
           "upstreamKeys": ["default"]
@@ -90695,7 +90695,7 @@
       "title": "Fresh",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffdb1e", "#ffe600", "#ffffff"],
           "file": "icons/brand-icons/brands/fresh/default.svg",
           "upstreamKeys": ["default"]
@@ -91887,7 +91887,7 @@
       "title": "Gandi",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#01f598", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/gandi-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -97417,7 +97417,7 @@
       "title": "General Mills",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#234291", "#e32123"],
           "file": "icons/brand-icons/brands/general-mills/default.svg",
           "upstreamKeys": ["default"]
@@ -97712,7 +97712,7 @@
       "title": "Get Glass Distribution",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f4c73b"],
           "file": "icons/brand-icons/brands/get-glass-distribution/default.svg",
           "upstreamKeys": ["default"]
@@ -99261,13 +99261,13 @@
       "title": "Global Power Synergy",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#009fe3", "#20335a", "#e30613"],
           "file": "icons/brand-icons/brands/global-power-synergy/default.svg",
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#009fe3", "#20335a", "#e30613"],
           "file": "icons/brand-icons/brands/global-power-synergy/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -99395,7 +99395,7 @@
       "title": "Glovo",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f2cc38"],
           "file": "icons/brand-icons/brands/glovo/default.svg",
           "upstreamKeys": ["default"]
@@ -100319,7 +100319,7 @@
       "title": "Goldilocks",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#23103a", "#f26722", "#f78f1e"],
           "file": "icons/brand-icons/community/goldilocks/default.svg",
           "upstreamKeys": ["default"]
@@ -100371,7 +100371,7 @@
       "title": "Gong",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#3e0075", "#8039e9"],
           "file": "icons/brand-icons/brands/gong/default.svg",
           "upstreamKeys": ["default"]
@@ -103005,7 +103005,7 @@
       "title": "GoTo",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe900", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/goto-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -103399,7 +103399,7 @@
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#30a1f5", "#ffffff"],
           "file": "icons/brand-icons/brands/gram/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -103990,7 +103990,7 @@
       "title": "Grid.ai",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#78ff96"],
           "file": "icons/brand-icons/brands/griddotai/default.svg",
           "upstreamKeys": ["default"]
@@ -104333,7 +104333,7 @@
       "title": "Grpc",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": [
             "#00b0ad",
             "#00b2ae",
@@ -104553,7 +104553,7 @@
       "title": "GTK",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#7fe719"],
           "file": "icons/brand-icons/brands/gtk/default.svg",
           "upstreamKeys": ["default"]
@@ -104819,7 +104819,7 @@
       "title": "Gumtree",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#72ef36"],
           "file": "icons/brand-icons/brands/gumtree/default.svg",
           "upstreamKeys": ["default"]
@@ -105195,7 +105195,7 @@
       "title": "Hack The Box",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#9fef00"],
           "file": "icons/brand-icons/brands/hack-the-box/default.svg",
           "upstreamKeys": ["default"]
@@ -105219,7 +105219,7 @@
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#141d2b", "#9fef00"],
           "file": "icons/brand-icons/brands/hack-the-box/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -105242,7 +105242,7 @@
       "title": "Hack The Box",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#9fef00", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/hack-the-box-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -105294,7 +105294,7 @@
       "title": "Hacker Noon",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00fe00"],
           "file": "icons/brand-icons/brands/hacker-noon/default.svg",
           "upstreamKeys": ["default"]
@@ -106001,7 +106001,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#00a580", "#344845"],
           "file": "icons/brand-icons/brands/harvester/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -106249,7 +106249,7 @@
       "title": "Haskell",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#453a62", "#5e5086", "#8f4e8b"],
           "file": "icons/brand-icons/brands/haskell/default.svg",
           "upstreamKeys": ["default"]
@@ -106533,7 +106533,7 @@
       "title": "hCaptcha",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0074bf", "#00d4bf", "#ffffff"],
           "file": "icons/brand-icons/brands/hcaptcha/default.svg",
           "upstreamKeys": ["default"]
@@ -106770,7 +106770,7 @@
       "title": "Heap",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#31d891"],
           "file": "icons/brand-icons/community/heap/default.svg",
           "upstreamKeys": ["default"]
@@ -107366,7 +107366,7 @@
       "title": "Hero MotoCorp",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#d9241c"],
           "file": "icons/brand-icons/brands/hero-motocorp/default.svg",
           "upstreamKeys": ["default"]
@@ -108245,13 +108245,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#18bcf2", "#f2f4f9"],
           "file": "icons/brand-icons/brands/home-assistant/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#18bcf2", "#f2f4f9"],
           "file": "icons/brand-icons/brands/home-assistant/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -108645,13 +108645,13 @@
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0298ec", "#25303e", "#64ba00", "#f96e10", "#ffb000"],
           "file": "icons/brand-icons/brands/honeycomb/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0298ec", "#64ba00", "#f96e10", "#ffb000", "#ffffff"],
           "file": "icons/brand-icons/brands/honeycomb/light.svg",
           "upstreamKeys": ["light"]
@@ -108686,7 +108686,7 @@
       "title": "Honeygain",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f9c900"],
           "file": "icons/brand-icons/brands/honeygain/default.svg",
           "upstreamKeys": ["default"]
@@ -108715,7 +108715,7 @@
       "title": "Honeywell",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#db202e", "#ee3124", "#f37021"],
           "file": "icons/brand-icons/brands/honeywell/default.svg",
           "upstreamKeys": ["default"]
@@ -109071,7 +109071,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#053d4e", "#ff4000"],
           "file": "icons/brand-icons/brands/hotmart/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -109094,7 +109094,7 @@
       "title": "Hotwire",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe801"],
           "file": "icons/brand-icons/brands/hotwire/default.svg",
           "upstreamKeys": ["default"]
@@ -110425,7 +110425,7 @@
       "title": "Hyprland",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#58e1ff"],
           "file": "icons/brand-icons/brands/hyprland/default.svg",
           "upstreamKeys": ["default"]
@@ -111068,7 +111068,7 @@
       "title": "ICQ",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#24ff00"],
           "file": "icons/brand-icons/brands/icq/default.svg",
           "upstreamKeys": ["default"]
@@ -111663,7 +111663,7 @@
       "title": "Image Toolbox",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#60ea78"],
           "file": "icons/brand-icons/brands/image-toolbox/default.svg",
           "upstreamKeys": ["default"]
@@ -111860,7 +111860,7 @@
       "title": "Immer",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00e7c3"],
           "file": "icons/brand-icons/brands/immer/default.svg",
           "upstreamKeys": ["default"]
@@ -111947,7 +111947,7 @@
       "title": "ImmoScout24",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ffd0", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/immoscout24-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -112566,13 +112566,13 @@
       "title": "Infinigence (无问芯穹)",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "light",
           "colors": ["#2ea7e0", "#7f1084"],
           "file": "icons/brand-icons/brands/infinigence/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#2ea7e0", "#7f1084"],
           "file": "icons/brand-icons/brands/infinigence/default.svg",
           "upstreamKeys": []
@@ -113210,7 +113210,7 @@
       "title": "Inquirer",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f0db4f"],
           "file": "icons/brand-icons/brands/inquirer/default.svg",
           "upstreamKeys": ["default"]
@@ -113268,7 +113268,7 @@
       "title": "INSPIRE",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00e5ff"],
           "file": "icons/brand-icons/brands/inspire/default.svg",
           "upstreamKeys": ["default"]
@@ -113831,7 +113831,7 @@
       "title": "Intercom",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#6afdef"],
           "file": "icons/brand-icons/brands/intercom/default.svg",
           "upstreamKeys": ["default"]
@@ -114925,7 +114925,7 @@
       "title": "ITVx",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#deeb52"],
           "file": "icons/brand-icons/brands/itvx/default.svg",
           "upstreamKeys": ["default"]
@@ -115381,7 +115381,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#04233e", "#f7df1e"],
           "file": "icons/brand-icons/brands/javascript/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -116431,7 +116431,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0052cc", "#0e64de", "#253858", "#2684ff"],
           "file": "icons/brand-icons/brands/jiraalign/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -116876,13 +116876,13 @@
       "title": "jQuery",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0868ac", "#ffffff"],
           "file": "icons/brand-icons/brands/jquery/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0868ac", "#ffffff"],
           "file": "icons/brand-icons/brands/jquery/default.svg",
           "upstreamKeys": ["default"]
@@ -117108,7 +117108,7 @@
       "title": "JSR",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f7df1e"],
           "file": "icons/brand-icons/brands/jsr/default.svg",
           "upstreamKeys": ["default"]
@@ -117137,7 +117137,7 @@
       "title": "JSS",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f7df1e"],
           "file": "icons/brand-icons/brands/jss/default.svg",
           "upstreamKeys": ["default"]
@@ -117654,7 +117654,7 @@
           "upstreamKeys": ["line"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#384745", "#fd824e"],
           "file": "icons/brand-icons/brands/k3os/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -117677,7 +117677,7 @@
       "title": "K3s",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc61c"],
           "file": "icons/brand-icons/brands/k3s/default.svg",
           "upstreamKeys": ["default"]
@@ -118777,7 +118777,7 @@
       "title": "Kakao",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcd00"],
           "file": "icons/brand-icons/brands/kakao/default.svg",
           "upstreamKeys": ["default"]
@@ -118806,7 +118806,7 @@
       "title": "KakaoBank",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1c1c1c", "#ffe300"],
           "file": "icons/brand-icons/brands/kakao-bank/default.svg",
           "upstreamKeys": ["default"]
@@ -118829,7 +118829,7 @@
       "title": "KakaoTalk",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcd00"],
           "file": "icons/brand-icons/brands/kakaotalk/default.svg",
           "upstreamKeys": ["default"]
@@ -118876,7 +118876,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#4d4d4d", "#8c6432"],
           "file": "icons/brand-icons/brands/kaldi/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -119293,7 +119293,7 @@
       "title": "Katalon",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#19d89f"],
           "file": "icons/brand-icons/community/katalon/default.svg",
           "upstreamKeys": ["default"]
@@ -119594,7 +119594,7 @@
       "title": "Kedro",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc900"],
           "file": "icons/brand-icons/brands/kedro/default.svg",
           "upstreamKeys": ["default"]
@@ -119733,7 +119733,7 @@
       "title": "Keeper",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc700"],
           "file": "icons/brand-icons/brands/keeper/default.svg",
           "upstreamKeys": ["default"]
@@ -119762,7 +119762,7 @@
       "title": "Keeper",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc708", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/keeper-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -120195,7 +120195,7 @@
       "title": "KFC",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "light",
           "colors": ["#231f20", "#f40027"],
           "file": "icons/brand-icons/brands/kfc/color.svg",
           "upstreamKeys": ["color"]
@@ -120352,7 +120352,7 @@
       "title": "Kiali",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0093dd", "#013144"],
           "file": "icons/brand-icons/community/kiali/default.svg",
           "upstreamKeys": ["default"]
@@ -120503,7 +120503,7 @@
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#53fc18"],
           "file": "icons/brand-icons/brands/kick/light.svg",
           "upstreamKeys": ["light"]
@@ -120654,7 +120654,7 @@
       "title": "Kimi",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#1783ff", "#ffffff"],
           "file": "icons/brand-icons/brands/kimi/color.svg",
           "upstreamKeys": []
@@ -121309,7 +121309,7 @@
       "title": "KNIME",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fdd800"],
           "file": "icons/brand-icons/brands/knime/default.svg",
           "upstreamKeys": ["default"]
@@ -121726,19 +121726,19 @@
       "title": "Kokonut UI",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#3bb44b", "#ffffff"],
           "file": "icons/brand-icons/brands/kokonut-ui/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#3bb44b", "#ffffff"],
           "file": "icons/brand-icons/brands/kokonut-ui/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0c0c0c", "#111111", "#2cd242"],
           "file": "icons/brand-icons/brands/kokonut-ui/light.svg",
           "upstreamKeys": ["light"]
@@ -122051,7 +122051,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#7f52ff", "#c711e1", "#e44857"],
           "file": "icons/brand-icons/brands/kotlin/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -122445,7 +122445,7 @@
       "title": "Kubecost",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#30d163"],
           "file": "icons/brand-icons/community/kubecost/default.svg",
           "upstreamKeys": ["default"]
@@ -122706,7 +122706,7 @@
       "title": "Kununu",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc62e"],
           "file": "icons/brand-icons/brands/kununu/default.svg",
           "upstreamKeys": ["default"]
@@ -122845,7 +122845,7 @@
       "title": "Kwansei Gakuin University",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffce00", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/kwansei-gakuin-university-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -123018,7 +123018,7 @@
       "title": "La Poste",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcb05", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/la-poste-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -123070,7 +123070,7 @@
       "title": "LabVIEW",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffdb00"],
           "file": "icons/brand-icons/brands/labview/default.svg",
           "upstreamKeys": ["default"]
@@ -123361,13 +123361,13 @@
       "title": "Langfuse",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0a60b5", "#e11312"],
           "file": "icons/brand-icons/brands/langfuse/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0a60b5", "#e11312"],
           "file": "icons/brand-icons/brands/langfuse/default.svg",
           "upstreamKeys": []
@@ -123675,7 +123675,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#6875f5"],
           "file": "icons/brand-icons/brands/laraveljetstream/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -124468,7 +124468,7 @@
       "title": "Lemon Squeezy",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc233"],
           "file": "icons/brand-icons/brands/lemon-squeezy/default.svg",
           "upstreamKeys": ["default"]
@@ -124787,7 +124787,7 @@
       "title": "Let's Encrypt",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#003a70", "#ffa400"],
           "file": "icons/brand-icons/community/letsencrypt/default.svg",
           "upstreamKeys": ["default"]
@@ -124839,7 +124839,7 @@
       "title": "Levelrail",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#06232c", "#084f67", "#107292", "#58b1ce"],
           "file": "icons/brand-icons/brands/levelrail/default.svg",
           "upstreamKeys": ["default"]
@@ -124897,7 +124897,7 @@
       "title": "Lexical",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#76b6ff"],
           "file": "icons/brand-icons/community/lexical/default.svg",
           "upstreamKeys": ["default"]
@@ -125111,7 +125111,7 @@
       "title": "Liberapay",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f6c915"],
           "file": "icons/brand-icons/brands/liberapay/default.svg",
           "upstreamKeys": ["default"]
@@ -125163,7 +125163,7 @@
       "title": "Libgdx",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#e74a45"],
           "file": "icons/brand-icons/brands/libgdx/default.svg",
           "upstreamKeys": ["default"]
@@ -125893,7 +125893,7 @@
       "title": "Lightstep",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#039c49", "#121c21"],
           "file": "icons/brand-icons/community/lightstep/default.svg",
           "upstreamKeys": ["default"]
@@ -126246,7 +126246,7 @@
       "title": "Linkerd",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#2beda7"],
           "file": "icons/brand-icons/brands/linkerd/default.svg",
           "upstreamKeys": ["default"]
@@ -127078,7 +127078,7 @@
       "title": "LiveKit",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#1fd5f9", "#ffffff"],
           "file": "icons/brand-icons/brands/livekit/color.svg",
           "upstreamKeys": []
@@ -127947,7 +127947,7 @@
       "title": "Longbridge",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00dbb6", "#fc5200", "#ffe000"],
           "file": "icons/brand-icons/brands/longbridge/default.svg",
           "upstreamKeys": ["default"]
@@ -128278,13 +128278,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00ddb3", "#ffffff"],
           "file": "icons/brand-icons/brands/lottiefiles/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00ddb3", "#ffffff"],
           "file": "icons/brand-icons/brands/lottiefiles/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -128817,25 +128817,25 @@
       "title": "Lume",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d06b57", "#ffffff"],
           "file": "icons/brand-icons/brands/lume/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#d06b57"],
           "file": "icons/brand-icons/brands/lume/default.svg",
           "upstreamKeys": ["default"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#d06b57", "#ffffff"],
           "file": "icons/brand-icons/brands/lume/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#d06b57"],
           "file": "icons/brand-icons/brands/lume/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -128939,7 +128939,7 @@
       "title": "Lunit",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00c9ea"],
           "file": "icons/brand-icons/brands/lunit/default.svg",
           "upstreamKeys": ["default"]
@@ -129443,7 +129443,7 @@
           "upstreamKeys": ["line"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#4d4d4d", "#f26322"],
           "file": "icons/brand-icons/brands/magento/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -129651,7 +129651,7 @@
       "title": "mailbox",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#abe659"],
           "file": "icons/brand-icons/brands/mailbox/default.svg",
           "upstreamKeys": ["default"]
@@ -129680,7 +129680,7 @@
       "title": "mailbox.org",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#98e738", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/mailbox-org-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -129703,7 +129703,7 @@
       "title": "MailChimp",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe01b"],
           "file": "icons/brand-icons/brands/mailchimp/default.svg",
           "upstreamKeys": ["default"]
@@ -129732,7 +129732,7 @@
       "title": "Mailchimp",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe01b", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/mailchimp-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -130977,7 +130977,7 @@
       "title": "Maruti Suzuki",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#2d3394", "#9d9fa1"],
           "file": "icons/brand-icons/brands/maruti-suzuki/default.svg",
           "upstreamKeys": ["default"]
@@ -131075,7 +131075,7 @@
       "title": "Masan Group",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#00447c", "#4f8abe", "#95b9d8"],
           "file": "icons/brand-icons/brands/masan-group/default.svg",
           "upstreamKeys": ["default"]
@@ -131087,7 +131087,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#00447c", "#4f8abe", "#95b9d8"],
           "file": "icons/brand-icons/brands/masan-group/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -132003,7 +132003,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#002391", "#40c706"],
           "file": "icons/brand-icons/brands/maxis-berhad/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -132334,7 +132334,7 @@
       "title": "McDonald's",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fbc817"],
           "file": "icons/brand-icons/brands/mcdonald-s/default.svg",
           "upstreamKeys": ["default"]
@@ -132363,7 +132363,7 @@
       "title": "McDonald's",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcc00"],
           "file": "icons/brand-icons/brands/mcdonalds/default.svg",
           "upstreamKeys": ["default"]
@@ -133093,7 +133093,7 @@
       "title": "Meituan",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffd100"],
           "file": "icons/brand-icons/brands/meituan/default.svg",
           "upstreamKeys": ["default"]
@@ -133737,7 +133737,7 @@
           "upstreamKeys": []
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0064e0", "#0064e1", "#0073ee", "#0081fb", "#0082fb", "#192830"],
           "file": "icons/brand-icons/brands/meta/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -134309,7 +134309,7 @@
       "title": "micro:bit",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ed00"],
           "file": "icons/brand-icons/brands/micro-bit/default.svg",
           "upstreamKeys": ["default"]
@@ -134612,7 +134612,7 @@
       "title": "Microsoft Azure",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0078d4", "#0669bc", "#114a8b", "#2892df", "#3ccbf4"],
           "file": "icons/brand-icons/brands/microsoft-azure/default.svg",
           "upstreamKeys": ["default"]
@@ -136268,7 +136268,7 @@
       "title": "Microsoft SQL Server ",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#b71c1c", "#cfd8dc"],
           "file": "icons/brand-icons/brands/microsoft-sql-server/default.svg",
           "upstreamKeys": ["default"]
@@ -137144,7 +137144,7 @@
       "title": "Minds",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fed12f"],
           "file": "icons/brand-icons/brands/minds/default.svg",
           "upstreamKeys": ["default"]
@@ -137445,7 +137445,7 @@
       "title": "Mint",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0cb3ff", "#3ac155", "#444444"],
           "file": "icons/brand-icons/community/mint-lang/default.svg",
           "upstreamKeys": ["default"]
@@ -137503,19 +137503,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0c8c5e", "#18e299", "#ffffff"],
           "file": "icons/brand-icons/brands/mintlify/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0c8c5e", "#18e299", "#ffffff"],
           "file": "icons/brand-icons/brands/mintlify/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#08090a", "#0c8c5e", "#18e299"],
           "file": "icons/brand-icons/brands/mintlify/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -137567,7 +137567,7 @@
       "title": "Mir",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#02afff", "#1f5bd7", "#ffffff"],
           "file": "icons/brand-icons/brands/mir/dark.svg",
           "upstreamKeys": ["dark"]
@@ -137655,7 +137655,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1c1c1e", "#ffdd33"],
           "file": "icons/brand-icons/brands/miro/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -137771,7 +137771,7 @@
       "title": "Mistral AI",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#ea3326", "#eb5829", "#ee792f", "#f2a73b", "#f7d046"],
           "file": "icons/brand-icons/brands/mistral-ai/default.svg",
           "upstreamKeys": ["default"]
@@ -137887,7 +137887,7 @@
       "title": "Mitsubishi Heavy Industries",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#e31f26"],
           "file": "icons/brand-icons/brands/mitsubishi-heavy/default.svg",
           "upstreamKeys": ["default"]
@@ -137910,7 +137910,7 @@
       "title": "Mitsubishi Motors",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#ee1d23"],
           "file": "icons/brand-icons/brands/mitsubishi-motors/default.svg",
           "upstreamKeys": ["default"]
@@ -138322,7 +138322,7 @@
       "title": "Modal",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#7fee64"],
           "file": "icons/brand-icons/brands/modal/default.svg",
           "upstreamKeys": ["default"]
@@ -138694,13 +138694,13 @@
       "title": "Monday.com",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#00ca72", "#333333", "#f62b54", "#ffcc00"],
           "file": "icons/brand-icons/brands/monday/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00ca72", "#f62b54", "#ffcc00", "#ffffff"],
           "file": "icons/brand-icons/brands/monday/light.svg",
           "upstreamKeys": ["light"]
@@ -138788,7 +138788,7 @@
       "title": "Monero",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#4c4c4c", "#ff6600"],
           "file": "icons/brand-icons/brands/monero/default.svg",
           "upstreamKeys": ["default"]
@@ -138817,7 +138817,7 @@
       "title": "Monex",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc700", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/monex-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -138869,13 +138869,13 @@
       "title": "MongoDB",
       "variants": {
         "dark": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ed64"],
           "file": "icons/brand-icons/brands/mongodb/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ed64"],
           "file": "icons/brand-icons/brands/mongodb/default.svg",
           "upstreamKeys": ["default"]
@@ -138893,13 +138893,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#001e2b", "#01ec64"],
           "file": "icons/brand-icons/brands/mongodb/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ed64"],
           "file": "icons/brand-icons/brands/mongodb/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -139015,7 +139015,7 @@
       "title": "Monistic",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#99cc9a"],
           "file": "icons/brand-icons/brands/monistic-logo/default.svg",
           "upstreamKeys": ["default"]
@@ -139079,19 +139079,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#e2b714", "#f0edda"],
           "file": "icons/brand-icons/brands/monkeytype/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#e2b714", "#f0edda"],
           "file": "icons/brand-icons/brands/monkeytype/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#323437", "#e2b714"],
           "file": "icons/brand-icons/brands/monkeytype/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -139890,7 +139890,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#000000",
             "#9e0b0f",
@@ -140463,7 +140463,7 @@
       "title": "MuseScore Studio",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#24a0f6"],
           "file": "icons/brand-icons/brands/musescore-studio/default.svg",
           "upstreamKeys": ["default"]
@@ -141060,19 +141060,19 @@
           "upstreamKeys": []
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#ea4b71", "#ffffff"],
           "file": "icons/brand-icons/brands/n8n/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#ea4b71", "#ffffff"],
           "file": "icons/brand-icons/brands/n8n/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#ea4b71"],
           "file": "icons/brand-icons/brands/n8n/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -141430,13 +141430,13 @@
       "title": "Nano Banana (Google)",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f3ad61", "#f9c23c", "#fcd53f", "#feefc2", "#fff478"],
           "file": "icons/brand-icons/brands/nano-banana-google/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f3ad61", "#f9c23c", "#fcd53f", "#feefc2", "#fff478"],
           "file": "icons/brand-icons/brands/nano-banana-google/default.svg",
           "upstreamKeys": []
@@ -141598,7 +141598,7 @@
       "title": "Nasdaq",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0996c7", "#231f20"],
           "file": "icons/brand-icons/brands/nasdaq/default.svg",
           "upstreamKeys": ["default"]
@@ -141841,7 +141841,7 @@
       "title": "NATS",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#27aae1", "#34a574", "#375c93", "#8dc63f", "#ffffff"],
           "file": "icons/brand-icons/community/nats/default.svg",
           "upstreamKeys": ["default"]
@@ -142055,7 +142055,7 @@
       "title": "National Bank of Kuwait",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#21376b", "#db0c28"],
           "file": "icons/brand-icons/brands/nbk/default.svg",
           "upstreamKeys": ["default"]
@@ -142564,7 +142564,7 @@
       "title": "Apache NetBeans",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": [
             "#1b6ac6",
             "#2e90e8",
@@ -143049,7 +143049,7 @@
       "title": "Netto",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe500"],
           "file": "icons/brand-icons/brands/netto/default.svg",
           "upstreamKeys": ["default"]
@@ -143078,7 +143078,7 @@
       "title": "Network Rail",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#004d6f", "#f07e26", "#f59d24"],
           "file": "icons/brand-icons/brands/network-rail/default.svg",
           "upstreamKeys": ["default"]
@@ -143119,7 +143119,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#2c7fb8", "#4d4d4d", "#ff7f0e"],
           "file": "icons/brand-icons/brands/networkx/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -143420,19 +143420,19 @@
       "title": "Newmont",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#fcaf17", "#ffffff"],
           "file": "icons/brand-icons/brands/newmont/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0c2b82", "#fcaf17"],
           "file": "icons/brand-icons/brands/newmont/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#fcaf17"],
           "file": "icons/brand-icons/brands/newmont/light.svg",
           "upstreamKeys": ["light"]
@@ -143444,13 +143444,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0c2b82", "#fcaf17"],
           "file": "icons/brand-icons/brands/newmont/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#fcaf17", "#ffffff"],
           "file": "icons/brand-icons/brands/newmont/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -143839,7 +143839,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#231f20", "#2f97da", "#6ec72e"],
           "file": "icons/brand-icons/brands/nextera-energy/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -144567,7 +144567,7 @@
       "title": "Nikon",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe100"],
           "file": "icons/brand-icons/brands/nikon/default.svg",
           "upstreamKeys": ["default"]
@@ -144648,7 +144648,7 @@
       "title": "Nimble",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#1c1c1c", "#353338", "#c5b514", "#eed714", "#f5e83f"],
           "file": "icons/brand-icons/brands/nimble/default.svg",
           "upstreamKeys": ["default"]
@@ -144879,7 +144879,7 @@
       "title": "Nitrado",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffd744", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/nitrado-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -145212,7 +145212,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#333333",
             "#3fa92d",
@@ -145357,7 +145357,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00ca8e"],
           "file": "icons/brand-icons/brands/nomad/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -145432,7 +145432,7 @@
       "title": "Norco",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ff00"],
           "file": "icons/brand-icons/brands/norco/default.svg",
           "upstreamKeys": ["default"]
@@ -145741,7 +145741,7 @@
       "title": "Norton",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe01a"],
           "file": "icons/brand-icons/brands/norton/default.svg",
           "upstreamKeys": ["default"]
@@ -145770,7 +145770,7 @@
       "title": "Norton",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe01a", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/norton-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -145932,7 +145932,7 @@
       "title": "Notepad++",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#90e59a"],
           "file": "icons/brand-icons/brands/notepadplusplus/default.svg",
           "upstreamKeys": ["default"]
@@ -146518,7 +146518,7 @@
       "title": "Nrwl",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#96d7e8"],
           "file": "icons/brand-icons/brands/nrwl/default.svg",
           "upstreamKeys": ["default"]
@@ -146767,7 +146767,7 @@
       "title": "Nuki",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fdca40", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/nuki-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -147052,19 +147052,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00dc82"],
           "file": "icons/brand-icons/brands/nuxt/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxt/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00dc82"],
           "file": "icons/brand-icons/brands/nuxt/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -147087,19 +147087,19 @@
       "title": "Nuxt Content",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxt-content/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxt-content/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00dc82"],
           "file": "icons/brand-icons/brands/nuxt-content/light.svg",
           "upstreamKeys": ["light"]
@@ -147122,19 +147122,19 @@
       "title": "Nuxt Studio",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxt-studio/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxt-studio/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00dc82"],
           "file": "icons/brand-icons/brands/nuxt-studio/light.svg",
           "upstreamKeys": ["light"]
@@ -147157,19 +147157,19 @@
       "title": "Nuxt UI",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxt-ui/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxt-ui/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00dc82"],
           "file": "icons/brand-icons/brands/nuxt-ui/light.svg",
           "upstreamKeys": ["light"]
@@ -147198,19 +147198,19 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxthub/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00dc82", "#ffffff"],
           "file": "icons/brand-icons/brands/nuxthub/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00dc82"],
           "file": "icons/brand-icons/brands/nuxthub/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -147233,19 +147233,19 @@
       "title": "NVIDIA",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#77b900", "#ffffff"],
           "file": "icons/brand-icons/brands/nvidia/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#77b900", "#ffffff"],
           "file": "icons/brand-icons/brands/nvidia/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#77b900"],
           "file": "icons/brand-icons/brands/nvidia/light.svg",
           "upstreamKeys": ["light"]
@@ -147257,19 +147257,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#76b900", "#ffffff"],
           "file": "icons/brand-icons/brands/nvidia/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#76b900", "#ffffff"],
           "file": "icons/brand-icons/brands/nvidia/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#76b900"],
           "file": "icons/brand-icons/brands/nvidia/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -147350,7 +147350,7 @@
       "title": "nvm",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f4dd4b"],
           "file": "icons/brand-icons/brands/nvm/default.svg",
           "upstreamKeys": ["default"]
@@ -147653,7 +147653,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#000000",
             "#2272b9",
@@ -147921,7 +147921,7 @@
       "title": "OceanBase",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0181fd", "#07c846", "#181818", "#ffa005"],
           "file": "icons/brand-icons/community/oceanbase/default.svg",
           "upstreamKeys": ["default"]
@@ -148541,7 +148541,7 @@
       "title": "Okteto",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#00d1ca", "#1a263e"],
           "file": "icons/brand-icons/community/okteto/default.svg",
           "upstreamKeys": ["default"]
@@ -149693,7 +149693,7 @@
       "title": "Openal",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#7d000c", "#e3b019"],
           "file": "icons/brand-icons/brands/openal/default.svg",
           "upstreamKeys": ["default"]
@@ -149722,7 +149722,7 @@
       "title": "Openapi",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#3f3f42", "#4c5930", "#68a338", "#91d400"],
           "file": "icons/brand-icons/brands/openapi/default.svg",
           "upstreamKeys": ["default"]
@@ -149740,7 +149740,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#3f3f42", "#4c5930", "#68a338", "#91d400"],
           "file": "icons/brand-icons/brands/openapi/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -149838,7 +149838,7 @@
       "title": "OpenBSD",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f2ca30"],
           "file": "icons/brand-icons/brands/openbsd/default.svg",
           "upstreamKeys": ["default"]
@@ -149925,7 +149925,7 @@
       "title": "Opencl",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#010101", "#3dae2b", "#abd038", "#ee332d", "#f2ba1a"],
           "file": "icons/brand-icons/brands/opencl/default.svg",
           "upstreamKeys": ["default"]
@@ -150509,7 +150509,7 @@
       "title": "OpenObserve",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#006aa9",
             "#006dac",
@@ -150633,7 +150633,7 @@
       "title": "OpenSCAD",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f9d72c"],
           "file": "icons/brand-icons/brands/openscad/default.svg",
           "upstreamKeys": ["default"]
@@ -151009,7 +151009,7 @@
       "title": "OpenTofu",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffda18"],
           "file": "icons/brand-icons/brands/opentofu/default.svg",
           "upstreamKeys": ["default"]
@@ -151061,7 +151061,7 @@
       "title": "Openverse",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe033"],
           "file": "icons/brand-icons/brands/openverse/default.svg",
           "upstreamKeys": ["default"]
@@ -151492,7 +151492,7 @@
       "title": "Oporto",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#ed1c24", "#fcc90a"],
           "file": "icons/brand-icons/brands/oporto/default.svg",
           "upstreamKeys": ["default"]
@@ -152262,7 +152262,7 @@
       "title": "osquery",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#a596ff"],
           "file": "icons/brand-icons/community/osquery/default.svg",
           "upstreamKeys": ["default"]
@@ -152950,7 +152950,7 @@
       "title": "Paddle",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fddd35"],
           "file": "icons/brand-icons/brands/paddle/default.svg",
           "upstreamKeys": ["default"]
@@ -152979,7 +152979,7 @@
       "title": "Paddle",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fddd35", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/paddle-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -153182,7 +153182,7 @@
       "title": "PagSeguro",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc801"],
           "file": "icons/brand-icons/brands/pagseguro/default.svg",
           "upstreamKeys": ["default"]
@@ -153547,7 +153547,7 @@
       "title": "Pantheon",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffdc28"],
           "file": "icons/brand-icons/brands/pantheon/default.svg",
           "upstreamKeys": ["default"]
@@ -153582,19 +153582,19 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#81adec", "#ffffff"],
           "file": "icons/brand-icons/brands/paper/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#81adec", "#ffffff"],
           "file": "icons/brand-icons/brands/paper/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#222222", "#81adec"],
           "file": "icons/brand-icons/brands/paper/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -154170,7 +154170,7 @@
       "title": "Passport.js",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#00b9f1", "#34e27a", "#d6ff00", "#ffffff"],
           "file": "icons/brand-icons/brands/passport-js/default.svg",
           "upstreamKeys": ["default"]
@@ -154524,7 +154524,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#003087", "#009cde", "#012169"],
           "file": "icons/brand-icons/brands/paypal/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -155004,7 +155004,7 @@
       "title": "Pegasus Airlines",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fdc43e"],
           "file": "icons/brand-icons/brands/pegasus-airlines/default.svg",
           "upstreamKeys": ["default"]
@@ -155387,19 +155387,19 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#20808d", "#ffffff"],
           "file": "icons/brand-icons/brands/perplexity-ai/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#20808d", "#ffffff"],
           "file": "icons/brand-icons/brands/perplexity-ai/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#13343b", "#20808d"],
           "file": "icons/brand-icons/brands/perplexity-ai/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -156926,7 +156926,7 @@
       "title": "Ping Identity",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#263746", "#b8232f"],
           "file": "icons/brand-icons/brands/ping-identity/default.svg",
           "upstreamKeys": ["default"]
@@ -157287,7 +157287,7 @@
       "title": "pipx",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#2cffaa"],
           "file": "icons/brand-icons/brands/pipx/default.svg",
           "upstreamKeys": ["default"]
@@ -158202,13 +158202,13 @@
       "title": "Player2",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "light",
           "colors": ["#3b3596", "#5e53e7"],
           "file": "icons/brand-icons/brands/player2/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#3b3596", "#5e53e7"],
           "file": "icons/brand-icons/brands/player2/default.svg",
           "upstreamKeys": []
@@ -158926,13 +158926,13 @@
       "title": "pnpm",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f9ad00", "#ffffff"],
           "file": "icons/brand-icons/brands/pnpm/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f9ad00", "#ffffff"],
           "file": "icons/brand-icons/brands/pnpm/default.svg",
           "upstreamKeys": ["default"]
@@ -158950,13 +158950,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f9ad00", "#ffffff"],
           "file": "icons/brand-icons/brands/pnpm/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f9ad00", "#ffffff"],
           "file": "icons/brand-icons/brands/pnpm/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -159095,7 +159095,7 @@
       "title": "Pocus",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#8c4cde", "currentColor"],
           "file": "icons/brand-icons/brands/pocus/default.svg",
           "upstreamKeys": ["default"]
@@ -159530,7 +159530,7 @@
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1b222d", "#ff6e63", "#ff9964"],
           "file": "icons/brand-icons/brands/polygon-io/default.svg",
           "upstreamKeys": ["default"]
@@ -160324,7 +160324,7 @@
       "title": "Postmark",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffde00", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/postmark-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -160347,7 +160347,7 @@
       "title": "Postmates",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffdf18"],
           "file": "icons/brand-icons/brands/postmates/default.svg",
           "upstreamKeys": ["default"]
@@ -161076,7 +161076,7 @@
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#56b3b4", "#bf85bf", "#cfd4d7", "#ea5e5e", "#f7b93e"],
           "file": "icons/brand-icons/brands/prettier/light.svg",
           "upstreamKeys": ["light"]
@@ -161661,7 +161661,7 @@
       "title": "Processing",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0468ff", "#1f34ab", "#85aeff"],
           "file": "icons/brand-icons/brands/processing/default.svg",
           "upstreamKeys": ["default"]
@@ -161881,13 +161881,13 @@
       "title": "Productboard",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000c2c", "#0079f2", "#ff2638", "#ffc600"],
           "file": "icons/brand-icons/brands/productboard/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0079f2", "#ff2638", "#ffc600", "#ffffff"],
           "file": "icons/brand-icons/brands/productboard/light.svg",
           "upstreamKeys": ["light"]
@@ -164161,19 +164161,19 @@
           "upstreamKeys": ["light"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#9e0d38", "#dc244c", "#ff516b", "#ffffff"],
           "file": "icons/brand-icons/brands/qdrant/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#9e0d38", "#dc244c", "#ff516b", "#ffffff"],
           "file": "icons/brand-icons/brands/qdrant/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0b0f19", "#9e0d38", "#dc244c", "#ff516b"],
           "file": "icons/brand-icons/brands/qdrant/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -164515,7 +164515,7 @@
       "title": "Qlty",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#66faec"],
           "file": "icons/brand-icons/brands/qlty/default.svg",
           "upstreamKeys": ["default"]
@@ -165477,7 +165477,7 @@
       "title": "Qwiklabs",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f5cd0e"],
           "file": "icons/brand-icons/brands/qwiklabs/default.svg",
           "upstreamKeys": ["default"]
@@ -165529,7 +165529,7 @@
       "title": "Qzone",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fece00"],
           "file": "icons/brand-icons/brands/qzone/default.svg",
           "upstreamKeys": ["default"]
@@ -165819,7 +165819,7 @@
       "title": "radarr",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcb3d"],
           "file": "icons/brand-icons/brands/radarr/default.svg",
           "upstreamKeys": ["default"]
@@ -165987,7 +165987,7 @@
       "title": "Raiffeisen Bank International",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#fee600"],
           "file": "icons/brand-icons/brands/raiffeisen-bank-international/default.svg",
           "upstreamKeys": ["default"]
@@ -166480,7 +166480,7 @@
       "title": "Rarible",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#feda03"],
           "file": "icons/brand-icons/brands/rarible/default.svg",
           "upstreamKeys": ["default"]
@@ -166666,19 +166666,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#e6e6e6", "#ff6363"],
           "file": "icons/brand-icons/brands/raycast/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#e6e6e6", "#ff6363"],
           "file": "icons/brand-icons/brands/raycast/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#202123", "#ff6363"],
           "file": "icons/brand-icons/brands/raycast/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -166730,7 +166730,7 @@
       "title": "Razee",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#373737", "#408bfc", "#bb8eff"],
           "file": "icons/brand-icons/community/razee/default.svg",
           "upstreamKeys": ["default"]
@@ -166753,7 +166753,7 @@
       "title": "Razer",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ff00"],
           "file": "icons/brand-icons/brands/razer/default.svg",
           "upstreamKeys": ["default"]
@@ -166782,7 +166782,7 @@
       "title": "Razer",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ff00", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/razer-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -166939,19 +166939,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#58c4dc", "#f6f7f9"],
           "file": "icons/brand-icons/brands/react/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#58c4dc", "#f6f7f9"],
           "file": "icons/brand-icons/brands/react/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#087ea4", "#23272f"],
           "file": "icons/brand-icons/brands/react/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -166997,7 +166997,7 @@
       "title": "React Bootstrap",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#41e0fd"],
           "file": "icons/brand-icons/brands/react-bootstrap/default.svg",
           "upstreamKeys": ["default"]
@@ -167055,7 +167055,7 @@
       "title": "React Query",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#002b3b", "#00435b", "#ff4154", "#ffd94c"],
           "file": "icons/brand-icons/brands/react-query/default.svg",
           "upstreamKeys": ["default"]
@@ -167084,7 +167084,7 @@
       "title": "React Router",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#121212", "#f44250"],
           "file": "icons/brand-icons/brands/react-router/default.svg",
           "upstreamKeys": ["default"]
@@ -167426,7 +167426,7 @@
       "title": "Real-Debrid",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#b8d995", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/real-debrid-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -167607,7 +167607,7 @@
       "title": "reCAPTCHA",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1c3aa9", "#4285f4", "#a6a6a6", "#ababab"],
           "file": "icons/brand-icons/community/recaptcha/default.svg",
           "upstreamKeys": ["default"]
@@ -168974,7 +168974,7 @@
       "title": "Renault",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcc33"],
           "file": "icons/brand-icons/brands/renault/default.svg",
           "upstreamKeys": ["default"]
@@ -169225,19 +169225,19 @@
           "upstreamKeys": []
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f1f3f4", "#f5640c"],
           "file": "icons/brand-icons/brands/replit/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f1f3f4", "#f5640c"],
           "file": "icons/brand-icons/brands/replit/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0d1525", "#f5640c"],
           "file": "icons/brand-icons/brands/replit/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -169724,7 +169724,7 @@
       "title": "Reuters",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#212223", "#d64000"],
           "file": "icons/brand-icons/brands/reuters/default.svg",
           "upstreamKeys": ["default"]
@@ -169747,7 +169747,7 @@
       "title": "ReVanced",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#9ed5ff"],
           "file": "icons/brand-icons/brands/revanced/default.svg",
           "upstreamKeys": ["default"]
@@ -169776,7 +169776,7 @@
       "title": "reveal.js",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f2e142"],
           "file": "icons/brand-icons/brands/revealdotjs/default.svg",
           "upstreamKeys": ["default"]
@@ -170089,7 +170089,7 @@
       "title": "Rich",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fae742"],
           "file": "icons/brand-icons/brands/rich/default.svg",
           "upstreamKeys": ["default"]
@@ -171983,7 +171983,7 @@
           "upstreamKeys": ["default"]
         },
         "line": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#6de1fa"],
           "file": "icons/brand-icons/brands/rspec/line.svg",
           "upstreamKeys": ["line"]
@@ -171995,7 +171995,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#40daf4", "#6de1fa", "#97f0ff", "#fe405f"],
           "file": "icons/brand-icons/brands/rspec/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -173409,7 +173409,7 @@
       "title": "Sahibinden",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe800"],
           "file": "icons/brand-icons/brands/sahibinden/default.svg",
           "upstreamKeys": ["default"]
@@ -174525,7 +174525,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#173aee", "#1e2833", "#21cfee"],
           "file": "icons/brand-icons/brands/scalingo/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -174994,7 +174994,7 @@
       "title": "ScrollReveal",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcb36"],
           "file": "icons/brand-icons/brands/scrollreveal/default.svg",
           "upstreamKeys": ["default"]
@@ -175573,7 +175573,7 @@
       "title": "Selector Logo",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#22252b", "#ff5721"],
           "file": "icons/brand-icons/brands/selector-logo/default.svg",
           "upstreamKeys": ["default"]
@@ -176129,7 +176129,7 @@
       "title": "SentinelOne",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#040404", "#6b0aea"],
           "file": "icons/brand-icons/brands/sentinelone/default.svg",
           "upstreamKeys": ["default"]
@@ -176285,7 +176285,7 @@
       "title": "Sequelize",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#03afef", "#2379bd", "#2f406a"],
           "file": "icons/brand-icons/brands/sequelize/default.svg",
           "upstreamKeys": ["default"]
@@ -176586,7 +176586,7 @@
       "title": "Sezzle",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#00b874",
             "#29d3a2",
@@ -176609,7 +176609,7 @@
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "dark",
           "colors": [
             "#00b874",
             "#29d3a2",
@@ -176910,7 +176910,7 @@
       "title": "Shell",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffd500"],
           "file": "icons/brand-icons/brands/shell/default.svg",
           "upstreamKeys": ["default"]
@@ -177165,13 +177165,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#5e8e3e", "#95bf47", "#ffffff"],
           "file": "icons/brand-icons/brands/shopify/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#5e8e3e", "#95bf47", "#ffffff"],
           "file": "icons/brand-icons/brands/shopify/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -178300,7 +178300,7 @@
       "title": "Skechers",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#062849", "#b2b1b1"],
           "file": "icons/brand-icons/brands/skechers/default.svg",
           "upstreamKeys": ["default"]
@@ -178474,7 +178474,7 @@
       "title": "Skillshare",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#00ff84"],
           "file": "icons/brand-icons/brands/skillshare/default.svg",
           "upstreamKeys": ["default"]
@@ -178712,7 +178712,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#2eb67d", "#36c5f0", "#e01e5a", "#ecb22e"],
           "file": "icons/brand-icons/brands/slack/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -178987,7 +178987,7 @@
       "title": "smart",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#d7e600"],
           "file": "icons/brand-icons/brands/smart/default.svg",
           "upstreamKeys": ["default"]
@@ -180075,7 +180075,7 @@
       "title": "Apache Solr",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#201f26", "#c7402b"],
           "file": "icons/brand-icons/community/solr/default.svg",
           "upstreamKeys": ["default"]
@@ -180231,7 +180231,7 @@
       "title": "SonarQube",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#290042", "#d3121d"],
           "file": "icons/brand-icons/brands/sonarqube/default.svg",
           "upstreamKeys": ["default"]
@@ -181547,7 +181547,7 @@
       "title": "Spei Logo",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#343084", "#ff9400"],
           "file": "icons/brand-icons/brands/spei-logo/default.svg",
           "upstreamKeys": ["default"]
@@ -182164,7 +182164,7 @@
       "title": "Sprint",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#ffdd05"],
           "file": "icons/brand-icons/brands/sprint/default.svg",
           "upstreamKeys": ["default"]
@@ -182361,7 +182361,7 @@
       "title": "SQLite",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#003b57", "#0f80cc", "#97d9f6"],
           "file": "icons/brand-icons/brands/sqlite/default.svg",
           "upstreamKeys": ["default"]
@@ -182830,7 +182830,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1e1b1d", "#bbbbbb", "#f58025"],
           "file": "icons/brand-icons/brands/stack-overflow/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -183183,7 +183183,7 @@
       "title": "StandardJS",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f3df49"],
           "file": "icons/brand-icons/brands/standardjs/default.svg",
           "upstreamKeys": ["default"]
@@ -183235,7 +183235,7 @@
       "title": "Star Trek",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffe200"],
           "file": "icons/brand-icons/brands/star-trek/default.svg",
           "upstreamKeys": ["default"]
@@ -183986,7 +183986,7 @@
       "title": "Stellar",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#fdda24"],
           "file": "icons/brand-icons/brands/stellar/default.svg",
           "upstreamKeys": ["default"]
@@ -184154,7 +184154,7 @@
       "title": "Stimulus",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#77e8b9"],
           "file": "icons/brand-icons/brands/stimulus/default.svg",
           "upstreamKeys": ["default"]
@@ -184206,7 +184206,7 @@
       "title": "Stitch",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffc600"],
           "file": "icons/brand-icons/community/stitch/default.svg",
           "upstreamKeys": ["default"]
@@ -184582,7 +184582,7 @@
       "title": "Streamlabs",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#80f5d2"],
           "file": "icons/brand-icons/brands/streamlabs/default.svg",
           "upstreamKeys": ["default"]
@@ -184814,7 +184814,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#00d66f", "#011e0f"],
           "file": "icons/brand-icons/brands/stripe-link/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -185173,7 +185173,7 @@
       "title": "Submariner",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#2bdfc4", "#3a4747"],
           "file": "icons/brand-icons/community/submariner/default.svg",
           "upstreamKeys": ["default"]
@@ -185759,7 +185759,7 @@
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#1f1f1f", "#249361", "#3ecf8e"],
           "file": "icons/brand-icons/brands/supabase/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -187091,7 +187091,7 @@
       "title": "Tabelog",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f2cc38"],
           "file": "icons/brand-icons/brands/tabelog/default.svg",
           "upstreamKeys": ["default"]
@@ -187544,19 +187544,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#38bdf8", "#ffffff"],
           "file": "icons/brand-icons/brands/tailwind-css/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#38bdf8", "#ffffff"],
           "file": "icons/brand-icons/brands/tailwind-css/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0f172a", "#38bdf8"],
           "file": "icons/brand-icons/brands/tailwind-css/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -187585,7 +187585,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0ed7b5", "#2298bd", "#2d3748"],
           "file": "icons/brand-icons/community/tailwindcss/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -187637,7 +187637,7 @@
       "title": "Take-Two Interactive",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#085aa4"],
           "file": "icons/brand-icons/brands/take-two/default.svg",
           "upstreamKeys": ["default"]
@@ -187920,7 +187920,7 @@
       "title": "Tapas",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffce00"],
           "file": "icons/brand-icons/brands/tapas/default.svg",
           "upstreamKeys": ["default"]
@@ -188042,7 +188042,7 @@
       "title": "Tarteaucitron",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f7d917"],
           "file": "icons/brand-icons/brands/tarteaucitron/default.svg",
           "upstreamKeys": ["default"]
@@ -188320,7 +188320,7 @@
       "title": "TE Logo WhiteOrange",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#ff671d", "#ffffff"],
           "file": "icons/brand-icons/brands/te-logo-whiteorange/default.svg",
           "upstreamKeys": ["default"]
@@ -188997,7 +188997,7 @@
       "title": "Telstra",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#001e82", "#0099f8"],
           "file": "icons/brand-icons/brands/telstra/default.svg",
           "upstreamKeys": ["default"]
@@ -189399,7 +189399,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#4040b2", "#5c4ee5"],
           "file": "icons/brand-icons/brands/terraform/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -189741,7 +189741,7 @@
       "title": "Testkube",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#575fab", "#b4bade"],
           "file": "icons/brand-icons/community/testkube/default.svg",
           "upstreamKeys": ["default"]
@@ -189868,7 +189868,7 @@
       "title": "Textpattern",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffda44"],
           "file": "icons/brand-icons/brands/textpattern/default.svg",
           "upstreamKeys": ["default"]
@@ -190692,7 +190692,7 @@
       "title": "TheHive",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#f3d02f", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/thehive-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -190715,7 +190715,7 @@
       "title": "TheraKey",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ded500", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/therakey-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -190738,19 +190738,19 @@
       "title": "theSVG",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f97316", "#ffffff"],
           "file": "icons/brand-icons/brands/thesvg/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0a0a0a", "#f97316"],
           "file": "icons/brand-icons/brands/thesvg/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0a0a0a", "#f97316"],
           "file": "icons/brand-icons/brands/thesvg/light.svg",
           "upstreamKeys": ["light"]
@@ -190762,13 +190762,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0a0a0a", "#f97316"],
           "file": "icons/brand-icons/brands/thesvg/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#f97316", "#ffffff"],
           "file": "icons/brand-icons/brands/thesvg/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -191232,7 +191232,7 @@
       "title": "Thunderstore",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#23ffb0"],
           "file": "icons/brand-icons/brands/thunderstore/default.svg",
           "upstreamKeys": ["default"]
@@ -191656,19 +191656,19 @@
       "title": "TikTok",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#25f4ee", "#fe2c55", "#ffffff"],
           "file": "icons/brand-icons/brands/tiktok/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#25f4ee", "#fe2c55", "#ffffff"],
           "file": "icons/brand-icons/brands/tiktok/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#25f4ee", "#fe2c55"],
           "file": "icons/brand-icons/brands/tiktok/light.svg",
           "upstreamKeys": ["light"]
@@ -191680,19 +191680,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00f2ea", "#ff004f"],
           "file": "icons/brand-icons/brands/tiktok/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#25f4ee", "#fe2c55", "#ffffff"],
           "file": "icons/brand-icons/brands/tiktok/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#25f4ee", "#fe2c55"],
           "file": "icons/brand-icons/brands/tiktok/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -192062,7 +192062,7 @@
       "title": "Tintas Vital",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#008e55", "#a1c517"],
           "file": "icons/brand-icons/brands/tintas-vital/default.svg",
           "upstreamKeys": ["default"]
@@ -192450,7 +192450,7 @@
       "title": "Toggl",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffde91"],
           "file": "icons/brand-icons/brands/toggl/default.svg",
           "upstreamKeys": ["default"]
@@ -192687,7 +192687,7 @@
       "title": "Tomcat",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#d1a41a", "#ffdc76"],
           "file": "icons/brand-icons/brands/tomcat/default.svg",
           "upstreamKeys": ["default"]
@@ -192699,7 +192699,7 @@
           "upstreamKeys": ["line"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#d1a41a", "#ffdc76"],
           "file": "icons/brand-icons/brands/tomcat/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -192838,7 +192838,7 @@
       "title": "ToolJet",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#4368e3", "#ffffff"],
           "file": "icons/brand-icons/brands/tooljet/default.svg",
           "upstreamKeys": ["default"]
@@ -193104,7 +193104,7 @@
       "title": "TorGuard",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#94ea01", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/torguard-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -193552,7 +193552,7 @@
       "title": "Tien Phong Commercial Joint Stock Bank",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#5e2e86", "#de5d27", "#df5f27", "#fbb413"],
           "file": "icons/brand-icons/brands/tpbank/default.svg",
           "upstreamKeys": ["default"]
@@ -193714,13 +193714,13 @@
       "title": "TRAE",
       "variants": {
         "color": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#32f08c"],
           "file": "icons/brand-icons/brands/trae/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#32f08c"],
           "file": "icons/brand-icons/brands/trae/default.svg",
           "upstreamKeys": []
@@ -193830,7 +193830,7 @@
       "title": "Trailforks",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcd00"],
           "file": "icons/brand-icons/brands/trailforks/default.svg",
           "upstreamKeys": ["default"]
@@ -194248,7 +194248,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0052cc", "#253858", "#2684ff"],
           "file": "icons/brand-icons/brands/trello/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -194688,7 +194688,7 @@
       "title": "Tripletex",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#010a59", "#1ab96d", "#58b3cd"],
           "file": "icons/brand-icons/brands/tripletex/default.svg",
           "upstreamKeys": ["default"]
@@ -194711,13 +194711,13 @@
       "title": "Tripo",
       "variants": {
         "color": {
-          "background": "any",
+          "background": "light",
           "colors": ["#f6d85a", "currentColor"],
           "file": "icons/brand-icons/brands/tripo/color.svg",
           "upstreamKeys": ["color", "default"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#f6d85a", "currentColor"],
           "file": "icons/brand-icons/brands/tripo/default.svg",
           "upstreamKeys": []
@@ -194924,13 +194924,13 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#398ccb", "#ffffff"],
           "file": "icons/brand-icons/brands/trpc/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#398ccb", "#ffffff"],
           "file": "icons/brand-icons/brands/trpc/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -195115,7 +195115,7 @@
       "title": "Trust Wallet",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0000ff", "#0038ff", "#0094ff", "#0500ff", "#48ff91"],
           "file": "icons/brand-icons/brands/trust-wallet/default.svg",
           "upstreamKeys": ["default"]
@@ -195138,7 +195138,7 @@
       "title": "Trusted Shops",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffdc0f"],
           "file": "icons/brand-icons/brands/trusted-shops/default.svg",
           "upstreamKeys": ["default"]
@@ -195167,7 +195167,7 @@
       "title": "Trustpilot",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#005128", "#00b67a"],
           "file": "icons/brand-icons/brands/trustpilot/default.svg",
           "upstreamKeys": ["default"]
@@ -195571,37 +195571,37 @@
       "title": "Turbopack",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0096ff", "#ff1e56", "#ffffff"],
           "file": "icons/brand-icons/brands/turbopack/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0096ff", "#ff1e56", "#ffffff"],
           "file": "icons/brand-icons/brands/turbopack/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0096ff", "#ff1e56"],
           "file": "icons/brand-icons/brands/turbopack/light.svg",
           "upstreamKeys": ["light"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0096ff", "#ff1e56", "#ffffff"],
           "file": "icons/brand-icons/brands/turbopack/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0096ff", "#ff1e56", "#ffffff"],
           "file": "icons/brand-icons/brands/turbopack/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0096ff", "#ff1e56"],
           "file": "icons/brand-icons/brands/turbopack/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -195648,19 +195648,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0096ff", "#ff1e56", "#ffffff"],
           "file": "icons/brand-icons/brands/turborepo/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#0096ff", "#ff1e56", "#ffffff"],
           "file": "icons/brand-icons/brands/turborepo/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0096ff", "#ff1e56"],
           "file": "icons/brand-icons/brands/turborepo/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -195933,7 +195933,7 @@
       "title": "TV Time",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffd400"],
           "file": "icons/brand-icons/brands/tv-time/default.svg",
           "upstreamKeys": ["default"]
@@ -195991,7 +195991,7 @@
       "title": "Tweakers",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#dae64a", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/tweakers-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -196251,7 +196251,7 @@
       "title": "ty",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#46ebe1"],
           "file": "icons/brand-icons/brands/ty/default.svg",
           "upstreamKeys": ["default"]
@@ -196351,7 +196351,7 @@
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": [
             "#000000",
             "#0059df",
@@ -196853,7 +196853,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#e60000"],
           "file": "icons/brand-icons/brands/ubs-etracs/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -197009,19 +197009,19 @@
       "title": "Udemy",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#a435f0", "#ffffff"],
           "file": "icons/brand-icons/brands/udemy/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#a435f0", "#ffffff"],
           "file": "icons/brand-icons/brands/udemy/default.svg",
           "upstreamKeys": ["default"]
         },
         "light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#a435f0"],
           "file": "icons/brand-icons/brands/udemy/light.svg",
           "upstreamKeys": ["light"]
@@ -198990,7 +198990,7 @@
       "title": "Uwsgi",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#010101", "#bad05e"],
           "file": "icons/brand-icons/brands/uwsgi/default.svg",
           "upstreamKeys": ["default"]
@@ -199089,7 +199089,7 @@
       "title": "UXUY",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#fe4200"],
           "file": "icons/brand-icons/brands/uxuy/default.svg",
           "upstreamKeys": ["default"]
@@ -199333,7 +199333,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#1159cc", "#127eff"],
           "file": "icons/brand-icons/brands/vagrant/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -199682,7 +199682,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#ffd814"],
           "file": "icons/brand-icons/brands/vault/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -199815,7 +199815,7 @@
       "title": "vCluster",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#050b24", "#ff6600"],
           "file": "icons/brand-icons/community/vcluster/default.svg",
           "upstreamKeys": ["default"]
@@ -200986,7 +200986,7 @@
       "title": "VidIQ",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#121521", "#139dff"],
           "file": "icons/brand-icons/brands/vidiq/default.svg",
           "upstreamKeys": ["default"]
@@ -201362,13 +201362,13 @@
       "title": "Vinpearl",
       "variants": {
         "dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#cf873c", "#f2a842", "#ffffff"],
           "file": "icons/brand-icons/brands/vinpearl/dark.svg",
           "upstreamKeys": ["dark"]
         },
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#2a398c", "#cf873c", "#f2a842"],
           "file": "icons/brand-icons/brands/vinpearl/default.svg",
           "upstreamKeys": ["default"]
@@ -201646,7 +201646,7 @@
           "upstreamKeys": ["default"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0078e0", "#0087ff", "#030442", "#040444"],
           "file": "icons/brand-icons/brands/visernic/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -203408,7 +203408,7 @@
       "title": "VWO",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#26134d", "#802050", "#bf3078"],
           "file": "icons/brand-icons/community/vwo/default.svg",
           "upstreamKeys": ["default"]
@@ -204537,7 +204537,7 @@
       "title": "Weaviate",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#75fbae", "#b6f874"],
           "file": "icons/brand-icons/brands/weaviate/default.svg",
           "upstreamKeys": ["default"]
@@ -204612,7 +204612,7 @@
       "title": "WEB.DE",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffd800", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/web-de-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -204751,7 +204751,7 @@
       "title": "WEB.DE",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffd800"],
           "file": "icons/brand-icons/brands/webdotde/default.svg",
           "upstreamKeys": ["default"]
@@ -204873,19 +204873,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#146ef5", "#ffffff"],
           "file": "icons/brand-icons/brands/webflow/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#146ef5", "#ffffff"],
           "file": "icons/brand-icons/brands/webflow/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#080808", "#146ef5"],
           "file": "icons/brand-icons/brands/webflow/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -205134,7 +205134,7 @@
       "title": "Webpack",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#8dd6f9"],
           "file": "icons/brand-icons/brands/webpack/default.svg",
           "upstreamKeys": ["default"]
@@ -205406,7 +205406,7 @@
       "title": "Welcome to the Jungle",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcd00"],
           "file": "icons/brand-icons/brands/welcome-to-the-jungle/default.svg",
           "upstreamKeys": ["default"]
@@ -205678,7 +205678,7 @@
       "title": "Western Digital",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#00e5d1", "#2266ff", "#3c8cff", "#40e1e1", "#48c3f0"],
           "file": "icons/brand-icons/brands/western-digital/default.svg",
           "upstreamKeys": ["default"]
@@ -205701,7 +205701,7 @@
       "title": "Western Union",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffdd00"],
           "file": "icons/brand-icons/brands/western-union/default.svg",
           "upstreamKeys": ["default"]
@@ -205730,7 +205730,7 @@
       "title": "Westpac",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#2d373c", "#ed1a3a"],
           "file": "icons/brand-icons/brands/westpac/default.svg",
           "upstreamKeys": ["default"]
@@ -206935,7 +206935,7 @@
       "title": "Wise",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#9fe870"],
           "file": "icons/brand-icons/brands/wise/default.svg",
           "upstreamKeys": ["default"]
@@ -206964,7 +206964,7 @@
       "title": "Wise",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#9fe870", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/wise-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -207619,7 +207619,7 @@
       "title": "Workday",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#0f2e65", "#fc5a05"],
           "file": "icons/brand-icons/brands/workday/default.svg",
           "upstreamKeys": ["default"]
@@ -208140,7 +208140,7 @@
       "title": "Wyze",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#1df0bb"],
           "file": "icons/brand-icons/brands/wyze/default.svg",
           "upstreamKeys": ["default"]
@@ -208169,7 +208169,7 @@
       "title": "Wyze",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#1cf1bb", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/wyze-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -209454,7 +209454,7 @@
       "title": "Yale",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffd900"],
           "file": "icons/brand-icons/brands/yale/default.svg",
           "upstreamKeys": ["default"]
@@ -209651,7 +209651,7 @@
       "title": "Yandex Taxi",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#ff0000"],
           "file": "icons/brand-icons/brands/yandex-taxi/default.svg",
           "upstreamKeys": ["default"]
@@ -209698,19 +209698,19 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#004587", "#a8a9ac"],
           "file": "icons/brand-icons/brands/yapi-kredi/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#a8a9ac", "#ffffff"],
           "file": "icons/brand-icons/brands/yapi-kredi/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#a8a9ac"],
           "file": "icons/brand-icons/brands/yapi-kredi/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -210184,7 +210184,7 @@
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#ff0000", "#ffffff"],
           "file": "icons/brand-icons/brands/youtube/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
@@ -210556,7 +210556,7 @@
           "upstreamKeys": ["mono"]
         },
         "wordmark": {
-          "background": "any",
+          "background": "light",
           "colors": ["#1e154b", "#ff5f3b"],
           "file": "icons/brand-icons/brands/yugabytedb/wordmark.svg",
           "upstreamKeys": ["wordmark"]
@@ -210774,7 +210774,7 @@
       "title": "Zammad",
       "variants": {
         "default": {
-          "background": "dark",
+          "background": "any",
           "colors": ["#ffcc00", "#ffffff"],
           "file": "icons/brand-icons/auth-badges/zammad-badge/default.svg",
           "upstreamKeys": ["default"]
@@ -211117,19 +211117,19 @@
           "upstreamKeys": []
         },
         "wordmark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#6300ff", "#ff4400", "#ffffff"],
           "file": "icons/brand-icons/brands/zeabur/wordmark.svg",
           "upstreamKeys": ["wordmark"]
         },
         "wordmark-dark": {
-          "background": "any",
+          "background": "dark",
           "colors": ["#6300ff", "#ff4400", "#ffffff"],
           "file": "icons/brand-icons/brands/zeabur/wordmark-dark.svg",
           "upstreamKeys": ["wordmarkDark"]
         },
         "wordmark-light": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#6300ff", "#ff4400"],
           "file": "icons/brand-icons/brands/zeabur/wordmark-light.svg",
           "upstreamKeys": ["wordmarkLight"]
@@ -212579,7 +212579,7 @@
       "title": "Zot",
       "variants": {
         "default": {
-          "background": "any",
+          "background": "light",
           "colors": ["#000000", "#0ebce9"],
           "file": "icons/brand-icons/community/zot/default.svg",
           "upstreamKeys": ["default"]
