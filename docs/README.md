@@ -1,10 +1,10 @@
 # Documentation
 
-Qeetrix Icons 2.0 is in Phase 3C, the third calibration batch. The foundations (contracts,
+Qeetrix Icons 2.0 has completed its first full catalogue pass. The foundations (contracts,
 validation, generation, manifest and public API, and the visual QA playground) are complete, and
-twelve original icons exist for calibration: `plus`, `x`, `check`, `chevron-down`, `search`,
-`arrow-left`, `settings`, `user`, `bell`, `lock`, `calendar`, and `database`. The visual system is
-still provisional.
+578 original outline icons exist in 19 categories, drawn against one working spec after the Phase
+3A–3C calibration batches. The 20 planned Qeet ecosystem pictograms are deferred. The visual system
+is still provisional until the Catalogue Review & Enhancement Pass.
 
 | Document | Purpose |
 |:--|:--|

@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { plannedCatalogue } from "../config/catalogue.js";
+import { deferredCategories, plannedCatalogue } from "../config/catalogue.js";
 import { categories } from "../config/categories.js";
 import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
@@ -148,6 +148,14 @@ describe("planned catalogue", () => {
     for (const { name, category } of iconManifest.icons) {
       expect(planned, name).toContainEqual({ category, name });
     }
+  });
+
+  it("ships every planned concept outside the deferred categories, and none inside them", () => {
+    const deferred = new Set<string>(deferredCategories);
+    const expected = planned.filter(({ category }) => !deferred.has(category));
+    const shipped = iconManifest.icons.map(({ category, name }) => ({ category, name }));
+    const key = ({ category, name }: { category: string; name: string }) => `${category}/${name}`;
+    expect(shipped.map(key).sort()).toEqual(expected.map(key).sort());
   });
 });
 

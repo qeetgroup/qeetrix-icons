@@ -6,13 +6,12 @@ original Qeetrix artwork for enterprise consoles, identity and security, payment
 data-heavy interfaces, and developer tools.
 
 > [!IMPORTANT]
-> **Current development state: Phase 3C, third calibration batch.**
+> **Current development state: first full catalogue pass, before review.**
 >
 > - The legacy 1.x icon artwork has been removed from this repository.
-> - Twelve original icons exist for calibration only: `PlusIcon`, `XIcon`, `CheckIcon`,
->   `ChevronDownIcon`, `SearchIcon`, `ArrowLeftIcon`, `SettingsIcon`, `UserIcon`, `BellIcon`,
->   `LockIcon`, `CalendarIcon`, and `DatabaseIcon`. The visual system is not calibrated yet; do not
->   migrate products to them.
+> - 578 original outline icons exist in 19 categories, drawn against one provisional working spec.
+>   They have not yet been through the Catalogue Review & Enhancement Pass; do not migrate
+>   products to them.
 > - Do not rely on 1.x icon names, props, types, or import paths for the upcoming major release.
 > - Versions already published to the package registry are not changed by this rebuild.
 
@@ -24,16 +23,18 @@ from visual calibration candidates; [config/categories.ts](config/categories.ts)
 ordered enterprise/product categories. Both are internal and are not package exports.
 
 Validation, SVG-to-React generation, the generated root exports, the manifest, and the visual QA
-playground are implemented. `icons/` holds the Phase 3A, 3B, and 3C calibration batches: twelve
-outline-only concepts in `actions`, `navigation`, `identity`, `security`, `communication`, `data`,
-and `time`. Stroke width, safe area, corners, and the rest of the visual system remain provisional;
-findings are logged in [docs/calibration.md](docs/calibration.md). See also
+playground are implemented. `icons/` holds the first full catalogue pass: 578 outline-only concepts
+in 19 categories, built on the Phase 3A–3C calibration batches. The planned inventory is
+[config/catalogue.ts](config/catalogue.ts) (598 concepts); its 20 Qeet ecosystem pictograms are
+deferred and not shipped. Stroke width, safe area, corners, and the rest of the visual system
+remain provisional; the working spec and findings are logged in
+[docs/calibration.md](docs/calibration.md). See also
 [docs/validation.md](docs/validation.md) and [docs/generation.md](docs/generation.md).
 
 ## Public API
 
-The contract is in [docs/api.md](docs/api.md). The twelve calibration icons listed above exist
-today; `StarIcon` below illustrates a future icon with a filled drawing:
+The contract is in [docs/api.md](docs/api.md). `SearchIcon` and `StarIcon` exist today as outline
+drawings; the `filled` star below illustrates a future filled drawing:
 
 ```tsx
 import { SearchIcon, StarIcon, type IconProps } from "@qeetrix/icons";
@@ -48,8 +49,8 @@ Each icon concept is one component, also importable as `@qeetrix/icons/icons/<id
 defaults to `"outline"` and is typed to the drawings that exist, so `<SearchIcon variant="filled" />`
 is a type error unless a filled search drawing is added. Outline and filled stay separately drawn
 SVGs. Categories never appear in names or import paths. `size` takes any number or CSS
-length; 14, 16, 20, 24, and 32 are recommendations, not limits. Today the root exports only the
-`IconProps`, `IconVariant`, and `IconDirectionality` types, and the manifest is empty. The 1.x
+length; 14, 16, 20, 24, and 32 are recommendations, not limits. No filled drawings exist yet, so
+`variant="filled"` is a type error on every icon today. The 1.x
 `@qeetrix/icons/icons/<category>/<name>` paths are gone; 2.0 subpaths are category-free.
 
 ## Design direction

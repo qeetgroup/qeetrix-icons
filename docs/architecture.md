@@ -5,18 +5,21 @@ validation. Phase 2C added the SVG-to-React generation pipeline and its shared r
 added the manifest, the generated root exports, per-icon subpaths, and the public API contract in
 [api.md](api.md): one component per icon concept, with a `variant` prop typed to its drawings.
 Phase 2E added the developer playground for human visual QA ([visual-qa.md](visual-qa.md)).
-Phases 3A to 3C add the first original artwork: twelve outline-only calibration concepts, logged
-in [calibration.md](calibration.md). The visual system is not yet calibrated. The
+Phases 3A to 3C added the first original artwork, twelve calibration concepts. The first full
+catalogue pass then drew 578 outline-only concepts in 19 categories against one working spec, logged
+in [calibration.md](calibration.md); the planned inventory is
+[config/catalogue.ts](../config/catalogue.ts). The visual system is not yet calibrated. The
 technology direction remains Bun, strict TypeScript, React 19, and ESM, with Biome and Vitest.
 
 ## What exists now
 
 | Surface | Responsibility |
 |:--|:--|
-| `icons/` | Human-authored SVG sources; currently the twelve Phase 3A–3C calibration drawings |
+| `icons/` | Human-authored SVG sources: the 578 outline drawings of the first catalogue pass |
+| [config/catalogue.ts](../config/catalogue.ts) | Internal planned inventory (598 concepts by category) and the deferred categories |
 | [config/icon-system.ts](../config/icon-system.ts) | Internal, executable design contract: architecture plus calibration candidates |
 | [config/categories.ts](../config/categories.ts) | Internal category IDs, display labels, purposes, and canonical array order |
-| [config/icon-metadata.ts](../config/icon-metadata.ts) | Authored exceptions to derived metadata; currently only directionality, for `arrow-left` |
+| [config/icon-metadata.ts](../config/icon-metadata.ts) | Authored exceptions to derived metadata; currently only directionality, for the semantic reading-direction concepts listed in [rtl.md](rtl.md) |
 | [src/types/icon.ts](../src/types/icon.ts) | Stable variant and directionality vocabulary |
 | [src/types/icon-props.ts](../src/types/icon-props.ts) | Public `IconProps` |
 | [src/types/icon-manifest.ts](../src/types/icon-manifest.ts) | Public manifest schema types |

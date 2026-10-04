@@ -648,3 +648,9 @@ export const plannedCatalogue = {
     "qeet-connect",
   ],
 } as const satisfies Record<CategoryId, readonly string[]>;
+
+/**
+ * Planned categories whose concepts are deliberately not shipped yet. The Qeet ecosystem
+ * pictograms are deferred by product decision; their names stay planned so they cannot be reused.
+ */
+export const deferredCategories = ["qeet"] as const satisfies readonly CategoryId[];

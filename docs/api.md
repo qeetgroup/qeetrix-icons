@@ -1,10 +1,9 @@
 # Public API
 
 The contract for consuming `@qeetrix/icons` 2.0. It is implemented and tested against a packed
-tarball. The only icons today are twelve outline-only calibration concepts: `PlusIcon`, `XIcon`,
-`CheckIcon`, `ChevronDownIcon`, `SearchIcon`, `ArrowLeftIcon`, `SettingsIcon`, `UserIcon`,
-`BellIcon`, `LockIcon`, `CalendarIcon`, and `DatabaseIcon`.
-Names such as `StarIcon` and `BookmarkIcon` below illustrate the contract and do not exist yet.
+tarball. The package exports 578 outline-only concepts from the first catalogue pass, including
+`StarIcon` and `BookmarkIcon`. No filled drawings exist yet, so the `filled` examples below
+illustrate the contract and are type errors today.
 
 ## Importing icons
 

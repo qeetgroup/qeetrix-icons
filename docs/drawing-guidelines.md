@@ -107,7 +107,11 @@ text/icon relationship in real controls as well as on an isolated canvas.
   that information into surrounding UI rather than adding more detail.
 
 **CALIBRATION REQUIRED:** overlay scale, badge placement, clearances, and shared family motifs.
-There are no fixed badge radii, subpath budgets, or universal overlay coordinates yet.
+The first catalogue pass used one provisional modifier kit: inner marks for roomy containers,
+corner badges centred on 18,18 with the base cut back for 1.5 white, and a single 45° `-off`
+slash. Its exact paths and the shared motifs are in
+[calibration.md](calibration.md#catalogue-run-working-spec-and-system-grammars). Treat them as
+**Candidate** until the Catalogue Review & Enhancement Pass confirms or changes them.
 
 ## Filled drawings
 

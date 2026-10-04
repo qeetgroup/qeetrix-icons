@@ -174,6 +174,26 @@
 - Tests cover all twelve calibration concepts, their categories, directionality, outline-only
   typing, and per-concept packed-package tree shaking. The version is unchanged.
 
+### First catalogue pass
+
+- Added the planned inventory, `config/catalogue.ts`: 598 concepts in the 20 configured
+  categories. Tests check per-category counts, unique valid names and component names, and that
+  every shipped concept is planned in its category. The 20 `qeet` ecosystem pictograms are listed
+  in `deferredCategories` and are not shipped.
+- Drew 578 original outline-only concepts across the other 19 categories against one working spec
+  (stroke 1.75, a 2–22 painted area, 45° diagonals, container radii 2.5, 2, and 1–1.5, a 3.75
+  minimum counter, and 1.5 clearance or a join). They share one modifier kit (inner marks, corner
+  badges centred on 18,18, one `-off` slash) and shared family motifs. Each category was reviewed
+  for family consistency before it entered `icons/`. See
+  [docs/calibration.md](docs/calibration.md#catalogue-run-working-spec-and-system-grammars).
+- RTL: physical directions (`arrow-left`, `arrow-right`, chevrons, rotations, media transport) are
+  `preserve`. Semantic reading-direction concepts are `mirror` in `config/icon-metadata.ts`: back,
+  forward, undo, redo, sidebar open/close, log in/out, enter/exit, join/leave, progress,
+  impersonate, send, reply, reply-all, and forward. `arrow-left` is `preserve` again now that
+  `arrow-back` exists.
+- No filled drawings yet; every concept is outline-only. The version is unchanged and nothing is
+  published.
+
 ---
 
 Everything below is **historical** and describes the 1.x line only.

@@ -385,3 +385,95 @@ bands and top counter stay open at 14 px. All currentColor tokens rendered the g
 | Typography with Qeet UI and Qeet Text | Pending: the playground now self-hosts both; not yet compared |
 | Filled grammar | Not yet tested |
 | Small-size optical masters | Not needed so far |
+
+## Catalogue run: working spec and system grammars
+
+The first full catalogue pass drew the planned concepts in
+[config/catalogue.ts](../config/catalogue.ts) against one working spec, fixed at the calibration
+gate after Phase 3C. Drawing agents worked one category at a time; a category review checked each
+category for family consistency before it entered `icons/`. This section records the grammar that
+pass used. It is evidence for the Catalogue Review & Enhancement Pass, not a lock: every value
+below is **Provisional** unless marked otherwise.
+
+### Working spec
+
+| Topic | Working spec |
+|:--|:--|
+| Stroke | 1.75, round caps and joins (unchanged from Phase 3) |
+| Painted bounds | Inside 2–22: the 2-unit safe-area inset |
+| Diagonals | 45° for straight diagonals; 2:1 where a family needs a steeper slope (the ECG line) |
+| Container radius | 2.5 for containers of 12 units or more, 2 for 8–12, 1–1.5 for badges |
+| Counters | 3.75 open at least, or closed solid |
+| Clearance | 1.5 white between strokes, or joined; never a sliver |
+| Paths | One path per icon; a derived icon never repeats its base's exact path as a separate element (shared strings break the tree-shaking test) |
+| Dots | A standalone dot is a `circle` of r 0.875 (3.5 solid); a punctuation dot is a zero-length subpath |
+
+### Modifier kit
+
+Compound concepts keep the family base unchanged and add one mark.
+
+- **Inner marks** go inside roomy containers (circle, shield, file page, folder, cloud, screen,
+  bubble), centred optically with 1.5 white to every wall.
+- **Corner badges** go everywhere else. They are centred on 18,18, used verbatim, and the base is
+  cut back for 1.5 white. Other badge kinds (gear, key, shield, arrow, pin, sparkle, cycle) use the
+  same footprint and position.
+
+| Badge | Path |
+|:--|:--|
+| plus | `M18 15V21M15 18H21` |
+| minus | `M15 18H21` |
+| x | `M15.5 15.5L20.5 20.5M20.5 15.5L15.5 20.5` |
+| check | `M15 17.75L17 19.75L21 15.75` |
+| search | `M17.25 15A2.25 2.25 0 1 0 17.25 19.5A2.25 2.25 0 1 0 17.25 15M18.75 18.75L21 21` |
+| clock | `M17.5 14A3.5 3.5 0 1 0 17.5 21A3.5 3.5 0 1 0 17.5 14M17.5 16.25V17.5H18.5` |
+| alert | `M18 14.75V18.25M18 21V21` |
+| lock | `M16 17.25H20A1 1 0 0 1 21 18.25V20A1 1 0 0 1 20 21H16A1 1 0 0 1 15 20V18.25A1 1 0 0 1 16 17.25ZM16.5 17.25V16A1.5 1.5 0 0 1 19.5 16V17.25` |
+
+`-off` concepts add one 45° slash from upper left to lower right, matching `offline`, with the
+base cut to leave 1.5 white on each side.
+
+### Shared family motifs
+
+| Motif | Where it repeats |
+|:--|:--|
+| Person | The calibrated `user`; one shared badge base cuts the right shoulder for a corner badge. Multi-person icons take no corner badges |
+| Database badge cut | `database-*`, `cache`, `memory-ai` |
+| Pin badge | `*-location` |
+| Cycle badge | `recurring`, `autoscale`, `automation`, `subscription-billing` (the base tells them apart) |
+| Arrow badge | `payment`, `checkout`, `shipping`, `uptime`, `downtime` |
+| AI sparkle | A solid corner badge (`generate`, `agent`, `copilot`, `memory-ai`, `workflow-ai`) and a 0.24-scale accent (`sparkles`, `magic-wand`, `prompt`, `rewrite`, `summarize`, `reasoning`) |
+| Chart axes | `M5 5V19H19` in every chart; a corner badge may only cut the baseline to `H11.75` |
+| ECG line | `M3 13H6L9.5 6L15.5 18L18 13H21` (2:1 diagonals), scaled into a screen, window, or lens |
+| Group boundary | `M7.5 4H16.5A3.5 3.5 0 0 1 20 7.5V16.5A3.5 3.5 0 0 1 16.5 20H7.5A3.5 3.5 0 0 1 4 16.5V7.5A3.5 3.5 0 0 1 7.5 4Z` in `group`, `member`, `members`, `department`, `join`, `leave`; `join` and `leave` cut only a straight side wall |
+| Building base | `building`, `buildings`, `company`, `organization`, `tenant`, `tenant-switch` |
+| Person plus object | `admin` (crown), `vendor` (store), `customer` (bag): a smaller person at the upper left and a large object, used where a small corner badge would blur |
+
+### Observed in the catalogue run
+
+- **Small corner badges blur at 16 px.** About 5 px across, only plus, minus, check, x, and
+  alert still read. Lock, bag, star, sparkle, cog, bolt, and magnifier badges merge into one
+  blob, so a badge works when the icon is a state of its base (`user-plus`), not a different
+  concept. A pixel-similarity audit of every icon backs this up: `memory-ai`, `cache`, and
+  `database-plus`; `copilot` and `user-plus`; `uptime`/`downtime` and `clock-plus`.
+- **Marks inside a file page become a grey blob at 16 px.** That suits file formats, but concepts
+  from other domains drawn on a page (tax, policy, invoice, sla) lose their identity.
+- **Solid fills drawn with strokes** (token pills, columns and rows bars, the manager tie, the AI
+  sparkle badge) read heavier than outline icons. Use them only where an outline version fails.
+
+### Status after the catalogue run
+
+| Topic | Status |
+|:--|:--|
+| Stroke width (1.75), round caps and joins | Provisional, high confidence: 578 concepts drawn without a stroke exception |
+| Safe-area inset (2) | Provisional, high confidence: no icon paints outside 2–22 |
+| Container radius 2.5, 2, 1–1.5 by size | Candidate |
+| Counter 3.75 open or closed solid; clearance 1.5 or joined | Candidate |
+| One path per icon; no repeated base path | Candidate; the tree-shaking test enforces distinct path strings |
+| Inner marks for roomy containers | Candidate |
+| Corner badges (18,18, verbatim kit) | Candidate for state marks (plus, minus, check, x, alert); under review for object badges |
+| `-off` slash | Candidate |
+| Semantic mirror vs physical preserve | Decided, and enforced by tests: the 18 mirror concepts are listed in [rtl.md](rtl.md) |
+| Typography with Qeet UI and Qeet Text | Pending: self-hosted in the playground; not yet compared |
+| Filled grammar | Not yet tested; every concept is outline-only |
+| Small-size optical masters | Not needed so far; the 14 px weak spots are listed in the review backlog |
+

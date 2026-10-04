@@ -3864,6 +3864,766 @@
       "category": "media",
       "variants": ["outline"],
       "directionality": "preserve"
+    },
+    {
+      "id": "agent",
+      "name": "agent",
+      "componentName": "AgentIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "agents",
+      "name": "agents",
+      "componentName": "AgentsIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "automation",
+      "name": "automation",
+      "componentName": "AutomationIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bot",
+      "name": "bot",
+      "componentName": "BotIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "bot-message",
+      "name": "bot-message",
+      "componentName": "BotMessageIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "brain",
+      "name": "brain",
+      "componentName": "BrainIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "brain-circuit",
+      "name": "brain-circuit",
+      "componentName": "BrainCircuitIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "context",
+      "name": "context",
+      "componentName": "ContextIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "copilot",
+      "name": "copilot",
+      "componentName": "CopilotIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "embedding",
+      "name": "embedding",
+      "componentName": "EmbeddingIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "generate",
+      "name": "generate",
+      "componentName": "GenerateIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "guardrails",
+      "name": "guardrails",
+      "componentName": "GuardrailsIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "magic-wand",
+      "name": "magic-wand",
+      "componentName": "MagicWandIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "memory-ai",
+      "name": "memory-ai",
+      "componentName": "MemoryAiIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "model",
+      "name": "model",
+      "componentName": "ModelIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "models",
+      "name": "models",
+      "componentName": "ModelsIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "neural-network",
+      "name": "neural-network",
+      "componentName": "NeuralNetworkIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "nodes-ai",
+      "name": "nodes-ai",
+      "componentName": "NodesAiIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "prompt",
+      "name": "prompt",
+      "componentName": "PromptIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "prompt-template",
+      "name": "prompt-template",
+      "componentName": "PromptTemplateIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "reasoning",
+      "name": "reasoning",
+      "componentName": "ReasoningIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "rewrite",
+      "name": "rewrite",
+      "componentName": "RewriteIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "sparkles",
+      "name": "sparkles",
+      "componentName": "SparklesIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "summarize",
+      "name": "summarize",
+      "componentName": "SummarizeIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "temperature",
+      "name": "temperature",
+      "componentName": "TemperatureIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "token",
+      "name": "token",
+      "componentName": "TokenIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tool",
+      "name": "tool",
+      "componentName": "ToolIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tools",
+      "name": "tools",
+      "componentName": "ToolsIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "translate",
+      "name": "translate",
+      "componentName": "TranslateIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "vector",
+      "name": "vector",
+      "componentName": "VectorIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "vector-search",
+      "name": "vector-search",
+      "componentName": "VectorSearchIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "workflow-ai",
+      "name": "workflow-ai",
+      "componentName": "WorkflowAiIcon",
+      "category": "ai",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "activity",
+      "name": "activity",
+      "componentName": "ActivityIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "alert",
+      "name": "alert",
+      "componentName": "AlertIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "alert-rule",
+      "name": "alert-rule",
+      "componentName": "AlertRuleIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "analytics",
+      "name": "analytics",
+      "componentName": "AnalyticsIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "apm",
+      "name": "apm",
+      "componentName": "ApmIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chart-area",
+      "name": "chart-area",
+      "componentName": "ChartAreaIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chart-bar",
+      "name": "chart-bar",
+      "componentName": "ChartBarIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chart-line",
+      "name": "chart-line",
+      "componentName": "ChartLineIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "chart-pie",
+      "name": "chart-pie",
+      "componentName": "ChartPieIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "dashboard",
+      "name": "dashboard",
+      "componentName": "DashboardIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "downtime",
+      "name": "downtime",
+      "componentName": "DowntimeIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "error-rate",
+      "name": "error-rate",
+      "componentName": "ErrorRateIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "gauge",
+      "name": "gauge",
+      "componentName": "GaugeIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "health",
+      "name": "health",
+      "componentName": "HealthIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "heartbeat",
+      "name": "heartbeat",
+      "componentName": "HeartbeatIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "incident",
+      "name": "incident",
+      "componentName": "IncidentIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "incident-resolved",
+      "name": "incident-resolved",
+      "componentName": "IncidentResolvedIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "latency",
+      "name": "latency",
+      "componentName": "LatencyIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "log-search",
+      "name": "log-search",
+      "componentName": "LogSearchIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "logs",
+      "name": "logs",
+      "componentName": "LogsIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "metric",
+      "name": "metric",
+      "componentName": "MetricIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "metrics",
+      "name": "metrics",
+      "componentName": "MetricsIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "monitoring",
+      "name": "monitoring",
+      "componentName": "MonitoringIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "observability",
+      "name": "observability",
+      "componentName": "ObservabilityIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "performance",
+      "name": "performance",
+      "componentName": "PerformanceIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "pulse",
+      "name": "pulse",
+      "componentName": "PulseIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "sla",
+      "name": "sla",
+      "componentName": "SlaIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "slo",
+      "name": "slo",
+      "componentName": "SloIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "span",
+      "name": "span",
+      "componentName": "SpanIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "throughput",
+      "name": "throughput",
+      "componentName": "ThroughputIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "trace",
+      "name": "trace",
+      "componentName": "TraceIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "traces",
+      "name": "traces",
+      "componentName": "TracesIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "uptime",
+      "name": "uptime",
+      "componentName": "UptimeIcon",
+      "category": "observability",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "admin",
+      "name": "admin",
+      "componentName": "AdminIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "briefcase",
+      "name": "briefcase",
+      "componentName": "BriefcaseIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "building",
+      "name": "building",
+      "componentName": "BuildingIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "buildings",
+      "name": "buildings",
+      "componentName": "BuildingsIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "company",
+      "name": "company",
+      "componentName": "CompanyIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "customer",
+      "name": "customer",
+      "componentName": "CustomerIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "department",
+      "name": "department",
+      "componentName": "DepartmentIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "employee",
+      "name": "employee",
+      "componentName": "EmployeeIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "group",
+      "name": "group",
+      "componentName": "GroupIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "groups",
+      "name": "groups",
+      "componentName": "GroupsIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "hierarchy-org",
+      "name": "hierarchy-org",
+      "componentName": "HierarchyOrgIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "invite",
+      "name": "invite",
+      "componentName": "InviteIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "join",
+      "name": "join",
+      "componentName": "JoinIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "leave",
+      "name": "leave",
+      "componentName": "LeaveIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "mirror"
+    },
+    {
+      "id": "manager",
+      "name": "manager",
+      "componentName": "ManagerIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "member",
+      "name": "member",
+      "componentName": "MemberIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "members",
+      "name": "members",
+      "componentName": "MembersIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "org-chart",
+      "name": "org-chart",
+      "componentName": "OrgChartIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "organization",
+      "name": "organization",
+      "componentName": "OrganizationIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "ownership",
+      "name": "ownership",
+      "componentName": "OwnershipIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "partner",
+      "name": "partner",
+      "componentName": "PartnerIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "role",
+      "name": "role",
+      "componentName": "RoleIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "roles",
+      "name": "roles",
+      "componentName": "RolesIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "team",
+      "name": "team",
+      "componentName": "TeamIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "teams",
+      "name": "teams",
+      "componentName": "TeamsIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tenant",
+      "name": "tenant",
+      "componentName": "TenantIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "tenant-switch",
+      "name": "tenant-switch",
+      "componentName": "TenantSwitchIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "vendor",
+      "name": "vendor",
+      "componentName": "VendorIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "workspace",
+      "name": "workspace",
+      "componentName": "WorkspaceIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
+    },
+    {
+      "id": "workspace-switch",
+      "name": "workspace-switch",
+      "componentName": "WorkspaceSwitchIcon",
+      "category": "organization",
+      "variants": ["outline"],
+      "directionality": "preserve"
     }
   ]
 }

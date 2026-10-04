@@ -6,7 +6,7 @@ What a version number means for an icon library, how a release happens, and how 
 
 > [!WARNING]
 > The repository is in Qeetrix Icons 2.0 calibration: the 1.x catalogue is gone and the root
-> exports only the twelve uncalibrated 2.0 icons and the public types. `package.json` still carries
+> exports only the 578 not-yet-reviewed 2.0 icons and the public types. `package.json` still carries
 > a 1.x version. Merged to `main` through the flow below, this could publish the incompatible 2.0
 > work as a **1.x patch release** on `latest`, and consumers on a `^1` range could receive it on
 > their next install.

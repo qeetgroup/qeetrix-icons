@@ -35,4 +35,7 @@ export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = {
   "reply-all": { directionality: "mirror" },
   // Forwarding a message, not media fast-forward.
   forward: { directionality: "mirror" },
+  // Moving into or out of a group at the reading start or end, like log-in and log-out.
+  join: { directionality: "mirror" },
+  leave: { directionality: "mirror" },
 };
