@@ -1,486 +1,357 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { categories } from "../../config/categories.js";
-import { iconSystem } from "../../config/icon-system.js";
-import type { IconShape } from "../../src/types/icon.js";
+import meta from "virtual:qeetrix-meta";
 import {
-  type Catalogue,
-  type CatalogueFilter,
-  type CatalogueIcon,
-  categoryOptions,
-  emptyFilter,
-  filterIcons,
-  selectedVariant,
-  shapeOptions,
-  type VariantFilter,
-  variantFilterOptions,
-} from "./catalogue.js";
-import { typefaces, useFontAvailability } from "./fonts.js";
-import { DesignValues, Inspector, type InspectorTab } from "./inspector.js";
-import { strokeStyle } from "./qa.js";
-import { Segmented, UiIcon, UiIconProvider } from "./ui.js";
+  type MouseEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { type Catalogue, emptyFilter, filterIcons } from "./catalogue.js";
+import { CommandPalette } from "./command-palette.js";
+import { IconsPage } from "./icons-page.js";
+import { emptyLogoFilter, filterLogos } from "./logo-catalogue.js";
+import { loadLogoIndex } from "./logo-modules.js";
+import { LogosPage } from "./logos-page.js";
 import {
-  type Direction,
-  parseUrlState,
-  serializeUrlState,
+  formatCount,
+  Kbd,
+  modKey,
+  Segmented,
+  ToastProvider,
+  UiIcon,
+  UiIconProvider,
+} from "./ui.js";
+import {
+  type AppState,
+  defaultIconsState,
+  defaultLogosState,
+  type IconsState,
+  type LogosState,
+  mergeNavigation,
+  type Page,
+  parseAppState,
+  serializeAppState,
   type Theme,
-  type UrlState,
 } from "./url-state.js";
 
-const { architecture, design } = iconSystem;
-const categoryLabels = new Map<string, string>(categories.map(({ id, label }) => [id, label]));
-/** Browsing preview sizes. A local preference, not inspection state, so it stays out of the URL. */
-const gridSizes = ["16", "20", "24", "32"] as const;
+const themeKey = "qeetrix-playground-theme";
+
+/** URL state, with the theme falling back to the last one chosen on this machine. */
+function initialState(): AppState {
+  const state = parseAppState(window.location.search);
+  if (new URLSearchParams(window.location.search).has("theme")) return state;
+  const stored = window.localStorage.getItem(themeKey);
+  return stored === "light" || stored === "dark" ? { ...state, theme: stored } : state;
+}
 
 export function App({ catalogue }: { catalogue: Catalogue }) {
-  const [state, setState] = useState<UrlState>(() => parseUrlState(window.location.search));
-  const [filter, setFilter] = useState<CatalogueFilter>(emptyFilter);
-  const [gridSize, setGridSize] = useState<(typeof gridSizes)[number]>("24");
-  const [tab, setTab] = useState<InspectorTab>("overview");
-  const search = useRef<HTMLInputElement>(null);
-  const visible = useMemo(() => filterIcons(catalogue.icons, filter), [catalogue, filter]);
+  const [state, setState] = useState<AppState>(initialState);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  // Bumped when a selection arrives from outside a grid, so that grid scrolls to it.
+  const [revealKey, setRevealKey] = useState(0);
+  const historyMode = useRef<"push" | "replace">("replace");
   const lookup = useMemo(() => (id: string) => catalogue.byId.get(id)?.Component, [catalogue]);
-  const selected = state.icon ? catalogue.byId.get(state.icon) : undefined;
-  const variant = selected ? selectedVariant(selected, state.variant) : undefined;
-  const stroke = strokeStyle(state.shape);
-  const update = (change: Partial<UrlState>) => setState((current) => ({ ...current, ...change }));
-  const refine = (change: Partial<CatalogueFilter>) =>
-    setFilter((current) => ({ ...current, ...change }));
-  const filtered =
-    filter.query.trim() !== "" ||
-    filter.category !== "" ||
-    filter.variant !== emptyFilter.variant ||
-    filter.directionality !== emptyFilter.directionality;
 
-  // Layout effect, so previews that read computed colors in their own effects see the new theme.
+  const navigate = useCallback(
+    (recipe: (current: AppState) => AppState, mode: "push" | "replace" = "replace") => {
+      if (mode === "push") historyMode.current = "push";
+      setState(recipe);
+    },
+    [],
+  );
+  const updateIcons = useCallback(
+    (change: Partial<IconsState>, mode?: "push" | "replace") =>
+      navigate((current) => ({ ...current, icons: { ...current.icons, ...change } }), mode),
+    [navigate],
+  );
+  const updateLogos = useCallback(
+    (change: Partial<LogosState>, mode?: "push" | "replace") =>
+      navigate((current) => ({ ...current, logos: { ...current.logos, ...change } }), mode),
+    [navigate],
+  );
+  const goTo = useCallback(
+    (page: Page) => {
+      navigate((current) => ({ ...current, page }), "push");
+      window.scrollTo({ top: 0 });
+    },
+    [navigate],
+  );
+
+  // The URL follows state: pushed for navigation (pages, selections, filters), replaced for
+  // typing and display tweaks, so Back steps through meaningful places only.
+  useEffect(() => {
+    const url = `${window.location.pathname}${serializeAppState(state)}${window.location.hash}`;
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (url !== current) {
+      if (historyMode.current === "push") window.history.pushState(null, "", url);
+      else window.history.replaceState(null, "", url);
+    }
+    historyMode.current = "replace";
+  }, [state]);
+  useEffect(() => {
+    const onPop = () => {
+      setState((current) => mergeNavigation(current, parseAppState(window.location.search)));
+      setRevealKey((key) => key + 1);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // Theme: applied before paint (index.html sets it even earlier), remembered locally.
   useLayoutEffect(() => {
     document.documentElement.dataset.theme = state.theme;
+    if (state.theme === "system") window.localStorage.removeItem(themeKey);
+    else window.localStorage.setItem(themeKey, state.theme);
   }, [state.theme]);
-  useEffect(() => {
-    const query = serializeUrlState({ ...state, variant });
-    window.history.replaceState(null, "", `${window.location.pathname}${query}`);
-  }, [state, variant]);
 
-  // Keep the selected tile in view, including when the arrow keys step through the catalogue.
   useEffect(() => {
-    if (!selected) return;
-    document
-      .querySelector(`[data-icon-id="${selected.id}"]`)
-      ?.scrollIntoView({ block: "nearest", inline: "nearest" });
-  }, [selected]);
+    document.title = `${state.page === "logos" ? "Logos" : "Icons"} · Qeetrix playground`;
+  }, [state.page]);
 
-  // "/" focuses search; Escape closes the inspector; ← and → step through the visible icons.
+  // ⌘K / Ctrl-K toggles the palette from anywhere, including text fields.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.metaKey || event.ctrlKey || event.altKey) return;
-      const target = event.target instanceof Element ? event.target : null;
-      if (target?.closest("input, select, textarea, [role='tab']")) return;
-      if (event.key === "/") {
+      if ((event.metaKey || event.ctrlKey) && !event.altKey && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        search.current?.focus();
-      } else if (event.key === "Escape" && state.icon) {
-        update({ icon: undefined });
-      } else if ((event.key === "ArrowRight" || event.key === "ArrowLeft") && selected) {
-        const index = visible.findIndex(({ id }) => id === selected.id);
-        const next =
-          index === -1 ? undefined : visible[index + (event.key === "ArrowRight" ? 1 : -1)];
-        if (next) {
-          event.preventDefault();
-          update({ icon: next.id });
-        }
+        setPaletteOpen((open) => !open);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  });
+  }, []);
 
-  const heading = filter.query.trim()
-    ? `Results for “${filter.query.trim()}”`
-    : filter.category
-      ? (categoryLabels.get(filter.category) ?? filter.category)
-      : "All icons";
-  const description = filter.query.trim()
-    ? "Matching names, component names, categories, tags, and earlier Lucide names."
-    : filter.category
-      ? `Every icon Lucide lists under ${categoryLabels.get(filter.category) ?? filter.category}.`
-      : `${catalogue.icons.length} Lucide icons across ${categoryOptions(catalogue.icons).filter(({ count }) => count > 0).length} categories, drawn on one ${architecture.grid.width}×${architecture.grid.height} grid.`;
+  // Warm the logo index after first paint, so the palette and the Logos tab feel instant.
+  useEffect(() => {
+    const idle =
+      window.requestIdleCallback ?? ((callback: () => void) => window.setTimeout(callback, 1200));
+    idle(() => void loadLogoIndex());
+  }, []);
+
+  const openIcon = useCallback(
+    (id: string) => {
+      navigate((current) => {
+        const icon = catalogue.byId.get(id);
+        const filter = {
+          query: current.icons.q,
+          category: current.icons.category,
+          variant: current.icons.variants,
+          directionality: current.icons.directionality,
+        };
+        const shown = icon && filterIcons([icon], filter).length > 0;
+        const icons = shown
+          ? current.icons
+          : {
+              ...current.icons,
+              q: emptyFilter.query,
+              category: "",
+              variants: emptyFilter.variant,
+              directionality: emptyFilter.directionality,
+            };
+        return { ...current, page: "icons", icons: { ...icons, icon: id } };
+      }, "push");
+      setRevealKey((key) => key + 1);
+    },
+    [catalogue, navigate],
+  );
+  const openLogo = useCallback(
+    (id: string) => {
+      void loadLogoIndex().then((index) => {
+        navigate((current) => {
+          const logo = index.logos.find((entry) => entry.id === id);
+          const filter = {
+            query: current.logos.q,
+            collection: current.logos.collection,
+            licenses: current.logos.licenses,
+            kinds: current.logos.kinds,
+          };
+          const shown = logo && filterLogos([logo], filter).length > 0;
+          const logos = shown
+            ? current.logos
+            : { ...current.logos, ...emptyLogoFilter, q: "", collection: "" };
+          return { ...current, page: "logos", logos: { ...logos, logo: id } };
+        }, "push");
+        setRevealKey((key) => key + 1);
+      });
+    },
+    [navigate],
+  );
+  const searchOther = useCallback(
+    (page: Page, q: string) => {
+      navigate(
+        (current) =>
+          page === "logos"
+            ? { ...current, page, logos: { ...defaultLogosState, bg: current.logos.bg, q } }
+            : {
+                ...current,
+                page,
+                icons: { ...current.icons, ...defaultIconsState, shape: current.icons.shape, q },
+              },
+        "push",
+      );
+      window.scrollTo({ top: 0 });
+    },
+    [navigate],
+  );
+
+  const pageLink = (page: Page) => (page === "logos" ? "?page=logos" : "?");
+  const onPageLink = (page: Page) => (event: MouseEvent<HTMLAnchorElement>) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)
+      return;
+    event.preventDefault();
+    goTo(page);
+  };
 
   return (
     <UiIconProvider value={lookup}>
-      <div className="app" data-inspecting={state.icon ? "true" : undefined}>
+      <ToastProvider>
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
         <header className="topbar">
-          <div className="brand">
+          <a
+            className="brand"
+            href="?"
+            onClick={onPageLink("icons")}
+            aria-label="Qeetrix playground, Icons"
+          >
             <span className="brand-mark" aria-hidden="true">
-              <UiIcon name="sparkle" size={18} />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M12 3.5a8.5 8.5 0 0 0 6 8.5 8.5 8.5 0 0 0-6 8.5 8.5 8.5 0 0 0-6-8.5 8.5 8.5 0 0 0 6-8.5Z"
+                  stroke="currentColor"
+                  strokeWidth="2.25"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </span>
-            <span className="brand-name">Qeetrix Icons</span>
-            <span className="brand-tag">Playground</span>
-          </div>
-          <label className="search">
-            <UiIcon name="search" size={16} />
-            <input
-              ref={search}
-              type="search"
-              aria-label="Search icons"
-              value={filter.query}
-              placeholder={`Search ${catalogue.icons.length} icons by name, tag, category, or component`}
-              onChange={(event) => refine({ query: event.target.value })}
-              onKeyDown={(event) => {
-                if (event.key !== "Escape") return;
-                if (filter.query) refine({ query: "" });
-                else event.currentTarget.blur();
-              }}
-            />
-            <kbd title="Press / to search">/</kbd>
-          </label>
-          <div className="topbar-controls">
-            <Segmented<IconShape>
-              label="Shape"
-              value={state.shape}
-              options={shapeOptions()}
-              onChange={(shape) => update({ shape })}
-            />
+            <span className="brand-name">Qeetrix</span>
+            <span className="brand-divider" aria-hidden="true" />
+            <span className="brand-product">Playground</span>
+          </a>
+          <nav className="topnav" aria-label="Library">
+            {(
+              [
+                ["icons", "Icons", catalogue.icons.length],
+                ["logos", "Logos", meta.logos?.count ?? 0],
+              ] as const
+            ).map(([page, label, count]) => (
+              <a
+                key={page}
+                href={pageLink(page)}
+                className="topnav-link"
+                aria-current={state.page === page ? "page" : undefined}
+                onClick={onPageLink(page)}
+              >
+                {label}
+                {count > 0 && <span className="topnav-count">{formatCount(count)}</span>}
+              </a>
+            ))}
+          </nav>
+          <div className="topbar-end">
+            <button
+              type="button"
+              className="search-trigger"
+              aria-keyshortcuts="Meta+K Control+K"
+              aria-haspopup="dialog"
+              onClick={() => setPaletteOpen(true)}
+            >
+              <UiIcon name="search" size={15} />
+              <span className="search-trigger-label">Search icons and logos</span>
+              <span className="search-trigger-keys">
+                <Kbd>{modKey}</Kbd>
+                <Kbd>K</Kbd>
+              </span>
+            </button>
+            <VersionStamp />
             <Segmented<Theme>
               label="Theme"
+              size="sm"
+              className="theme-switch"
               value={state.theme}
               options={[
-                { value: "system", label: "System" },
-                { value: "light", label: "Light" },
-                { value: "dark", label: "Dark" },
+                {
+                  value: "light",
+                  label: <UiIcon name="sun" size={15} />,
+                  ariaLabel: "Light theme",
+                  title: "Light",
+                },
+                {
+                  value: "system",
+                  label: <UiIcon name="monitor" size={15} />,
+                  ariaLabel: "System theme",
+                  title: "Match system",
+                },
+                {
+                  value: "dark",
+                  label: <UiIcon name="moon" size={15} />,
+                  ariaLabel: "Dark theme",
+                  title: "Dark",
+                },
               ]}
-              onChange={(theme) => update({ theme })}
+              onChange={(theme) => navigate((current) => ({ ...current, theme }))}
             />
-            <Segmented<Direction>
-              label="Preview direction"
-              value={state.dir}
-              options={[
-                { value: "ltr", label: "LTR" },
-                { value: "rtl", label: "RTL", title: "RTL QA preview" },
-              ]}
-              onChange={(dir) => update({ dir })}
-            />
-            <FontStatus />
           </div>
         </header>
 
-        <nav className="sidebar" aria-label="Categories and filters">
-          <section className="sidebar-section">
-            <h2 className="sidebar-heading">Categories</h2>
-            <ul className="category-list">
-              <li>
-                <button
-                  type="button"
-                  className="category"
-                  aria-current={filter.category === "" ? "true" : undefined}
-                  onClick={() => refine({ category: "" })}
-                >
-                  <span>All icons</span>
-                  <span className="category-count">{catalogue.icons.length}</span>
-                </button>
-              </li>
-              {categoryOptions(catalogue.icons).map(({ id, label, count }) => (
-                <li key={id}>
-                  <button
-                    type="button"
-                    className="category"
-                    aria-current={filter.category === id ? "true" : undefined}
-                    disabled={count === 0 && filter.category !== id}
-                    title={count === 0 ? "No icons in this category yet" : undefined}
-                    onClick={() => refine({ category: id })}
-                  >
-                    <span>{label}</span>
-                    <span className="category-count">{count}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </section>
-          <section className="sidebar-section">
-            <h2 className="sidebar-heading">Variants</h2>
-            <Segmented<VariantFilter>
-              label="Variants"
-              layout="stack"
-              value={filter.variant}
-              options={variantFilterOptions()}
-              onChange={(next) => refine({ variant: next })}
-            />
-          </section>
-          <section className="sidebar-section">
-            <h2 className="sidebar-heading">Direction</h2>
-            <Segmented<CatalogueFilter["directionality"]>
-              label="Direction"
-              layout="stack"
-              value={filter.directionality}
-              options={[
-                { value: "all", label: "All" },
-                { value: "mirror", label: "Mirror in RTL" },
-                { value: "preserve", label: "Preserve in RTL" },
-              ]}
-              onChange={(next) => refine({ directionality: next })}
-            />
-          </section>
-          {filtered && (
-            <button
-              type="button"
-              className="button button-ghost reset"
-              onClick={() => setFilter(emptyFilter)}
-            >
-              <UiIcon name="x" size={14} />
-              Reset filters
-            </button>
-          )}
-        </nav>
-
-        <main className="browser" aria-label="Icon catalogue">
-          {catalogue.problems.length > 0 && (
-            <div className="notice" role="alert">
-              <p>
-                Generated icons and the manifest disagree. Run <code>bun run generate</code>.
-              </p>
-              <ul>
-                {catalogue.problems.map((problem) => (
-                  <li key={problem}>{problem}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {catalogue.icons.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <>
-              <header className="browser-header">
-                <div className="browser-title">
-                  <h1>{heading}</h1>
-                  {description && <p>{description}</p>}
-                  {!filtered && (
-                    <ul className="spec-list" aria-label="System values">
-                      <li>
-                        {architecture.grid.width} × {architecture.grid.height} grid
-                      </li>
-                      <li>{design.strokeWidth} stroke</li>
-                      <li>
-                        {stroke.linecap} caps · {stroke.linejoin} joins
-                        {stroke.miterLimit === undefined
-                          ? ""
-                          : ` · miter limit ${stroke.miterLimit}`}
-                      </li>
-                      <li>{design.safeAreaInset}-unit safe area</li>
-                      <li>{architecture.color}</li>
-                    </ul>
-                  )}
-                </div>
-                <div className="browser-tools">
-                  <p className="count" aria-live="polite">
-                    {visible.length === catalogue.icons.length
-                      ? `${catalogue.icons.length} icons`
-                      : `${visible.length} of ${catalogue.icons.length} icons`}
-                  </p>
-                  <Segmented
-                    label="Preview size"
-                    value={gridSize}
-                    options={gridSizes.map((size) => ({
-                      value: size,
-                      label: size,
-                      title: `Preview at ${size}px`,
-                    }))}
-                    onChange={setGridSize}
-                  />
-                </div>
-              </header>
-
-              {visible.length === 0 ? (
-                <div className="no-results">
-                  <UiIcon name="search" size={32} />
-                  <h2>No icons match</h2>
-                  <p>Try another name, or clear the search and filters.</p>
-                  <button type="button" className="button" onClick={() => setFilter(emptyFilter)}>
-                    Reset search and filters
-                  </button>
-                </div>
-              ) : filtered ? (
-                <IconGrid
-                  icons={visible}
-                  shape={state.shape}
-                  size={Number(gridSize)}
-                  selectedId={selected?.id}
-                  onSelect={(icon) => update({ icon })}
-                />
-              ) : (
-                groupByCategory(visible).map(({ id, label, icons }) => (
-                  <section key={id} className="group" aria-labelledby={`group-${id}`}>
-                    <h2 id={`group-${id}`} className="group-title">
-                      {label}
-                      <span className="group-count">{icons.length}</span>
-                    </h2>
-                    <IconGrid
-                      icons={icons}
-                      shape={state.shape}
-                      size={Number(gridSize)}
-                      selectedId={selected?.id}
-                      onSelect={(icon) => update({ icon })}
-                    />
-                  </section>
-                ))
-              )}
-            </>
-          )}
-        </main>
-
-        {state.icon && (
-          <>
-            <button
-              type="button"
-              className="scrim"
-              aria-label="Close inspector"
-              tabIndex={-1}
-              onClick={() => update({ icon: undefined })}
-            />
-            <aside className="inspector-pane" aria-label="Inspector">
-              {selected && variant ? (
-                <Inspector
-                  key={selected.id}
-                  icon={selected}
-                  shape={state.shape}
-                  variant={variant}
-                  size={state.size}
-                  direction={state.dir}
-                  tab={tab}
-                  onTab={setTab}
-                  onVariant={(next) => update({ variant: next })}
-                  onSize={(next) => update({ size: next })}
-                  onClose={() => update({ icon: undefined })}
-                />
-              ) : (
-                <section className="placeholder">
-                  <UiIcon name="search" size={32} />
-                  <h2>No icon named “{state.icon}”</h2>
-                  <p>
-                    It may have been renamed or not generated yet. Choose one from the catalogue.
-                  </p>
-                  <button
-                    type="button"
-                    className="button"
-                    onClick={() => update({ icon: undefined })}
-                  >
-                    Close
-                  </button>
-                </section>
-              )}
-            </aside>
-          </>
+        {state.page === "logos" ? (
+          <LogosPage
+            state={state.logos}
+            update={updateLogos}
+            revealKey={revealKey}
+            onSearchIcons={(q) => searchOther("icons", q)}
+            countIcons={(q) => filterIcons(catalogue.icons, { ...emptyFilter, query: q }).length}
+          />
+        ) : (
+          <IconsPage
+            catalogue={catalogue}
+            state={state.icons}
+            update={updateIcons}
+            revealKey={revealKey}
+            onSearchLogos={(q) => searchOther("logos", q)}
+          />
         )}
-      </div>
+
+        {paletteOpen && (
+          <CommandPalette
+            catalogue={catalogue}
+            page={state.page}
+            theme={state.theme}
+            shape={state.icons.shape}
+            onClose={() => setPaletteOpen(false)}
+            onPage={goTo}
+            onIcon={openIcon}
+            onLogo={openLogo}
+            onTheme={(theme) => navigate((current) => ({ ...current, theme }))}
+            onToggleShape={() =>
+              updateIcons({ shape: state.icons.shape === "sharp" ? "round" : "sharp" })
+            }
+          />
+        )}
+      </ToastProvider>
     </UiIconProvider>
   );
 }
 
-function groupByCategory(icons: readonly CatalogueIcon[]) {
-  const groups: { id: string; label: string; icons: CatalogueIcon[] }[] = [];
-  for (const icon of icons) {
-    const last = groups.at(-1);
-    if (last?.id === icon.category) last.icons.push(icon);
-    else groups.push({ id: icon.category, label: icon.categoryLabel, icons: [icon] });
-  }
-  return groups;
-}
-
-function IconGrid({
-  icons,
-  shape,
-  size,
-  selectedId,
-  onSelect,
-}: {
-  icons: readonly CatalogueIcon[];
-  shape: IconShape;
-  size: number;
-  selectedId?: string;
-  onSelect: (id: string) => void;
-}) {
+function VersionStamp() {
+  const parts = [
+    meta.packageVersion && `v${meta.packageVersion}`,
+    meta.lucideVersion && `Lucide ${meta.lucideVersion}`,
+    meta.logos?.version && `theSVG ${meta.logos.version}`,
+  ].filter(Boolean);
+  if (parts.length === 0) return null;
+  const detail = [
+    meta.packageVersion && `@qeetrix/icons ${meta.packageVersion}`,
+    meta.lucideVersion && `Lucide ${meta.lucideVersion}`,
+    meta.logos?.version &&
+      `theSVG ${meta.logos.version}${meta.logos.commit ? ` (${meta.logos.commit})` : ""}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
   return (
-    <ul className="icon-grid">
-      {icons.map((icon) => (
-        <li key={icon.id}>
-          <button
-            type="button"
-            className="tile"
-            data-icon-id={icon.id}
-            aria-current={icon.id === selectedId ? "true" : undefined}
-            title={icon.componentName}
-            onClick={() => onSelect(icon.id)}
-          >
-            <span className="tile-art">
-              <icon.Component shape={shape} size={size} />
-            </span>
-            <span className="tile-name">{icon.name}</span>
-            {(icon.directionality === "mirror" || icon.variants.length > 1) && (
-              <span className="tile-flags">
-                {icon.directionality === "mirror" && (
-                  <span className="tile-flag" title="Mirrors in RTL">
-                    RTL
-                  </span>
-                )}
-                {icon.variants.length > 1 && (
-                  <span className="tile-flag" title={icon.variants.join(", ")}>
-                    {icon.variants.length}
-                  </span>
-                )}
-              </span>
-            )}
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function FontStatus() {
-  const availability = useFontAvailability();
-  return (
-    <ul className="font-status" aria-label="Typeface availability">
-      {typefaces.map(({ family }) => {
-        const status =
-          availability === undefined
-            ? "checking"
-            : availability[family]
-              ? "available"
-              : "unavailable — system fallback active";
-        return (
-          <li key={family} data-available={availability?.[family]} title={`${family}: ${status}`}>
-            {family}
-            <span className="visually-hidden"> {status}</span>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function EmptyState() {
-  return (
-    <section className="empty">
-      <h1>No icons yet</h1>
-      <p>Sync the outline icons from Lucide to populate the library.</p>
-      <h2>Workflow</h2>
-      <ol>
-        <li>
-          Run <code>bun run sync:lucide &lt;version&gt;</code>. It writes{" "}
-          <code>icons/round-outline/</code>, derives <code>icons/round-filled/</code> and the sharp
-          drawings in <code>icons/sharp-outline/</code> and <code>icons/sharp-filled/</code>, and
-          regenerates the components.
-        </li>
-        <li>
-          Inspect icons here: sizes, construction, stroke, surfaces, typography, RTL, variants.
-        </li>
-        <li>
-          Adjust filled recipes in <code>config/filled.ts</code>, then run{" "}
-          <code>bun run derive:filled</code> and <code>bun run generate</code>.
-        </li>
-      </ol>
-      <p className="muted">
-        {categories.length} categories configured. See <code>docs/visual-qa.md</code>.
-      </p>
-      <DesignValues />
-    </section>
+    <p className="version-stamp" title={detail}>
+      {parts.join(" · ")}
+    </p>
   );
 }

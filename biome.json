@@ -49,7 +49,15 @@
     }
   },
   "files": {
-    "includes": ["**", "!icons", "!icons-sharp", "!dist"]
+    "includes": [
+      "**",
+      "!icons",
+      "!dist",
+      "!config/brands.json",
+      "!src/generated/logos",
+      "!src/generated/logo-index.ts",
+      "!src/generated/logo-manifest.ts"
+    ]
   },
   "overrides": [
     {

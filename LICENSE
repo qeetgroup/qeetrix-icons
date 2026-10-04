@@ -25,11 +25,12 @@ Third-party notice: Lucide
 ================================================================================
 
 The MIT License above covers the code of this package. The icon artwork in
-icons/ (the outline SVGs, taken unchanged from Lucide), the derived filled
-drawings in icons/filled/ (generated from those outlines), and the React icon
-components generated from both, in source and in the published build, are based
-on Lucide (https://lucide.dev, https://github.com/lucide-icons/lucide), release
-1.52.0. Lucide's license is reproduced verbatim below.
+icons/round-outline/ (taken unchanged from Lucide), the drawings derived from it
+in icons/round-filled/, icons/sharp-outline/ and icons/sharp-filled/, and the
+React icon components generated from all of them, in source and in the published
+build, are based on Lucide (https://lucide.dev,
+https://github.com/lucide-icons/lucide), release 1.52.0. Lucide's license is
+reproduced verbatim below.
 
 --------------------------------------------------------------------------------
 

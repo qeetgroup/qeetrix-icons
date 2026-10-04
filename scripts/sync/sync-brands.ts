@@ -197,3 +197,13 @@ try {
 } finally {
   rmSync(workDirectory, { recursive: true, force: true });
 }
+
+// Like sync:lucide, leave the repository consistent: validate the new sources, then regenerate the
+// logo components and catalogue from them.
+for (const script of ["check:brands", "generate:logos"]) {
+  const result = spawnSync("bun", ["run", script], { cwd: repositoryRoot, stdio: "inherit" });
+  if (result.status !== 0) {
+    console.error(`bun run ${script} failed after the sync.`);
+    process.exit(1);
+  }
+}

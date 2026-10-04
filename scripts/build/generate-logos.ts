@@ -3,11 +3,12 @@ import { compareLogoOutput, writeLogoOutput } from "../lib/logo-output.js";
 import { planLogoGeneration } from "../lib/logo-plan.js";
 
 /**
- * `bun run generate:logos` writes one module per brand logo to `src/generated-logos/logos/`, the
- * barrel `src/generated-logos/index.ts`, and `src/generated-logos/manifest.ts`, from
- * `config/brands.json` and `icons/brand-icons/`. It owns `src/generated-logos/` entirely and removes
- * anything stale there. `--check` (`bun run check:logos`) writes nothing and fails when any
- * generated file is stale, missing, or extra.
+ * `bun run generate:logos` embeds every brand logo file from `config/brands.json` and
+ * `icons/brand-icons/` unmodified: one module per logo in `src/generated/logos/`, the barrel
+ * `src/generated/logo-index.ts`, and `src/generated/logo-manifest.ts`. It owns exactly those
+ * paths, removes stale files only inside `src/generated/logos/`, and never touches the rest of
+ * `src/generated/`. `--check` (`bun run check:logos`) writes nothing and fails when any generated
+ * file is stale, missing, or extra.
  */
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));

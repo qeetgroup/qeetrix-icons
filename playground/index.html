@@ -2,17 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
-    <title>Qeetrix Icons · Playground</title>
-    <!-- The status/sparkle drawing on a Qeet orange tile, inline so nothing is fetched. -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafafa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d0d0d" />
+    <title>Qeetrix playground</title>
+    <!-- The Qeetrix sparkle on a Qeet orange tile, inline so nothing is fetched. -->
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ea580c'/%3E%3Cpath transform='translate(4 4)' d='M12 4A9.5 9.5 0 0 0 18.5 12A9.5 9.5 0 0 0 12 20A9.5 9.5 0 0 0 5.5 12A9.5 9.5 0 0 0 12 4Z' fill='none' stroke='white' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E"
     />
+    <script>
+      // Apply the theme before first paint: the URL wins, then the last choice on this machine.
+      (() => {
+        var theme = new URLSearchParams(location.search).get("theme");
+        try {
+          if (theme !== "light" && theme !== "dark" && theme !== "system") {
+            theme = localStorage.getItem("qeetrix-playground-theme") || "system";
+          }
+        } catch {
+          theme = "system";
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <style>
+      /* First paint, before the icon catalogue has parsed: the page colour and a quiet mark. */
+      html { background: #fafafa; }
+      html[data-theme="dark"] { background: #0d0d0d; }
+      @media (prefers-color-scheme: dark) { html[data-theme="system"] { background: #0d0d0d; } }
+      .boot { display: grid; place-items: center; align-content: center; gap: 12px; min-height: 100vh; color: #5b5b5b; font: 500 13px/1.4 system-ui, sans-serif; }
+      html[data-theme="dark"] .boot { color: #a8a8a8; }
+      @media (prefers-color-scheme: dark) { html[data-theme="system"] .boot { color: #a8a8a8; } }
+      .boot-mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(160deg, #f97316, #ea580c); animation: boot 1.2s ease-in-out infinite; }
+      @keyframes boot { 50% { opacity: 0.5; } }
+      @media (prefers-reduced-motion: reduce) { .boot-mark { animation: none; } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="boot" role="status">
+        <span class="boot-mark" aria-hidden="true"></span>
+        <span>Loading the Qeetrix playground…</span>
+      </div>
+    </div>
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>

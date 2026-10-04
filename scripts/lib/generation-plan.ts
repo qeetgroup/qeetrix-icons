@@ -19,10 +19,20 @@ import { svgToReact } from "./svg-to-react.js";
 /** Owned entirely by generation: every file inside is generated, and anything else is stale. */
 export const generatedDirectory = "src/generated";
 export const generatedIconsDirectory = "src/generated/icons";
-export const barrelPath = "src/generated/index.ts";
-export const manifestModulePath = "src/generated/manifest.ts";
+export const barrelPath = "src/generated/icon-index.ts";
+export const manifestModulePath = "src/generated/icon-manifest.ts";
 /** The one generated file outside `src/generated/`. */
 export const manifestJsonPath = "icon-manifest.json";
+
+/**
+ * Paths inside `src/generated/` that belong to the logo generator (`bun run generate:logos`):
+ * icon generation never reads, writes, or removes them, and the logo generator owns nothing else.
+ */
+export const logoGeneratedPaths: readonly string[] = [
+  "src/generated/logos",
+  "src/generated/logo-index.ts",
+  "src/generated/logo-manifest.ts",
+];
 
 /** Fixed-path artifacts; every other generated file is a concept's component at its canonical path. */
 export const packageArtifactPaths: readonly string[] = [
@@ -92,7 +102,7 @@ const categoryIds: readonly string[] = categories.map(({ id }) => id);
 const styleRank = (style: IconStyle) => (style === defaultStyle ? -1 : styles.indexOf(style));
 
 /**
- * Validates every source and the authored metadata with the Phase 2B validator, groups the
+ * Validates every source and the authored metadata with the source validator, groups the
  * drawings into concepts, then builds every generated artifact in memory from those concepts:
  * one component per concept, the root barrel, and the manifest as a typed module and as JSON.
  *

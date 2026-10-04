@@ -19,7 +19,8 @@ export function scaleLogoLength(
   length: number | string,
   factor: number,
 ): number | string | undefined {
-  if (typeof length === "number") return Number.isFinite(length) ? round(length * factor) : undefined;
+  if (typeof length === "number")
+    return Number.isFinite(length) ? round(length * factor) : undefined;
   const match = lengthPattern.exec(length);
   if (!match || match[2] === "%") return undefined;
   return `${round(Number(match[1]) * factor)}${match[2]}`;
@@ -92,14 +93,16 @@ export function renderLogo<V extends string>(data: LogoData<V>, props: LogoProps
   const labelBecomesAlt = altProp === undefined && hasText(label);
   const named = hasText(altProp) || hasText(label) || hasText(rest["aria-labelledby"]);
   const alt = altProp ?? (labelBecomesAlt ? label : named ? undefined : "");
+  const hidden = rest["aria-hidden"] ?? (named ? undefined : true);
+  const style = hasSizeStyle ? { ...sizeStyle, ...styleProp } : styleProp;
 
-  return createElement("img", {
-    ...rest,
-    ...(labelBecomesAlt ? { "aria-label": undefined } : undefined),
-    alt,
-    ...sizeAttributes,
-    style: hasSizeStyle ? { ...sizeStyle, ...styleProp } : styleProp,
-    "aria-hidden": rest["aria-hidden"] ?? (named ? undefined : true),
-    src: variant.src,
-  });
+  // Only defined keys, so Server Component payloads carry no `$undefined` props.
+  const imgProps: Record<string, unknown> = { ...rest };
+  if (labelBecomesAlt) delete imgProps["aria-label"];
+  if (alt !== undefined) imgProps.alt = alt;
+  Object.assign(imgProps, sizeAttributes);
+  if (style !== undefined) imgProps.style = style;
+  if (hidden !== undefined) imgProps["aria-hidden"] = hidden;
+  imgProps.src = variant.src;
+  return createElement("img", imgProps);
 }

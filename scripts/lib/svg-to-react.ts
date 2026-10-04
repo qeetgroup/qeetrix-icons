@@ -9,7 +9,7 @@ export type ReactSvgElement = {
 };
 
 /**
- * How each known SVG attribute is spelled in React. This table decides spelling only; Phase 2B
+ * How each known SVG attribute is spelled in React. This table decides spelling only; source
  * validation decides what source may contain. An attribute missing here fails generation rather
  * than leaking an invalid JSX name, so widening the validator forces a deliberate entry here.
  */
@@ -78,7 +78,7 @@ function convertElement(element: Element): ReactSvgElement {
  * Geometry is carried over verbatim: values keep their exact source text and children keep their
  * drawing order. Comments, whitespace, and the XML declaration are dropped because they do not
  * render. Attributes are sorted by React name so authoring-tool attribute order cannot change the
- * generated output. This is conversion, not validation: callers must run Phase 2B validation first.
+ * generated output. This is conversion, not validation: callers must run source validation first.
  */
 export function svgToReact(source: string): ReactSvgElement {
   const root = new DOMParser({ onError: onWarningStopParsing }).parseFromString(

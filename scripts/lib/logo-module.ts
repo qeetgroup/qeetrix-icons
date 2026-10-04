@@ -1,17 +1,21 @@
 import type { LogoBackground, LogoManifestEntry } from "../../src/types/logo.js";
 
-/** Directory owned by the logo generator, relative to the repository root. */
-export const logoOutputDirectory = "src/generated-logos";
-
 /**
- * One module per logo. They live in a subdirectory, like icons, because slugs are arbitrary: a
- * logo named `manifest` exists, and must not collide with the barrel or the manifest.
+ * The logo generator's output, inside the shared `src/generated/` folder. It owns exactly these
+ * three paths (the icon generator skips them) and removes stale files only inside the directory.
+ * Logo modules have their own directory, like icons, because slugs are arbitrary (a logo named
+ * `manifest` exists).
  */
-export const logoModuleDirectory = `${logoOutputDirectory}/logos`;
+export const logoModuleDirectory = "src/generated/logos";
+export const logoBarrelPath = "src/generated/logo-index.ts";
+export const logoManifestPath = "src/generated/logo-manifest.ts";
+export const logoGeneratedPaths: readonly string[] = [
+  logoModuleDirectory,
+  logoBarrelPath,
+  logoManifestPath,
+];
 
 export const logoModulePath = (id: string) => `${logoModuleDirectory}/${id}.ts`;
-export const logoBarrelPath = `${logoOutputDirectory}/index.ts`;
-export const logoManifestPath = `${logoOutputDirectory}/manifest.ts`;
 
 export type PlannedLogoVariant = {
   readonly name: string;
@@ -157,29 +161,27 @@ export function logoManifestEntry(logo: PlannedLogo): LogoManifestEntry {
   };
 }
 
-function valueSource(value: unknown): string {
-  if (Array.isArray(value)) return `[${value.map(valueSource).join(", ")}]`;
-  if (value !== null && typeof value === "object") {
-    return `{ ${Object.entries(value)
-      .map(([name, entry]) => `${key(name)}: ${valueSource(entry)}`)
-      .join(", ")} }`;
-  }
-  return JSON.stringify(value);
-}
+/** Text safe inside a template literal: escapes `\`, `` ` `` and `${`. */
+const templateText = (value: string) => value.replace(/\\|`|\$\{/g, (match) => `\\${match}`);
 
-/** `logoManifest`, one logo per line. */
+/**
+ * `logoManifest` as JSON text in a template literal, one logo per line. TypeScript checks one
+ * string instead of typing 7,000+ object literals (whose union alone costs seconds and hundreds of
+ * megabytes); the manifest is parsed once, when a tool imports it.
+ */
 export function logoManifestSource(logos: readonly PlannedLogo[], upstream: LogoUpstream): string {
+  const entries = logos.map((logo) => JSON.stringify(logoManifestEntry(logo)));
   return [
     generatedNotice("brand logo catalogue", upstream),
     "",
     'import type { LogoManifest } from "../types/logo.js";',
     "",
-    "export const logoManifest: LogoManifest = {",
-    "  schemaVersion: 1,",
-    "  logos: [",
-    ...logos.map((logo) => `    ${valueSource(logoManifestEntry(logo))},`),
-    "  ],",
-    "};",
+    "export const logoManifest: LogoManifest = /* @__PURE__ */ JSON.parse(`{",
+    '"schemaVersion": 1,',
+    '"logos": [',
+    ...entries.map((entry, index) => templateText(entry) + (index < entries.length - 1 ? "," : "")),
+    "]",
+    "}`);",
     "",
   ].join("\n");
 }

@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -12,10 +12,7 @@ import {
 import { syntheticSvg } from "./helpers.js";
 
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
-/** Round outlines; icons/outline before the move to icons/round-outline. */
-const roundOutlineRoot = ["icons/round-outline", "icons/outline"]
-  .map((directory) => join(repositoryRoot, directory))
-  .find((directory) => existsSync(directory)) as string;
+const roundOutlineRoot = join(repositoryRoot, "icons/round-outline");
 
 /** The geometry elements of a sharpened source, one per line. */
 function elements(source: string): string[] {

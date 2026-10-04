@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { iconManifest } from "../../src/manifest.js";
+import { iconManifest } from "../../src/generated/icon-manifest.js";
 import { App } from "./app.js";
 import { buildCatalogue } from "./catalogue.js";
 import { iconModules } from "./icon-modules.js";

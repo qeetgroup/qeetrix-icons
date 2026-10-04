@@ -5,7 +5,11 @@ This is the contract for generated React icon components. The defaults are recor
 [resolveIconProps](../src/runtime/resolve-icon-props.ts), which every icon uses, and tested in
 [tests/runtime.test.ts](../tests/runtime.test.ts); see
 [generation.md](generation.md#runtime-decision). There are no generated titles. Every drawing
-selected by `variant` gets identical accessibility handling.
+selected by `shape` and `variant` gets identical accessibility handling.
+
+Brand logos follow the same principles as images: decorative by default (`alt=""` and
+`aria-hidden="true"`), named by a non-empty `alt` or `aria-label`. See
+[logos.md](logos.md#props).
 
 ## Decorative by default
 
@@ -63,7 +67,7 @@ an icon must not create an unsolicited live region.
 ## Verification
 
 Component tests cover unnamed decorative icons, named standalone graphics, blank labels, and
-explicit ARIA overrides, for both outline and filled drawings. Products should also test valid
-labelled-by references and icons inside named buttons and links: keyboard focus stays on the
-control, labels are not announced twice, and status information survives without color. Those
-checks belong to the consuming UI, not to this package.
+explicit ARIA overrides, for all four drawings: round and sharp, outline and filled. Products should
+also test valid labelled-by references and icons inside named buttons and links: keyboard focus
+stays on the control, labels are not announced twice, and status information survives without color.
+Those checks belong to the consuming UI, not to this package.

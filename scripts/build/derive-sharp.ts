@@ -17,16 +17,12 @@ import { sharpenOutline } from "../lib/sharp.js";
  */
 
 const roundOutlineRoot = "icons/round-outline";
-/** Before the round sources moved to icons/round-outline. */
-const legacyOutlineRoot = "icons/outline";
 const sharpOutlineRoot = "icons/sharp-outline";
 const sharpFilledRoot = "icons/sharp-filled";
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 const check = process.argv.includes("--check");
-const inputRoot = existsSync(join(repositoryRoot, roundOutlineRoot))
-  ? roundOutlineRoot
-  : legacyOutlineRoot;
+const inputRoot = roundOutlineRoot;
 
 /** Round outline sources by name: repository-relative path and category. */
 const outlines = new Map<string, { path: string; category: string; file: string }>();

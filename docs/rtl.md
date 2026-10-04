@@ -12,9 +12,9 @@ The generated manifest records `directionality` for every concept:
 Lucide has no directionality data, so this is the one piece of icon metadata this repository
 authors. Every concept is `preserve` unless the `mirrored` list in
 [config/icon-metadata.ts](../config/icon-metadata.ts) names it. One entry covers the concept's
-outline and filled drawings. Directionality is never inferred from a filename, and a listed name
-with no source fails validation (`QXI-META-001`), for example after a Lucide rename. The manifest
-exposes the value through `@qeetrix/icons/manifest`; there is no direction detection, CSS
+drawings in both shapes and both variants. Directionality is never inferred from a filename, and a
+listed name with no source fails validation (`QXI-META-001`), for example after a Lucide rename. The
+manifest exposes the value through `@qeetrix/icons/manifest`; there is no direction detection, CSS
 mirroring, React direction prop, or runtime mirroring.
 
 ## Logical versus physical direction

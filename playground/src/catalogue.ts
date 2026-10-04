@@ -4,6 +4,7 @@ import { iconSystem } from "../../config/icon-system.js";
 import type { IconDirectionality, IconShape, IconVariant } from "../../src/types/icon.js";
 import type { IconManifest, IconManifestEntry } from "../../src/types/icon-manifest.js";
 import type { IconProps } from "../../src/types/icon-props.js";
+import { rankBy } from "./search.js";
 
 /**
  * The playground's data model. Everything here derives from the generated manifest, the generated
@@ -31,9 +32,9 @@ export type Catalogue = {
 const { defaultStyle, defaultVariant, styles, variants } = iconSystem.architecture;
 const categoryLabels = new Map<string, string>(categories.map(({ id, label }) => [id, label]));
 
-/** `…/src/generated/icons/star.tsx` → `star`. */
+/** `…/src/generated/icons/star.tsx` → `star`; logo modules (`…/logos/github.ts`) alike. */
 export function moduleId(path: string): string {
-  return (path.split("/").pop() ?? path).replace(/\.tsx$/, "");
+  return (path.split("/").pop() ?? path).replace(/\.tsx?$/, "");
 }
 
 export function buildCatalogue(
@@ -81,24 +82,15 @@ export const emptyFilter: CatalogueFilter = {
 /**
  * Case-insensitive search over id, name, component name, categories, tags, and aliases; then the
  * filters. A category filter matches every icon listed under that category, not only its folder.
+ * With a query, the best matches come first (names before aliases before tags); ties, and every
+ * result without a query, keep manifest order.
  */
 export function filterIcons(
   icons: readonly CatalogueIcon[],
   filter: CatalogueFilter,
 ): CatalogueIcon[] {
-  const query = filter.query.trim().toLowerCase();
-  return icons.filter(
+  const filtered = icons.filter(
     (icon) =>
-      (!query ||
-        [
-          icon.id,
-          icon.name,
-          icon.componentName,
-          icon.categoryLabel,
-          ...icon.categories,
-          ...icon.tags,
-          ...icon.aliases,
-        ].some((field) => field.toLowerCase().includes(query))) &&
       (!filter.category || icon.categories.includes(filter.category)) &&
       (filter.variant === "all" ||
         (filter.variant === "default-only"
@@ -106,6 +98,27 @@ export function filterIcons(
           : icon.variants.includes(filter.variant))) &&
       (filter.directionality === "all" || icon.directionality === filter.directionality),
   );
+  return rankBy(filtered, filter.query, iconSearchFields);
+}
+
+/** What search reads for one icon, strongest first. */
+export function iconSearchFields(icon: CatalogueIcon) {
+  return {
+    primary: [icon.id, icon.name, icon.componentName],
+    secondary: icon.aliases,
+    keywords: [icon.categoryLabel, ...icon.categories, ...icon.tags],
+  };
+}
+
+/** Consecutive icons that share a primary category, as the grouped "All icons" view shows them. */
+export function groupByCategory(icons: readonly CatalogueIcon[]) {
+  const groups: { id: string; label: string; icons: CatalogueIcon[] }[] = [];
+  for (const icon of icons) {
+    const last = groups.at(-1);
+    if (last?.id === icon.category) last.icons.push(icon);
+    else groups.push({ id: icon.category, label: icon.categoryLabel, icons: [icon] });
+  }
+  return groups;
 }
 
 /** Every configured category, in configured order, with the number of icons listed under it. */
@@ -146,6 +159,14 @@ export function mirrorsInPreview(icon: IconManifestEntry, direction: "ltr" | "rt
   return direction === "rtl" && icon.directionality === "mirror";
 }
 
+/** Rendering props shown in the usage line when they differ from the component defaults. */
+export type UsageProps = {
+  readonly size?: number;
+  readonly strokeWidth?: number;
+  /** A CSS colour for the `color` prop; omitted when the icon simply inherits `currentColor`. */
+  readonly color?: string;
+};
+
 /**
  * How to import and render the drawing on show. Every shape and variant is a prop of the one
  * component, so the imports never change; the usage line names only non-default props.
@@ -154,16 +175,44 @@ export function importSnippets(
   icon: IconManifestEntry,
   shape: IconShape = defaultStyle,
   variant: IconVariant = defaultVariant,
+  usage: UsageProps = {},
 ) {
+  const { size, strokeWidth, color } = usage;
   const props = [
     ...(shape === defaultStyle ? [] : [`shape="${shape}"`]),
     ...(variant === defaultVariant ? [] : [`variant="${variant}"`]),
+    ...(size === undefined || size === iconSystem.design.defaultSize ? [] : [`size={${size}}`]),
+    ...(strokeWidth === undefined ||
+    strokeWidth === iconSystem.design.strokeWidth ||
+    variant !== defaultVariant
+      ? []
+      : [`strokeWidth={${strokeWidth}}`]),
+    ...(color ? [`color="${color}"`] : []),
   ];
   return {
     root: `import { ${icon.componentName} } from "@qeetrix/icons";`,
     direct: `import { ${icon.componentName} } from "@qeetrix/icons/icons/${icon.id}";`,
     usage: `<${[icon.componentName, ...props].join(" ")} />`,
   };
+}
+
+/**
+ * Rendered SVG markup, one element per line, for the "Copy SVG" action. React's serialized
+ * attributes are kept as they are, so the markup is exactly what the component renders.
+ */
+export function formatSvgMarkup(markup: string): string {
+  let depth = 0;
+  const lines: string[] = [];
+  // React serializes childless SVG elements as `<path …></path>`; one line each reads better.
+  const collapsed = markup.replace(/<([a-zA-Z][\w:-]*)([^<>]*?)>\s*<\/\1>/g, "<$1$2/>");
+  for (const token of collapsed.replace(/>\s*</g, ">\n<").split("\n")) {
+    const line = token.trim();
+    if (!line) continue;
+    if (line.startsWith("</")) depth = Math.max(0, depth - 1);
+    lines.push(`${"  ".repeat(depth)}${line}`);
+    if (!line.startsWith("</") && !line.endsWith("/>") && !line.includes("</")) depth += 1;
+  }
+  return lines.join("\n");
 }
 
 function capitalize(value: string): string {

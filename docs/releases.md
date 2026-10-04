@@ -6,9 +6,10 @@ What a version number means for an icon library, how a release happens, and how 
 
 > [!WARNING]
 > This branch holds the unreleased 2.0: the 1.x catalogue is gone, and the root exports the 1,863
-> Lucide-based icons and the public types. `package.json` still carries a 1.x version. Merged to
-> `main` through the flow below, this could publish the incompatible 2.0 work as a **1.x patch
-> release** on `latest`, and consumers on a `^1` range could receive it on their next install.
+> Lucide-based icons, the 7,429 theSVG brand logos, and the public types. `package.json` still
+> carries a 1.x version. Merged to `main` through the flow below, this could publish the
+> incompatible 2.0 work as a **1.x patch release** on `latest`, and consumers on a `^1` range could
+> receive it on their next install.
 >
 > Keep 2.0 off `main` until it is ready to ship, and set `version` to `2.0.0` by hand when it is.
 > `release.yml` has no pre-release channel — it always publishes with the default dist-tag — so
@@ -41,8 +42,8 @@ Release. The tag comes last on purpose: every `v*` tag is a version that really 
 property `qeet-id-server`'s deploy workflow maintains.
 
 Before publishing it runs the full gate: `lint`, `typecheck`, `test`, `check:icons`,
-`check:filled`, `check:generated`, `build`. A merge that does not change the version publishes
-nothing and succeeds, so re-running is always safe.
+`check:filled`, `check:sharp`, `check:generated`, `check:brands`, `check:logos`, `build`. A merge
+that does not change the version publishes nothing and succeeds, so re-running is always safe.
 
 There is no `bun run release`. Releasing is merging.
 
@@ -65,16 +66,16 @@ change when the public API is a list of component names.
 
 | Change | Bump | Why |
 |:--|:--|:--|
-| New icon, or new filled drawing | **minor** | Additive. Nothing that compiled stops compiling. |
-| Visual change to an existing icon | **patch** | The name and props are unchanged. |
-| **Icon renamed** | **major** | A named export disappeared. Someone's build breaks. |
-| **Icon or filled drawing removed** | **major** | Same. |
+| New icon, filled drawing, logo, or logo variant | **minor** | Additive. Nothing that compiled stops compiling. |
+| Visual change to an existing icon or logo file | **patch** | The name and props are unchanged. |
+| **Icon or logo renamed** | **major** | A named export disappeared. Someone's build breaks. |
+| **Icon, filled drawing, the sharp shape, logo, or logo variant removed** | **major** | Same. |
 | **Prop removed or retyped** | **major** | Same. |
 
 A visual change is only a patch because it changes what renders without changing any API — the
-consumer gets a different glyph in the same place with the same props. It is still a real change, so
-say what moved and why in the PR: "Lucide 1.53 redrew X; Y's filled drawing re-derived" is worth
-more than a version number.
+consumer gets a different glyph in the same place with the same props. It is still a real change,
+so say what moved and why in the PR: "Lucide 1.53 redrew X; Y's filled and sharp drawings
+re-derived" is worth more than a version number.
 
 ### Lucide upgrades
 
@@ -92,6 +93,13 @@ breaks `variant="filled"` the same way. [api.md](api.md#versioning) lists which 
 
 Names are Lucide's, so this package never renames an icon on its own initiative. Upstream renames
 are the cost to plan for: batch them into a major release rather than shipping them as they come.
+
+### Logo updates
+
+A theSVG sync ([logos.md](logos.md#sources-and-sync)) prints what it added and removed. Added
+logos and variants are minor; removed or renamed slugs and variants are major, because their
+exports or variant names disappear. A logo whose license changed keeps its name but may no longer
+be usable the same way: list license changes in the release notes, whatever the version bump.
 
 ## Publishing setup
 

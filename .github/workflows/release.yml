@@ -92,6 +92,10 @@ jobs:
       - if: steps.version.outputs.release == 'true'
         run: bun run check:generated
       - if: steps.version.outputs.release == 'true'
+        run: bun run check:brands
+      - if: steps.version.outputs.release == 'true'
+        run: bun run check:logos
+      - if: steps.version.outputs.release == 'true'
         run: bun run build
 
       # Secrets are unavailable in a step-level `if`, so reduce the decision to

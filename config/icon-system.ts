@@ -1,6 +1,6 @@
 import type { IconDirectionality, IconVariant } from "../src/types/icon.js";
 
-/** A drawing style: round is the package root, sharp is `@qeetrix/icons/sharp`. */
+/** A drawing style, chosen per icon with the `shape` prop: round (the default) or sharp. */
 export type IconStyle = "round" | "sharp";
 
 type IconSystemConfig = {
@@ -71,7 +71,7 @@ export const iconSystem = {
     linecap: "round",
     linejoin: "round",
     safeAreaInset: 1,
-    // The sharp style (`@qeetrix/icons/sharp`): the same geometry with square caps, mitered joins,
+    // The sharp style (`shape="sharp"`): the same geometry with square caps, mitered joins,
     // and corner roundings squared off, acute tips included. A miter limit of 4 lets joins down to
     // about 29° (a star's or triangle's tip) come to a point and bevels only sharper ones; where a
     // point would leave the canvas or run into another stroke, derivation cuts the corner flat.

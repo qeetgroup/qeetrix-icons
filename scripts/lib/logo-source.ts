@@ -8,7 +8,10 @@ export class LogoSourceError extends Error {}
 
 export const svgDataUriPrefix = "data:image/svg+xml,";
 
-const hex = Array.from({ length: 256 }, (_, byte) => `%${byte.toString(16).toUpperCase().padStart(2, "0")}`);
+const hex = Array.from(
+  { length: 256 },
+  (_, byte) => `%${byte.toString(16).toUpperCase().padStart(2, "0")}`,
+);
 
 /**
  * Bytes a `data:` URI cannot carry verbatim, plus a few that keep the URI easy to embed:
@@ -49,16 +52,19 @@ export function svgDataUri(bytes: Uint8Array): string {
   const parts: string[] = [svgDataUriPrefix];
   let start = 0;
   const flush = (end: number) => {
-    if (end > start) parts.push(Buffer.from(bytes.buffer, bytes.byteOffset + start, end - start).toString("latin1"));
+    if (end > start)
+      parts.push(
+        Buffer.from(bytes.buffer, bytes.byteOffset + start, end - start).toString("latin1"),
+      );
   };
   for (let index = 0; index < bytes.length; index += 1) {
     const byte = bytes[index] ?? 0;
-    const escape =
+    const mustEscape =
       escaped[byte] === 1 ||
       (byte === lessThan && startsHtmlScriptHazard(bytes, index)) ||
       // The URL parser strips trailing spaces.
       (byte === space && index === bytes.length - 1);
-    if (!escape) continue;
+    if (!mustEscape) continue;
     flush(index);
     parts.push(hex[byte] ?? "");
     start = index + 1;
@@ -67,23 +73,33 @@ export function svgDataUri(bytes: Uint8Array): string {
   return parts.join("");
 }
 
-/** Percent-decodes a URI made by {@link svgDataUri} back into the file's bytes. */
+const hexValue = (code: number) =>
+  code >= 0x30 && code <= 0x39
+    ? code - 0x30
+    : (code | 0x20) >= 0x61 && (code | 0x20) <= 0x66
+      ? (code | 0x20) - 0x57
+      : -1;
+
+/**
+ * Percent-decodes an SVG data URI into the bytes it carries, like the Fetch standard's data: URL
+ * processor (without `;base64`). Throws on anything {@link svgDataUri} would not produce.
+ */
 export function decodeSvgDataUri(uri: string): Uint8Array {
   if (!uri.startsWith(svgDataUriPrefix)) throw new LogoSourceError("Not an SVG data URI.");
-  const bytes: number[] = [];
+  const bytes = new Uint8Array(uri.length - svgDataUriPrefix.length);
+  let length = 0;
   for (let index = svgDataUriPrefix.length; index < uri.length; index += 1) {
     const code = uri.charCodeAt(index);
     if (code === 0x25) {
-      const byte = Number.parseInt(uri.slice(index + 1, index + 3), 16);
-      if (!/^[0-9A-Fa-f]{2}$/.test(uri.slice(index + 1, index + 3))) {
-        throw new LogoSourceError(`Invalid escape at ${index}.`);
-      }
-      bytes.push(byte);
+      const high = hexValue(uri.charCodeAt(index + 1));
+      const low = hexValue(uri.charCodeAt(index + 2));
+      if (high < 0 || low < 0) throw new LogoSourceError(`Invalid escape at ${index}.`);
+      bytes[length++] = high * 16 + low;
       index += 2;
-    } else if (code < 0x80) bytes.push(code);
+    } else if (code < 0x80) bytes[length++] = code;
     else throw new LogoSourceError(`Non-ASCII character at ${index}.`);
   }
-  return Uint8Array.from(bytes);
+  return bytes.subarray(0, length);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -116,7 +132,10 @@ export function parseSvgLength(value: string | undefined): number | undefined {
 /** `[minX, minY, width, height]`, or `undefined` unless it is four numbers with a positive size. */
 export function parseSvgViewBox(value: string | undefined): readonly number[] | undefined {
   if (value === undefined) return undefined;
-  const numbers = value.trim().split(/[\s,]+/).map(Number);
+  const numbers = value
+    .trim()
+    .split(/[\s,]+/)
+    .map(Number);
   if (numbers.length !== 4 || !numbers.every(Number.isFinite)) return undefined;
   return (numbers[2] ?? 0) > 0 && (numbers[3] ?? 0) > 0 ? numbers : undefined;
 }
@@ -129,12 +148,21 @@ const predefinedEntities: Readonly<Record<string, string>> = {
   apos: "'",
 };
 
-function decodeAttribute(value: string): string {
-  return value.replace(/&(?:#x([0-9a-f]+)|#(\d+)|(\w+));/gi, (reference, hexCode, decimal, name) => {
-    if (hexCode) return String.fromCodePoint(Number.parseInt(hexCode, 16));
-    if (decimal) return String.fromCodePoint(Number(decimal));
-    return predefinedEntities[name] ?? reference;
-  });
+/** Decodes character references, predefined entities and the DOCTYPE's internal entities. */
+function decodeAttribute(value: string, entities: ReadonlyMap<string, string>, depth = 0): string {
+  return value.replace(
+    /&(?:#x([0-9a-f]+)|#(\d+)|([\w.:-]+));/gi,
+    (reference, hexCode, decimal, name) => {
+      if (hexCode) return String.fromCodePoint(Number.parseInt(hexCode, 16));
+      if (decimal) return String.fromCodePoint(Number(decimal));
+      const predefined = predefinedEntities[name];
+      if (predefined !== undefined) return predefined;
+      const internal = entities.get(name);
+      return internal === undefined || depth > 8
+        ? reference
+        : decodeAttribute(internal, entities, depth + 1);
+    },
+  );
 }
 
 export type SvgRootElement = {
@@ -148,12 +176,14 @@ export type SvgRootElement = {
  * instructions, comments, DOCTYPE with any internal subset). Read-only.
  */
 export function readSvgRoot(text: string): SvgRootElement {
+  const entities = new Map<string, string>();
   let index = text.charCodeAt(0) === 0xfeff ? 1 : text.startsWith("ï»¿") ? 3 : 0;
   for (;;) {
     while (/\s/.test(text[index] ?? "")) index += 1;
     if (text.startsWith("<?", index)) index = text.indexOf("?>", index) + 2;
     else if (text.startsWith("<!--", index)) index = text.indexOf("-->", index) + 3;
     else if (/^<!DOCTYPE/i.test(text.slice(index, index + 9))) {
+      const start = index;
       let quote = "";
       let depth = 0;
       for (index += 9; index < text.length; index += 1) {
@@ -165,13 +195,19 @@ export function readSvgRoot(text: string): SvgRootElement {
         else if (char === "]") depth -= 1;
         else if (char === ">" && depth <= 0) break;
       }
+      for (const [, name, double, single] of text
+        .slice(start, index)
+        .matchAll(/<!ENTITY\s+([\w.:-]+)\s+(?:"([^"]*)"|'([^']*)')\s*>/g)) {
+        if (name && !entities.has(name)) entities.set(name, double ?? single ?? "");
+      }
       index += 1;
     } else break;
     if (index <= 0) throw new LogoSourceError("Unterminated markup before the root element.");
   }
   const tag = /^<([A-Za-z_][\w.-]*:)?([A-Za-z_][\w.-]*)/.exec(text.slice(index, index + 200));
   if (!tag) throw new LogoSourceError("No root element.");
-  if (tag[2] !== "svg") throw new LogoSourceError(`The root element is <${tag[0].slice(1)}>, not <svg>.`);
+  if (tag[2] !== "svg")
+    throw new LogoSourceError(`The root element is <${tag[0].slice(1)}>, not <svg>.`);
   const attributes = new Map<string, string>();
   const attribute = /\s*(?:([^\s=/>]+)\s*=\s*(?:"([^"]*)"|'([^']*)')|(\/?>))/y;
   attribute.lastIndex = index + tag[0].length;
@@ -180,7 +216,9 @@ export function readSvgRoot(text: string): SvgRootElement {
     if (!match) throw new LogoSourceError("Malformed root start tag.");
     if (match[4]) break;
     const name = match[1] ?? "";
-    if (!attributes.has(name)) attributes.set(name, decodeAttribute(match[2] ?? match[3] ?? ""));
+    if (!attributes.has(name)) {
+      attributes.set(name, decodeAttribute(match[2] ?? match[3] ?? "", entities));
+    }
   }
   return { prefix: tag[1]?.slice(0, -1), attributes };
 }
@@ -190,25 +228,43 @@ export type SvgIntrinsicSize = {
   readonly height: number;
   /** Where the ratio comes from, as an image renderer sizes the file. */
   readonly from: "width-height" | "viewBox";
-  /** The root declares the SVG namespace; without it browsers cannot show the file as an image. */
-  readonly namespaced: boolean;
+  /** Defects of the published file that keep browsers from displaying it. */
+  readonly problems: readonly string[];
 };
 
 /**
  * The aspect ratio an `<img>` gives the file: its root `width` and `height` when both are absolute
- * lengths, otherwise its `viewBox` (SVG 2 sizing, which browsers implement).
+ * lengths, otherwise its `viewBox` (SVG 2 sizing, which browsers implement). Also reports defects
+ * that make browsers show nothing, since the file is embedded as published, defects included.
  */
 export function readSvgIntrinsicSize(bytes: Uint8Array): SvgIntrinsicSize {
   const text = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString("latin1");
   const { prefix, attributes } = readSvgRoot(text);
-  const namespaced =
-    attributes.get(prefix ? `xmlns:${prefix}` : "xmlns") === "http://www.w3.org/2000/svg";
+  const problems: string[] = [];
+  if (attributes.get(prefix ? `xmlns:${prefix}` : "xmlns") !== "http://www.w3.org/2000/svg") {
+    problems.push(
+      "the root does not declare the SVG namespace, so browsers do not display it as an image",
+    );
+  }
+  const rawViewBox = attributes.get("viewBox");
+  const viewBox = parseSvgViewBox(rawViewBox);
+  if (rawViewBox !== undefined && !viewBox) {
+    const numbers = rawViewBox
+      .trim()
+      .split(/[\s,]+/)
+      .map(Number);
+    if (numbers.length === 4 && numbers.every(Number.isFinite)) {
+      problems.push(`its viewBox "${rawViewBox}" has no area, so browsers render nothing`);
+    }
+  }
   const width = parseSvgLength(attributes.get("width"));
   const height = parseSvgLength(attributes.get("height"));
   if (width !== undefined && height !== undefined) {
-    return { width, height, from: "width-height", namespaced };
+    return { width, height, from: "width-height", problems };
   }
-  const viewBox = parseSvgViewBox(attributes.get("viewBox"));
-  if (viewBox) return { width: viewBox[2] ?? 1, height: viewBox[3] ?? 1, from: "viewBox", namespaced };
-  throw new LogoSourceError("The root has no absolute width and height and no valid viewBox, so it has no aspect ratio.");
+  if (viewBox)
+    return { width: viewBox[2] ?? 1, height: viewBox[3] ?? 1, from: "viewBox", problems };
+  throw new LogoSourceError(
+    "The root has no absolute width and height and no valid viewBox, so it has no aspect ratio.",
+  );
 }

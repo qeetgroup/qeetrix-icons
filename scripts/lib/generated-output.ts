@@ -19,6 +19,7 @@ import {
   type GenerationPlan,
   generatedDirectory,
   generatedOutputPath,
+  logoGeneratedPaths,
   manifestJsonPath,
   manifestModulePath,
   packageArtifactPaths,
@@ -117,6 +118,8 @@ function inspectOutput(repositoryRoot: string): Inventory {
     directories.add(directory);
     for (const name of readdirSync(join(root, directory), { encoding: "utf8" }).sort(compareText)) {
       const file = posix.join(directory, name);
+      // The logo generator's files share src/generated/ but are not icon output.
+      if (logoGeneratedPaths.includes(file)) continue;
       const info = lstatSync(join(root, file));
       if (info.isDirectory() && !info.isSymbolicLink()) {
         pending.push(file);

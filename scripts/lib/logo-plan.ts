@@ -3,10 +3,10 @@ import { join, posix } from "node:path";
 import type { LogoBackground } from "../../src/types/logo.js";
 import {
   type LogoUpstream,
-  logoBarrelSource,
-  logoManifestSource,
   logoBarrelPath,
+  logoBarrelSource,
   logoManifestPath,
+  logoManifestSource,
   logoModulePath,
   logoModuleSource,
   type PlannedLogo,
@@ -47,7 +47,9 @@ const isRecord = (value: unknown): value is RawRecord =>
  */
 export function resolveBrandSource(file: string): string | undefined {
   if (file.includes("\\") || file.startsWith("/")) return undefined;
-  const path = posix.normalize(file.startsWith(`${brandSourceDirectory}/`) ? file : `${brandSourceDirectory}/${file}`);
+  const path = posix.normalize(
+    file.startsWith(`${brandSourceDirectory}/`) ? file : `${brandSourceDirectory}/${file}`,
+  );
   return path.startsWith(`${brandSourceDirectory}/`) && path.endsWith(".svg") ? path : undefined;
 }
 
@@ -103,16 +105,19 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
       diagnostics.push(`${where}: invalid componentName ${JSON.stringify(entry.componentName)}.`);
     }
     const owner = componentOwners.get(componentName);
-    if (owner) diagnostics.push(`${where}: componentName ${componentName} is also used by ${owner}.`);
+    if (owner)
+      diagnostics.push(`${where}: componentName ${componentName} is also used by ${owner}.`);
     componentOwners.set(componentName, id);
 
     const defaultVariant = str(entry.defaultVariant);
     const names = Object.keys(entry.variants);
     if (!names.includes(defaultVariant)) {
-      diagnostics.push(`${where}: defaultVariant ${JSON.stringify(entry.defaultVariant)} is not a variant.`);
+      diagnostics.push(
+        `${where}: defaultVariant ${JSON.stringify(entry.defaultVariant)} is not a variant.`,
+      );
     }
-    const ordered = [defaultVariant, ...names.filter((name) => name !== defaultVariant)].filter((name) =>
-      names.includes(name),
+    const ordered = [defaultVariant, ...names.filter((name) => name !== defaultVariant)].filter(
+      (name) => names.includes(name),
     );
     const variants: PlannedLogoVariant[] = [];
     for (const name of ordered) {
@@ -146,9 +151,8 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
       try {
         const bytes = readFileSync(absolute);
         const size = readSvgIntrinsicSize(bytes);
-        if (!size.namespaced) {
-          warnings.push(`${file}: the root does not declare the SVG namespace, so browsers will not display it as an image.`);
-        }
+        for (const problem of size.problems)
+          warnings.push(`${file}: embedded as published, but ${problem}.`);
         variants.push({
           name,
           background: background as LogoBackground,

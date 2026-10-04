@@ -325,9 +325,9 @@ export function FixtureIcon(props: IconProps<"outline" | "filled">) {
     expect(plan.concepts).toHaveLength(1);
     expect(plan.files.map(({ path }) => path)).toEqual([
       manifestJsonPath,
-      outputFile,
       barrelPath,
       manifestModulePath,
+      outputFile,
     ]);
     expect(
       contentsOf(plan, outputFile),
@@ -815,11 +815,11 @@ describe("generation planning", () => {
     const plan = fixturePlan();
     expect(plan.files.map(({ path }) => path)).toEqual([
       manifestJsonPath,
+      barrelPath,
+      manifestModulePath,
       "src/generated/icons/fixture-arrow.tsx",
       "src/generated/icons/fixture-search.tsx",
       "src/generated/icons/fixture-star.tsx",
-      barrelPath,
-      manifestModulePath,
     ]);
     expect(createGenerationPlan([...apiFixtures].reverse(), [], apiFixtureMetadata)).toEqual(plan);
     expect(createGenerationPlan(apiFixtures, [], apiFixtureMetadata)).toEqual(plan);
@@ -924,12 +924,17 @@ describe("writing and checking generated output", () => {
     }
   });
 
-  it("owns all of src/generated but nothing outside it except the manifest JSON", () => {
+  it("owns src/generated except the logo generator's files, and nothing outside it but the manifest JSON", () => {
     const root = temporaryRepository();
     writeFixture(root, sourceFile, syntheticSvg());
     writeFixture(root, "src/manual.ts", "handwritten");
     writeFixture(root, "src/generated-notes.md", "not generated");
-    writeFixture(root, "src/generated-logos/fixture-logo.tsx", "owned by the logo generator");
+    const logoFiles = [
+      "src/generated/logos/fixture.ts",
+      "src/generated/logo-index.ts",
+      "src/generated/logo-manifest.ts",
+    ];
+    for (const file of logoFiles) writeFixture(root, file, "owned by the logo generator");
     writeFixture(root, "manifest.json", "unrelated root file");
     writeFixture(root, "src/generated/keep.txt", "inside the generated boundary");
     writeFixture(root, "src/generated/icons/stale-fixture.tsx", "// stale\n");
@@ -948,9 +953,9 @@ describe("writing and checking generated output", () => {
     expect(readFileSync(join(root, sourceFile), "utf8")).toBe(syntheticSvg());
     expect(readFileSync(join(root, "src/manual.ts"), "utf8")).toBe("handwritten");
     expect(readFileSync(join(root, "src/generated-notes.md"), "utf8")).toBe("not generated");
-    expect(readFileSync(join(root, "src/generated-logos/fixture-logo.tsx"), "utf8")).toBe(
-      "owned by the logo generator",
-    );
+    for (const file of logoFiles) {
+      expect(readFileSync(join(root, file), "utf8"), file).toBe("owned by the logo generator");
+    }
     expect(checkGenerationPlan(root, plan)).toEqual([]);
     expect(readFileSync(join(root, "manifest.json"), "utf8")).toBe("unrelated root file");
   });
@@ -1090,9 +1095,9 @@ describe("writing and checking generated output", () => {
       ),
     ).toEqual([
       manifestJsonPath,
-      "src/generated/icons/fixture-beta.tsx",
       barrelPath,
       manifestModulePath,
+      "src/generated/icons/fixture-beta.tsx",
     ]);
     expect(existsSync(join(root, "src/generated/icons/fixture-beta.tsx"))).toBe(false);
 
@@ -1106,7 +1111,7 @@ describe("writing and checking generated output", () => {
       checkGenerationPlan(root, planRepositoryGeneration(root, apiFixtureMetadata)).map(
         ({ file }) => file,
       ),
-    ).toEqual([manifestJsonPath, "src/generated/icons/fixture-search.tsx", manifestModulePath]);
+    ).toEqual([manifestJsonPath, manifestModulePath, "src/generated/icons/fixture-search.tsx"]);
 
     writeFixture(root, `${generatedDirectory}/stale.txt`, "stale");
     expect(checkGenerationPlan(root, plan)).toEqual([

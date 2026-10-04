@@ -14,7 +14,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
 import { brandSourceDirectory } from "../scripts/check/validate-repository.js";
-import { iconManifest } from "../src/manifest.js";
+import { iconManifest, logoManifest } from "../src/manifest.js";
 import { apiFixtureMetadata, apiFixtures, sharpApiFixtures, writeFixture } from "./helpers.js";
 
 /**
@@ -212,9 +212,11 @@ describe("packed @qeetrix/icons", () => {
         "dist/generated/icons/fixture-star.d.ts",
       ]),
     );
-    expect(entries.filter((entry) => entry.includes("filled"))).toEqual([]);
-    // Shapes are a prop of each component, not an entry point or module of their own.
-    expect(entries.filter((entry) => entry.includes("sharp"))).toEqual([]);
+    // Variants and shapes are props of each icon, never entry points or modules of their own.
+    // Brand logos are excluded: their slugs legitimately contain words like "sharp" (c-sharp).
+    const iconEntries = entries.filter((entry) => !entry.startsWith("dist/generated/logos/"));
+    expect(iconEntries.filter((entry) => entry.includes("filled"))).toEqual([]);
+    expect(iconEntries.filter((entry) => entry.includes("sharp"))).toEqual([]);
   });
 
   it("resolves one component per concept from root, direct, and manifest entry points", () => {
@@ -251,6 +253,7 @@ describe("packed @qeetrix/icons", () => {
         "FixtureSearchIcon",
         "FixtureStarIcon",
         ...production.map(({ componentName }) => componentName),
+        ...logoManifest.logos.map(({ componentName }) => componentName),
       ].sort(),
       hasFilledExport: false,
       sameModules: true,
@@ -350,11 +353,70 @@ describe("packed @qeetrix/icons", () => {
     },
   );
 
+  it("serves brand logos from the root and their direct subpath, embedding each file unmodified", () => {
+    const result = node(`
+      import * as root from "@qeetrix/icons";
+      import { GithubLogo } from "@qeetrix/icons/logos/github";
+      import { logoManifest } from "@qeetrix/icons/manifest";
+      import { createElement } from "react";
+      import { renderToStaticMarkup } from "react-dom/server";
+      const render = (props) => renderToStaticMarkup(createElement(GithubLogo, props));
+      console.log(JSON.stringify({
+        same: root.GithubLogo === GithubLogo,
+        decorative: render({}),
+        mono: render({ variant: "mono", height: 40, "aria-label": "GitHub" }),
+        entry: logoManifest.logos.find(({ id }) => id === "github"),
+      }));
+    `) as { same: boolean; decorative: string; mono: string; entry: { componentName: string } };
+    const srcOf = (markup: string) =>
+      decodeURIComponent(
+        markup
+          .match(/src="data:image\/svg\+xml,([^"]*)"/)?.[1]
+          .replaceAll("&amp;", "&")
+          .replaceAll("&quot;", '"')
+          .replaceAll("&#x27;", "'")
+          .replaceAll("&lt;", "<")
+          .replaceAll("&gt;", ">") ?? "",
+      );
+    const file = (variant: string) =>
+      readFileSync(join(PKG, "icons/brand-icons/brands/github", `${variant}.svg`), "utf8");
+    expect(result.same).toBe(true);
+    expect(result.entry.componentName).toBe("GithubLogo");
+    expect(result.decorative).toMatch(/^<img /);
+    expect(result.decorative).toContain('alt=""');
+    expect(result.decorative).toContain('aria-hidden="true"');
+    expect(result.decorative).toContain('height="24"');
+    expect(srcOf(result.decorative)).toBe(file("default"));
+    expect(result.mono).toContain('alt="GitHub"');
+    expect(result.mono).not.toContain("aria-hidden");
+    expect(result.mono).toContain('height="40"');
+    expect(srcOf(result.mono)).toBe(file("mono"));
+  });
+
+  it("tree-shakes logos: an icon ships no logo, and a logo ships no other logo", () => {
+    const bundle = (entry: string) => {
+      writeFixture(consumer, "entry.js", entry);
+      return run(
+        "bun",
+        ["build", "entry.js", "--minify", "--external", "react", "--external", "react/jsx-runtime"],
+        consumer,
+      );
+    };
+    const icon = bundle('import { TrashIcon } from "@qeetrix/icons"; console.log(TrashIcon);');
+    expect(icon).not.toContain("data:image/svg+xml");
+    const logo = bundle('import { GithubLogo } from "@qeetrix/icons"; console.log(GithubLogo);');
+    expect(logo).toContain("data:image/svg+xml");
+    expect(logo.match(/data:image\/svg\+xml,/g)?.length).toBe(
+      logoManifest.logos.find(({ id }) => id === "github")?.variants.length,
+    );
+    expect(logo).not.toContain("GitLab");
+  }, 120_000);
+
   it("refuses internal, category, layout, and extension-bearing subpaths", () => {
     const specifiers = [
       "@qeetrix/icons/runtime/resolve-icon-props",
       "@qeetrix/icons/types/icon-props",
-      "@qeetrix/icons/generated/index",
+      "@qeetrix/icons/generated/icon-index",
       "@qeetrix/icons/generated/icons/fixture-alpha",
       "@qeetrix/icons/config/icon-system",
       "@qeetrix/icons/scripts/lib/generation-plan",
