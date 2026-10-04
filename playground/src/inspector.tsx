@@ -11,12 +11,12 @@ import { iconSystem } from "../../config/icon-system.js";
 import type { IconVariant } from "../../src/types/icon.js";
 import { type CatalogueIcon, importSnippets, mirrorsInPreview } from "./catalogue.js";
 import { typefaces, useFontAvailability } from "./fonts.js";
-import { checklistFor, provisionalValues } from "./qa.js";
+import { checklistFor, designValues } from "./qa.js";
 import { CopyButton, Segmented, UiIcon } from "./ui.js";
 import { type Direction, sizeRange } from "./url-state.js";
 
-const { architecture, calibration } = iconSystem;
-const smallSizes: readonly number[] = calibration.recommendedSizes.slice(0, 2);
+const { architecture, design } = iconSystem;
+const smallSizes: readonly number[] = design.recommendedSizes.slice(0, 2);
 /** The showcase preview. Detail only: review sizes are the actual renderings below it. */
 const heroSize = 112;
 
@@ -205,7 +205,7 @@ export function Inspector({
             aside={<SizeControl size={size} onSize={onSize} />}
           >
             <div className="size-strip">
-              {calibration.recommendedSizes.map((recommended) => (
+              {design.recommendedSizes.map((recommended) => (
                 <figure
                   key={recommended}
                   className={smallSizes.includes(recommended) ? "critical" : undefined}
@@ -357,7 +357,7 @@ export function Inspector({
               ))}
             </div>
           </Section>
-          <CalibrationStatus />
+          <DesignValues />
         </>,
       )}
     </article>
@@ -448,7 +448,7 @@ function PixelPreview({
 function Construction({ icon, variant }: { icon: CatalogueIcon; variant: IconVariant }) {
   const [guides, setGuides] = useState({ grid: true, axes: true, safeArea: true });
   const { width, height } = architecture.grid;
-  const inset = calibration.safeAreaInset;
+  const inset = design.safeAreaInset;
   const scale = 12;
   const gridUnits = Array.from({ length: width - 1 }, (_, offset) => offset + 1);
   const toggle = (key: keyof typeof guides) =>
@@ -469,7 +469,7 @@ function Construction({ icon, variant }: { icon: CatalogueIcon; variant: IconVar
         </label>
         <label className="toggle" data-guide="safe">
           <input type="checkbox" checked={guides.safeArea} onChange={() => toggle("safeArea")} />
-          Safe area ({inset}-unit inset, calibration candidate)
+          Safe area ({inset}-unit padding)
         </label>
       </div>
       <div className="construction-frame">
@@ -513,15 +513,15 @@ function Construction({ icon, variant }: { icon: CatalogueIcon; variant: IconVar
 }
 
 /**
- * The outline drawing at each candidate stroke width. The override is a render-time CSS
- * `stroke-width` on this preview only (CSS outranks the SVG attributes), so the source and every
- * other view keep the authored width.
+ * The outline drawing at each comparison stroke width, as a caller's `strokeWidth` prop would draw
+ * it. The override is a render-time CSS `stroke-width` on this preview only (CSS outranks the SVG
+ * attributes), so the source and every other view keep the authored width.
  */
 function StrokeComparison({ icon }: { icon: CatalogueIcon }) {
   return (
     <Section
-      title="Stroke calibration"
-      note={`Outline drawing. Source width ${calibration.strokeWidth}; candidates are a visual calibration override, not the artwork.`}
+      title="Stroke width"
+      note={`Outline drawing. Source width ${design.strokeWidth}; the others preview the strokeWidth prop.`}
     >
       <div className="stroke-grid">
         <figure className="source">
@@ -532,7 +532,7 @@ function StrokeComparison({ icon }: { icon: CatalogueIcon }) {
           </div>
           <figcaption>Actual source rendering</figcaption>
         </figure>
-        {calibration.strokeCandidates.map((candidate) => (
+        {design.strokeCandidates.map((candidate) => (
           <figure
             key={candidate}
             className="stroke-override"
@@ -544,8 +544,8 @@ function StrokeComparison({ icon }: { icon: CatalogueIcon }) {
               ))}
             </div>
             <figcaption>
-              {candidate} · visual calibration override
-              {candidate === calibration.strokeWidth ? " (current candidate)" : ""}
+              strokeWidth={candidate}
+              {candidate === design.strokeWidth ? " (source)" : ""}
             </figcaption>
           </figure>
         ))}
@@ -668,7 +668,7 @@ function Typography({ icon, variant }: { icon: CatalogueIcon; variant: IconVaria
       title="Typography"
       note={
         missing.length > 0
-          ? `${missing.map(({ family }) => family).join(" and ")} unavailable: these rows use the system fallback and are not a Qeet calibration.`
+          ? `${missing.map(({ family }) => family).join(" and ")} unavailable: these rows use the system fallback, not Qeet typography.`
           : "Weight, baseline feel, alignment, and spacing beside medium-weight labels."
       }
     >
@@ -736,19 +736,17 @@ function Snippet({ label, code }: { label: string; code: string }) {
   );
 }
 
-export function CalibrationStatus() {
+export function DesignValues() {
   return (
     <Section
-      title="Calibration status"
-      note={`Provisional until the Phase 3 calibration set. Default variant (${architecture.defaultVariant}) is stable API, not calibration.`}
+      title="Design values"
+      note={`Lucide's drawing rules. Default variant: ${architecture.defaultVariant}.`}
     >
       <dl className="metadata">
-        {provisionalValues().map(({ name, value }) => (
+        {designValues().map(({ name, value }) => (
           <div key={name}>
             <dt>{name}</dt>
-            <dd>
-              {value} <span className="badge">Provisional</span>
-            </dd>
+            <dd>{value}</dd>
           </div>
         ))}
       </dl>

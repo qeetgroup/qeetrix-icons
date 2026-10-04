@@ -1,5 +1,5 @@
 import { categories } from "../../config/categories.js";
-import { iconSystem } from "../../config/icon-system.js";
+import { type IconStyle, iconSystem } from "../../config/icon-system.js";
 import type { IconVariant } from "../../src/types/icon.js";
 import {
   type Diagnostic,
@@ -12,8 +12,14 @@ export type IconLocation = {
   readonly file: string;
   readonly name: string;
   readonly category: (typeof categories)[number]["id"];
+  readonly style: IconStyle;
   readonly variant: IconVariant;
 };
+
+/** The source folder of a style and variant: `round-outline`, `sharp-filled`, … */
+export function sourceFolder(style: IconStyle, variant: IconVariant): string {
+  return `${style}-${variant}`;
+}
 
 /** PascalCase plus `Icon`: `user-plus` → `UserPlusIcon`. The only PascalCase conversion. */
 export function iconExportName(name: string): string {
@@ -34,25 +40,9 @@ export function validateIconName(filename: string, file = filename): Diagnostic[
     ];
   }
 
+  // Names are Lucide's, verbatim: `trash`, `clock-12`, `book-copy`, and `type-outline` are all
+  // real Lucide icons, so there are no suffix rules beyond the filename shape.
   const name = filename.slice(0, -4);
-  if (/(?:-icon|-alt|-new|-copy|-final|-\d+)$/.test(name)) {
-    return [
-      diagnostic(
-        "QXI-NAME-001",
-        file,
-        "Do not use an Icon suffix, draft modifier, or trailing numeric duplicate suffix.",
-      ),
-    ];
-  }
-  if (iconSystem.architecture.variants.some((variant) => name.endsWith(`-${variant}`))) {
-    return [
-      diagnostic(
-        "QXI-NAME-001",
-        file,
-        "Variant suffixes are reserved; put filled artwork in icons/filled/ under the same name.",
-      ),
-    ];
-  }
   if (/^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])$/.test(name)) {
     return [diagnostic("QXI-NAME-001", file, "This filename is reserved on Windows.")];
   }
@@ -61,7 +51,7 @@ export function validateIconName(filename: string, file = filename): Diagnostic[
 
 /**
  * The canonical public component name for a source filename. Variant never affects it:
- * `outline/…/star.svg` and `filled/…/star.svg` are both the one `StarIcon`. Generation, exports,
+ * `round-outline/…/star.svg` and `sharp-filled/…/star.svg` are both `StarIcon`. Generation, exports,
  * and the manifest all use this. Throws on an invalid filename rather than producing a broken
  * identifier.
  */
@@ -86,19 +76,27 @@ export function validateSourcePath(file: string): {
         diagnostic(
           "QXI-PATH-001",
           file,
-          "Use icons/<variant>/<category>/<name>.svg with repository-relative forward slashes.",
+          "Use icons/<style>-<variant>/<category>/<name>.svg with repository-relative forward slashes.",
         ),
       ],
     };
   }
 
-  const [, variantName, categoryName, filename] = parts;
+  const [, folder, categoryName, filename] = parts;
   const diagnostics = validateIconName(filename, file);
-  const variant = iconSystem.architecture.variants.find((candidate) => candidate === variantName);
+  const { styles, variants } = iconSystem.architecture;
+  const pair = styles
+    .flatMap((style) => variants.map((variant) => ({ style, variant })))
+    .find(({ style, variant }) => sourceFolder(style, variant) === folder);
   const category = categories.find((candidate) => candidate.id === categoryName);
-  if (!variant) {
+  if (!pair) {
+    const folders = styles.flatMap((style) => variants.map((v) => sourceFolder(style, v)));
     diagnostics.push(
-      diagnostic("QXI-PATH-003", file, `Unknown variant ${JSON.stringify(variantName)}.`),
+      diagnostic(
+        "QXI-PATH-003",
+        file,
+        `Unknown source folder ${JSON.stringify(folder)}; use ${folders.join(", ")}.`,
+      ),
     );
   }
   if (!category) {
@@ -108,8 +106,8 @@ export function validateSourcePath(file: string): {
   }
   return {
     location:
-      variant && category && /\.svg$/i.test(filename)
-        ? { file, name: filename.slice(0, -4), variant, category: category.id }
+      pair && category && /\.svg$/i.test(filename)
+        ? { file, name: filename.slice(0, -4), ...pair, category: category.id }
         : undefined,
     diagnostics: sortDiagnostics(diagnostics),
   };

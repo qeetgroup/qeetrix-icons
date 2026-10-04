@@ -4,9 +4,61 @@
 
 ### Major Changes
 
-- **Qeetrix Icons 2.0 reset.** The package is being rebuilt from scratch with original
-  Qeetrix-designed artwork. The reset removed the 1.x catalogue; new 2.0 icons will be recorded here
-  as they land.
+- **Qeetrix Icons 2.0: Lucide icons with derived filled variants.** 2.0 replaces the 1.x catalogue
+  with the outline icons of [Lucide](https://lucide.dev) 1.52.0, as React 19 components, plus
+  filled variants derived from those outlines. It does not restore any part of the 1.x API.
+
+  **Icons**
+
+  - 1,863 outline icons from Lucide 1.52.0, the release pinned in `config/lucide.json`. The
+    artwork is Lucide's, unchanged; names and the 42 categories are Lucide's too. Deprecated
+    upstream icons (the three Swiss-franc icons) are left out. `bun run sync:lucide [version]`
+    re-syncs the pinned release or upgrades it ([docs/lucide.md](docs/lucide.md)).
+  - Filled variants for about 800 icons, listed in `config/filled.ts`. `bun run derive:filled`
+    derives each from its outline with Skia path operations (`canvaskit-wasm` 0.42.0, a development
+    dependency): bodies filled to the outline's painted extent, details cut as negative lines,
+    crossing lines cleared by a 1-unit gap. Every listed icon was reviewed visually; open-line,
+    text, chart, badge-clipped, busy, and empty-state icons stay outline-only.
+    `bun run check:filled` keeps the committed drawings in step in CI and the release gate
+    ([docs/filled.md](docs/filled.md)).
+  - Lucide's rendering defaults: a 24 × 24 grid, stroke width 2, round caps and joins, 1 unit of
+    padding, and `currentColor`.
+
+  **API**
+
+  - One component per icon, named `<PascalCase>Icon` after the Lucide name (`trash` → `TrashIcon`,
+    `clock-12` → `Clock12Icon`), exported from the root and from `@qeetrix/icons/icons/<name>`.
+    `variant` is `"outline"` (the default) or `"filled"`, typed per component to the drawings that
+    exist, so an unavailable variant is a type error.
+  - `IconProps`: native SVG props plus `size` (number or CSS length, default 24) and `variant`.
+    Caller props are spread last, so `strokeWidth` and other presentation attributes override the
+    drawing's. Icons are decorative by default; `aria-label` or `aria-labelledby` makes them
+    `role="img"`.
+  - `@qeetrix/icons/manifest`: `iconManifest` (`schemaVersion` 1), one entry per icon with `id`,
+    `name`, `componentName`, `category` (the primary category and source folder), `categories`
+    (every Lucide category, primary first), `variants`, `directionality`, `tags` (Lucide's
+    keywords), and `aliases` (Lucide's former names, such as `trash-2` for `trash`, which are not
+    exported).
+  - RTL: 18 reading-direction icons, such as `undo`, `reply`, `send`, and `log-in`, are `mirror` in
+    the manifest; every other icon is `preserve`. There is no runtime mirroring.
+  - Entry points are the root, `./icons/*`, `./manifest`, and `./package.json`. ESM-only,
+    `sideEffects: false`, per-icon tree shaking, and React 19 as the only peer dependency.
+
+  **Tooling** (repository only, never published)
+
+  - Source validation (`check:icons`), generation (`generate`, `check:generated`), filled
+    derivation (`derive:filled`, `check:filled`), and the Lucide sync (`sync:lucide`). Validation
+    adds `QXI-META-003`: an icon's metadata categories must be configured ids, the first being its
+    source folder. CI and the release gate run `check:icons`, `check:filled`, and
+    `check:generated`.
+  - An internal visual QA playground (`bun run playground`). Search covers tags and aliases, and
+    the category filter matches every category an icon is listed under.
+
+  **License**
+
+  - `LICENSE` keeps the MIT License for the package code and adds Lucide's license verbatim (ISC,
+    with the Feather MIT notice it includes) for the icon artwork, the derived filled drawings, and
+    the generated components. `package.json` declares `MIT AND ISC`.
 
   **Removed**
 
@@ -14,185 +66,14 @@
     `icons/round-outline/` and `icons/round-solid/` (plus the empty `icons/sharp-outline/` and
     `icons/sharp-solid/`).
   - The `@qeetrix/icons/icons/<category>/<name>` deep-import subpath.
-  - The `QeetrixIcon`, `QeetrixIconProps`, `IconVariant` and `IconShape` types, and with them the
-    `variant` and `shape` props and the white default colour.
-  - The `react` peer dependency — the package currently contains no React components.
-  - The `generate` and `generate:check` scripts, and the example viewer app.
-
-  **Current state.** The `@qeetrix/icons` root exports the `IconProps`, `IconVariant`, and
-  `IconDirectionality` types and, once icons exist, every generated icon component. There are no
-  production icons yet. The new API does not restore the removed one. Do not rely on any 1.x icon
-  name, prop, type, or import path for 2.0.
-
-### Foundations (Phase 2A)
-
-- Added the internal icon-system contract, separating stable architecture from visual calibration
-  candidates, and an ordered taxonomy of 20 enterprise/product categories.
-- Documented original geometry, optical sizing, typography harmony, semantic naming, selective
-  filled variants, accessibility, RTL behavior, and future pipeline ownership.
-- Added type-only public concepts: `IconVariant = "outline" | "filled"` and
-  `IconDirectionality = "mirror" | "preserve"`. Recommended sizes are not a runtime size restriction.
-- Included internal config in strict typechecking and extended foundation tests for configuration,
-  taxonomy, public boundaries, and the absence of SVG artwork.
-- Added no artwork, runtime, generator, validator, manifest, playground, or dependencies. Package
-  version, export paths, and publishing workflows remain unchanged.
-
-### Source validation (Phase 2B)
-
-- Added `bun run check:icons` for source paths, semantic filenames, variants, configured categories,
-  and repository-wide canonical-name, case-insensitive, and normalized-export collisions.
-- Added strict XML parsing and explicit SVG element/attribute allowlists, inherited-color and
-  outline-calibration checks, minimal filled rules, and numeric/path-token checks. Visual bounds,
-  optical quality, and a full path grammar remain deferred.
-- Added deterministic error diagnostics, production-root-only scanning, fixture isolation, and
-  positive/negative tests using synthetic in-memory geometry and temporary repositories.
-- Added the development-only `@xmldom/xmldom` parser, internal tooling typechecking, and the source
-  gate in CI and existing release quality checks. Publishing behavior and version are unchanged.
-- Production artwork remains empty. No React icons, runtime, generator, manifest, playground, or
-  public API additions are included.
-
-### SVG to React generation (Phase 2C)
-
-- Added `bun run generate`, which reuses Phase 2B scanning and validation, aborts without writing
-  on any error, and converts validated SVG into one React 19 component per source under
-  `src/generated/icons/<variant>/<category>/<name>.tsx`.
-- Conversion preserves geometry text and drawing order exactly, maps attribute names through one
-  explicit table, and emits already Biome-formatted, deterministic code with a generated-file
-  header. No SVG optimizer, transformer, or formatter dependency is used.
-- Added `bun run check:generated`, which detects missing, edited, out-of-date, and stale generated
-  files without writing or using Git, and runs in CI and the release quality gate.
-- Output writes are limited to `src/generated/icons/` behind a read-only preflight that rejects
-  links, forged paths, and file/directory conflicts; stale files are removed only inside it.
-- Added the internal `IconProps` type and the shared `resolveIconProps` runtime: `size` (number or
-  CSS length, default 24), native SVG props and React 19 refs, and decorative-by-default
-  accessibility that becomes `role="img"` when an accessible name is supplied.
-- React 19 is now the peer dependency; `react`, `react-dom`, and their types are development
-  dependencies for typechecking and rendering tests.
-- Production artwork and generated components remain empty. The root package API, export paths,
-  and version are unchanged; no manifest, public icon exports, or playground are included.
-
-### Manifest, package exports, and public API (Phase 2D)
-
-- Locked the public API to one component per icon concept: `<StarIcon />` renders the outline
-  drawing, and `<StarIcon variant="filled" />` selects the filled one where it exists. Each
-  generated component types `variant` to its own drawings (`IconProps<"outline">` or
-  `IconProps<"outline" | "filled">`), so an unavailable or unknown variant is a type error, and
-  `variant` never reaches the DOM. Outline is the stable default. No export name or import path
-  contains a category or variant.
-- Outline and filled remain separately drawn SVGs. Every concept now requires its outline drawing
-  (`QXI-VAR-001`); filled is optional and must share the outline's category (`QXI-DUP-004`). Source
-  names ending in `-filled` or `-outline` are rejected.
-- `bun run generate` groups drawings into concepts and writes one flat module per concept,
-  `src/generated/icons/<id>.tsx`, plus a generated root barrel of static re-exports, a typed
-  manifest module, and `icon-manifest.json`, all from the same validated plan. `check:generated`
-  covers every generated file, and generation now owns all of `src/generated/`.
-- Added the concept-level manifest schema (`schemaVersion` 1: `id`, `name`, `componentName`,
-  `category`, `variants`, `directionality`) and `config/icon-metadata.ts` for authored exceptions.
-  Directionality defaults to `preserve`; overrides for missing icons fail validation
-  (`QXI-META-001`/`002`).
-- Package exports: `@qeetrix/icons` (icons plus `IconProps`, `IconVariant`, `IconDirectionality`),
-  `@qeetrix/icons/icons/<id>`, `@qeetrix/icons/manifest`, and `package.json`. Everything else is
-  unreachable. `IconProps` is now public and generic over variants. The root never imports the
-  manifest, and the manifest never imports an icon.
-- Added packed-tarball tests for Node ESM and TypeScript `bundler`/`nodenext` resolution, typed
-  variants, blocked internal paths, published contents, and per-concept bundler tree shaking, plus
-  [docs/api.md](docs/api.md).
-- Revised before release: an earlier local draft of this phase exposed filled drawings as separate
-  `<Name>FilledIcon` exports with `-filled` subpaths and one manifest record per drawing. That
-  model was replaced by the `variant` prop and concept-level manifest above and never shipped.
-- Production artwork, generated components, and manifest records remain zero. Version, release
-  triggers, and dependencies are unchanged; no playground or Storybook catalogue is included.
-
-### Developer playground and visual QA (Phase 2E)
-
-- Added the internal playground (`bun run playground`, `bun run playground:build`): a Vite + React
-  19 tool that derives its catalogue from the generated manifest and modules, with search, category
-  (in configured order), variant, and directionality filters, and shareable URL state.
-- The inspector shows recommended sizes from config with emphasized 14 and 16 px pixel views, a
-  custom size, a 24×24 construction view with unit grid, center axes, and the candidate safe area,
-  a labelled stroke-calibration comparison beside the actual source rendering, outline/filled
-  comparison, light/dark surfaces, currentColor tokens, representative interface contexts, Qeet UI
-  and Qeet Text typography rows with real font-availability detection, an LTR/RTL QA preview, public
-  imports, a review checklist, and the provisional calibration values.
-- Added internal `calibration.strokeCandidates` to the icon-system config, used only by the
-  playground, and [docs/visual-qa.md](docs/visual-qa.md) for the human review process.
-- `playground:build` runs in CI. The playground is never published, writes no generated or source
-  file, and needs no network. `vite` is declared as a development dependency (already installed
-  through Vitest); no React plugin, UI kit, router, or icon library was added.
-- The playground self-hosts Qeet UI (400, 500, 600) and Qeet Text (400, 500) from
-  `playground/fonts`, copied from qeet-group and byte-identical to the `@qeetrix/ui` masters, so
-  typography rows render in the real faces instead of the system fallback. The availability check
-  now loads each face before measuring it. The fonts are bundled into `playground/dist` only; the
-  published package still contains no font files.
-- Redesigned the playground on the `@qeetrix/ui` tokens: a top bar with search and theme,
-  direction, and typeface status; a category sidebar with counts and stacked filters; a catalogue
-  grouped by category with a preview-size switch; and an inspector panel (a drawer on narrower
-  screens) with a 112 px showcase and Overview, Construction, In context, Code, and Review tabs.
-  Every earlier view is kept. The chrome uses the catalogue's own icons, adds `/`, `←`/`→`, and
-  `Esc` shortcuts, and still imports only React.
-- Production artwork, generated components, and manifest records remain zero. The public package
-  API, exports, and version are unchanged.
-
-### First calibration batch (Phase 3A)
-
-- Added the first original Qeetrix artwork, four outline-only primitives: `PlusIcon`, `XIcon`, and
-  `CheckIcon` in `actions`, and `ChevronDownIcon` in `navigation`. All use the configured 1.75
-  stroke, round caps and joins, and `preserve` directionality. No filled drawings.
-- Geometry was constructed on the 24-unit grid and reviewed in the playground at every recommended
-  size, at 1× pixels, on the construction grid, against stroke candidates, on light and dark
-  surfaces, and beside text. Findings are recorded in [docs/calibration.md](docs/calibration.md).
-- Stroke width, safe area, caps and joins, and the rest of the visual system remain provisional.
-  These icons are for calibration and are not ready for product migration.
-- Tests now check the calibration concepts, their outline-only typing, and per-concept
-  tree-shaking of the real icons in the packed package. The version is unchanged.
-
-### Second calibration batch (Phase 3B)
-
-- Added four more outline-only originals: `SearchIcon` and `SettingsIcon` in `actions`,
-  `ArrowLeftIcon` in `navigation`, and `UserIcon` in `identity`. `arrow-left` is the first `mirror`
-  concept, set through `config/icon-metadata.ts`; [docs/rtl.md](docs/rtl.md) records why it serves
-  as the back arrow. No Phase 3A icon changed.
-- Findings on circles, attached strokes, arrow heads, dense radial geometry, and curves are recorded
-  in [docs/calibration.md](docs/calibration.md). Stroke 1.75 remains provisional, now at moderate
-  confidence; real Qeet typography calibration is still pending.
-- Fixed a latent coupling: `validateSources`, `validateRepository`, `createGenerationPlan`, and
-  `planRepositoryGeneration` defaulted to this repository's authored metadata even for arbitrary
-  sources, so the first metadata entry made unrelated source sets fail. They now default to no
-  metadata, and the CLIs pass `config/icon-metadata.ts` explicitly.
-- Tests cover all eight calibration concepts, their categories, directionality, outline-only
-  typing, and per-concept packed-package tree shaking. The version is unchanged.
-
-### Third calibration batch (Phase 3C)
-
-- Added four more outline-only originals: `BellIcon` in `communication`, `LockIcon` in `security`,
-  `CalendarIcon` in `time`, and `DatabaseIcon` in `data`. All keep the default `preserve`
-  directionality; no metadata entry was added. No Phase 3A or 3B icon changed.
-- Findings on rounded rectangles and a shared container corner radius, stacked ellipses, bell
-  curves, enclosed details, and container weight are recorded in
-  [docs/calibration.md](docs/calibration.md). Stroke 1.75 remains provisional; real Qeet typography
-  calibration is still pending.
-- Tests cover all twelve calibration concepts, their categories, directionality, outline-only
-  typing, and per-concept packed-package tree shaking. The version is unchanged.
-
-### First catalogue pass
-
-- Added the planned inventory, `config/catalogue.ts`: 598 concepts in the 20 configured
-  categories. Tests check per-category counts, unique valid names and component names, and that
-  every shipped concept is planned in its category. The 20 `qeet` ecosystem pictograms are listed
-  in `deferredCategories` and are not shipped.
-- Drew 578 original outline-only concepts across the other 19 categories against one working spec
-  (stroke 1.75, a 2–22 painted area, 45° diagonals, container radii 2.5, 2, and 1–1.5, a 3.75
-  minimum counter, and 1.5 clearance or a join). They share one modifier kit (inner marks, corner
-  badges centred on 18,18, one `-off` slash) and shared family motifs. Each category was reviewed
-  for family consistency before it entered `icons/`. See
-  [docs/calibration.md](docs/calibration.md#catalogue-run-working-spec-and-system-grammars).
-- RTL: physical directions (`arrow-left`, `arrow-right`, chevrons, rotations, media transport) are
-  `preserve`. Semantic reading-direction concepts are `mirror` in `config/icon-metadata.ts`: back,
-  forward, undo, redo, sidebar open/close, log in/out, enter/exit, join/leave, progress,
-  impersonate, send, reply, reply-all, and forward. `arrow-left` is `preserve` again now that
-  `arrow-back` exists.
-- No filled drawings yet; every concept is outline-only. The version is unchanged and nothing is
-  published.
+  - The `QeetrixIcon`, `QeetrixIconProps`, and `IconShape` types, the `shape` prop, the 1.x
+    `variant` values (`"outline" | "solid"`), and the white default colour. 2.0 reuses the names
+    `IconVariant` and `variant` for `"outline" | "filled"`.
+  - The 1.x generator and its `generate:check` script (2.0 has its own `generate` and
+    `check:generated`), and the example viewer app.
+  - Never released: an earlier 2.0 draft of 578 original Qeetrix outline drawings, its planned
+    598-concept catalogue (`config/catalogue.ts`), and its 20-category taxonomy. Lucide's artwork,
+    names, and categories replace all three.
 
 ---
 

@@ -23,7 +23,7 @@ export type UrlState = {
 export const sizeRange = { min: 12, max: 64 } as const;
 
 export const defaultUrlState: UrlState = {
-  size: iconSystem.calibration.defaultSize,
+  size: iconSystem.design.defaultSize,
   theme: "system",
   dir: "ltr",
 };

@@ -21,7 +21,7 @@ import { maxSvgBytes, validateSvg } from "../scripts/check/validate-svg.js";
 import { diagnostic, formatDiagnostics, sortDiagnostics } from "../scripts/lib/diagnostics.js";
 import { createRepositoryFixture, syntheticSvg, writeFixture } from "./helpers.js";
 
-const outlineFile = "icons/outline/actions/fixture.svg";
+const outlineFile = "icons/round-outline/arrows/fixture.svg";
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
 
 const temporaryRepositories: string[] = [];
@@ -46,8 +46,11 @@ describe("repository-wide identity", () => {
   it("allows outline-only concepts and one matched filled counterpart per name", () => {
     const sources = [
       { file: outlineFile, source: syntheticSvg() },
-      { file: "icons/filled/actions/fixture.svg", source: syntheticSvg({ fill: "currentColor" }) },
-      { file: "icons/outline/status/other-fixture.svg", source: syntheticSvg() },
+      {
+        file: "icons/round-filled/arrows/fixture.svg",
+        source: syntheticSvg({ fill: "currentColor" }),
+      },
+      { file: "icons/round-outline/shapes/other-fixture.svg", source: syntheticSvg() },
     ];
     expect(validateSources(sources)).toEqual({ iconCount: 3, diagnostics: [] });
   });
@@ -56,23 +59,57 @@ describe("repository-wide identity", () => {
     const result = validateSources([
       { file: outlineFile, source: syntheticSvg() },
       {
-        file: "icons/filled/status/other-fixture.svg",
+        file: "icons/round-filled/shapes/other-fixture.svg",
         source: syntheticSvg({ fill: "currentColor" }),
       },
     ]);
     expect(result.diagnostics).toEqual([
       expect.objectContaining({
         code: "QXI-VAR-001",
-        file: "icons/filled/status/other-fixture.svg",
-        message: expect.stringContaining("icons/outline/status/other-fixture.svg"),
+        file: "icons/round-filled/shapes/other-fixture.svg",
+        message: expect.stringContaining("icons/round-outline/shapes/other-fixture.svg"),
       }),
+    ]);
+  });
+
+  it("checks each style separately, and keeps every drawing of a name in one category", () => {
+    const sharp = {
+      "stroke-linecap": "square",
+      "stroke-linejoin": "miter",
+      "stroke-miterlimit": "2",
+    };
+    const round = { file: "icons/round-outline/arrows/fixture.svg", source: syntheticSvg() };
+    const sharpOutline = {
+      file: "icons/sharp-outline/arrows/fixture.svg",
+      source: syntheticSvg(sharp),
+    };
+    const sharpFilled = {
+      file: "icons/sharp-filled/arrows/fixture.svg",
+      source: syntheticSvg({ fill: "currentColor" }),
+    };
+    expect(validateSources([round, sharpOutline, sharpFilled]).diagnostics).toEqual([]);
+    expect(validateSources([round, sharpFilled]).diagnostics).toEqual([
+      expect.objectContaining({
+        code: "QXI-VAR-001",
+        message: expect.stringContaining("icons/sharp-outline/arrows/fixture.svg"),
+      }),
+    ]);
+    const elsewhere = { ...sharpOutline, file: "icons/sharp-outline/shapes/fixture.svg" };
+    expect(validateSources([round, elsewhere]).diagnostics).toEqual([
+      expect.objectContaining({ code: "QXI-DUP-004", file: elsewhere.file }),
     ]);
   });
 
   it("rejects a duplicate drawing of the same name and variant", () => {
     const result = validateSources([
-      { file: "icons/filled/actions/fixture.svg", source: syntheticSvg({ fill: "currentColor" }) },
-      { file: "icons/filled/data/fixture.svg", source: syntheticSvg({ fill: "currentColor" }) },
+      {
+        file: "icons/round-filled/arrows/fixture.svg",
+        source: syntheticSvg({ fill: "currentColor" }),
+      },
+      {
+        file: "icons/round-filled/charts/fixture.svg",
+        source: syntheticSvg({ fill: "currentColor" }),
+      },
       { file: outlineFile, source: syntheticSvg() },
     ]);
     expect(result.diagnostics).toEqual(
@@ -83,10 +120,13 @@ describe("repository-wide identity", () => {
   it("rejects duplicate canonical names across categories", () => {
     const result = validateSources([
       { file: outlineFile, source: syntheticSvg() },
-      { file: "icons/outline/data/fixture.svg", source: syntheticSvg() },
+      { file: "icons/round-outline/charts/fixture.svg", source: syntheticSvg() },
     ]);
     expect(result.diagnostics).toEqual([
-      expect.objectContaining({ code: "QXI-DUP-001", file: "icons/outline/data/fixture.svg" }),
+      expect.objectContaining({
+        code: "QXI-DUP-001",
+        file: "icons/round-outline/charts/fixture.svg",
+      }),
     ]);
   });
 
@@ -95,7 +135,7 @@ describe("repository-wide identity", () => {
     (name) => {
       const result = validateSources([
         { file: outlineFile, source: syntheticSvg() },
-        { file: `icons/outline/actions/${name}`, source: syntheticSvg() },
+        { file: `icons/round-outline/arrows/${name}`, source: syntheticSvg() },
       ]);
       expect(result.diagnostics).toEqual(
         expect.arrayContaining([
@@ -108,15 +148,23 @@ describe("repository-wide identity", () => {
 
   it("rejects distinct valid names that normalize to the same React export", () => {
     const result = validateSources([
-      { file: "icons/outline/actions/fixture-3d.svg", source: syntheticSvg() },
-      { file: "icons/outline/data/fixture3d.svg", source: syntheticSvg() },
+      { file: "icons/round-outline/arrows/fixture-3d.svg", source: syntheticSvg() },
+      { file: "icons/round-outline/charts/fixture3d.svg", source: syntheticSvg() },
     ]);
     expect(result.diagnostics).toEqual([expect.objectContaining({ code: "QXI-DUP-003" })]);
   });
 
   it.each([
-    ["outline first", "icons/outline/status/fixture.svg", "icons/filled/actions/fixture.svg"],
-    ["filled first", "icons/outline/actions/fixture.svg", "icons/filled/status/fixture.svg"],
+    [
+      "outline first",
+      "icons/round-outline/shapes/fixture.svg",
+      "icons/round-filled/arrows/fixture.svg",
+    ],
+    [
+      "filled first",
+      "icons/round-outline/arrows/fixture.svg",
+      "icons/round-filled/shapes/fixture.svg",
+    ],
   ])("requires counterpart categories to match (%s)", (_, outline, filled) => {
     const result = validateSources([
       { file: outline, source: syntheticSvg() },
@@ -128,9 +176,9 @@ describe("repository-wide identity", () => {
   it("combines SVG and path errors in stable codepoint order", () => {
     const sources = [
       { file: outlineFile, source: syntheticSvg({ stroke: "red" }) },
-      { file: "icons/outline/data/fixture.svg", source: syntheticSvg() },
+      { file: "icons/round-outline/charts/fixture.svg", source: syntheticSvg() },
       { file: "icons/random.svg", source: syntheticSvg() },
-      { file: "icons/outline/actions/Fixture.svg", source: syntheticSvg() },
+      { file: "icons/round-outline/arrows/Fixture.svg", source: syntheticSvg() },
     ];
     const result = validateSources(sources);
     expect(validateSources([...sources].reverse())).toEqual(result);
@@ -142,8 +190,8 @@ describe("repository-wide identity", () => {
 describe("production scanner and fixture isolation", () => {
   it("captures a sorted source snapshot for validation and generation", () => {
     const root = temporaryRepository();
-    const first = "icons/outline/actions/fixture-alpha.svg";
-    const last = "icons/outline/actions/fixture-zeta.svg";
+    const first = "icons/round-outline/arrows/fixture-alpha.svg";
+    const last = "icons/round-outline/arrows/fixture-zeta.svg";
     const source = syntheticSvg();
     writeFixture(root, last, source);
     writeFixture(root, first, source);
@@ -172,7 +220,8 @@ describe("production scanner and fixture isolation", () => {
     expect(output.trim()).toBe(
       `${validateRepository(repositoryRoot, iconMetadata).iconCount} production icons validated.`,
     );
-  });
+    // Validates every drawing in the repository twice: once in the CLI, once here.
+  }, 60_000);
 
   it("passes an empty source root and never scans test fixtures", () => {
     const root = temporaryRepository();
@@ -185,21 +234,24 @@ describe("production scanner and fixture isolation", () => {
     const root = temporaryRepository();
     writeFixture(root, outlineFile, syntheticSvg());
     expect(validateRepository(root)).toEqual({ iconCount: 1, diagnostics: [] });
-    writeFixture(root, "icons/outline/data/fixture.svg", syntheticSvg());
+    writeFixture(root, "icons/round-outline/charts/fixture.svg", syntheticSvg());
     expect(validateRepository(root)).toEqual({
       iconCount: 2,
       diagnostics: [
-        expect.objectContaining({ code: "QXI-DUP-001", file: "icons/outline/data/fixture.svg" }),
+        expect.objectContaining({
+          code: "QXI-DUP-001",
+          file: "icons/round-outline/charts/fixture.svg",
+        }),
       ],
     });
   });
 
   it.each([
     ["icons/fixture.svg", "QXI-PATH-001"],
-    ["icons/outline/actions/nested/fixture.svg", "QXI-PATH-001"],
-    ["icons/outline/crypto/fixture.svg", "QXI-PATH-002"],
-    ["icons/bold/actions/fixture.svg", "QXI-PATH-003"],
-    ["icons/outline/actions/fixture.SVG", "QXI-NAME-001"],
+    ["icons/round-outline/arrows/nested/fixture.svg", "QXI-PATH-001"],
+    ["icons/round-outline/crypto/fixture.svg", "QXI-PATH-002"],
+    ["icons/bold/arrows/fixture.svg", "QXI-PATH-003"],
+    ["icons/round-outline/arrows/fixture.SVG", "QXI-NAME-001"],
   ])("finds misplaced or invalid production file %s", (file, code) => {
     const root = temporaryRepository();
     writeFixture(root, file, syntheticSvg());
@@ -241,18 +293,18 @@ describe("production scanner and fixture isolation", () => {
 
   it("does not follow symbolic links to fixtures outside the source root", () => {
     const root = temporaryRepository();
-    writeFixture(root, "fixtures/actions/fixture.svg", syntheticSvg());
-    symlinkSync(join(root, "fixtures"), join(root, "icons/outline"), "junction");
+    writeFixture(root, "fixtures/arrows/fixture.svg", syntheticSvg());
+    symlinkSync(join(root, "fixtures"), join(root, "icons/round-outline"), "junction");
     expect(validateRepository(root)).toEqual({
       iconCount: 0,
-      diagnostics: [expect.objectContaining({ code: "QXI-IO-001", file: "icons/outline" })],
+      diagnostics: [expect.objectContaining({ code: "QXI-IO-001", file: "icons/round-outline" })],
     });
   });
 
   it("rejects a symbolic-link production root", () => {
     const root = temporaryRepository();
     rmSync(join(root, "icons"), { recursive: true });
-    writeFixture(root, "fixtures/outline/actions/fixture.svg", syntheticSvg());
+    writeFixture(root, "fixtures/outline/arrows/fixture.svg", syntheticSvg());
     symlinkSync(join(root, "fixtures"), join(root, "icons"), "junction");
     expect(validateRepository(root).diagnostics).toEqual([
       expect.objectContaining({ code: "QXI-IO-001", file: "icons" }),
@@ -298,7 +350,7 @@ describe("SVG structure and paint", () => {
 
   it("accepts a standalone filled source without requiring an outline pair", () => {
     const source = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${iconSystem.architecture.viewBox}" fill="currentColor"><rect x="4" y="5" width="8" height="6"/></svg>`;
-    expect(validateSvg(source, "icons/filled/actions/fixture.svg", "filled")).toEqual([]);
+    expect(validateSvg(source, "icons/round-filled/arrows/fixture.svg", "filled")).toEqual([]);
   });
 
   it.each([
@@ -312,19 +364,11 @@ describe("SVG structure and paint", () => {
     ["fill", undefined, "QXI-SVG-007"],
     ["stroke", "none", "QXI-SVG-007"],
     ["stroke", undefined, "QXI-SVG-007"],
-    ["stroke-width", String(iconSystem.calibration.strokeWidth + 1), "QXI-SVG-007"],
+    ["stroke-width", String(iconSystem.design.strokeWidth + 1), "QXI-SVG-007"],
     ["stroke-width", undefined, "QXI-SVG-007"],
-    [
-      "stroke-linecap",
-      iconSystem.calibration.linecap === "round" ? "butt" : "round",
-      "QXI-SVG-007",
-    ],
+    ["stroke-linecap", iconSystem.design.linecap === "round" ? "butt" : "round", "QXI-SVG-007"],
     ["stroke-linecap", undefined, "QXI-SVG-007"],
-    [
-      "stroke-linejoin",
-      iconSystem.calibration.linejoin === "round" ? "bevel" : "round",
-      "QXI-SVG-007",
-    ],
+    ["stroke-linejoin", iconSystem.design.linejoin === "round" ? "bevel" : "round", "QXI-SVG-007"],
     ["stroke-linejoin", undefined, "QXI-SVG-007"],
     ["xmlns", "http://www.w3.org/1999/xhtml", "QXI-SVG-001"],
     ["xmlns", undefined, "QXI-SVG-001"],
@@ -362,13 +406,46 @@ describe("SVG structure and paint", () => {
   it("checks descendant outline overrides and filled root paint", () => {
     expect(
       validateSvg(
-        syntheticSvg({}, '<path d="M 5 7 L 11 13" fill="currentColor"/>'),
+        syntheticSvg({}, '<path d="M 5 7 L 11 13" stroke-linecap="butt"/>'),
         outlineFile,
         "outline",
       ),
     ).toEqual(expect.arrayContaining([expect.objectContaining({ code: "QXI-SVG-007" })]));
-    expect(validateSvg(syntheticSvg(), "icons/filled/actions/fixture.svg", "filled")).toEqual(
+    expect(validateSvg(syntheticSvg(), "icons/round-filled/arrows/fixture.svg", "filled")).toEqual(
       expect.arrayContaining([expect.objectContaining({ code: "QXI-SVG-007" })]),
+    );
+  });
+
+  it("lets an outline descendant fill itself, as Lucide's solid dots do", () => {
+    const dot = '<circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>';
+    expect(validateSvg(syntheticSvg({}, dot), outlineFile, "outline")).toEqual([]);
+    expect(
+      validateSvg(syntheticSvg({}, dot.replace("currentColor", "red")), outlineFile, "outline"),
+    ).toEqual([expect.objectContaining({ code: "QXI-SVG-006" })]);
+  });
+
+  it("checks sharp sources against the sharp caps, joins, and miter limit", () => {
+    const sharp = {
+      "stroke-linecap": "square",
+      "stroke-linejoin": "miter",
+      "stroke-miterlimit": "2",
+    };
+    const file = "icons/sharp-outline/arrows/fixture.svg";
+    expect(validateSvg(syntheticSvg(sharp), file, "outline", "sharp")).toEqual([]);
+    expect(
+      validateSvg(
+        syntheticSvg({ ...sharp, "stroke-miterlimit": undefined }),
+        file,
+        "outline",
+        "sharp",
+      ),
+    ).toEqual([expect.objectContaining({ code: "QXI-SVG-007" })]);
+    expect(validateSvg(syntheticSvg(), file, "outline", "sharp")).toEqual(
+      expect.arrayContaining([expect.objectContaining({ code: "QXI-SVG-007" })]),
+    );
+    // Round sources never carry a miter limit.
+    expect(validateSvg(syntheticSvg({ "stroke-miterlimit": "2" }), outlineFile, "outline")).toEqual(
+      [expect.objectContaining({ code: "QXI-SVG-005" })],
     );
   });
 
@@ -553,7 +630,14 @@ describe("icon names", () => {
     "file-3d.svg",
     "layout-2-columns.svg",
     "protocol-v2.svg",
-  ])("accepts semantic name %s", (filename) => {
+    // Lucide names are taken verbatim, including numeric and modifier suffixes.
+    "clock-12.svg",
+    "book-copy.svg",
+    "type-outline.svg",
+    "search-2.svg",
+    "search-icon.svg",
+    "star-filled.svg",
+  ])("accepts name %s", (filename) => {
     expect(validateIconName(filename)).toEqual([]);
     expect(iconExportName(filename.slice(0, -4))).toMatch(/^[A-Z][A-Za-z0-9]*Icon$/);
     expect(componentNameFromFilename(filename)).toBe(iconExportName(filename.slice(0, -4)));
@@ -562,15 +646,8 @@ describe("icon names", () => {
   it.each([
     "Search.svg",
     "search_icon.svg",
-    "search-icon.svg",
     "searchIcon.svg",
     "search copy.svg",
-    "search-final.svg",
-    "search-new.svg",
-    "search-alt.svg",
-    "search-copy.svg",
-    "search-2.svg",
-    "search-24.svg",
     "search--value.svg",
     "search.SVG",
     "search.svg\n",
@@ -580,8 +657,6 @@ describe("icon names", () => {
     "../search.svg",
     "con.svg",
     "com1.svg",
-    "star-filled.svg",
-    "star-outline.svg",
     "",
   ])("rejects invalid name %s", (filename) => {
     expect(validateIconName(filename)).toEqual([
@@ -600,7 +675,7 @@ describe("icon names", () => {
     expect(componentNameFromFilename("star.svg")).toBe("StarIcon");
     expect(componentNameFromFilename("shield-check.svg")).toBe("ShieldCheckIcon");
     for (const variant of iconSystem.architecture.variants) {
-      const location = validateSourcePath(`icons/${variant}/status/star.svg`).location;
+      const location = validateSourcePath(`icons/round-${variant}/shapes/star.svg`).location;
       expect(location?.variant).toBe(variant);
       expect(componentNameFromFilename(`${location?.name}.svg`)).toBe("StarIcon");
     }
@@ -611,7 +686,7 @@ describe("icon names", () => {
 describe("authored metadata", () => {
   const star = { file: outlineFile, source: syntheticSvg() };
   const filledStar = {
-    file: "icons/filled/actions/fixture.svg",
+    file: "icons/round-filled/arrows/fixture.svg",
     source: syntheticSvg({ fill: "currentColor" }),
   };
 
@@ -640,9 +715,28 @@ describe("authored metadata", () => {
     ]);
   });
 
+  it("accepts metadata without directionality", () => {
+    expect(
+      validateSources([star], { fixture: { categories: ["arrows", "navigation"], tags: ["x"] } })
+        .diagnostics,
+    ).toEqual([]);
+  });
+
+  it("requires metadata categories to be configured, with the source folder first", () => {
+    expect(
+      validateSources([star], { fixture: { categories: ["navigation", "arrows"] } }).diagnostics,
+    ).toEqual([expect.objectContaining({ code: "QXI-META-003", file: outlineFile })]);
+    expect(
+      validateSources([star], { fixture: { categories: ["arrows", "nowhere"] } }).diagnostics,
+    ).toEqual([expect.objectContaining({ code: "QXI-META-003", file: "config/icon-metadata.ts" })]);
+    expect(validateSources([star], { fixture: { categories: [] } }).diagnostics).toEqual([
+      expect.objectContaining({ code: "QXI-META-003" }),
+    ]);
+  });
+
   it("does not treat inherited object properties as metadata", () => {
     const constructorIcon = {
-      file: "icons/outline/actions/constructor.svg",
+      file: "icons/round-outline/arrows/constructor.svg",
       source: syntheticSvg(),
     };
     expect(validateSources([constructorIcon], {}).diagnostics).toEqual([]);
@@ -650,14 +744,16 @@ describe("authored metadata", () => {
 });
 
 describe("source paths", () => {
-  it("accepts every configured category and variant", () => {
+  it("accepts every configured category, style, and variant", () => {
     for (const { id } of categories) {
-      for (const variant of iconSystem.architecture.variants) {
-        const file = `icons/${variant}/${id}/fixture.svg`;
-        expect(validateSourcePath(file)).toEqual({
-          location: { file, name: "fixture", category: id, variant },
-          diagnostics: [],
-        });
+      for (const style of iconSystem.architecture.styles) {
+        for (const variant of iconSystem.architecture.variants) {
+          const file = `icons/${style}-${variant}/${id}/fixture.svg`;
+          expect(validateSourcePath(file)).toEqual({
+            location: { file, name: "fixture", category: id, style, variant },
+            diagnostics: [],
+          });
+        }
       }
     }
   });
@@ -666,10 +762,10 @@ describe("source paths", () => {
     "icons/search.svg",
     "icons/random/search.svg",
     "icons/round-outline/search.svg",
-    "icons/outline/actions/nested/search.svg",
-    "/icons/outline/actions/search.svg",
-    "icons/outline/../search.svg",
-    "icons/outline//search.svg",
+    "icons/round-outline/arrows/nested/search.svg",
+    "/icons/round-outline/arrows/search.svg",
+    "icons/round-outline/../search.svg",
+    "icons/round-outline//search.svg",
     "icons\\outline\\actions\\search.svg",
   ])("rejects misplaced path %s", (file) => {
     expect(validateSourcePath(file).diagnostics).toEqual([
@@ -677,32 +773,33 @@ describe("source paths", () => {
     ]);
   });
 
-  it.each(["crypto", "seasonal", "nature", "social", "travel", "Actions"])(
+  it.each(["crypto", "seasonal", "actions", "status", "identity", "Arrows"])(
     "rejects unconfigured category %s",
     (category) => {
-      expect(validateSourcePath(`icons/outline/${category}/fixture.svg`).diagnostics).toEqual([
-        expect.objectContaining({ code: "QXI-PATH-002" }),
-      ]);
+      expect(validateSourcePath(`icons/round-outline/${category}/fixture.svg`).diagnostics).toEqual(
+        [expect.objectContaining({ code: "QXI-PATH-002" })],
+      );
     },
   );
 
   it.each([
-    "round-outline",
+    "outline",
+    "filled",
+    "round",
     "round-solid",
-    "sharp-outline",
     "sharp-solid",
+    "outline-round",
     "thin",
-    "light",
     "bold",
     "duotone",
-  ])("rejects unsupported variant %s", (variant) => {
-    expect(validateSourcePath(`icons/${variant}/actions/fixture.svg`).diagnostics).toEqual([
+  ])("rejects unsupported source folder %s", (folder) => {
+    expect(validateSourcePath(`icons/${folder}/arrows/fixture.svg`).diagnostics).toEqual([
       expect.objectContaining({ code: "QXI-PATH-003" }),
     ]);
   });
 
   it("retains invalid-case names so repository checks can report collisions", () => {
-    const result = validateSourcePath("icons/outline/actions/Fixture.svg");
+    const result = validateSourcePath("icons/round-outline/arrows/Fixture.svg");
     expect(result.location?.name).toBe("Fixture");
     expect(result.diagnostics).toEqual([expect.objectContaining({ code: "QXI-NAME-001" })]);
   });

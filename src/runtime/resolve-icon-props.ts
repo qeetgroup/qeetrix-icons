@@ -2,7 +2,7 @@ import type { SVGProps } from "react";
 import type { IconProps } from "../types/icon-props.js";
 
 /**
- * Default rendered size. Mirrors `calibration.defaultSize` in the internal icon-system config,
+ * Default rendered size. Mirrors `design.defaultSize` in the internal icon-system config,
  * which published code cannot import; tests keep the two equal.
  */
 export const defaultIconSize = 24;

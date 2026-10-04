@@ -1,10 +1,15 @@
 import { type Dirent, lstatSync, readdirSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
-import type { IconMetadataOverride } from "../../config/icon-metadata.js";
+import type { IconMetadata } from "../../config/icon-metadata.js";
 import { iconSystem } from "../../config/icon-system.js";
 import { compareText, type Diagnostic, diagnostic, sortDiagnostics } from "../lib/diagnostics.js";
 import { noMetadata, validateMetadata } from "./validate-metadata.js";
-import { type IconLocation, iconExportName, validateSourcePath } from "./validate-source-path.js";
+import {
+  type IconLocation,
+  iconExportName,
+  sourceFolder,
+  validateSourcePath,
+} from "./validate-source-path.js";
 import { maxSvgBytes, validateSvg } from "./validate-svg.js";
 
 export type IconSource = {
@@ -23,7 +28,7 @@ export type SourceScan = ValidationResult & {
 
 export function validateSources(
   sources: readonly IconSource[],
-  metadata: Readonly<Record<string, IconMetadataOverride>> = noMetadata,
+  metadata: Readonly<Record<string, IconMetadata>> = noMetadata,
 ): ValidationResult {
   const diagnostics: Diagnostic[] = [];
   const variantNames = new Map<string, IconLocation>();
@@ -38,16 +43,18 @@ export function validateSources(
     diagnostics.push(...result.diagnostics);
     const location = result.location;
     if (!location) continue;
-    for (const entry of validateSvg(source, file, location.variant)) diagnostics.push(entry);
+    for (const entry of validateSvg(source, file, location.variant, location.style)) {
+      diagnostics.push(entry);
+    }
 
-    const variantKey = `${location.variant}/${location.name}`;
+    const variantKey = `${location.style}/${location.variant}/${location.name}`;
     const previousVariant = variantNames.get(variantKey);
     if (previousVariant) {
       diagnostics.push(
         diagnostic(
           "QXI-DUP-001",
           file,
-          `Canonical name ${JSON.stringify(location.name)} already exists in ${JSON.stringify(previousVariant.file)} for this variant.`,
+          `Canonical name ${JSON.stringify(location.name)} already exists in ${JSON.stringify(previousVariant.file)} for this style and variant.`,
         ),
       );
     } else {
@@ -57,14 +64,14 @@ export function validateSources(
     const previousName = canonicalNames.get(location.name);
     if (
       previousName &&
-      previousName.variant !== location.variant &&
+      (previousName.variant !== location.variant || previousName.style !== location.style) &&
       previousName.category !== location.category
     ) {
       diagnostics.push(
         diagnostic(
           "QXI-DUP-004",
           file,
-          `Outline/filled counterparts must share category ${JSON.stringify(previousName.category)} from ${JSON.stringify(previousName.file)}.`,
+          `Every drawing of a name must share category ${JSON.stringify(previousName.category)} from ${JSON.stringify(previousName.file)}.`,
         ),
       );
     } else if (!previousName) {
@@ -100,23 +107,25 @@ export function validateSources(
       exportNames.set(exportName, location);
     }
   }
-  // Outline-first: every concept needs its default-variant drawing; other variants are optional.
+  // Outline-first: in each style, every concept needs its default-variant drawing; other variants
+  // are optional.
   const { defaultVariant } = iconSystem.architecture;
   for (const location of variantNames.values()) {
     if (
       location.variant !== defaultVariant &&
-      !variantNames.has(`${defaultVariant}/${location.name}`)
+      !variantNames.has(`${location.style}/${defaultVariant}/${location.name}`)
     ) {
+      const outline = `icons/${sourceFolder(location.style, defaultVariant)}/${location.category}/${location.name}.svg`;
       diagnostics.push(
         diagnostic(
           "QXI-VAR-001",
           location.file,
-          `A ${location.variant} drawing needs the ${defaultVariant} drawing icons/${defaultVariant}/${location.category}/${location.name}.svg.`,
+          `A ${location.variant} drawing needs the ${defaultVariant} drawing ${outline}.`,
         ),
       );
     }
   }
-  diagnostics.push(...validateMetadata(metadata, new Set(canonicalNames.keys())));
+  diagnostics.push(...validateMetadata(metadata, canonicalNames));
   return { iconCount: sources.length, diagnostics: sortDiagnostics(diagnostics) };
 }
 
@@ -215,7 +224,7 @@ export function scanIconSources(repositoryRoot: string): SourceScan {
 
 export function validateRepository(
   repositoryRoot: string,
-  metadata: Readonly<Record<string, IconMetadataOverride>> = noMetadata,
+  metadata: Readonly<Record<string, IconMetadata>> = noMetadata,
 ): ValidationResult {
   const scan = scanIconSources(repositoryRoot);
   return {

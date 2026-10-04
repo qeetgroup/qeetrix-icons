@@ -86,6 +86,8 @@ jobs:
       - if: steps.version.outputs.release == 'true'
         run: bun run check:icons
       - if: steps.version.outputs.release == 'true'
+        run: bun run check:filled
+      - if: steps.version.outputs.release == 'true'
         run: bun run check:generated
       - if: steps.version.outputs.release == 'true'
         run: bun run build

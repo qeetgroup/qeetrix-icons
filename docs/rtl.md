@@ -1,19 +1,21 @@
 # RTL directionality contract
 
 Directionality belongs to an icon's meaning, not its category, a filename substring, or whether
-the drawing contains an arrow. The foundational public type in
-[src/types/icon.ts](../src/types/icon.ts) is `IconDirectionality = "mirror" | "preserve"`.
+the drawing contains an arrow. The public type in [src/types/icon.ts](../src/types/icon.ts) is
+`IconDirectionality = "mirror" | "preserve"`.
 
-The generated manifest records `directionality` for every drawing:
+The generated manifest records `directionality` for every concept:
 
 - `mirror`: a logical action follows reading direction and may need horizontal mirroring in RTL.
-- `preserve`: the authored orientation carries fixed meaning and remains unchanged in RTL.
+- `preserve`: the drawn orientation carries fixed meaning and remains unchanged in RTL.
 
-Every concept is `preserve` unless [config/icon-metadata.ts](../config/icon-metadata.ts) lists it,
-for example `"arrow-back": { directionality: "mirror" }`. One entry covers the concept's outline
-and filled drawings. Directionality is never inferred from a filename, and an entry for a name with
-no source fails validation. The manifest exposes the value through `@qeetrix/icons/manifest`; there
-is still no direction detection, CSS mirroring, React direction prop, or runtime mirroring.
+Lucide has no directionality data, so this is the one piece of icon metadata this repository
+authors. Every concept is `preserve` unless the `mirrored` list in
+[config/icon-metadata.ts](../config/icon-metadata.ts) names it. One entry covers the concept's
+outline and filled drawings. Directionality is never inferred from a filename, and a listed name
+with no source fails validation (`QXI-META-001`), for example after a Lucide rename. The manifest
+exposes the value through `@qeetrix/icons/manifest`; there is no direction detection, CSS
+mirroring, React direction prop, or runtime mirroring.
 
 ## Logical versus physical direction
 
@@ -21,49 +23,49 @@ Back and forward in a reading-order workflow can reverse with direction. Physica
 vertical movement, time, and conventional media symbols normally do not. Select the semantic
 concept at the call site rather than mirroring every horizontal arrow.
 
-**Decision (catalogue):** the catalogue has both physical and semantic arrows, so they are
-separate concepts. Physical directions (`arrow-left`, `arrow-right`, the diagonal arrows,
-`chevron-*`, `corner-*`, `panel-left`, `panel-right`, rotations, media transport) are `preserve`.
-Semantic reading-direction concepts are `mirror`: `arrow-back`, `arrow-forward`, `undo`, `redo`,
-`reply`, `reply-all`, `forward`, `send`, `log-in`, `log-out`, `enter`, `exit`, `join`, `leave`,
-`sidebar-open`, `sidebar-close`, and `progress` (a progress bar fills from the reading start).
-Phase 3B had briefly made `arrow-left` `mirror` because no `arrow-back` existed yet; that temporary
-rule is withdrawn now that `arrow-back` does. Use `arrow-back` for "back" in headers, breadcrumbs,
-and drawers, and `arrow-left` only where the direction is physical.
+**Decision.** Mirrored, as semantic reading-direction concepts:
 
-| Concept that may mirror | Reason to review |
+| Concepts | Reason |
 |:--|:--|
-| `arrow-back`, `arrow-forward` | Logical navigation through a reading-order sequence |
-| `reply`, `forward` | Conversation direction; `forward` here means forwarding a message |
-| `indent`, `outdent` | Text-relative indentation follows reading direction |
-| `panel-open`, `panel-close` | A panel attached to logical start/end can move sides |
+| `undo`, `undo-2`, `undo-dot`, `redo`, `redo-2`, `redo-dot` | History steps follow reading order |
+| `reply`, `reply-all`, `message-square-reply` | Conversation direction |
+| `forward` | Forwarding a message, not media fast-forward |
+| `send`, `send-horizontal` | Sending moves toward the reading end |
+| `log-in`, `log-out` | Entering and leaving through the reading-start or -end side |
+| `list-indent-increase`, `list-indent-decrease` | Indentation is text-relative |
+| `text-align-start`, `text-align-end` | Start and end alignment follow reading direction |
 
-These are semantic review examples, not blanket rules for all drawings with those names. A panel
-attached to a fixed physical edge may need a preserve-oriented concept instead. A media
-fast-forward symbol does not inherit the mirroring policy of message forwarding.
+Everything else is `preserve`, including the physical directions: `arrow-left`, `arrow-right`, and
+the other plain arrows, `chevron-*`, `corner-*`, `panel-left-*` and `panel-right-*`, `rotate-ccw`
+and `rotate-cw`, and media transport such as `fast-forward` and `skip-forward`.
+
+Lucide has no semantic back or forward arrow. Where a product uses `arrow-left` or `chevron-left`
+to mean "back", it is using a physical icon for a logical action, and mirroring it in RTL is that
+product's decision, made at the call site. A media fast-forward symbol does not inherit the
+mirroring policy of message forwarding.
 
 ## Preserve normal orientation
 
-`download`, `upload`, `clock`, `calendar`, `search`, `check`, `play`, `database`, and `lock` normally
-preserve their authored orientation. Do not reverse clock movement, flip a check simply because
-it is asymmetric, or reverse a familiar play symbol with text direction. Logos, embedded text,
-and other fixed-world marks also need explicit preservation rather than automatic mirroring.
+`download`, `upload`, `clock`, `calendar`, `search`, `check`, `play`, `database`, and `lock`
+preserve their drawn orientation. Do not reverse clock movement, flip a check simply because it is
+asymmetric, or reverse a familiar play symbol with text direction. Logos, embedded text, and other
+fixed-world marks also stay as drawn.
 
 Start with preservation unless there is a clear reading-direction reason to mirror. Review both
-members of a directional family together and assign policy deliberately; do not infer it from
-category membership or a regular expression.
+members of a directional family together, and check new icons after each Lucide upgrade
+([lucide.md](lucide.md#upgrading-lucide)); do not infer policy from category membership or a regular
+expression.
 
-## Future consumer behavior and review
+## Consumer behavior and review
 
-The eventual consumer layer should resolve effective UI direction, including locally overridden
-direction, rather than guessing solely from language or locale. Apply any required mirroring
-once to the icon, not to its containing text or entire control. Keep the canonical SVG master
-unchanged. Accessible names must continue to describe the action in context, not merely its
-current arrow orientation.
+A consumer layer should resolve effective UI direction, including locally overridden direction,
+rather than guessing solely from language or locale. Apply any required mirroring once, to the
+icon, not to its containing text or entire control. Keep the source SVG unchanged. Accessible names
+must continue to describe the action in context, not its current arrow orientation.
 
-Visual QA must compare logical navigation, conversations, indentation, and panels in LTR and RTL,
-while verifying that preserve-oriented icons remain unchanged. Check compound marks, optical
-balance, and alignment after mirroring. The playground shows LTR beside an **RTL QA preview**
-driven only by manifest directionality; its mirroring is a CSS preview and is not package
-behavior. See [visual-qa.md](visual-qa.md#rtl). How the runtime passes or detects direction and
-applies transforms remains an implementation decision for a later phase.
+Visual QA compares logical navigation, conversations, indentation, and alignment in LTR and RTL,
+and verifies that `preserve` icons remain unchanged. Check compound marks, optical balance, and
+alignment after mirroring. The playground shows LTR beside an **RTL QA preview** driven only by
+manifest directionality; its mirroring is a CSS preview, not package behavior. See
+[visual-qa.md](visual-qa.md#rtl). How a runtime would pass or detect direction and apply transforms
+is not decided.

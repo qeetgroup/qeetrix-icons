@@ -29,6 +29,7 @@ const reactAttributeNames = new Map([
   ["stroke", "stroke"],
   ["stroke-linecap", "strokeLinecap"],
   ["stroke-linejoin", "strokeLinejoin"],
+  ["stroke-miterlimit", "strokeMiterlimit"],
   ["stroke-width", "strokeWidth"],
   ["viewBox", "viewBox"],
   ["width", "width"],

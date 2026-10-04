@@ -1,11 +1,10 @@
 # Contributing to `@qeetrix/icons`
 
 > [!NOTE]
-> Phases 3A to 3C add the first calibration icons. New artwork arrives only in planned calibration
-> batches; every icon passes [visual-qa.md](visual-qa.md) review and findings go to
-> [calibration.md](calibration.md). Production icon contributions are not open yet;
-> synthetic geometry is allowed only in isolated tests. Do not add production SVGs or future-phase
-> scaffolding.
+> The outline icons are Lucide's, synced from one pinned release ([lucide.md](lucide.md)). Do not
+> add, draw, or edit outline SVGs here: a missing or flawed icon belongs upstream in Lucide, and
+> arrives here with the next upgrade. Contributions here are filled drawings
+> ([filled.md](filled.md)), RTL decisions ([rtl.md](rtl.md)), tooling, and documentation.
 
 ## Setup
 
@@ -20,12 +19,15 @@ workspace uses it.
 
 | Command | Does |
 |:--|:--|
-| `bun run typecheck` | `tsc --noEmit` over `config/`, `scripts/`, `src/`, `tests/`, and `vitest.config.ts` |
+| `bun run typecheck` | `tsc --noEmit` over `config/`, `scripts/`, `src/`, `tests/`, `vitest.config.ts`, and the playground |
 | `bun run lint` | Biome — lint *and* format check |
 | `bun run format` | Biome, applying fixes |
 | `bun run test` | Vitest |
 | `bun run test:watch` | Same, watching |
-| `bun run check:icons` | Production source paths, naming, SVG structure, variants, and collisions |
+| `bun run sync:lucide [version]` | Replace `icons/outline/` with a Lucide release, then derive and generate ([lucide.md](lucide.md)) |
+| `bun run derive:filled` | Write `icons/filled/` from `config/filled.ts` and the outlines ([filled.md](filled.md)) |
+| `bun run check:filled` | Fail if any filled drawing is missing, stale, or unlisted |
+| `bun run check:icons` | Source paths, naming, SVG structure, variants, collisions, and metadata |
 | `bun run generate` | Validate, then write components, root barrel, and manifest; aborts without writing on error |
 | `bun run check:generated` | Fail if any generated file is missing, edited, out of date, or stale |
 | `bun run playground` | Start the internal visual QA playground |
@@ -36,40 +38,48 @@ workspace uses it.
 
 | | |
 |:--|:--|
-| `icons/` | Reserved for 2.0 source artwork. Empty. |
-| `config/` | Internal icon-system contract, ordered category taxonomy, and authored metadata exceptions. Not published. |
-| `scripts/` | Repository-only validators, scanner, diagnostics, and the generation pipeline. |
-| [src/types/icon.ts](../src/types/icon.ts) | Public variant and directionality types, not component props. |
+| `icons/outline/` | Lucide's outline SVGs. Written by `sync:lucide`; never edited by hand. |
+| `icons/filled/` | Derived filled SVGs. Written by `derive:filled`; never edited by hand. |
+| `config/` | Lucide data and categories (synced), the filled list, metadata, and the icon-system contract. Not published. |
+| `scripts/` | Repository-only sync, derivation, validation, and generation tooling. |
 | [src/types/](../src/types/) | Public `IconProps`, variant, directionality, and manifest types. |
 | [src/runtime/](../src/runtime/) | The shared `resolveIconProps` helper; hand-written, published runtime only. |
 | `src/generated/`, `icon-manifest.json` | Generated components, root barrel, and manifest. Never edit by hand. |
 | [src/index.ts](../src/index.ts), [src/manifest.ts](../src/manifest.ts) | Hand-written package entries; see [api.md](api.md). |
-| `docs/` | Design, naming, accessibility, RTL, and architecture contracts. |
+| `docs/` | Design, naming, accessibility, RTL, pipeline, and release contracts. |
 | [playground/](../playground/) | Internal visual QA tool. Reads generated output; never published. |
-| `tests/` | Foundation, validation, generation, and runtime checks; temporary fixtures only. |
+| `tests/` | Config, Lucide sync, filled derivation, validation, generation, runtime, package, and playground checks; temporary fixtures only. |
 | `dist/` | Build output, and the only thing published. Gitignored. |
 
-Read [design-principles.md](design-principles.md), [drawing-guidelines.md](drawing-guidelines.md),
-and [naming.md](naming.md) before proposing future artwork. Accessibility and RTL expectations are
-in [accessibility.md](accessibility.md) and [rtl.md](rtl.md). The phase boundaries and future file
-ownership map are in [architecture.md](architecture.md).
+Read [design.md](design.md) and [naming.md](naming.md) first. Accessibility and RTL expectations are
+in [accessibility.md](accessibility.md) and [rtl.md](rtl.md). The pipeline and file ownership are
+in [architecture.md](architecture.md).
 
-After changing an SVG or [config/icon-metadata.ts](../config/icon-metadata.ts), run
-`bun run generate` and commit the result; see [generation.md](generation.md). Public names are
-semver API; read [api.md](api.md) before adding, renaming, or removing an icon.
+## Common changes
 
-Run `bun run check:icons` for the one primary source gate. It scans only the production `icons/`
-root and never test fixtures. See [validation.md](validation.md) for rule codes, the exact source
-contract, and what still requires visual review. Tests continue to use the canonical
-`bun run test` Vitest script rather than a second test runner.
+- **Add or fix a filled drawing.** Edit [config/filled.ts](../config/filled.ts), run
+  `bun run derive:filled` and `bun run generate`, and review it in the playground
+  ([filled.md](filled.md#adding-a-filled-drawing)).
+- **Change an RTL decision.** Edit the `mirrored` list in
+  [config/icon-metadata.ts](../config/icon-metadata.ts) and run `bun run generate`
+  ([rtl.md](rtl.md)).
+- **Upgrade Lucide.** Follow [lucide.md](lucide.md#upgrading-lucide).
+
+Commit the inputs together with what they produce: the config, the SVGs, and the generated files.
+Public names and variant support are semver API; read [api.md](api.md#versioning) before any change
+that adds, renames, or removes an icon or a filled drawing.
+
+`bun run check:icons` is the source gate; it scans only the production `icons/` root and never
+test fixtures. See [validation.md](validation.md) for rule codes and what still requires visual
+review ([visual-qa.md](visual-qa.md)).
 
 ## CI
 
 CI runs one job — see [the workflow](../.github/workflows/ci.yml):
 
 ```text
-bun install -> lint -> typecheck -> test -> check:icons -> check:generated -> build
-            -> playground:build
+bun install -> lint -> typecheck -> test -> check:icons -> check:filled -> check:generated
+            -> build -> playground:build
 ```
 
 Three more workflows handle releases — `version.yml` bumps the patch version on a PR, `release.yml`
@@ -82,32 +92,24 @@ publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
   arguing with it. `icons/` is excluded from Biome.
 - **TypeScript is strict.** `verbatimModuleSyntax` is on, so type-only imports must use `import type`.
 - **ESM only.**
-- **Keep the public surface small.** Internal calibration and category config are not root exports.
-  Recommended design sizes must not accidentally restrict a later runtime size property.
-- **Calibrate explicitly.** Change provisional values in the shared config and documentation
-  together, explaining the visual evidence. Do not silently introduce a per-icon geometry system.
-- **Respect phase scope.** Calibration batches add only their planned concepts (3C: `bell`,
-  `lock`, `calendar`, `database`). No other icons, filled drawings, Storybook, Figma
-  integration, screenshot testing, or product migration. Review every new icon in the playground as
-  described in [visual-qa.md](visual-qa.md). Synthetic geometry belongs only to tests; temporary
-  filesystem
-  fixtures must be cleaned up. Later steps require their own implementation and verification.
-- **Dependencies need a concrete purpose.** Phase 2B added a development-only XML parser, justified
-  in the validation guide. Phase 2C made React 19 the peer dependency and added `react`, `react-dom`,
-  and their types for development only, to typecheck and render generated output in tests. Phase
-  2E declares `vite`, already present through Vitest, for the playground. Do not
-  install runtime, optimization, or generation tools speculatively.
+- **Keep the public surface small.** Internal config is never a root export. Recommended sizes
+  must not restrict the `size` prop.
+- **Lucide artwork stays verbatim.** No hand edits to `icons/outline/`, `config/lucide.json`, or
+  `config/categories.ts`; the next sync would undo them. Restating Lucide's rules in
+  [config/icon-system.ts](../config/icon-system.ts) is fine; inventing per-icon geometry is not.
+- **Tool-written files are never edited by hand.** That covers `icons/`, `src/generated/`, and
+  `icon-manifest.json`. Their writers must be deterministic: no timestamps, and sort with an
+  explicit codepoint comparator rather than `localeCompare`, so a file's bytes never depend on the
+  machine that produced it. Category order follows
+  [config/categories.ts](../config/categories.ts).
+- **Dependencies need a concrete purpose.** Development dependencies are the XML parser, React and
+  its types for typechecking and rendering tests, Vite for the playground, and `canvaskit-wasm` for
+  the filled derivation; see [architecture.md](architecture.md#determinism-and-dependencies). Do
+  not add runtime dependencies or install tools speculatively.
 - **Build tooling stays in `scripts/`.** `src/runtime/` holds only code that generated components
   execute; nothing in `src/` may import from `scripts/` or `config/`.
-- **Generated files are never edited by hand.** The generator is their only author, and its output
-  must be deterministic: no timestamps, and sort with an explicit codepoint comparator rather than
-  `localeCompare`, so a file's byte order never depends on the machine that produced it.
-  Category display order instead follows the explicit array in [config/categories.ts](../config/categories.ts).
-- **Original artwork only.** Do not contribute a glyph copied or derived from another icon library.
+- **Synthetic geometry only in tests.** Temporary filesystem fixtures must be cleaned up.
 
-Run installation, typechecking, linting, the canonical Vitest test script, `check:icons`,
-`generate`, `check:generated`, and the build before reporting a phase complete. Do not commit, push, publish, or change Git history as
-part of a phase unless explicitly requested. Phases 2B and 2C add the source and generated-output
-gates to CI and release checks without changing publishing triggers, credentials, tags, or
-versioning.
-
+Before opening a PR, run installation, typechecking, linting, the Vitest suite, `check:icons`,
+`check:filled`, `check:generated`, and the build. Do not commit, push, publish, or change Git
+history unless that is the task.

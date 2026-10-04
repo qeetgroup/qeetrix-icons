@@ -8,7 +8,7 @@
 
 /*
  * Qeet UI and Qeet Text, vendored from qeet-group (byte-identical to the @qeetrix/ui masters) so
- * typography rows are a real Qeet calibration. Self-hosted in playground/fonts and bundled only
+ * typography rows are a real Qeet check. Self-hosted in playground/fonts and bundled only
  * into playground/dist; never part of the published package. Families and weights match
  * @qeetrix/ui's @font-face rules, limited to the weights this stylesheet sets.
  */
@@ -1271,7 +1271,7 @@ kbd {
   font-weight: 500;
 }
 
-/* Render-time calibration override: CSS outranks the SVG attributes, in this preview only. */
+/* Render-time strokeWidth preview: CSS outranks the SVG attributes, in this preview only. */
 .stroke-override svg,
 .stroke-override svg * {
   stroke-width: var(--qa-stroke);

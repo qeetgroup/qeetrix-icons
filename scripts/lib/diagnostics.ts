@@ -20,6 +20,7 @@ export type DiagnosticCode =
   | "QXI-IO-001"
   | "QXI-META-001"
   | "QXI-META-002"
+  | "QXI-META-003"
   | "QXI-VAR-001"
   | "QXI-GEN-001"
   | "QXI-GEN-002"

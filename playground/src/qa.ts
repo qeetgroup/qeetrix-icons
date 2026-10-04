@@ -58,15 +58,13 @@ export function checklistFor(icon: IconManifestEntry): ChecklistGroup[] {
   ];
 }
 
-/** Design values still awaiting the Phase 3 calibration set; none is locked yet. */
-export function provisionalValues(): { readonly name: string; readonly value: string }[] {
-  const { calibration } = iconSystem;
+/** The design values every outline follows: Lucide's drawing rules, from the shared config. */
+export function designValues(): { readonly name: string; readonly value: string }[] {
+  const { design } = iconSystem;
   return [
-    { name: "Stroke width", value: String(calibration.strokeWidth) },
-    { name: "Stroke caps and joins", value: `${calibration.linecap} / ${calibration.linejoin}` },
-    { name: "Safe-area inset", value: `${calibration.safeAreaInset} units per edge` },
-    { name: "Recommended sizes", value: calibration.recommendedSizes.join(", ") },
-    { name: "Corner treatment", value: "Not specified yet" },
-    { name: "Small-size optical corrections", value: "Not specified yet" },
+    { name: "Stroke width", value: String(design.strokeWidth) },
+    { name: "Stroke caps and joins", value: `${design.linecap} / ${design.linejoin}` },
+    { name: "Safe-area inset", value: `${design.safeAreaInset} unit per edge` },
+    { name: "Recommended sizes", value: design.recommendedSizes.join(", ") },
   ];
 }

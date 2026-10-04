@@ -1,6 +1,6 @@
 import { posix } from "node:path";
 import { categories } from "../../config/categories.js";
-import type { IconMetadataOverride } from "../../config/icon-metadata.js";
+import type { IconMetadata } from "../../config/icon-metadata.js";
 import { iconSystem } from "../../config/icon-system.js";
 import type { IconDirectionality } from "../../src/types/icon.js";
 import type { IconManifest } from "../../src/types/icon-manifest.js";
@@ -42,7 +42,11 @@ export type PlannedConcept = {
   readonly name: string;
   readonly componentName: string;
   readonly category: IconLocation["category"];
+  /** Every category, primary first: the metadata's list, or just the source folder. */
+  readonly categories: readonly string[];
   readonly directionality: IconDirectionality;
+  readonly tags: readonly string[];
+  readonly aliases: readonly string[];
   /** One validated source per drawing, in configured variant order; the default comes first. */
   readonly sources: readonly IconLocation[];
   readonly outputPath: string;
@@ -79,7 +83,7 @@ function failedPlan(iconCount: number, diagnostics: readonly Diagnostic[]): Gene
   };
 }
 
-const { variants, defaultDirectionality } = iconSystem.architecture;
+const { variants, defaultDirectionality, defaultStyle } = iconSystem.architecture;
 const categoryIds: readonly string[] = categories.map(({ id }) => id);
 
 /**
@@ -94,7 +98,7 @@ const categoryIds: readonly string[] = categories.map(({ id }) => id);
 export function createGenerationPlan(
   sources: readonly IconSource[],
   scanDiagnostics: readonly Diagnostic[] = [],
-  metadata: Readonly<Record<string, IconMetadataOverride>> = noMetadata,
+  metadata: Readonly<Record<string, IconMetadata>> = noMetadata,
 ): GenerationPlan {
   const iconCount = sources.length;
   const validation = [...scanDiagnostics, ...validateSources(sources, metadata).diagnostics];
@@ -107,6 +111,8 @@ export function createGenerationPlan(
       const message = "Cannot generate component: validated source has no resolved location.";
       return failedPlan(iconCount, [diagnostic("QXI-GEN-001", file, message)]);
     }
+    // The package root is the default style; other styles have their own entry points.
+    if (location.style !== defaultStyle) continue;
     drawings.set(location.name, [...(drawings.get(location.name) ?? []), { location, source }]);
   }
 
@@ -119,16 +125,18 @@ export function createGenerationPlan(
         variants.indexOf(left.location.variant) - variants.indexOf(right.location.variant),
     );
     const [primary] = group;
+    // Own keys only, so a name such as `constructor` never reads Object.prototype.
+    const entry = Object.hasOwn(metadata, name) ? metadata[name] : {};
     try {
       const concept: PlannedConcept = {
         id: name,
         name,
         componentName: componentNameFromFilename(posix.basename(primary.location.file)),
         category: primary.location.category,
-        // Own keys only, so a name such as `constructor` never reads Object.prototype.
-        directionality: Object.hasOwn(metadata, name)
-          ? metadata[name].directionality
-          : defaultDirectionality,
+        categories: entry.categories ?? [primary.location.category],
+        directionality: entry.directionality ?? defaultDirectionality,
+        tags: entry.tags ?? [],
+        aliases: entry.aliases ?? [],
         sources: group.map(({ location }) => location),
         outputPath: generatedOutputPath(name),
       };
@@ -163,14 +171,29 @@ export function createGenerationPlan(
   );
   const manifest: IconManifest = {
     schemaVersion: 1,
-    icons: concepts.map(({ id, name, componentName, category, sources, directionality }) => ({
-      id,
-      name,
-      componentName,
-      category,
-      variants: sources.map(({ variant }) => variant),
-      directionality,
-    })),
+    icons: concepts.map(
+      ({
+        id,
+        name,
+        componentName,
+        category,
+        categories,
+        sources,
+        directionality,
+        tags,
+        aliases,
+      }) => ({
+        id,
+        name,
+        componentName,
+        category,
+        categories,
+        variants: sources.map(({ variant }) => variant),
+        directionality,
+        tags,
+        aliases,
+      }),
+    ),
   };
   const barrel = [...concepts].sort((left, right) => compareText(left.id, right.id));
   const files: GeneratedFile[] = [
@@ -184,7 +207,7 @@ export function createGenerationPlan(
 
 export function planRepositoryGeneration(
   repositoryRoot: string,
-  metadata?: Readonly<Record<string, IconMetadataOverride>>,
+  metadata?: Readonly<Record<string, IconMetadata>>,
 ): GenerationPlan {
   const scan = scanIconSources(repositoryRoot);
   return createGenerationPlan(scan.sources, scan.diagnostics, metadata);

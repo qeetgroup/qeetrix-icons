@@ -19,7 +19,7 @@ import {
   selectedVariant,
   variantFilterOptions,
 } from "../playground/src/catalogue.js";
-import { checklistFor, provisionalValues } from "../playground/src/qa.js";
+import { checklistFor, designValues } from "../playground/src/qa.js";
 import {
   defaultUrlState,
   parseUrlState,
@@ -78,9 +78,9 @@ describe("playground catalogue", () => {
         directionality,
       ]),
     ).toEqual([
-      ["fixture-search", "FixtureSearchIcon", "Actions", ["outline"], "preserve"],
-      ["fixture-arrow", "FixtureArrowIcon", "Navigation", ["outline"], "mirror"],
-      ["fixture-star", "FixtureStarIcon", "Status", ["outline", "filled"], "preserve"],
+      ["fixture-search", "FixtureSearchIcon", "Arrows", ["outline"], "preserve"],
+      ["fixture-arrow", "FixtureArrowIcon", "Navigation & Places", ["outline"], "mirror"],
+      ["fixture-star", "FixtureStarIcon", "Shapes", ["outline", "filled"], "preserve"],
     ]);
     expect(catalogue.byId.get("fixture-star")?.Component).toBe(component);
   });
@@ -109,7 +109,7 @@ describe("playground search and filters", () => {
     ["STAR", ["fixture-star"]],
     ["  fixturesearchicon ", ["fixture-search"]],
     ["navigation", ["fixture-arrow"]],
-    ["status", ["fixture-star"]],
+    ["shapes", ["fixture-star"]],
     ["fixture", ["fixture-search", "fixture-arrow", "fixture-star"]],
     ["", ["fixture-search", "fixture-arrow", "fixture-star"]],
     ["no-such-icon", []],
@@ -117,10 +117,31 @@ describe("playground search and filters", () => {
     expect(ids(filterIcons(catalogue.icons, { ...emptyFilter, query }))).toEqual(expected);
   });
 
+  it("searches tags and aliases, and filters by every listed category", () => {
+    const manifest = createGenerationPlan(apiFixtures, [], {
+      ...apiFixtureMetadata,
+      "fixture-star": {
+        categories: ["shapes", "social"],
+        tags: ["favorite"],
+        aliases: ["fixture-star-2"],
+      },
+    }).manifest;
+    const modules = new Map<string, IconModule>(
+      manifest.icons.map(({ id, componentName }) => [id, { [componentName]: component }]),
+    );
+    const tagged = buildCatalogue(manifest, modules).icons;
+    const find = (change: Partial<typeof emptyFilter>) =>
+      ids(filterIcons(tagged, { ...emptyFilter, ...change }));
+    expect(find({ query: "FAVOR" })).toEqual(["fixture-star"]);
+    expect(find({ query: "star-2" })).toEqual(["fixture-star"]);
+    expect(find({ category: "social" })).toEqual(["fixture-star"]);
+    expect(categoryOptions(tagged).find(({ id }) => id === "social")?.count).toBe(1);
+  });
+
   it("filters by category, variant availability, and directionality", () => {
     const filter = (change: Partial<typeof emptyFilter>) =>
       ids(filterIcons(catalogue.icons, { ...emptyFilter, ...change }));
-    expect(filter({ category: "status" })).toEqual(["fixture-star"]);
+    expect(filter({ category: "shapes" })).toEqual(["fixture-star"]);
     expect(filter({ variant: "default-only" })).toEqual(["fixture-search", "fixture-arrow"]);
     expect(filter({ variant: "filled" })).toEqual(["fixture-star"]);
     expect(filter({ directionality: "mirror" })).toEqual(["fixture-arrow"]);
@@ -133,9 +154,9 @@ describe("playground search and filters", () => {
     const options = categoryOptions(catalogue.icons);
     expect(options.map(({ id }) => id)).toEqual(categories.map(({ id }) => id));
     expect(options.filter(({ count }) => count > 0)).toEqual([
-      { id: "actions", label: "Actions", count: 1 },
-      { id: "navigation", label: "Navigation", count: 1 },
-      { id: "status", label: "Status", count: 1 },
+      { id: "arrows", label: "Arrows", count: 1 },
+      { id: "navigation", label: "Navigation & Places", count: 1 },
+      { id: "shapes", label: "Shapes", count: 1 },
     ]);
   });
 
@@ -185,21 +206,19 @@ describe("playground inspection rules", () => {
     expect(direction(search)).toHaveLength(1);
   });
 
-  it("reports provisional design values straight from the shared config", () => {
-    const values = Object.fromEntries(provisionalValues().map(({ name, value }) => [name, value]));
-    expect(values["Stroke width"]).toBe(String(iconSystem.calibration.strokeWidth));
-    expect(values["Recommended sizes"]).toBe(iconSystem.calibration.recommendedSizes.join(", "));
-    expect(values["Safe-area inset"]).toContain(String(iconSystem.calibration.safeAreaInset));
-    expect(Object.keys(values)).toEqual(
-      expect.arrayContaining(["Corner treatment", "Small-size optical corrections"]),
-    );
+  it("reports design values straight from the shared config", () => {
+    const values = Object.fromEntries(designValues().map(({ name, value }) => [name, value]));
+    expect(values["Stroke width"]).toBe(String(iconSystem.design.strokeWidth));
+    expect(values["Recommended sizes"]).toBe(iconSystem.design.recommendedSizes.join(", "));
+    expect(values["Safe-area inset"]).toContain(String(iconSystem.design.safeAreaInset));
+    expect(values["Stroke caps and joins"]).toBe("round / round");
   });
 });
 
 describe("playground URL state", () => {
   it("defaults to the configured size, system theme, and LTR", () => {
     expect(parseUrlState("")).toEqual({ ...defaultUrlState, icon: undefined, variant: undefined });
-    expect(defaultUrlState.size).toBe(iconSystem.calibration.defaultSize);
+    expect(defaultUrlState.size).toBe(iconSystem.design.defaultSize);
     expect(serializeUrlState(defaultUrlState)).toBe("");
   });
 
@@ -274,8 +293,13 @@ describe("playground build", () => {
       workspace,
       "config/icon-metadata.ts",
       `import type { IconDirectionality } from "../src/types/icon.js";
-export type IconMetadataOverride = { readonly directionality: IconDirectionality };
-export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = ${JSON.stringify({ ...iconMetadata, ...apiFixtureMetadata })};
+export type IconMetadata = {
+  readonly directionality?: IconDirectionality;
+  readonly categories?: readonly string[];
+  readonly tags?: readonly string[];
+  readonly aliases?: readonly string[];
+};
+export const iconMetadata: Readonly<Record<string, IconMetadata>> = ${JSON.stringify({ ...iconMetadata, ...apiFixtureMetadata })};
 `,
     );
     const run = (args: string[]) =>

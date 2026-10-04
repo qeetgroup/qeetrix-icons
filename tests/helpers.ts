@@ -12,9 +12,9 @@ export function syntheticSvg(
     viewBox: iconSystem.architecture.viewBox,
     fill: "none",
     stroke: iconSystem.architecture.color,
-    "stroke-width": String(iconSystem.calibration.strokeWidth),
-    "stroke-linecap": iconSystem.calibration.linecap,
-    "stroke-linejoin": iconSystem.calibration.linejoin,
+    "stroke-width": String(iconSystem.design.strokeWidth),
+    "stroke-linecap": iconSystem.design.linecap,
+    "stroke-linejoin": iconSystem.design.linejoin,
     ...attributes,
   })
     .filter(([, value]) => value !== undefined)
@@ -51,19 +51,19 @@ export const filledAttributes = {
  */
 export const apiFixtures = [
   {
-    file: "icons/outline/actions/fixture-search.svg",
+    file: "icons/round-outline/arrows/fixture-search.svg",
     source: syntheticSvg({}, '<path d="M 3.125 7 L 11 13"/>'),
   },
   {
-    file: "icons/outline/status/fixture-star.svg",
+    file: "icons/round-outline/shapes/fixture-star.svg",
     source: syntheticSvg({}, '<circle cx="12" cy="12" r="6.25"/>'),
   },
   {
-    file: "icons/filled/status/fixture-star.svg",
+    file: "icons/round-filled/shapes/fixture-star.svg",
     source: syntheticSvg(filledAttributes, '<circle cx="12" cy="12" r="7.5"/>'),
   },
   {
-    file: "icons/outline/navigation/fixture-arrow.svg",
+    file: "icons/round-outline/navigation/fixture-arrow.svg",
     source: syntheticSvg({}, '<polyline points="9.375,6 15,12 9.375,18"/>'),
   },
 ] as const;

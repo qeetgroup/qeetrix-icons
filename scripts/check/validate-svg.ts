@@ -7,7 +7,7 @@ import {
   Node,
   onWarningStopParsing,
 } from "@xmldom/xmldom";
-import { iconSystem } from "../../config/icon-system.js";
+import { type IconStyle, iconSystem } from "../../config/icon-system.js";
 import type { IconVariant } from "../../src/types/icon.js";
 import { type Diagnostic, diagnostic, sortDiagnostics } from "../lib/diagnostics.js";
 
@@ -21,6 +21,8 @@ const presentationAttributes = new Set([
   "stroke-linejoin",
   "fill-rule",
 ]);
+/** Only sharp sources carry a miter limit; round joins never miter. */
+const sharpPresentationAttributes = new Set([...presentationAttributes, "stroke-miterlimit"]);
 
 const elementAttributes = new Map<string, readonly string[]>([
   ["svg", ["viewBox", "xmlns"]],
@@ -58,8 +60,9 @@ const numericAttributes = new Set([
   "width",
   "height",
   "stroke-width",
+  "stroke-miterlimit",
 ]);
-const positiveAttributes = new Set(["r", "width", "height", "stroke-width"]);
+const positiveAttributes = new Set(["r", "width", "height", "stroke-width", "stroke-miterlimit"]);
 const numberPattern = String.raw`[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?`;
 const scalarPattern = new RegExp(`^${numberPattern}$`);
 const listPattern = new RegExp(
@@ -101,30 +104,38 @@ function hasValidPathTokens(value: string): boolean {
 function validateVariant(
   element: Element,
   variant: IconVariant,
+  style: IconStyle,
   root: boolean,
   file: string,
 ): Diagnostic[] {
-  const { architecture, calibration } = iconSystem;
+  const { architecture, design } = iconSystem;
   const diagnostics: Diagnostic[] = [];
+  const strokes: Record<string, string> =
+    style === "sharp"
+      ? {
+          "stroke-linecap": design.sharp.linecap,
+          "stroke-linejoin": design.sharp.linejoin,
+          "stroke-miterlimit": String(design.sharp.miterLimit),
+        }
+      : { "stroke-linecap": design.linecap, "stroke-linejoin": design.linejoin };
   const expected: Record<string, string> =
     variant === "outline"
       ? {
           fill: "none",
           stroke: architecture.color,
-          "stroke-width": String(calibration.strokeWidth),
-          "stroke-linecap": calibration.linecap,
-          "stroke-linejoin": calibration.linejoin,
+          "stroke-width": String(design.strokeWidth),
+          ...strokes,
         }
       : { fill: architecture.color };
 
   for (const [name, expectedValue] of Object.entries(expected)) {
-    if (!root && (variant === "filled" || !element.hasAttribute(name))) continue;
+    // An outline descendant may fill itself: Lucide draws small solid dots, such as the hole in
+    // `tag`, with fill="currentColor". The paint check above still limits fill to currentColor.
+    if (!root && (variant === "filled" || name === "fill" || !element.hasAttribute(name))) continue;
     const actual = element.getAttribute(name)?.trim();
     const matches =
-      name === "stroke-width"
-        ? actual !== undefined &&
-          isFiniteNumber(actual) &&
-          Number(actual) === calibration.strokeWidth
+      name === "stroke-width" || name === "stroke-miterlimit"
+        ? actual !== undefined && isFiniteNumber(actual) && Number(actual) === Number(expectedValue)
         : actual === expectedValue;
     if (!matches) {
       diagnostics.push(
@@ -192,7 +203,14 @@ function validateGeometry(element: Element, file: string): Diagnostic[] {
   return diagnostics;
 }
 
-export function validateSvg(source: string, file: string, variant: IconVariant): Diagnostic[] {
+export function validateSvg(
+  source: string,
+  file: string,
+  variant: IconVariant,
+  style: IconStyle = iconSystem.architecture.defaultStyle,
+): Diagnostic[] {
+  const allowedPresentation =
+    style === "sharp" ? sharpPresentationAttributes : presentationAttributes;
   if (Buffer.byteLength(source, "utf8") > maxSvgBytes) {
     return [
       diagnostic("QXI-XML-001", file, `SVG source exceeds the ${maxSvgBytes}-byte parsing limit.`),
@@ -293,7 +311,7 @@ export function validateSvg(source: string, file: string, variant: IconVariant):
             `Root ${name} is controlled by the future runtime, not the artwork.`,
           ),
         );
-      } else if (!attributes.includes(name) && !presentationAttributes.has(name)) {
+      } else if (!attributes.includes(name) && !allowedPresentation.has(name)) {
         diagnostics.push(
           diagnostic(
             "QXI-SVG-005",
@@ -333,7 +351,7 @@ export function validateSvg(source: string, file: string, variant: IconVariant):
         );
       }
     }
-    diagnostics.push(...validateVariant(node, variant, node === root, file));
+    diagnostics.push(...validateVariant(node, variant, style, node === root, file));
     diagnostics.push(...validateGeometry(node, file));
   }
   if (geometryCount === 0) {

@@ -21,10 +21,16 @@ export type IconManifestEntry = {
   readonly name: string;
   /** The one public export for the concept: `StarIcon`. */
   readonly componentName: string;
-  /** Category id. Organizes the catalogue; never part of an export name or import path. */
+  /** Primary category id: the source folder. Never part of an export name or import path. */
   readonly category: string;
+  /** Every category the concept belongs to, primary first. Filter by these, not `category`. */
+  readonly categories: readonly string[];
   /** Drawings available through the `variant` prop, in configured order; always starts with `outline`. */
   readonly variants: readonly IconVariant[];
   /** Whether the concept follows reading direction in RTL. See docs/rtl.md. */
   readonly directionality: IconDirectionality;
+  /** Search keywords: `["delete", "remove", …]` for `trash`. */
+  readonly tags: readonly string[];
+  /** Earlier upstream names, for search and migration: `["trash-2"]` for `trash`. Never exported. */
+  readonly aliases: readonly string[];
 };

@@ -1,32 +1,37 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { deferredCategories, plannedCatalogue } from "../config/catalogue.js";
 import { categories } from "../config/categories.js";
+import { filledRecipes } from "../config/filled.js";
 import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
 import { iconExportName, validateIconName } from "../scripts/check/validate-source-path.js";
 import { createGenerationPlan } from "../scripts/lib/generation-plan.js";
+import type { LucideData } from "../scripts/lib/lucide.js";
 import {
   ArrowLeftIcon,
-  BellIcon,
-  CalendarIcon,
+  type BellIcon,
+  type CalendarIcon,
   CheckIcon,
   ChevronDownIcon,
-  DatabaseIcon,
+  Clock12Icon,
+  type DatabaseIcon,
   type IconDirectionality,
   type IconProps,
   type IconVariant,
-  LockIcon,
+  type LockIcon,
   PlusIcon,
-  SearchIcon,
-  SettingsIcon,
-  UserIcon,
+  type SearchIcon,
+  type SettingsIcon,
+  type StarIcon,
+  type TrashIcon,
+  type UserIcon,
   XIcon,
 } from "../src/index.js";
 import { iconManifest } from "../src/manifest.js";
 
 const PKG = join(import.meta.dirname, "..");
+const lucide = JSON.parse(readFileSync(join(PKG, "config/lucide.json"), "utf8")) as LucideData;
 
 describe("public entry point", () => {
   it("can be imported", async () => {
@@ -68,99 +73,59 @@ describe("category taxonomy", () => {
     expect(new Set(categoryIds).size).toBe(categoryIds.length);
   });
 
-  it("uses the explicit enterprise taxonomy in canonical display order", () => {
-    expect(categoryIds).toEqual([
-      "actions",
-      "navigation",
-      "status",
-      "identity",
-      "security",
-      "files",
-      "communication",
-      "data",
-      "time",
-      "devices",
-      "development",
-      "infrastructure",
-      "finance",
-      "commerce",
-      "location",
-      "media",
-      "ai",
-      "observability",
-      "organization",
-      "qeet",
-    ]);
+  it("is Lucide's taxonomy, in id order", () => {
+    expect(categories).toEqual(lucide.categories);
+    expect(categoryIds).toEqual([...categoryIds].sort());
+    expect(categoryIds).toContain("arrows");
+    expect(categoryIds).toContain("account");
   });
 
   it("provides usable discovery metadata", () => {
     for (const category of categories) {
       expect(category.id).toMatch(/^[a-z]+(?:-[a-z]+)*$/);
       expect(category.label.trim().length).toBeGreaterThan(0);
-      expect(category.description.trim().length).toBeGreaterThan(0);
     }
   });
 });
 
-describe("planned catalogue", () => {
-  const planned = Object.entries(plannedCatalogue).flatMap(([category, names]) =>
-    names.map((name) => ({ category, name })),
-  );
-
-  it.each([
-    ["actions", 40],
-    ["navigation", 31],
-    ["status", 25],
-    ["identity", 31],
-    ["security", 37],
-    ["files", 30],
-    ["communication", 30],
-    ["data", 33],
-    ["time", 24],
-    ["devices", 26],
-    ["development", 32],
-    ["infrastructure", 36],
-    ["finance", 32],
-    ["commerce", 30],
-    ["location", 20],
-    ["media", 26],
-    ["ai", 32],
-    ["observability", 33],
-    ["organization", 30],
-    ["qeet", 20],
-  ] as const)("plans %s with %i concepts", (category, count) => {
-    expect(plannedCatalogue[category]).toHaveLength(count);
+describe("Lucide source", () => {
+  it("pins one Lucide release", () => {
+    expect(lucide.version).toMatch(/^\d+\.\d+\.\d+$/);
   });
 
-  it("plans 598 concepts in exactly the canonical categories, in their order", () => {
-    expect(planned).toHaveLength(598);
-    expect(Object.keys(plannedCatalogue)).toEqual(categories.map(({ id }) => id));
+  it("ships exactly the synced Lucide icons, under Lucide's names", () => {
+    expect(iconManifest.icons.map(({ name }) => name).sort()).toEqual(
+      Object.keys(lucide.icons).sort(),
+    );
+    expect(iconManifest.icons.length).toBeGreaterThan(1500);
+  });
+
+  it("files each icon under its first Lucide category and records the rest", () => {
+    for (const { name, category, categories: listed, tags, aliases } of iconManifest.icons) {
+      const source = lucide.icons[name];
+      expect(category, name).toBe(source.categories[0]);
+      expect(listed, name).toEqual(source.categories);
+      expect(tags, name).toEqual(source.tags);
+      expect(aliases, name).toEqual(source.aliases);
+    }
   });
 
   it("uses valid, globally unique names and component names", () => {
-    const names = planned.map(({ name }) => name);
-    expect(new Set(names).size).toBe(names.length);
+    const names = Object.keys(lucide.icons);
     expect(new Set(names.map(iconExportName)).size).toBe(names.length);
     for (const name of names) expect(validateIconName(`${name}.svg`), name).toEqual([]);
   });
 
-  it("ships only planned concepts, each in its planned category", () => {
-    for (const { name, category } of iconManifest.icons) {
-      expect(planned, name).toContainEqual({ category, name });
-    }
-  });
-
-  it("ships every planned concept outside the deferred categories, and none inside them", () => {
-    const deferred = new Set<string>(deferredCategories);
-    const expected = planned.filter(({ category }) => !deferred.has(category));
-    const shipped = iconManifest.icons.map(({ category, name }) => ({ category, name }));
-    const key = ({ category, name }: { category: string; name: string }) => `${category}/${name}`;
-    expect(shipped.map(key).sort()).toEqual(expected.map(key).sort());
+  it("records earlier Lucide names as aliases without exporting them", async () => {
+    const pkg = await import("../src/index.js");
+    expect(lucide.icons.trash.aliases).toContain("trash-2");
+    expect(pkg).toHaveProperty("TrashIcon");
+    expect(pkg).not.toHaveProperty("Trash2Icon");
   });
 });
 
 describe("icon-system contract", () => {
-  const { architecture, calibration } = iconSystem;
+  const { architecture, design } = iconSystem;
 
   it("uses an SVG master whose viewBox matches the canonical grid", () => {
     expect(architecture.sourceFormat).toBe("svg");
@@ -189,10 +154,10 @@ describe("icon-system contract", () => {
   });
 
   it("recommends ordered, unique, positive UI sizes including the default", () => {
-    const sizes = [...calibration.recommendedSizes];
+    const sizes = [...design.recommendedSizes];
     expect(new Set(sizes).size).toBe(sizes.length);
     expect(sizes).toEqual([...sizes].sort((left, right) => left - right));
-    expect(sizes).toContain(calibration.defaultSize);
+    expect(sizes).toContain(design.defaultSize);
     for (const size of sizes) {
       expect(Number.isInteger(size)).toBe(true);
       expect(size).toBeGreaterThan(0);
@@ -200,23 +165,23 @@ describe("icon-system contract", () => {
   });
 
   it("compares ordered, unique stroke candidates that include the current width", () => {
-    const candidates = [...calibration.strokeCandidates];
+    const candidates = [...design.strokeCandidates];
     expect(new Set(candidates).size).toBe(candidates.length);
     expect(candidates).toEqual([...candidates].sort((left, right) => left - right));
-    expect(candidates).toContain(calibration.strokeWidth);
+    expect(candidates).toContain(design.strokeWidth);
     for (const candidate of candidates) expect(candidate).toBeGreaterThan(0);
   });
 
   it("leaves usable painted space inside the candidate safe area", () => {
-    expect(Number.isFinite(calibration.safeAreaInset)).toBe(true);
-    expect(Number.isFinite(calibration.strokeWidth)).toBe(true);
-    expect(calibration.safeAreaInset).toBeGreaterThan(0);
-    expect(calibration.strokeWidth).toBeGreaterThan(0);
-    expect(calibration.safeAreaInset * 2 + calibration.strokeWidth).toBeLessThan(
+    expect(Number.isFinite(design.safeAreaInset)).toBe(true);
+    expect(Number.isFinite(design.strokeWidth)).toBe(true);
+    expect(design.safeAreaInset).toBeGreaterThan(0);
+    expect(design.strokeWidth).toBeGreaterThan(0);
+    expect(design.safeAreaInset * 2 + design.strokeWidth).toBeLessThan(
       Math.min(architecture.grid.width, architecture.grid.height),
     );
-    expect(["butt", "round", "square"]).toContain(calibration.linecap);
-    expect(["miter", "round", "bevel"]).toContain(calibration.linejoin);
+    expect(["butt", "round", "square"]).toContain(design.linecap);
+    expect(["miter", "round", "bevel"]).toContain(design.linejoin);
   });
 });
 
@@ -225,11 +190,13 @@ describe("production sources and generated output", () => {
     .filter((file) => file.endsWith(".svg"))
     .sort();
 
-  it("has one drawing per manifest variant", () => {
+  it("has one drawing per manifest variant in every style", () => {
     expect(drawings).toEqual(
-      iconManifest.icons
-        .flatMap(({ name, category, variants }) =>
-          variants.map((variant) => `${variant}/${category}/${name}.svg`),
+      iconSystem.architecture.styles
+        .flatMap((style) =>
+          iconManifest.icons.flatMap(({ name, category, variants }) =>
+            variants.map((variant) => `${style}-${variant}/${category}/${name}.svg`),
+          ),
         )
         .sort(),
     );
@@ -307,9 +274,26 @@ describe("package manifest", () => {
   });
 });
 
-describe("the 1.x catalogue stays removed", () => {
-  it.each(["round-outline", "round-solid", "sharp-outline", "sharp-solid"])(
-    "has no icons/%s directory",
+describe("source layout", () => {
+  it("keeps every drawing in one icons/<style>-<variant>/ tree", () => {
+    // Folders that hold drawings; dotfiles and empty work-in-progress folders don't count.
+    const folders = readdirSync(join(PKG, "icons")).filter(
+      (name) =>
+        !name.startsWith(".") &&
+        readdirSync(join(PKG, "icons", name), { recursive: true }).some((file) =>
+          String(file).endsWith(".svg"),
+        ),
+    );
+    expect(folders.sort()).toEqual([
+      "round-filled",
+      "round-outline",
+      "sharp-filled",
+      "sharp-outline",
+    ]);
+  });
+
+  it.each(["round-solid", "sharp-solid", "outline", "filled"])(
+    "has no legacy icons/%s directory",
     (dir) => {
       expect(existsSync(join(PKG, "icons", dir))).toBe(false);
     },
@@ -320,99 +304,96 @@ describe("the 1.x catalogue stays removed", () => {
   });
 });
 
-describe("calibration concepts", () => {
+describe("well-known concepts", () => {
+  const filled = new Set(Object.keys(filledRecipes));
+
   it.each([
-    ["plus", "PlusIcon", "actions", "preserve"],
-    ["x", "XIcon", "actions", "preserve"],
-    ["check", "CheckIcon", "actions", "preserve"],
-    ["chevron-down", "ChevronDownIcon", "navigation", "preserve"],
-    ["search", "SearchIcon", "actions", "preserve"],
-    ["arrow-left", "ArrowLeftIcon", "navigation", "preserve"],
-    ["settings", "SettingsIcon", "actions", "preserve"],
-    ["user", "UserIcon", "identity", "preserve"],
-    ["bell", "BellIcon", "communication", "preserve"],
-    ["lock", "LockIcon", "security", "preserve"],
-    ["calendar", "CalendarIcon", "time", "preserve"],
-    ["database", "DatabaseIcon", "data", "preserve"],
-  ])("ships %s as outline-only %s in %s, %s in RTL", (id, componentName, category, direction) => {
-    expect(iconManifest.icons).toContainEqual({
-      id,
-      name: id,
-      componentName,
-      category,
-      variants: ["outline"],
-      directionality: direction,
-    });
+    ["plus", "PlusIcon", "math"],
+    ["x", "XIcon", "notifications"],
+    ["check", "CheckIcon", "notifications"],
+    ["chevron-down", "ChevronDownIcon", "arrows"],
+    ["search", "SearchIcon", "text"],
+    ["arrow-left", "ArrowLeftIcon", "arrows"],
+    ["settings", "SettingsIcon", "account"],
+    ["user", "UserIcon", "account"],
+    ["bell", "BellIcon", "account"],
+    ["lock", "LockIcon", "security"],
+    ["calendar", "CalendarIcon", "time"],
+    ["database", "DatabaseIcon", "devices"],
+    ["trash", "TrashIcon", "files"],
+    ["clock-12", "Clock12Icon", "time"],
+  ])("ships %s as %s in %s, filled only when listed", (id, componentName, category) => {
+    expect(iconManifest.icons).toContainEqual(
+      expect.objectContaining({
+        id,
+        name: id,
+        componentName,
+        category,
+        variants: filled.has(id) ? ["outline", "filled"] : ["outline"],
+        directionality: "preserve",
+      }),
+    );
     expect(existsSync(join(PKG, "src/generated/icons", `${id}.tsx`))).toBe(true);
   });
 
-  it("types every calibration icon as outline-only", () => {
-    const icons = [
-      PlusIcon,
-      XIcon,
-      CheckIcon,
-      ChevronDownIcon,
-      SearchIcon,
-      ArrowLeftIcon,
-      SettingsIcon,
-      UserIcon,
-      BellIcon,
-      LockIcon,
-      CalendarIcon,
-      DatabaseIcon,
-    ];
-    for (const Icon of icons) expect(Icon).toBeTypeOf("function");
+  it("types each icon to the drawings it has", () => {
+    for (const Icon of [PlusIcon, XIcon, CheckIcon, ChevronDownIcon, ArrowLeftIcon, Clock12Icon]) {
+      expect(Icon).toBeTypeOf("function");
+    }
     type Variant<T extends (props: never) => unknown> = NonNullable<Parameters<T>[0]>["variant"];
     expectTypeOf<Variant<typeof PlusIcon>>().toEqualTypeOf<"outline" | undefined>();
     expectTypeOf<Variant<typeof XIcon>>().toEqualTypeOf<"outline" | undefined>();
     expectTypeOf<Variant<typeof CheckIcon>>().toEqualTypeOf<"outline" | undefined>();
     expectTypeOf<Variant<typeof ChevronDownIcon>>().toEqualTypeOf<"outline" | undefined>();
-    expectTypeOf<Variant<typeof SearchIcon>>().toEqualTypeOf<"outline" | undefined>();
     expectTypeOf<Variant<typeof ArrowLeftIcon>>().toEqualTypeOf<"outline" | undefined>();
-    expectTypeOf<Variant<typeof SettingsIcon>>().toEqualTypeOf<"outline" | undefined>();
-    expectTypeOf<Variant<typeof UserIcon>>().toEqualTypeOf<"outline" | undefined>();
-    expectTypeOf<Variant<typeof BellIcon>>().toEqualTypeOf<"outline" | undefined>();
-    expectTypeOf<Variant<typeof LockIcon>>().toEqualTypeOf<"outline" | undefined>();
-    expectTypeOf<Variant<typeof CalendarIcon>>().toEqualTypeOf<"outline" | undefined>();
-    expectTypeOf<Variant<typeof DatabaseIcon>>().toEqualTypeOf<"outline" | undefined>();
+    expectTypeOf<Variant<typeof SearchIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    expectTypeOf<Variant<typeof SettingsIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    expectTypeOf<Variant<typeof UserIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    expectTypeOf<Variant<typeof BellIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    expectTypeOf<Variant<typeof LockIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    expectTypeOf<Variant<typeof CalendarIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    expectTypeOf<Variant<typeof DatabaseIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    expectTypeOf<Variant<typeof StarIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    expectTypeOf<Variant<typeof TrashIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
   });
 
   it("mirrors only semantic reading-direction concepts, never physical directions", () => {
-    // docs/rtl.md: back/forward, reply, send, undo/redo, sign-in/out and similar follow reading
-    // direction; physical arrows, chevrons, corners, and panels keep their orientation.
+    // docs/rtl.md: undo/redo, reply, forward, send, sign-in/out, indentation, and start/end
+    // alignment follow reading direction; physical arrows, chevrons, and panels keep orientation.
     const semantic = new Set([
       "undo",
+      "undo-2",
+      "undo-dot",
       "redo",
-      "arrow-back",
-      "arrow-forward",
-      "sidebar-open",
-      "sidebar-close",
-      "log-in",
-      "log-out",
-      "enter",
-      "exit",
-      "progress",
+      "redo-2",
+      "redo-dot",
       "reply",
       "reply-all",
+      "message-square-reply",
       "forward",
       "send",
-      "join",
-      "leave",
-      "impersonate",
+      "send-horizontal",
+      "log-in",
+      "log-out",
+      "list-indent-increase",
+      "list-indent-decrease",
+      "text-align-start",
+      "text-align-end",
     ]);
-    for (const [name, { directionality }] of Object.entries(iconMetadata)) {
-      expect(semantic.has(name), name).toBe(true);
-      expect(directionality, name).toBe("mirror");
-    }
+    const mirrored = Object.entries(iconMetadata).filter(
+      ([, { directionality }]) => directionality !== undefined,
+    );
+    expect(mirrored.map(([name]) => name).sort()).toEqual([...semantic].sort());
+    for (const [name, { directionality }] of mirrored) expect(directionality, name).toBe("mirror");
     for (const physical of ["arrow-left", "arrow-right", "chevron-left", "chevron-right"]) {
-      expect(iconMetadata[physical], physical).toBeUndefined();
+      expect(iconMetadata[physical]?.directionality, physical).toBeUndefined();
     }
   });
 
-  it("applies authored metadata only when the caller passes it", () => {
+  it("applies metadata only when the caller passes it", () => {
     // Library functions validate whatever they are given; the CLIs pass this repository's config.
-    const source = readFileSync(join(PKG, "icons/outline/actions/undo.svg"), "utf8");
-    const sources = [{ file: "icons/outline/actions/undo.svg", source }];
+    const file = `icons/round-outline/${lucide.icons.undo.categories[0]}/undo.svg`;
+    const sources = [{ file, source: readFileSync(join(PKG, file), "utf8") }];
     const authored = { undo: iconMetadata.undo };
     expect(createGenerationPlan(sources).manifest.icons[0].directionality).toBe("preserve");
     expect(createGenerationPlan(sources, [], authored).manifest.icons[0].directionality).toBe(
@@ -420,7 +401,16 @@ describe("calibration concepts", () => {
     );
   });
 
-  it("has no filled drawings yet", () => {
-    expect(existsSync(join(PKG, "icons/filled"))).toBe(false);
+  it("has exactly the filled drawings config/filled.ts lists", () => {
+    const drawings = readdirSync(join(PKG, "icons/round-filled"), {
+      recursive: true,
+      encoding: "utf8",
+    })
+      .filter((file) => file.endsWith(".svg"))
+      .map((file) => file.split("/").pop()?.slice(0, -4));
+    expect(drawings.sort()).toEqual([...filled].sort());
+    expect(iconManifest.icons.filter(({ variants }) => variants.includes("filled")).length).toBe(
+      filled.size,
+    );
   });
 });

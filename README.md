@@ -1,116 +1,98 @@
 # Qeetrix Icons 2.0
 
-`@qeetrix/icons` is Qeet Group's shared icon system for Qeetrix and Qeet products, including Qeet ID,
-Qeet Pay, Qeet Logs, Qeet Notify, Qeet People, Qeet AI, and future products. It is being rebuilt with
-original Qeetrix artwork for enterprise consoles, identity and security, payments, observability,
-data-heavy interfaces, and developer tools.
+`@qeetrix/icons` is Qeet Group's shared icon library for Qeetrix and Qeet products, including Qeet
+ID, Qeet Pay, Qeet Logs, Qeet Notify, Qeet People, Qeet AI, and future products. It ships the
+[Lucide](https://lucide.dev) icon set as tree-shakeable React 19 components, with filled variants
+derived from the outlines.
 
 > [!IMPORTANT]
-> **Current development state: first full catalogue pass, before review.**
->
-> - The legacy 1.x icon artwork has been removed from this repository.
-> - 578 original outline icons exist in 19 categories, drawn against one provisional working spec.
->   They have not yet been through the Catalogue Review & Enhancement Pass; do not migrate
->   products to them.
-> - Do not rely on 1.x icon names, props, types, or import paths for the upcoming major release.
-> - Versions already published to the package registry are not changed by this rebuild.
+> **2.0 is unreleased.** It removes the 1.x catalogue: do not rely on any 1.x icon name, prop,
+> type, or import path. Versions already published to the package registry are not changed.
 
-## Current state
+## What is in it
 
-The repository now defines the icon language, category taxonomy, naming, accessibility, RTL, and
-architecture contracts. [config/icon-system.ts](config/icon-system.ts) separates stable architecture
-from visual calibration candidates; [config/categories.ts](config/categories.ts) defines the 20
-ordered enterprise/product categories. Both are internal and are not package exports.
+- **1,863 outline icons** from Lucide 1.52.0, the release pinned in
+  [config/lucide.json](config/lucide.json). The artwork is Lucide's, unchanged, and so are the names
+  and the 42 categories ([docs/lucide.md](docs/lucide.md)).
+- **Filled variants** for about 800 icons, derived from the outline with Skia path operations and
+  reviewed one by one. The list is [config/filled.ts](config/filled.ts); see
+  [docs/filled.md](docs/filled.md).
+- A **manifest** with each icon's categories, Lucide tags, and former names, for search and tooling.
+- An internal **playground** for visual review, not published.
 
-Validation, SVG-to-React generation, the generated root exports, the manifest, and the visual QA
-playground are implemented. `icons/` holds the first full catalogue pass: 578 outline-only concepts
-in 19 categories, built on the Phase 3A–3C calibration batches. The planned inventory is
-[config/catalogue.ts](config/catalogue.ts) (598 concepts); its 20 Qeet ecosystem pictograms are
-deferred and not shipped. Stroke width, safe area, corners, and the rest of the visual system
-remain provisional; the working spec and findings are logged in
-[docs/calibration.md](docs/calibration.md). See also
-[docs/validation.md](docs/validation.md) and [docs/generation.md](docs/generation.md).
+## Usage
 
-## Public API
-
-The contract is in [docs/api.md](docs/api.md). `SearchIcon` and `StarIcon` exist today as outline
-drawings; the `filled` star below illustrates a future filled drawing:
+The contract is in [docs/api.md](docs/api.md):
 
 ```tsx
-import { SearchIcon, StarIcon, type IconProps } from "@qeetrix/icons";
+import { SearchIcon, StarIcon, TrashIcon, type IconProps } from "@qeetrix/icons";
 import { iconManifest } from "@qeetrix/icons/manifest";
 
 <SearchIcon size={20} aria-label="Search" />
-<StarIcon />
 <StarIcon variant="filled" />
+<TrashIcon strokeWidth={1.5} />
 ```
 
-Each icon concept is one component, also importable as `@qeetrix/icons/icons/<id>`. `variant`
-defaults to `"outline"` and is typed to the drawings that exist, so `<SearchIcon variant="filled" />`
-is a type error unless a filled search drawing is added. Outline and filled stay separately drawn
-SVGs. Categories never appear in names or import paths. `size` takes any number or CSS
-length; 14, 16, 20, 24, and 32 are recommendations, not limits. No filled drawings exist yet, so
-`variant="filled"` is a type error on every icon today. The 1.x
-`@qeetrix/icons/icons/<category>/<name>` paths are gone; 2.0 subpaths are category-free.
+Each icon is one component named after its Lucide name in PascalCase plus `Icon` (`clock-12` →
+`Clock12Icon`), also importable as `@qeetrix/icons/icons/<name>`. `variant` defaults to `"outline"`
+and is typed to the drawings that exist, so `<ArrowLeftIcon variant="filled" />` is a type error:
+`arrow-left` has no filled drawing. Categories never appear in names or import paths. `size` takes
+any number or CSS length; 14, 16, 20, 24, and 32 are recommendations, not limits. The stroke width
+is 2, and `strokeWidth` overrides it. Lucide's former names, such as `trash-2` for `trash`, are in
+the manifest for search but are not exported. The 1.x `@qeetrix/icons/icons/<category>/<name>`
+paths are gone.
 
-## Design direction
+## Design
 
-Precise, calm, geometric, and human: simple silhouettes, controlled corners, generous negative
-space, and optical balance. Icons should harmonize with Qeet UI and Qeet Text without overpowering
-medium-weight labels. The system is outline-first; filled drawings are selective, meaningful state
-alternatives, not a required second drawing for every icon.
+Outline icons follow Lucide's drawing rules: a 24 x 24 grid, `viewBox="0 0 24 24"`, a 2-unit
+stroke with round caps and joins, 1 unit of padding, and `currentColor`. The system is outline
+first; filled drawings are a selective alternative for states such as selected, favorite, or
+active, and exist only where the solid form is clean. See [docs/design.md](docs/design.md) and the
+[documentation index](docs/README.md).
 
-The canonical master is a 24 x 24 SVG with `viewBox="0 0 24 24"` and `currentColor`. Initial
-calibration candidates are a 1.75 stroke, round caps and joins, a 2-unit painted safe-area inset,
-a default size of 24, and UI review sizes of 14, 16, 20, 24, and 32. These visual candidates still
-need the later calibration set; no separate optical masters are included, and the package ships no
-font files (the playground self-hosts Qeet UI and Qeet Text for typography review).
+## Architecture
 
-Read [docs/design-principles.md](docs/design-principles.md),
-[docs/drawing-guidelines.md](docs/drawing-guidelines.md), and the [documentation index](docs/README.md).
-
-## Architecture direction
-
-Human-authored SVG flows through validation, React generation, manifest generation, and package
-exports into Qeetrix UI and Qeet products; all four are implemented. Generated components target
-React 19, the package's only peer dependency.
-See [docs/architecture.md](docs/architecture.md) for ownership and phase boundaries.
+A pinned Lucide release flows through sync, filled derivation, validation, React generation,
+manifest generation, and package exports into Qeetrix UI and Qeet products. Generated components
+target React 19, the package's only peer dependency, and there are no runtime dependencies. See
+[docs/architecture.md](docs/architecture.md).
 
 ## Develop
 
-Bun only, pinned to 1.3.14. Use strict TypeScript, ESM, Biome, and Vitest; do not add another package
-manager, linter, or formatter.
+Bun only, pinned to 1.3.14. Use strict TypeScript, ESM, Biome, and Vitest; do not add another
+package manager, linter, or formatter.
 
 ```bash
 bun install
 bun run typecheck
 bun run lint
 bun run test
+bun run sync:lucide      # re-sync the pinned Lucide release (pass a version to upgrade)
+bun run derive:filled    # derive icons/filled/ from the outlines and config/filled.ts
+bun run check:filled     # prove the filled drawings are up to date
 bun run check:icons      # validate production SVG sources
-bun run generate         # validate, then regenerate src/generated/icons/
+bun run generate         # validate, then regenerate src/generated/ and the manifest
 bun run check:generated  # prove generated output matches source
 bun run build
 bun run playground       # internal visual QA playground (not published)
 bun run playground:build # prove the playground builds
 ```
 
-SVG is the source of truth: edit `icons/`, run `bun run generate`, and never hand-edit
-`src/generated/` or `icon-manifest.json`. Details are in [docs/generation.md](docs/generation.md);
-the human review process is in [docs/visual-qa.md](docs/visual-qa.md).
-
-The test script runs Vitest, matching CI. Use `bun run format` for Biome fixes. Contributors must
-keep phase boundaries explicit, update config and docs together, and never hand-edit generated
-files. Add artwork only through the calibration phases, and never copy, trace, or slightly modify paths from Lucide,
-Iconsax/Vuesax, or any other third-party icon library. Principles may be studied; geometry must be
-independently drawn. See [docs/contributing.md](docs/contributing.md).
+Every file under `icons/` is written by a tool: `icons/outline/` by `sync:lucide`, `icons/filled/`
+by `derive:filled`. Never hand-edit them, `src/generated/`, or `icon-manifest.json`; change the
+inputs and rerun. A missing or flawed outline belongs upstream in Lucide. The upgrade procedure is
+in [docs/lucide.md](docs/lucide.md), the review process in [docs/visual-qa.md](docs/visual-qa.md),
+and conventions in [docs/contributing.md](docs/contributing.md).
 
 ## Releases
 
-The package version remains `1.0.4`; this phase adds quality gates, not a change to publishing policy.
-The existing workflows patch-bump PRs and publish on merge to `main`. Keep foundation-only work off
-`main` until the major release is prepared, or it could ship as an incompatible 1.x patch. Read
-[docs/releases.md](docs/releases.md) before any release work.
+The package version remains `1.0.4`. The existing workflows patch-bump PRs and publish on merge to
+`main`. Keep 2.0 off `main` until the major release is prepared, or it could ship as an
+incompatible 1.x patch. Read [docs/releases.md](docs/releases.md) before any release work.
 
 ## License
 
-MIT © Qeet Group. See [LICENSE](./LICENSE).
+The package code is MIT © Qeet Group. The icon artwork, the derived filled drawings, and the
+generated components are based on [Lucide](https://lucide.dev), ISC © Lucide Icons and
+Contributors; some Lucide icons derive from Feather, MIT © Cole Bemis. Both licenses are in
+[LICENSE](./LICENSE).

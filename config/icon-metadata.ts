@@ -1,41 +1,57 @@
+import type { LucideData } from "../scripts/lib/lucide.js";
 import type { IconDirectionality } from "../src/types/icon.js";
+import lucideJson from "./lucide.json";
 
-export type IconMetadataOverride = {
-  readonly directionality: IconDirectionality;
+/** Catalogue metadata for one icon name. Every field is optional. */
+export type IconMetadata = {
+  /** Defaults to `iconSystem.architecture.defaultDirectionality` ("preserve"). */
+  readonly directionality?: IconDirectionality;
+  /** Every category the icon belongs to; the first must be its source folder. */
+  readonly categories?: readonly string[];
+  /** Search keywords. */
+  readonly tags?: readonly string[];
+  /** Earlier names, for search and migration. Never exported. */
+  readonly aliases?: readonly string[];
 };
 
+const lucide: LucideData = lucideJson;
+
 /**
- * Authored exceptions to derived icon metadata, keyed by canonical icon name.
- *
- * Name, variant, category, and component names all come from the source path. Directionality
- * defaults to `iconSystem.architecture.defaultDirectionality` ("preserve"); list a concept here
- * only when it must differ, for example `"arrow-back": { directionality: "mirror" }`. One entry
- * covers every variant of that name. An entry for a name with no source fails validation, so a
- * rename or removal cannot leave stale metadata behind. See docs/rtl.md before adding one.
+ * Semantic concepts that follow reading direction in RTL (docs/rtl.md). Physical directions such
+ * as arrow-left, chevron-right, corner-*, and panel-left-* keep the default "preserve".
  */
-export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = {
-  // Semantic concepts that follow reading direction (docs/rtl.md). Physical directions such as
-  // arrow-left, chevron-right, and corner-* keep the default "preserve".
-  undo: { directionality: "mirror" },
-  redo: { directionality: "mirror" },
-  "arrow-back": { directionality: "mirror" },
-  "arrow-forward": { directionality: "mirror" },
-  "sidebar-open": { directionality: "mirror" },
-  "sidebar-close": { directionality: "mirror" },
-  "log-in": { directionality: "mirror" },
-  "log-out": { directionality: "mirror" },
-  enter: { directionality: "mirror" },
-  exit: { directionality: "mirror" },
-  // A progress bar fills from the reading start.
-  progress: { directionality: "mirror" },
-  // "Act as" another user: the arrow enters the person like log-in.
-  impersonate: { directionality: "mirror" },
-  send: { directionality: "mirror" },
-  reply: { directionality: "mirror" },
-  "reply-all": { directionality: "mirror" },
+const mirrored = [
+  "undo",
+  "undo-2",
+  "undo-dot",
+  "redo",
+  "redo-2",
+  "redo-dot",
+  "reply",
+  "reply-all",
+  "message-square-reply",
   // Forwarding a message, not media fast-forward.
-  forward: { directionality: "mirror" },
-  // Moving into or out of a group at the reading start or end, like log-in and log-out.
-  join: { directionality: "mirror" },
-  leave: { directionality: "mirror" },
+  "forward",
+  "send",
+  "send-horizontal",
+  "log-in",
+  "log-out",
+  // Text-relative: indentation and start/end alignment follow reading direction.
+  "list-indent-increase",
+  "list-indent-decrease",
+  "text-align-start",
+  "text-align-end",
+];
+
+/**
+ * Metadata keyed by canonical icon name: Lucide's categories, tags, and aliases for every synced
+ * icon (config/lucide.json), plus the RTL policy above. Name, variant, and component names come
+ * from the source path. A mirrored name with no source still gets an entry, so validation reports
+ * it instead of silently dropping it. See docs/rtl.md before adding one.
+ */
+export const iconMetadata: Readonly<Record<string, IconMetadata>> = {
+  ...lucide.icons,
+  ...Object.fromEntries(
+    mirrored.map((name) => [name, { ...lucide.icons[name], directionality: "mirror" as const }]),
+  ),
 };

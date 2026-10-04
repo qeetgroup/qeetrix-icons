@@ -78,7 +78,10 @@ export const emptyFilter: CatalogueFilter = {
   directionality: "all",
 };
 
-/** Case-insensitive search over id, name, component name, and category; then the filters. */
+/**
+ * Case-insensitive search over id, name, component name, categories, tags, and aliases; then the
+ * filters. A category filter matches every icon listed under that category, not only its folder.
+ */
 export function filterIcons(
   icons: readonly CatalogueIcon[],
   filter: CatalogueFilter,
@@ -87,10 +90,16 @@ export function filterIcons(
   return icons.filter(
     (icon) =>
       (!query ||
-        [icon.id, icon.name, icon.componentName, icon.category, icon.categoryLabel].some((field) =>
-          field.toLowerCase().includes(query),
-        )) &&
-      (!filter.category || icon.category === filter.category) &&
+        [
+          icon.id,
+          icon.name,
+          icon.componentName,
+          icon.categoryLabel,
+          ...icon.categories,
+          ...icon.tags,
+          ...icon.aliases,
+        ].some((field) => field.toLowerCase().includes(query))) &&
+      (!filter.category || icon.categories.includes(filter.category)) &&
       (filter.variant === "all" ||
         (filter.variant === "default-only"
           ? icon.variants.length === 1
@@ -99,12 +108,12 @@ export function filterIcons(
   );
 }
 
-/** Every configured category, in configured order, with its icon count. */
+/** Every configured category, in configured order, with the number of icons listed under it. */
 export function categoryOptions(icons: readonly CatalogueIcon[]) {
   return categories.map(({ id, label }) => ({
     id,
     label,
-    count: icons.filter((icon) => icon.category === id).length,
+    count: icons.filter((icon) => icon.categories.includes(id)).length,
   }));
 }
 

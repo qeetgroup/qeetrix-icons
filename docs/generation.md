@@ -1,14 +1,14 @@
 # Generation
 
-One command turns validated production SVG into everything the package publishes: one React 19
-component per icon concept, the root export barrel, and the icon manifest. Phase 2C built the component
-pipeline; Phase 2D added the barrel, manifest, and authored metadata. There are still zero
-production icons, so today generation writes an empty barrel and an empty manifest. The consumer
-contract is in [api.md](api.md).
+One command turns validated source SVG into everything the package publishes: one React 19
+component per icon concept, the root export barrel, and the icon manifest. The sources are the
+Lucide outlines ([lucide.md](lucide.md)) and the derived filled drawings
+([filled.md](filled.md)); generation treats both alike. The consumer contract is in
+[api.md](api.md).
 
 ```text
-icons/<variant>/<category>/<name>.svg   +   config/icon-metadata.ts
-        -> scan + validate (Phase 2B)         one validator, shared with check:icons
+icons/<variant>/<category>/<name>.svg   +   config/icon-metadata.ts (from config/lucide.json)
+        -> scan + validate                    one validator, shared with check:icons
         -> group drawings by concept          outline required, filled optional
         -> one in-memory plan                 all-or-nothing
             -> src/generated/icons/<id>.tsx   one component per concept, typed variant union
@@ -17,9 +17,10 @@ icons/<variant>/<category>/<name>.svg   +   config/icon-metadata.ts
             -> icon-manifest.json             the same manifest, for repository tooling
 ```
 
-**Design happens in `icons/`. Everything under `src/generated/`, and `icon-manifest.json`, is
-generated: never edit them by hand.** Change the SVG or the metadata and regenerate. Deleting the
-generated files and regenerating recreates byte-identical files.
+**Everything under `src/generated/`, and `icon-manifest.json`, is generated: never edit them by
+hand.** The sources are written by tools too (`sync:lucide` and `derive:filled`); change their
+inputs, rerun them, and regenerate. Deleting the generated files and regenerating recreates
+byte-identical files.
 
 ## Commands
 
@@ -30,47 +31,49 @@ bun run check:generated   # prove every generated file matches source; writes no
 ```
 
 `generate` validates every source and the metadata before writing anything. Any error aborts with
-the Phase 2B diagnostics and exit status 1, and no generated file is changed:
+the validation diagnostics and exit status 1, and no generated file is changed:
 
 ```text
-QXI-XML-001 "icons/outline/actions/example.svg"
+QXI-XML-001 "icons/outline/files/example.svg"
   Malformed XML: ...
 Generation aborted: icon validation failed with 1 error(s). No generated files were changed.
 ```
 
-On an up-to-date tree, both commands succeed:
+On an up-to-date tree, `generate` reports the source files it validated (outline plus filled) and
+the components it generated (one per concept), and writes nothing:
 
 ```text
-Validated 12 production icons.
-Generated 12 React icon components, the root exports, and the manifest (0 files written, 0 stale removed).
+Validated <sources> production icons.
+Generated <concepts> React icon components, the root exports, and the manifest (0 files written, 0 stale removed).
 ```
 
 `check:generated` regenerates in memory and compares bytes with what is on disk. It reports a
 missing, edited, or out-of-date component, barrel, manifest module, or manifest JSON, and any stale
 file in `src/generated/`, then exits 1. It does not use Git, so it works in any checkout or
 extracted copy. Generated files are committed, so the build compiles them like any other source;
-it does not regenerate. CI and the release gate run `check:icons` and `check:generated` before
-the build. Both CLIs, like `check:icons`, are anchored to this repository rather than the working
-directory.
+it does not regenerate. CI and the release gate run `check:icons`, `check:filled`, and
+`check:generated` before the build. All of these CLIs are anchored to this repository rather than
+the working directory.
 
 ## Pipeline responsibilities
 
 | Step | Module | Responsibility |
 |:--|:--|:--|
 | Scan | [validate-repository.ts](../scripts/check/validate-repository.ts) `scanIconSources` | Read `icons/` without following links; the same scanner `check:icons` uses |
-| Validate | `validateSources` (Phase 2B) | The only source of SVG, naming, collision, and metadata rules |
+| Validate | `validateSources` | The only source of SVG, naming, collision, and metadata rules |
 | Transform | [svg-to-react.ts](../scripts/lib/svg-to-react.ts) | Parse validated XML into a React-named element tree |
 | Render components | [component-source.ts](../scripts/lib/component-source.ts) | Print each component module, already Biome-formatted |
 | Render package files | [package-sources.ts](../scripts/lib/package-sources.ts) | Print the barrel, manifest module, and manifest JSON |
 | Plan | [generation-plan.ts](../scripts/lib/generation-plan.ts) | Group drawings into concepts once, and build every file from those concepts |
 | Write / verify | [generated-output.ts](../scripts/lib/generated-output.ts) | Safe preflight, then write and clean, or compare without writing |
 
-The plan holds one entry per concept: its name and public id, component name, category,
-directionality, output path, and its validated source drawings in configured variant order, plus
-every file's contents. It is internal tooling data; the manifest is its public projection. The
-grouping happens once, so components, barrel, and manifest cannot disagree.
+The plan holds one entry per concept: its name and public id, component name, category and
+categories, directionality, tags, aliases, output path, and its validated source drawings in
+configured variant order, plus every file's contents. It is internal tooling data; the manifest is
+its public projection. The grouping happens once, so components, barrel, and manifest cannot
+disagree.
 
-Diagnostics extend the Phase 2B codes:
+Diagnostics extend the validation codes in [validation.md](validation.md#diagnostics):
 
 | Rule | Meaning |
 |:--|:--|
@@ -81,9 +84,9 @@ Diagnostics extend the Phase 2B codes:
 ## Concepts, names, paths, and metadata
 
 ```text
-icons/outline/status/star.svg   (required)
-icons/filled/status/star.svg    (optional, separately drawn)
-        -> one concept: star, category status, variants outline | filled
+icons/outline/account/star.svg   (required)
+icons/filled/account/star.svg    (optional, derived from the outline)
+        -> one concept: star, category account, variants outline | filled
         -> src/generated/icons/star.tsx  exporting StarIcon(props: IconProps<"outline" | "filled">)
 ```
 
@@ -99,11 +102,13 @@ icons/filled/status/star.svg    (optional, separately drawn)
 - **Flat output**: one module per concept at `src/generated/icons/<id>.tsx`, so the `./icons/*`
   package export maps straight onto it without exposing layout, and a category move changes no
   generated path. Each header names its source SVGs.
-- **Category** comes from the source path. **Directionality** defaults to
-  `iconSystem.architecture.defaultDirectionality` ("preserve") and can be overridden per concept
-  in [config/icon-metadata.ts](../config/icon-metadata.ts), which the CLIs pass to the plan (library
-  functions default to no metadata). It is never inferred from a filename.
-  One entry covers every drawing of a concept, and an entry for a missing name fails validation.
+- **Category** comes from the source path. The rest comes from
+  [config/icon-metadata.ts](../config/icon-metadata.ts), which the CLIs pass to the plan (library
+  functions default to no metadata): **categories** (default: just the source folder), **tags**
+  and **aliases** (default: none), and **directionality** (default:
+  `iconSystem.architecture.defaultDirectionality`, "preserve"). Directionality is never inferred
+  from a filename. One entry covers every drawing of a concept, and an entry for a missing name
+  fails validation.
 
 ## Conversion rules
 
@@ -111,12 +116,13 @@ Generation converts; it does not redraw or optimize. There is no SVGO step.
 
 - **Geometry is verbatim.** Every value keeps its exact source text, so precision never changes,
   and child elements keep their drawing order. Nothing is merged, removed, or rewritten.
-- **Comments, whitespace, and the XML declaration are dropped.** They do not render.
+- **Comments, whitespace, and the XML declaration are dropped.** They do not render; this
+  includes the `Derived from` comment at the top of each filled source.
 - **Attribute names use one explicit table**, for example `stroke-width` to `strokeWidth`,
   `fill-rule` to `fillRule`, `clip-rule` to `clipRule`, and `class` to `className`. An attribute
   without an entry fails generation rather than leaking an invalid JSX name. The table only
   decides spelling: `clip-rule` and `class` are mapped but still rejected by validation.
-- **Values are always JSX string literals**, such as `strokeWidth="1.75"`, never `{1.75}`, so the
+- **Values are always JSX string literals**, such as `strokeWidth="2"`, never `{2}`, so the
   source text is preserved exactly. A value that a string literal cannot carry verbatim fails.
 - **Attributes are sorted by React name.** Authoring-tool attribute order is not meaningful in SVG,
   so it cannot change generated output.
@@ -126,11 +132,11 @@ Generation converts; it does not redraw or optimize. There is no SVGO step.
 
 ## Generated files
 
-An outline-only concept, from synthetic geometry at `icons/outline/actions/fixture.svg`, renders its
-one drawing with no branch:
+An outline-only concept, from synthetic geometry at `icons/outline/arrows/fixture.svg`, renders
+its one drawing with no branch:
 
 ```tsx
-// Generated by @qeetrix/icons from icons/outline/actions/fixture.svg.
+// Generated by @qeetrix/icons from icons/outline/arrows/fixture.svg.
 // Do not edit this file directly. Edit the source SVG and run `bun run generate`.
 
 import { resolveIconProps } from "../../runtime/resolve-icon-props.js";
@@ -143,7 +149,7 @@ export function FixtureIcon(props: IconProps<"outline">) {
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="1.75"
+      strokeWidth="2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       {...resolveIconProps(props)}
@@ -188,14 +194,16 @@ export { FixtureStarIcon } from "./icons/fixture-star.js";
 - One named function export per concept; no default export, no `forwardRef`, no `displayName`
   (the function name already identifies it), and no `"use client"`. Icons are pure and work in
   Server Components, Client Components, and SSR.
-- Each drawing keeps its own authored root attributes and geometry; nothing is shared or derived
-  between outline and filled.
+- Each drawing keeps its own source root attributes and geometry; generation shares nothing
+  between outline and filled. Filled sources were derived from outlines earlier, by
+  `derive:filled`; by the time generation reads them they are ordinary sources.
 - The barrel contains only static re-exports, one per concept, ordered by public id. The
   hand-written [src/index.ts](../src/index.ts) re-exports it alongside the public types, so humans
   keep ownership of the root while generation owns the icon list.
 - The manifest module and JSON hold identical data, one entry per concept; see
-  [api.md](api.md#manifest) for the schema. Each entry is printed expanded, so adding an icon is a
-  small, readable diff.
+  [api.md](api.md#manifest) for the schema. Each entry is printed expanded, with short arrays on
+  one line and long ones, such as many tags, one item per line, exactly as Biome would print them.
+  Adding an icon is a small, readable diff.
 - Directionality is metadata only. Geometry is never mirrored and no `-rtl` names exist.
 
 ## Runtime decision
@@ -221,7 +229,8 @@ behavior are documented in [api.md](api.md#props) and [accessibility.md](accessi
 ## Determinism and safety
 
 - The barrel is ordered by public id in codepoint order; the manifest by configured category, then
-  name; drawings within a concept, and its `variants`, by configured variant order. Nothing depends on filesystem enumeration order.
+  name; drawings within a concept, and its `variants`, by configured variant order. Nothing depends
+  on filesystem enumeration order.
 - No timestamps, absolute paths, Git data, machine data, random values, or environment values. LF
   newlines only.
 - Every file is printed directly in Biome's format, so `generate` leaves it ready. Tests prove
@@ -240,7 +249,8 @@ Two Biome overrides apply to generated code only. `organizeImports` is off for `
 because the generator defines a deterministic codepoint order that Biome's natural sort would
 reorder. `noSvgWithoutTitle` is off for `src/generated/icons/**`, because accessibility is
 resolved at runtime and source SVG may not contain `<title>`. Formatting and every other lint rule
-still apply, and `.gitattributes` marks the generated files so GitHub collapses their diffs.
+still apply, and `.gitattributes` marks the generated files so GitHub collapses their diffs. The
+SVG sources in `icons/` are outside Biome.
 
 ## Package boundary
 
@@ -249,6 +259,6 @@ The generator, validator, plan, metadata config, and filesystem helpers live in 
 and `./package.json`; the runtime helper and the generated barrel compile into `dist/` but cannot
 be imported directly. See [api.md](api.md#entry-points).
 
-## Not in this pipeline yet
+## Not in this pipeline
 
-No Storybook catalogue, search aliases or keywords, Qeetrix UI integration, or SVG optimization.
+No Storybook catalogue, Qeetrix UI integration, or SVG optimization.

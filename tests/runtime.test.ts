@@ -66,7 +66,7 @@ const rootAttributes = (props: IconProps = {}) => {
 
 describe("shared runtime contract", () => {
   it("matches the internal icon-system defaults it cannot import", () => {
-    expect(runtime.defaultIconSize).toBe(iconSystem.calibration.defaultSize);
+    expect(runtime.defaultIconSize).toBe(iconSystem.design.defaultSize);
     const decorative = runtime.resolveIconProps({});
     expect(decorative["aria-hidden"]).toBe(
       iconSystem.architecture.accessibility.decorativeByDefault,
@@ -101,7 +101,7 @@ describe("shared runtime contract", () => {
 describe("variant selection", () => {
   it("renders outline by default and identically for an explicit outline", () => {
     expect(render()).toBe(
-      `<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" aria-hidden="true">${outlineGeometry}</svg>`,
+      `<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" aria-hidden="true">${outlineGeometry}</svg>`,
     );
     expect(render({ variant: "outline" })).toBe(render());
   });

@@ -27,11 +27,27 @@ export function renderBarrel(exports: readonly BarrelExport[]): string {
   return [...header, ...(lines.length > 0 ? lines : ["export {};"]), ""].join("\n");
 }
 
-/** A manifest value: strings quoted, the short `variants` list kept on one line as Biome does. */
+/** East Asian wide characters and default-emoji-presentation code points: two columns each. */
+const wideCharacter =
+  /[\p{Emoji_Presentation}\u1100-\u115F\u2E80-\u303E\u3041-\u33FF\u3400-\u4DBF\u4E00-\u9FFF\uA000-\uA4CF\uAC00-\uD7A3\uF900-\uFAFF\uFE30-\uFE4F\uFF00-\uFF60\uFFE0-\uFFE6]/u;
+
+/**
+ * Display width as Biome measures it, one code point at a time: combining marks, variation
+ * selectors, and joiners take no column, wide characters take two. Lucide tags include emoji
+ * such as "🏊‍♂️", whose UTF-16 length overstates their width.
+ */
+function textWidth(text: string): number {
+  let width = 0;
+  for (const character of text) {
+    if (/[\p{Mn}\p{Me}\p{Cf}]/u.test(character)) continue;
+    width += wideCharacter.test(character) ? 2 : 1;
+  }
+  return width;
+}
+
+/** A scalar manifest value, quoted. */
 function value(entry: unknown): string {
-  return Array.isArray(entry)
-    ? `[${entry.map((item) => JSON.stringify(item)).join(", ")}]`
-    : JSON.stringify(entry);
+  return JSON.stringify(entry);
 }
 
 /**
@@ -40,7 +56,30 @@ function value(entry: unknown): string {
  */
 function property(key: string, value: string): string {
   const flat = `      ${key}: ${value},`;
-  return flat.length <= lineWidth || key.length < 5 ? flat : `      ${key}:\n        ${value},`;
+  return textWidth(flat) <= lineWidth || key.length < 5 ? flat : `      ${key}:\n        ${value},`;
+}
+
+/**
+ * One array-valued manifest property, as Biome prints it in both the module and the JSON: on one
+ * line when it fits (trailing comma included), otherwise one item per line. `last` follows the
+ * closing bracket; the module also puts a trailing comma after the final item, JSON does not.
+ */
+function arrayProperty(
+  key: string,
+  items: readonly unknown[],
+  { last, trailingItemComma }: { last: string; trailingItemComma: boolean },
+): string {
+  const quoted = items.map((item) => JSON.stringify(item));
+  const flat = `      ${key}: [${quoted.join(", ")}]${last}`;
+  if (textWidth(flat) <= lineWidth) return flat;
+  return [
+    `      ${key}: [`,
+    ...quoted.map(
+      (item, index) =>
+        `        ${item}${index < quoted.length - 1 || trailingItemComma ? "," : ""}`,
+    ),
+    `      ]${last}`,
+  ].join("\n");
 }
 
 /**
@@ -51,7 +90,11 @@ export function renderManifestModule(manifest: IconManifest): string {
   const entries = manifest.icons.map((entry) =>
     [
       "    {",
-      ...Object.entries(entry).map(([key, field]) => property(key, value(field))),
+      ...Object.entries(entry).map(([key, field]) =>
+        Array.isArray(field)
+          ? arrayProperty(key, field, { last: ",", trailingItemComma: true })
+          : property(key, value(field)),
+      ),
       "    },",
     ].join("\n"),
   );
@@ -69,18 +112,22 @@ export function renderManifestModule(manifest: IconManifest): string {
 
 /**
  * `icon-manifest.json`: the same data for repository and non-JavaScript tooling, printed like the
- * module (entries expanded, `variants` inline) so Biome leaves it unchanged.
+ * module (entries expanded, short arrays inline) so Biome leaves it unchanged.
  */
 export function renderManifestJson(manifest: IconManifest): string {
-  const entries = manifest.icons.map((entry) =>
-    [
+  const entries = manifest.icons.map((entry) => {
+    const fields = Object.entries(entry);
+    return [
       "    {",
-      Object.entries(entry)
-        .map(([key, field]) => `      ${JSON.stringify(key)}: ${value(field)}`)
-        .join(",\n"),
+      ...fields.map(([key, field], index) => {
+        const last = index < fields.length - 1 ? "," : "";
+        return Array.isArray(field)
+          ? arrayProperty(JSON.stringify(key), field, { last, trailingItemComma: false })
+          : `      ${JSON.stringify(key)}: ${value(field)}${last}`;
+      }),
       "    }",
-    ].join("\n"),
-  );
+    ].join("\n");
+  });
   return [
     "{",
     `  "schemaVersion": ${manifest.schemaVersion},`,

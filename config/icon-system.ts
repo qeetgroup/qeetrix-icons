@@ -1,5 +1,8 @@
 import type { IconDirectionality, IconVariant } from "../src/types/icon.js";
 
+/** A drawing style: round is the package root, sharp is `@qeetrix/icons/sharp`. */
+export type IconStyle = "round" | "sharp";
+
 type IconSystemConfig = {
   readonly architecture: {
     readonly sourceFormat: "svg";
@@ -7,6 +10,8 @@ type IconSystemConfig = {
     readonly viewBox: `${number} ${number} ${number} ${number}`;
     readonly defaultVariant: IconVariant;
     readonly variants: readonly IconVariant[];
+    readonly defaultStyle: IconStyle;
+    readonly styles: readonly IconStyle[];
     readonly defaultDirectionality: IconDirectionality;
     readonly color: "currentColor";
     readonly accessibility: {
@@ -14,7 +19,7 @@ type IconSystemConfig = {
       readonly focusable: boolean;
     };
   };
-  readonly calibration: {
+  readonly design: {
     readonly defaultSize: number;
     readonly recommendedSizes: readonly number[];
     readonly strokeWidth: number;
@@ -22,23 +27,33 @@ type IconSystemConfig = {
     readonly linecap: "butt" | "round" | "square";
     readonly linejoin: "miter" | "round" | "bevel";
     readonly safeAreaInset: number;
+    readonly sharp: {
+      readonly linecap: "butt" | "round" | "square";
+      readonly linejoin: "miter" | "round" | "bevel";
+      readonly miterLimit: number;
+    };
   };
 };
 
 /**
  * Internal design contract, not a package export or a React props definition.
- * Architecture is stable. All calibration values are CALIBRATION REQUIRED.
- * Safe-area inset measures canvas edge to painted bounds, including stroke.
+ * Outline artwork is Lucide's (config/lucide.json pins the release), so `design` restates Lucide's
+ * own drawing rules rather than choosing new ones: a 24-unit grid, a 2-unit round stroke, and a
+ * 1-unit padding. Safe-area inset measures canvas edge to painted bounds, including stroke.
  */
 export const iconSystem = {
   architecture: {
     sourceFormat: "svg",
     grid: { width: 24, height: 24 },
     viewBox: "0 0 24 24",
-    // Stable public API, not calibration: the drawing an icon renders without a `variant` prop,
-    // and the one every concept must have.
+    // Stable public API: the drawing an icon renders without a `variant` prop, and the one every
+    // concept must have.
     defaultVariant: "outline",
     variants: ["outline", "filled"],
+    // Source folders are `icons/<style>-<variant>/`: round-outline, round-filled, sharp-outline,
+    // and sharp-filled. Every style has the same concepts and variants; round is the default.
+    defaultStyle: "round",
+    styles: ["round", "sharp"],
     defaultDirectionality: "preserve",
     color: "currentColor",
     accessibility: {
@@ -46,15 +61,23 @@ export const iconSystem = {
       focusable: false,
     },
   },
-  calibration: {
+  design: {
     defaultSize: 24,
     recommendedSizes: [14, 16, 20, 24, 32],
-    strokeWidth: 1.75,
-    // Widths compared side by side in the playground's stroke calibration view. Internal QA
-    // input only: validation and generation use `strokeWidth`, never these.
+    strokeWidth: 2,
+    // Widths compared side by side in the playground's stroke view. Callers can render any of them
+    // with the `strokeWidth` prop; validation and filled derivation use `strokeWidth` only.
     strokeCandidates: [1.5, 1.75, 2],
     linecap: "round",
     linejoin: "round",
-    safeAreaInset: 2,
+    safeAreaInset: 1,
+    // The sharp style (`@qeetrix/icons/sharp`): the same geometry with square caps, mitered joins,
+    // and corner roundings squared off. A miter limit of 2 bevels joins sharper than 60°, so no
+    // spike reaches past the padding.
+    sharp: {
+      linecap: "square",
+      linejoin: "miter",
+      miterLimit: 2,
+    },
   },
 } as const satisfies IconSystemConfig;

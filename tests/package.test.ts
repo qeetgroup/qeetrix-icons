@@ -26,6 +26,23 @@ import { apiFixtureMetadata, apiFixtures, writeFixture } from "./helpers.js";
 const PKG = join(import.meta.dirname, "..");
 /** The real production concepts, packed alongside the synthetic fixtures. */
 const production = iconManifest.icons;
+/**
+ * Concepts proved one by one against the tarball. Every concept goes through the same generator,
+ * so a fixed sample stands for all of them: per category, the first concept and the first with a
+ * filled drawing, plus names that stress the PascalCase conversion. Spawning Node and bundling
+ * once per concept for all of them would take most of an hour.
+ */
+const sampled = [
+  ...new Set(
+    [
+      ...[...new Set(production.map(({ category }) => category))].flatMap((category) => {
+        const inCategory = production.filter((icon) => icon.category === category);
+        return [inCategory[0], inCategory.find(({ variants }) => variants.includes("filled"))];
+      }),
+      ...production.filter(({ id }) => ["clock-12", "type-outline", "a-arrow-down"].includes(id)),
+    ].filter((icon) => icon !== undefined),
+  ),
+];
 const generatedSource = (id: string) =>
   readFileSync(join(PKG, "src/generated/icons", `${id}.tsx`), "utf8");
 /** Each real concept's path data, read from its generated module; distinctive enough to exclude. */
@@ -40,6 +57,30 @@ const geometry = new Map(
  * literally; shape elements without path data (dot grids, for example) are matched by their
  * attribute values in order, whatever the quoting: `cx="6" cy="12"` and `cx:"6",cy:"12"` both match.
  */
+function tracesOf(source: string): RegExp[] {
+  const shapes = [...source.matchAll(/<(?:circle|ellipse|rect|line)\b([^>]*?)\/>/g)];
+  const shapePatterns = shapes.map(
+    ([, attributes]) =>
+      new RegExp(
+        // Generated elements list attributes in codepoint order, so the render does too.
+        [...attributes.matchAll(/(\w+)="([^"]+)"/g)]
+          .sort(([, left], [, right]) => (left < right ? -1 : left > right ? 1 : 0))
+          .map(([, name, value]) => `${name}\\W+${value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`)
+          .join("\\W+"),
+      ),
+  );
+  const pathPatterns = [...source.matchAll(/\b(?:d|points)="([^"]+)"/g)].map(
+    ([, value]) => new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+  );
+  return [...pathPatterns, ...shapePatterns];
+}
+/** The default (outline) drawing's patterns, read from its source SVG: what a default render shows. */
+const outlineTraces = new Map(
+  production.map(({ id, category }) => [
+    id,
+    tracesOf(readFileSync(join(PKG, "icons/round-outline", category, `${id}.svg`), "utf8")),
+  ]),
+);
 const traces = new Map(
   production.map(({ id }) => {
     const shapes = [...generatedSource(id).matchAll(/<(?:circle|ellipse|rect|line)\b([^>]*?)\/>/g)];
@@ -94,8 +135,13 @@ beforeAll(() => {
     repository,
     "config/icon-metadata.ts",
     `import type { IconDirectionality } from "../src/types/icon.js";
-export type IconMetadataOverride = { readonly directionality: IconDirectionality };
-export const iconMetadata: Readonly<Record<string, IconMetadataOverride>> = ${JSON.stringify({ ...iconMetadata, ...apiFixtureMetadata })};
+export type IconMetadata = {
+  readonly directionality?: IconDirectionality;
+  readonly categories?: readonly string[];
+  readonly tags?: readonly string[];
+  readonly aliases?: readonly string[];
+};
+export const iconMetadata: Readonly<Record<string, IconMetadata>> = ${JSON.stringify({ ...iconMetadata, ...apiFixtureMetadata })};
 `,
   );
   run("bun", ["scripts/build/generate-icons.ts"], repository);
@@ -176,7 +222,7 @@ describe("packed @qeetrix/icons", () => {
       }));
     `) as Record<string, unknown>;
     const outline =
-      '<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" focusable="false" aria-hidden="true"><circle cx="12" cy="12" r="6.25"></circle></svg>';
+      '<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" focusable="false" aria-hidden="true"><circle cx="12" cy="12" r="6.25"></circle></svg>';
     expect(result).toEqual({
       root: [
         "FixtureArrowIcon",
@@ -197,9 +243,10 @@ describe("packed @qeetrix/icons", () => {
       ],
       production,
     });
-  });
+    // Imports every production concept through three entry points.
+  }, 60_000);
 
-  it.each(production.map(({ id, componentName }) => [id, componentName]))(
+  it.each(sampled.map(({ id, componentName }) => [id, componentName]))(
     "serves production concept %s from the root and its direct subpath",
     (id, componentName) => {
       const result = node(`
@@ -217,7 +264,8 @@ describe("packed @qeetrix/icons", () => {
       expect(result.markup).toBe(result.outline);
       expect(result.markup).toContain('stroke="currentColor"');
       expect(result.markup).not.toContain("variant");
-      for (const pattern of traces.get(id) ?? []) expect(result.markup).toMatch(pattern);
+      expect(outlineTraces.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
+      for (const pattern of outlineTraces.get(id) ?? []) expect(result.markup).toMatch(pattern);
     },
   );
 
@@ -232,8 +280,8 @@ describe("packed @qeetrix/icons", () => {
       "@qeetrix/icons/dist/index.js",
       "@qeetrix/icons/icon-manifest.json",
       "@qeetrix/icons/actions",
-      "@qeetrix/icons/icons/status/fixture-star",
-      "@qeetrix/icons/icons/outline/status/fixture-star",
+      "@qeetrix/icons/icons/shapes/fixture-star",
+      "@qeetrix/icons/icons/round-outline/shapes/fixture-star",
       "@qeetrix/icons/icons/fixture-search.js",
       "@qeetrix/icons/icons/fixture-star-filled",
       "@qeetrix/icons/icons/../runtime/resolve-icon-props",
@@ -297,7 +345,7 @@ import { type IconManifest, type IconManifestEntry, iconManifest } from "@qeetri
 // @ts-expect-error runtime internals are not exported
 import { resolveIconProps } from "@qeetrix/icons/runtime/resolve-icon-props";
 // @ts-expect-error categories are not part of import paths
-import { FixtureStarIcon as ByCategory } from "@qeetrix/icons/icons/status/fixture-star";
+import { FixtureStarIcon as ByCategory } from "@qeetrix/icons/icons/shapes/fixture-star";
 // @ts-expect-error filled drawings have no subpath of their own
 import { FixtureStarFilledIcon as BySubpath } from "@qeetrix/icons/icons/fixture-star-filled";
 // @ts-expect-error filled drawings are a variant, never a separate export
@@ -390,7 +438,7 @@ export const usage = [
     expect(manifestOnly).not.toMatch(/3\.125|6\.25|aria-hidden|viewBox/);
   });
 
-  it.each(production.map(({ id, componentName }) => [id, componentName]))(
+  it.each(sampled.map(({ id, componentName }) => [id, componentName]))(
     "tree-shakes production concept %s away from every other concept and the manifest",
     (id, componentName) => {
       writeFixture(
@@ -405,16 +453,28 @@ export const usage = [
       );
       expect(traces.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
       for (const pattern of traces.get(id) ?? []) expect(output).toMatch(pattern);
+      const own = new Set(geometry.get(id));
       for (const [other, values] of geometry) {
         if (other === id) continue;
         // Whole quoted attribute values: one icon's path may legitimately extend another's.
-        for (const value of values) expect(output, `${other} in ${id}`).not.toContain(`"${value}"`);
+        // Lucide reuses identical elements (a dot such as "M9 12h.01") across icons; those prove
+        // nothing about tree-shaking, so only geometry this concept doesn't share is checked.
+        for (const value of values) {
+          if (!own.has(value)) expect(output, `${other} in ${id}`).not.toContain(`"${value}"`);
+        }
       }
       for (const excluded of ["schemaVersion", "directionality", "fixture-"]) {
         expect(output, excluded).not.toContain(excluded);
       }
     },
   );
+
+  it("samples every category, with and without filled drawings", () => {
+    const categories = new Set(production.map(({ category }) => category));
+    expect(new Set(sampled.map(({ category }) => category))).toEqual(categories);
+    expect(sampled.some(({ variants }) => variants.includes("filled"))).toBe(true);
+    expect(sampled.length).toBeLessThan(100);
+  });
 
   it("leaves the production tree free of fixtures", () => {
     const files = readdirSync(join(PKG, "icons"), { encoding: "utf8", recursive: true });

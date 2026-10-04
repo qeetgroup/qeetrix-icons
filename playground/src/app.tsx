@@ -13,7 +13,7 @@ import {
   variantFilterOptions,
 } from "./catalogue.js";
 import { typefaces, useFontAvailability } from "./fonts.js";
-import { CalibrationStatus, Inspector, type InspectorTab } from "./inspector.js";
+import { DesignValues, Inspector, type InspectorTab } from "./inspector.js";
 import { Segmented, UiIcon, UiIconProvider } from "./ui.js";
 import {
   type Direction,
@@ -23,10 +23,8 @@ import {
   type UrlState,
 } from "./url-state.js";
 
-const { architecture, calibration } = iconSystem;
-const categoryDescriptions = new Map<string, string>(
-  categories.map(({ id, description }) => [id, description]),
-);
+const { architecture, design } = iconSystem;
+const categoryLabels = new Map<string, string>(categories.map(({ id, label }) => [id, label]));
 /** Browsing preview sizes. A local preference, not inspection state, so it stays out of the URL. */
 const gridSizes = ["16", "20", "24", "32"] as const;
 
@@ -94,14 +92,13 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
   const heading = filter.query.trim()
     ? `Results for “${filter.query.trim()}”`
     : filter.category
-      ? (catalogue.icons.find((icon) => icon.category === filter.category)?.categoryLabel ??
-        filter.category)
+      ? (categoryLabels.get(filter.category) ?? filter.category)
       : "All icons";
   const description = filter.query.trim()
-    ? "Matching names, component names, and categories."
+    ? "Matching names, component names, categories, tags, and earlier Lucide names."
     : filter.category
-      ? categoryDescriptions.get(filter.category)
-      : `${catalogue.icons.length} icons across ${categoryOptions(catalogue.icons).filter(({ count }) => count > 0).length} categories, drawn on one ${architecture.grid.width}×${architecture.grid.height} grid.`;
+      ? `Every icon Lucide lists under ${categoryLabels.get(filter.category) ?? filter.category}.`
+      : `${catalogue.icons.length} Lucide icons across ${categoryOptions(catalogue.icons).filter(({ count }) => count > 0).length} categories, drawn on one ${architecture.grid.width}×${architecture.grid.height} grid.`;
 
   return (
     <UiIconProvider value={lookup}>
@@ -250,11 +247,11 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
                       <li>
                         {architecture.grid.width} × {architecture.grid.height} grid
                       </li>
-                      <li>{calibration.strokeWidth} stroke</li>
+                      <li>{design.strokeWidth} stroke</li>
                       <li>
-                        {calibration.linecap} caps · {calibration.linejoin} joins
+                        {design.linecap} caps · {design.linejoin} joins
                       </li>
-                      <li>{calibration.safeAreaInset}-unit safe area</li>
+                      <li>{design.safeAreaInset}-unit safe area</li>
                       <li>{architecture.color}</li>
                     </ul>
                   )}
@@ -444,23 +441,27 @@ function FontStatus() {
 function EmptyState() {
   return (
     <section className="empty">
-      <h1>No production icons yet</h1>
-      <p>The Qeetrix Icons foundation is ready. Calibration icons will be introduced in Phase 3.</p>
-      <h2>Review workflow</h2>
+      <h1>No icons yet</h1>
+      <p>Sync the outline icons from Lucide to populate the library.</p>
+      <h2>Workflow</h2>
       <ol>
         <li>
-          Author or update an SVG in <code>icons/&lt;variant&gt;/&lt;category&gt;/</code>.
+          Run <code>bun run sync:lucide &lt;version&gt;</code>. It writes{" "}
+          <code>icons/round-outline/</code>, derives <code>icons/round-filled/</code>, and
+          regenerates the components.
         </li>
         <li>
-          Run <code>bun run check:icons</code>, then <code>bun run generate</code>.
+          Inspect icons here: sizes, construction, stroke, surfaces, typography, RTL, variants.
         </li>
-        <li>Inspect it here: sizes, construction, stroke, surfaces, typography, RTL, variants.</li>
-        <li>Fix the SVG source and repeat. The playground never edits artwork.</li>
+        <li>
+          Adjust filled recipes in <code>config/filled.ts</code>, then run{" "}
+          <code>bun run derive:filled</code> and <code>bun run generate</code>.
+        </li>
       </ol>
       <p className="muted">
         {categories.length} categories configured. See <code>docs/visual-qa.md</code>.
       </p>
-      <CalibrationStatus />
+      <DesignValues />
     </section>
   );
 }

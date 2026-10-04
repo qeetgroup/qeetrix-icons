@@ -2,17 +2,16 @@
 
 What a version number means for an icon library, how a release happens, and how to undo one.
 
-## The 2.0 foundations and `main`
+## 2.0 and `main`
 
 > [!WARNING]
-> The repository is in Qeetrix Icons 2.0 calibration: the 1.x catalogue is gone and the root
-> exports only the 578 not-yet-reviewed 2.0 icons and the public types. `package.json` still carries
-> a 1.x version. Merged to `main` through the flow below, this could publish the incompatible 2.0
-> work as a **1.x patch release** on `latest`, and consumers on a `^1` range could receive it on
-> their next install.
+> This branch holds the unreleased 2.0: the 1.x catalogue is gone, and the root exports the 1,863
+> Lucide-based icons and the public types. `package.json` still carries a 1.x version. Merged to
+> `main` through the flow below, this could publish the incompatible 2.0 work as a **1.x patch
+> release** on `latest`, and consumers on a `^1` range could receive it on their next install.
 >
-> Keep the reset off `main` until 2.0 is ready to ship, and set `version` to `2.0.0` by hand when it
-> is. `release.yml` has no pre-release channel — it always publishes with the default dist-tag — so
+> Keep 2.0 off `main` until it is ready to ship, and set `version` to `2.0.0` by hand when it is.
+> `release.yml` has no pre-release channel — it always publishes with the default dist-tag — so
 > shipping 2.0 pre-releases would first need a change to that workflow.
 
 ## How a release happens
@@ -42,8 +41,8 @@ Release. The tag comes last on purpose: every `v*` tag is a version that really 
 property `qeet-id-server`'s deploy workflow maintains.
 
 Before publishing it runs the full gate: `lint`, `typecheck`, `test`, `check:icons`,
-`check:generated`, `build`. A
-merge that does not change the version publishes nothing and succeeds, so re-running is always safe.
+`check:filled`, `check:generated`, `build`. A merge that does not change the version publishes
+nothing and succeeds, so re-running is always safe.
 
 There is no `bun run release`. Releasing is merging.
 
@@ -66,38 +65,43 @@ change when the public API is a list of component names.
 
 | Change | Bump | Why |
 |:--|:--|:--|
-| New icon | **minor** | Additive. Nothing that compiled stops compiling. |
-| Visual correction to an existing icon | **patch** | The name and props are unchanged. |
+| New icon, or new filled drawing | **minor** | Additive. Nothing that compiled stops compiling. |
+| Visual change to an existing icon | **patch** | The name and props are unchanged. |
 | **Icon renamed** | **major** | A named export disappeared. Someone's build breaks. |
-| **Icon removed** | **major** | Same. |
+| **Icon or filled drawing removed** | **major** | Same. |
 | **Prop removed or retyped** | **major** | Same. |
 
-A visual correction is only a patch because it changes what renders without changing any API — the
-consumer gets a better glyph in the same place with the same props. It is still a real change, so say
-what moved and why in the PR: "redrew X; the old glyph read as Y at 16px" is worth more than a version
-number.
+A visual change is only a patch because it changes what renders without changing any API — the
+consumer gets a different glyph in the same place with the same props. It is still a real change, so
+say what moved and why in the PR: "Lucide 1.53 redrew X; Y's filled drawing re-derived" is worth
+more than a version number.
+
+### Lucide upgrades
+
+Most of what changes between releases comes from Lucide ([lucide.md](lucide.md#upgrading-lucide)).
+The sync's summary and the diff show which rows of the table above apply. New Lucide icons are a
+minor release and redrawn ones a patch, but a Lucide release that removes or renames an icon is a
+major release here: Lucide keeps the old name as an alias, and this package records aliases in the
+manifest without exporting them.
 
 ### Why renaming is expensive
 
-An icon's component name is its public API. The future
-`import { ArrowLeftIcon } from "@qeetrix/icons"` will be a compile-time contract, and renaming it
-would turn consuming builds red. No such component exists yet. Removing a filled drawing breaks
-`variant="filled"` the same way. [api.md](api.md#versioning) lists which changes are major.
+An icon's component name is its public API. `import { ArrowLeftIcon } from "@qeetrix/icons"` is a
+compile-time contract, and renaming it would turn consuming builds red. Removing a filled drawing
+breaks `variant="filled"` the same way. [api.md](api.md#versioning) lists which changes are major.
 
-**Do not rename an icon because a better name occurred to you.** Renaming is a major release, so get
-the name right when the icon lands. Removing an icon carries the same cost.
+Names are Lucide's, so this package never renames an icon on its own initiative. Upstream renames
+are the cost to plan for: batch them into a major release rather than shipping them as they come.
 
 ## Publishing setup
 
 `@qeetrix/icons` is already published; registry versions are separate from this branch's
-foundation-only implementation.
+unreleased 2.0.
 
-The following describes pre-existing release automation, not local development commands. Its
-registry lookup, publication, and rollback steps still use the npm CLI. Phases 2B and 2C add only
-the source-validation and generated-output quality gates; they do not run publishing or change its
-behavior. Reconciling
-release tooling with Bun-only development and defining 2.0 release readiness are separate release
-tasks; do not publish these foundations to test the flow.
+The following describes the release automation, not local development commands. Its registry
+lookup, publication, and rollback steps still use the npm CLI. Reconciling release tooling with
+Bun-only development and defining 2.0 release readiness are separate release tasks; do not publish
+2.0 to test the flow.
 
 Publishing needs one of these, and `release.yml` checks before trying:
 
