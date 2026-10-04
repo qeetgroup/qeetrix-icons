@@ -8,8 +8,9 @@ import { describe, expect, it } from "vitest";
 import { iconSystem } from "../config/icon-system.js";
 import { createGenerationPlan } from "../scripts/lib/generation-plan.js";
 import * as runtime from "../src/runtime/resolve-icon-props.js";
+import type { IconShape } from "../src/types/icon.js";
 import type { IconProps } from "../src/types/icon-props.js";
-import { apiFixtures } from "./helpers.js";
+import { apiFixtures, sharpApiFixtures } from "./helpers.js";
 
 const PKG = join(import.meta.dirname, "..");
 type Icon = (props: IconProps) => ReactElement<{ ref?: unknown }>;
@@ -49,13 +50,22 @@ function concept(sources: readonly { file: string; source: string }[]): Icon {
   return load(file.contents, icon.componentName);
 }
 
-/** Outline radius 6.25, filled radius 7.5: deliberately distinguishable drawings. */
-const FixtureStarIcon = concept(apiFixtures.filter(({ file }) => file.includes("fixture-star")));
-const FixtureSearchIcon = concept(
-  apiFixtures.filter(({ file }) => file.includes("fixture-search")),
-);
+const fixtures = [...apiFixtures, ...sharpApiFixtures];
+/**
+ * Round outline radius 6.25, round filled 7.5, sharp outline 6.875, sharp filled 8.125:
+ * deliberately distinguishable drawings.
+ */
+const FixtureStarIcon = concept(fixtures.filter(({ file }) => file.includes("fixture-star")));
+const FixtureSearchIcon = concept(fixtures.filter(({ file }) => file.includes("fixture-search")));
 const outlineGeometry = '<circle cx="12" cy="12" r="6.25"></circle>';
 const filledGeometry = '<circle cx="12" cy="12" r="7.5"></circle>';
+const geometry = {
+  round: { outline: outlineGeometry, filled: filledGeometry },
+  sharp: {
+    outline: '<circle cx="12" cy="12" r="6.875"></circle>',
+    filled: '<circle cx="12" cy="12" r="8.125"></circle>',
+  },
+} as const;
 
 const render = (props: IconProps = {}, Icon: Icon = FixtureStarIcon) =>
   renderToStaticMarkup(createElement(Icon, props));
@@ -87,14 +97,10 @@ describe("shared runtime contract", () => {
     }
   });
 
-  it("consumes size and variant, so neither reaches the DOM, and invents no props", () => {
-    expect(Object.keys(runtime.resolveIconProps({ size: 20, variant: "filled" })).sort()).toEqual([
-      "aria-hidden",
-      "focusable",
-      "height",
-      "role",
-      "width",
-    ]);
+  it("consumes size, shape, and variant, so none reaches the DOM, and invents no props", () => {
+    expect(
+      Object.keys(runtime.resolveIconProps({ size: 20, shape: "sharp", variant: "filled" })).sort(),
+    ).toEqual(["aria-hidden", "focusable", "height", "role", "width"]);
   });
 });
 
@@ -134,8 +140,51 @@ describe("variant selection", () => {
   });
 });
 
-describe.each(["outline", "filled"] as const)("%s drawing props", (variant) => {
-  const attributes = (props: IconProps = {}) => rootAttributes({ ...props, variant });
+describe("shape selection", () => {
+  const { sharp, strokeWidth } = iconSystem.design;
+  const sharpOutline = `<svg fill="none" stroke="currentColor" stroke-linecap="${sharp.linecap}" stroke-linejoin="${sharp.linejoin}" stroke-miterlimit="${sharp.miterLimit}" stroke-width="${strokeWidth}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" aria-hidden="true">${geometry.sharp.outline}</svg>`;
+
+  it("renders the round drawings by default and for an explicit round shape", () => {
+    for (const variant of ["outline", "filled"] as const) {
+      expect(render({ shape: "round", variant })).toBe(render({ variant }));
+      expect(render({ shape: "round", variant })).toContain(geometry.round[variant]);
+    }
+    expect(render({ shape: "round" })).toBe(render());
+  });
+
+  it("renders the sharp drawings for the sharp shape, in each variant", () => {
+    expect(render({ shape: "sharp" })).toBe(sharpOutline);
+    expect(render({ shape: "sharp", variant: "outline" })).toBe(sharpOutline);
+    expect(render({ shape: "sharp", variant: "filled" })).toBe(
+      `<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" focusable="false" aria-hidden="true">${geometry.sharp.filled}</svg>`,
+    );
+  });
+
+  it("never forwards shape to the DOM", () => {
+    for (const shape of ["round", "sharp"] as const) {
+      for (const variant of ["outline", "filled"] as const) {
+        expect(render({ shape, variant })).not.toMatch(/shape|variant/);
+      }
+      expect(render({ shape }, FixtureSearchIcon)).not.toMatch(/shape|variant/);
+    }
+  });
+
+  it("falls back to the default at runtime for a drawing the icon lacks (type errors in TypeScript)", () => {
+    expect(render({ shape: "square" as IconShape })).toBe(render());
+    expect(render({ shape: "sharp", variant: "filled" }, FixtureSearchIcon)).toBe(
+      render({ shape: "sharp" }, FixtureSearchIcon),
+    );
+    expect(render({ shape: "sharp" }, FixtureSearchIcon)).toContain('d="M 3.375 7 L 11 13"');
+  });
+});
+
+describe.each([
+  ["round", "outline"],
+  ["round", "filled"],
+  ["sharp", "outline"],
+  ["sharp", "filled"],
+] as const)("%s %s drawing props", (shape, variant) => {
+  const attributes = (props: IconProps = {}) => rootAttributes({ ...props, shape, variant });
 
   it.each([
     [{}, "24", "24"],
@@ -175,12 +224,10 @@ describe.each(["outline", "filled"] as const)("%s drawing props", (variant) => {
 
   it("passes the ref to the selected svg element as a React 19 prop", () => {
     const ref = createRef<SVGSVGElement>();
-    const element = FixtureStarIcon({ ref, variant });
+    const element = FixtureStarIcon({ ref, shape, variant });
     expect(element.type).toBe("svg");
     expect(element.props.ref).toBe(ref);
-    expect(renderToStaticMarkup(element)).toContain(
-      variant === "filled" ? filledGeometry : outlineGeometry,
-    );
+    expect(renderToStaticMarkup(element)).toContain(geometry[shape][variant]);
   });
 
   it.each<[string, IconProps, Record<string, string | undefined>]>([
@@ -233,6 +280,6 @@ describe.each(["outline", "filled"] as const)("%s drawing props", (variant) => {
   });
 
   it("never injects a title", () => {
-    expect(render({ "aria-label": "Starred", variant })).not.toContain("<title");
+    expect(render({ "aria-label": "Starred", shape, variant })).not.toContain("<title");
   });
 });

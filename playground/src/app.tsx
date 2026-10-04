@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { categories } from "../../config/categories.js";
 import { iconSystem } from "../../config/icon-system.js";
+import type { IconShape } from "../../src/types/icon.js";
 import {
   type Catalogue,
   type CatalogueFilter,
@@ -9,11 +10,13 @@ import {
   emptyFilter,
   filterIcons,
   selectedVariant,
+  shapeOptions,
   type VariantFilter,
   variantFilterOptions,
 } from "./catalogue.js";
 import { typefaces, useFontAvailability } from "./fonts.js";
 import { DesignValues, Inspector, type InspectorTab } from "./inspector.js";
+import { strokeStyle } from "./qa.js";
 import { Segmented, UiIcon, UiIconProvider } from "./ui.js";
 import {
   type Direction,
@@ -38,6 +41,7 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
   const lookup = useMemo(() => (id: string) => catalogue.byId.get(id)?.Component, [catalogue]);
   const selected = state.icon ? catalogue.byId.get(state.icon) : undefined;
   const variant = selected ? selectedVariant(selected, state.variant) : undefined;
+  const stroke = strokeStyle(state.shape);
   const update = (change: Partial<UrlState>) => setState((current) => ({ ...current, ...change }));
   const refine = (change: Partial<CatalogueFilter>) =>
     setFilter((current) => ({ ...current, ...change }));
@@ -118,7 +122,7 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
               type="search"
               aria-label="Search icons"
               value={filter.query}
-              placeholder={`Search ${catalogue.icons.length} icons by name, component, or category`}
+              placeholder={`Search ${catalogue.icons.length} icons by name, tag, category, or component`}
               onChange={(event) => refine({ query: event.target.value })}
               onKeyDown={(event) => {
                 if (event.key !== "Escape") return;
@@ -129,6 +133,12 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
             <kbd title="Press / to search">/</kbd>
           </label>
           <div className="topbar-controls">
+            <Segmented<IconShape>
+              label="Shape"
+              value={state.shape}
+              options={shapeOptions()}
+              onChange={(shape) => update({ shape })}
+            />
             <Segmented<Theme>
               label="Theme"
               value={state.theme}
@@ -249,7 +259,10 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
                       </li>
                       <li>{design.strokeWidth} stroke</li>
                       <li>
-                        {design.linecap} caps · {design.linejoin} joins
+                        {stroke.linecap} caps · {stroke.linejoin} joins
+                        {stroke.miterLimit === undefined
+                          ? ""
+                          : ` · miter limit ${stroke.miterLimit}`}
                       </li>
                       <li>{design.safeAreaInset}-unit safe area</li>
                       <li>{architecture.color}</li>
@@ -287,6 +300,7 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
               ) : filtered ? (
                 <IconGrid
                   icons={visible}
+                  shape={state.shape}
                   size={Number(gridSize)}
                   selectedId={selected?.id}
                   onSelect={(icon) => update({ icon })}
@@ -300,6 +314,7 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
                     </h2>
                     <IconGrid
                       icons={icons}
+                      shape={state.shape}
                       size={Number(gridSize)}
                       selectedId={selected?.id}
                       onSelect={(icon) => update({ icon })}
@@ -325,6 +340,7 @@ export function App({ catalogue }: { catalogue: Catalogue }) {
                 <Inspector
                   key={selected.id}
                   icon={selected}
+                  shape={state.shape}
                   variant={variant}
                   size={state.size}
                   direction={state.dir}
@@ -370,11 +386,13 @@ function groupByCategory(icons: readonly CatalogueIcon[]) {
 
 function IconGrid({
   icons,
+  shape,
   size,
   selectedId,
   onSelect,
 }: {
   icons: readonly CatalogueIcon[];
+  shape: IconShape;
   size: number;
   selectedId?: string;
   onSelect: (id: string) => void;
@@ -392,7 +410,7 @@ function IconGrid({
             onClick={() => onSelect(icon.id)}
           >
             <span className="tile-art">
-              <icon.Component size={size} />
+              <icon.Component shape={shape} size={size} />
             </span>
             <span className="tile-name">{icon.name}</span>
             {(icon.directionality === "mirror" || icon.variants.length > 1) && (
@@ -447,7 +465,8 @@ function EmptyState() {
       <ol>
         <li>
           Run <code>bun run sync:lucide &lt;version&gt;</code>. It writes{" "}
-          <code>icons/round-outline/</code>, derives <code>icons/round-filled/</code>, and
+          <code>icons/round-outline/</code>, derives <code>icons/round-filled/</code> and the sharp
+          drawings in <code>icons/sharp-outline/</code> and <code>icons/sharp-filled/</code>, and
           regenerates the components.
         </li>
         <li>

@@ -13,16 +13,22 @@ import { iconSystem } from "../../config/icon-system.js";
  * - `circle` with r ≤ 1, which a 2-unit stroke paints as a dot: a square `rect` of side 2r on the
  *   same center, keeping its fill.
  * - `path`: each corner rounding becomes the point where the tangents at its two ends meet. A
- *   corner rounding is a circular arc of radius ≤ 3 sweeping at most 90°, or a one-way cubic or
- *   quadratic turning 40°–140° whose chord and implied radius keep to the same limits; neighbouring
- *   roundings that carry one another on count as one, if they turn 90° or less in all. A rounding
- *   stays a curve when a neighbouring curve of similar curvature carries it on (two quarter arcs
- *   drawing a round end), when it meets a neighbour at an angle (a lens's sides), or when it is a
- *   whole open path that no other stroke in the icon continues (a circle cut by a slash; a dashed
- *   square's corner pieces do square). A partial rounding where a path stops ends at its corner.
- *   Where the corner's miter would leave the canvas or run into another stroke, the corner is cut
+ *   rounding is a circular arc of radius ≤ 3, or a one-way cubic or quadratic whose implied radius
+ *   keeps to the same limit, turning up to 170°: corners and acute tips (a star's, a triangle's,
+ *   a heart's) alike. Neighbouring roundings that carry one another on count as one if they turn
+ *   90° or less in all. A rounding stays a curve when a neighbouring curve of similar curvature
+ *   carries it on (two quarter arcs drawing a round end), when it meets a neighbour at an angle
+ *   (a lens's sides), when it is a whole open path that no other stroke in the icon continues (a
+ *   circle cut by a slash; a dashed square's corner pieces do square), and, for a tip wider than a
+ *   quarter turn, when it is a wave's crest (a tilde) or ends the path (a hook). A partial rounding
+ *   where a path stops ends at its corner. Where the corner's miter would leave the canvas, run
+ *   into another stroke, or reach more than 3 units past the rounding (a spike), the corner is cut
  *   flat along the rounding's middle tangent instead, reaching no further than the rounding did.
- * - `line`, `polyline`, `polygon`, `ellipse`, and larger circles: unchanged.
+ * - Every vertex where two segments meet at an angle (in paths, polylines, and polygons) is
+ *   guarded the same way: a miter that would leave the canvas or run into another stroke is cut
+ *   flat just inside the vertex.
+ * - `line`, `ellipse`, and larger circles: unchanged.
+ * - Elements listed in `keepRound` (figurative circles, organic outlines): unchanged.
  *
  * `analyzePathData` reports what happened to each rounding, for review (see `CornerDecision`).
  */
@@ -58,12 +64,17 @@ type Ends = { readonly start: Point; readonly end: Point };
 
 /** Largest radius, in grid units, of an arc that can be a corner rounding. */
 const cornerRadius = 3;
-/** Widest sweep of an arc that can be a corner rounding: a quarter turn, plus rounding slack. */
+/**
+ * Widest turn of a single rounding: acute tips (a star's, a triangle's, a heart's) are roundings
+ * too. A bar's round end, a half turn, stays round; its tangents never meet.
+ */
+const tipTurn = 170;
+/** Widest total turn of a chain of roundings that carry one another on: a quarter turn. */
 const cornerSweep = 91;
-/** Longest chord of a cubic or quadratic corner rounding: a quarter circle of `cornerRadius`. */
-const cornerChord = cornerRadius * Math.SQRT2 + 0.01;
+/** Longest chord of a cubic or quadratic rounding: the widest tip on a circle of `cornerRadius`. */
+const cornerChord = 2 * cornerRadius * Math.sin((tipTurn * Math.PI) / 360) + 0.01;
 /** Range of the turn, in degrees, across a cubic or quadratic corner rounding. */
-const cornerTurn = [40, 140] as const;
+const cornerTurn = [40, tipTurn] as const;
 /**
  * A rounding at an open end of a path that turns less than this many degrees is partial: the
  * drawing stops partway round the corner.
@@ -84,9 +95,29 @@ const tiny = 1e-6;
 
 /**
  * Outline elements left as they are, by icon name and element index, where the general rules
- * would change the drawing's meaning. Each entry says why. None is needed today.
+ * would change the drawing's meaning. Each entry says why.
+ *
+ * Small circles are squared as dots, the sharp style's UI mark (an ellipsis, a grip, a bullet, a
+ * tag's hole). A small circle that depicts a round thing (a head, an eye, a ball) stays a circle;
+ * geometry cannot tell the two apart. Organic outlines whose roundings meet with no straight run
+ * between them would square into stairs; Lucide draws the same shapes elsewhere as glyph details
+ * (`quote`) or mechanical parts (`settings`), so they too are listed by hand.
  */
-export const keepRound: Readonly<Record<string, readonly number[]>> = {};
+export const keepRound: Readonly<Record<string, readonly number[]>> = {
+  accessibility: [0], // The figure's head.
+  atom: [0], // The nucleus, a ball inside round orbits.
+  bike: [2], // The rider's head.
+  earth: [0, 1, 2], // Continents' coastlines.
+  "earth-lock": [0, 1, 2], // Continents' coastlines.
+  galaxy: [4], // The galaxy's round core.
+  images: [2], // The picture's sun, round in `image` too.
+  "party-popper": [5, 6, 7], // Streamers' squiggles.
+  "person-standing": [0], // The figure's head.
+  "scan-eye": [4], // The eye's pupil.
+  skull: [2, 3], // The skull's eyes.
+  usb: [0, 1], // The USB symbol's round terminals, distinct from its square one.
+  view: [2], // The eye's pupil.
+};
 
 const degrees = Math.PI / 180;
 
@@ -443,7 +474,7 @@ function cornerShaped(segment: Drawn): boolean {
       return (
         circular &&
         Math.max(arc.rx, arc.ry) <= cornerRadius + 0.001 &&
-        Math.abs(arc.sweepAngle) / degrees <= cornerSweep
+        Math.abs(arc.sweepAngle) / degrees <= tipTurn
       );
     }
     case "C":
@@ -482,7 +513,7 @@ export type CornerDecision = {
   /**
    * `corner`: squared to a point. `chamfer`: cut flat, because a point would leave the canvas or
    * run into another stroke. `curve`: kept, as part of a longer curve, a chain turning more than a
-   * corner, or a lone curved stroke. `side`: kept, it meets a neighbour at an angle, so it is a
+   * corner, a wave's crest, or a lone curved stroke. `side`: kept, it meets a neighbour at an angle, so it is a
    * curved side between corners (a lens), not a rounding. `degenerate`: kept, its tangents do not
    * meet in front of it.
    */
@@ -781,6 +812,24 @@ function crosses(p: Point, q: Point, polyline: readonly Point[]): boolean {
   return false;
 }
 
+/**
+ * Furthest a squared tip may paint past the rounding it replaces, in grid units along the
+ * corner's bisector: a triangle's 120° tip reaches 3. A wider turn on a larger radius (a
+ * croissant's horn) would grow a spike, so it is cut flat instead.
+ */
+const maxTipReach = 3.05;
+
+/** How far a corner's painted tips reach past the round stroke at the rounding's middle. */
+function tipReach(tips: readonly Point[], middle: Point, incoming: Point, outgoing: Point): number {
+  const u = scale(incoming, 1 / length(incoming));
+  const v = scale(outgoing, 1 / length(outgoing));
+  const outward = sub(u, v);
+  if (length(outward) < tiny) return 0;
+  const bisector = scale(outward, 1 / length(outward));
+  const h = iconSystem.design.strokeWidth / 2;
+  return Math.max(...tips.map((tip) => dot(sub(tip, middle), bisector))) - h;
+}
+
 /** Below this gap, in grid units, two strokes read as touching. */
 const touchingGap = 0.5;
 
@@ -790,11 +839,13 @@ const touchingGap = 0.5;
  * nearly close a gap the rounding kept open.
  */
 function runsInto(
+  /** The rounding replaced by the corner; empty for a plain vertex, which a round join rounds. */
   curve: readonly Drawn[],
   corner: Point,
   startTangent: Point,
   endTangent: Point,
-  half: { point: Point; tangent: Point },
+  /** The middle of the rounding's centerline, or the vertex itself. */
+  half: { point: Point },
   others: readonly (readonly Point[])[],
 ): boolean {
   if (others.length === 0) return false;
@@ -810,16 +861,28 @@ function runsInto(
   };
   const gap = (points: readonly Point[]) =>
     Math.min(...points.map((p) => Math.min(...others.map((o) => distanceTo(p, o))))) - h;
-  // The rounding's outer edge, and the squared corner's outer edge from the same two ends.
-  const roundEdge = curve.flatMap((segment) => {
-    const points = flatten(segment);
-    return points.map((p, index) => {
-      const t = sub(points[Math.min(index + 1, points.length - 1)], points[Math.max(index - 1, 0)]);
-      return length(t) < tiny ? p : add(p, scale(outerNormal(scale(t, 1 / length(t))), h));
-    });
-  });
-  const first = curve[0].from;
-  const last = (curve.at(-1) as Drawn).to;
+  // The rounding's outer edge (a round join's arc, at a vertex), and the squared corner's outer
+  // edge from the same two ends.
+  const roundEdge =
+    curve.length === 0
+      ? Array.from({ length: 13 }, (_, step) => {
+          const [a, c] = [outerNormal(u), outerNormal(v)];
+          const mix = add(scale(a, 1 - step / 12), scale(c, step / 12));
+          const direction = length(mix) < tiny ? b : scale(mix, 1 / length(mix));
+          return add(corner, scale(direction, h));
+        })
+      : curve.flatMap((segment) => {
+          const points = flatten(segment);
+          return points.map((p, index) => {
+            const t = sub(
+              points[Math.min(index + 1, points.length - 1)],
+              points[Math.max(index - 1, 0)],
+            );
+            return length(t) < tiny ? p : add(p, scale(outerNormal(scale(t, 1 / length(t))), h));
+          });
+        });
+  const first = curve.length === 0 ? corner : curve[0].from;
+  const last = curve.length === 0 ? corner : (curve.at(-1) as Drawn).to;
   const tips = joinExtent(corner, startTangent, endTangent);
   const outline = [
     add(first, scale(outerNormal(u), h)),
@@ -835,6 +898,9 @@ function runsInto(
     );
   const roundGap = gap(roundEdge);
   const sharpGap = gap(sharpEdge);
+  // A plain vertex whose round join already touches another stroke is attached to it by design
+  // (Lucide often sets a vertex on another stroke); its miter adds no new contact.
+  if (curve.length === 0 && roundGap <= 0.1) return false;
   if (sharpGap < touchingGap && roundGap - sharpGap > 0.25) return true;
   // From just inside the rounding's middle, the corner's painted tip must not cross a stroke that
   // the rounding itself does not reach across.
@@ -859,7 +925,8 @@ function planCorners(
     // An open path that ends where it starts (Lucide's eye and speech bubbles) loops all the same.
     const first = drawn.length > 0 ? (segments[drawn[0]] as Drawn).from : undefined;
     const last = drawn.length > 0 ? (segments[drawn.at(-1) as number] as Drawn).to : undefined;
-    const closed = explicit || (first !== undefined && length(sub(first, last as Point)) < 0.001);
+    // Within rounding: Lucide's store awning ends 0.001 short of its start.
+    const closed = explicit || (first !== undefined && length(sub(first, last as Point)) < 0.002);
     drawn.forEach((index, position) => {
       const previous = position > 0 ? drawn[position - 1] : closed ? drawn.at(-1) : undefined;
       const next =
@@ -902,6 +969,28 @@ function planCorners(
   segments.forEach((segment, index) => {
     if (segment.type !== "M" && cornerShaped(segment)) candidates.add(index);
   });
+
+  // A tip, turning further than a corner, rounds the meeting of two strokes. Smoothly joined to a
+  // small curve bending the other way it is a wave's crest instead (a tilde, a sign's waves), and
+  // both stay curves; marking both keeps sharpening idempotent.
+  const waves = new Set<number>();
+  for (const index of candidates) {
+    const next = neighbours.get(index)?.next;
+    if (next === undefined || !candidates.has(next)) continue;
+    const own = tangents(segments[index] as Drawn) as Ends;
+    const theirs = tangents(segments[next] as Drawn) as Ends;
+    const bend = bendAt(segments[index] as Drawn, "end");
+    const tip = Math.max(angleBetween(own.start, own.end), angleBetween(theirs.start, theirs.end));
+    if (
+      tip > cornerSweep &&
+      angleBetween(own.end, theirs.start) <= smoothAngle &&
+      bend !== 0 &&
+      bend === -bendAt(segments[next] as Drawn, "start")
+    ) {
+      waves.add(index);
+      waves.add(next);
+    }
+  }
 
   // Chains of corner-shaped segments that carry one another's curve on: two half-roundings drawn
   // as separate arcs make one corner; two quarter arcs drawing a round end make a curve.
@@ -976,6 +1065,16 @@ function planCorners(
       decide("curve");
       continue;
     }
+    if (chain.some((index) => waves.has(index))) {
+      decide("curve");
+      continue;
+    }
+    // A tip is where two strokes meet; at an open end of the path it is a hook (an S's end, a
+    // signature's flourish), which stays round.
+    if (total > cornerSweep && free !== undefined) {
+      decide("curve");
+      continue;
+    }
     // A rounding joins what it rounds smoothly, at each end that joins anything. (At an open end,
     // as in a dashed square's corner pieces, the squared corner simply ends in a short leg.)
     const meets = (other: number | undefined, own: Point, side: "start" | "end") => {
@@ -1021,8 +1120,10 @@ function planCorners(
         segment.type === "M" || attached.has(index) ? [] : [flatten(segment)],
       ),
     ];
+    const tips = joinExtent(corner, startTangent, endTangent);
     const clear =
-      joinExtent(corner, startTangent, endTangent).every(onCanvas) &&
+      tips.every(onCanvas) &&
+      (!half || tipReach(tips, half.point, startTangent, endTangent) <= maxTipReach) &&
       !(half && runsInto(curve, corner, startTangent, endTangent, half, others));
     if (clear) {
       // A partial rounding where the path stops (a back page fading out behind the front one)
@@ -1149,6 +1250,175 @@ function tidy({ start, items, closed }: Subpath): Subpath {
   return { start, items: kept, closed };
 }
 
+/** A subpath's items as standalone segments, the closing line included when it has length. */
+function drawnItems({ start, items, closed }: Subpath): Drawn[] {
+  const drawn: Drawn[] = [];
+  let from = start;
+  for (const item of items) {
+    switch (item.type) {
+      case "L":
+        drawn.push({ type: "L", from, to: item.to });
+        break;
+      case "C":
+        drawn.push({ type: "C", from, c1: item.c1, c2: item.c2, to: item.to });
+        break;
+      case "Q":
+        drawn.push({ type: "Q", from, c: item.c, to: item.to });
+        break;
+      case "A":
+        drawn.push({ ...item, from });
+        break;
+    }
+    from = item.to;
+  }
+  if (closed && !same(from, start)) drawn.push({ type: "Z", from, to: start });
+  return drawn;
+}
+
+/** How far along each line a vertex's guard cut starts, in grid units. */
+const vertexCut = 0.25;
+
+/**
+ * The part of a segment at least `reach` (in grid units, measured along it, roughly) from one end:
+ * `"end"` trims its end, `"start"` its start. Returns the trimmed segment and the new end point.
+ */
+function trim(segment: Drawn, end: "start" | "end", reach: number): Drawn {
+  const points = flatten(segment, 24);
+  let total = 0;
+  for (let index = 1; index < points.length; index += 1) {
+    total += length(sub(points[index], points[index - 1]));
+  }
+  const fraction = Math.min(0.4, reach / Math.max(total, tiny));
+  const t = end === "end" ? 1 - fraction : fraction;
+  const lerp = (a: Point, b: Point, k: number): Point => add(a, scale(sub(b, a), k));
+  switch (segment.type) {
+    case "L":
+    case "Z": {
+      const cut = lerp(segment.from, segment.to, t);
+      return end === "end"
+        ? { type: "L", from: segment.from, to: cut }
+        : { type: "L", from: cut, to: segment.to };
+    }
+    case "Q": {
+      const { from, c, to } = segment;
+      const [p01, p12] = [lerp(from, c, t), lerp(c, to, t)];
+      const cut = lerp(p01, p12, t);
+      return end === "end"
+        ? { type: "Q", from, c: p01, to: cut }
+        : { type: "Q", from: cut, c: p12, to };
+    }
+    case "C": {
+      const { from, c1, c2, to } = segment;
+      const [p01, p12, p23] = [lerp(from, c1, t), lerp(c1, c2, t), lerp(c2, to, t)];
+      const [p012, p123] = [lerp(p01, p12, t), lerp(p12, p23, t)];
+      const cut = lerp(p012, p123, t);
+      return end === "end"
+        ? { type: "C", from, c1: p01, c2: p012, to: cut }
+        : { type: "C", from: cut, c1: p123, c2: p23, to };
+    }
+    case "A": {
+      const arc = arcGeometry(segment);
+      if (!arc) return segment;
+      const theta = arc.startAngle + arc.sweepAngle * t;
+      const cos = Math.cos(arc.rotation);
+      const sin = Math.sin(arc.rotation);
+      const [x, y] = [arc.rx * Math.cos(theta), arc.ry * Math.sin(theta)];
+      const cut = add(arc.center, [cos * x - sin * y, sin * x + cos * y]);
+      const kept = Math.abs(arc.sweepAngle) * (end === "end" ? t : 1 - t);
+      // The trimmed arc keeps the radii it is drawn with, so it stays on the same circle.
+      const shape = { rx: arc.rx, ry: arc.ry, rotation: segment.rotation, sweep: segment.sweep };
+      const large = kept > Math.PI;
+      return end === "end"
+        ? { type: "A", from: segment.from, to: cut, large, ...shape }
+        : { type: "A", from: cut, to: segment.to, large, ...shape };
+    }
+  }
+}
+
+/** A drawn segment as a subpath item. */
+function itemOf(segment: Drawn): Item {
+  switch (segment.type) {
+    case "L":
+    case "Z":
+      return { type: "L", to: roundPoint(segment.to), added: true };
+    case "C":
+      return {
+        type: "C",
+        c1: roundPoint(segment.c1),
+        c2: roundPoint(segment.c2),
+        to: roundPoint(segment.to),
+      };
+    case "Q":
+      return { type: "Q", c: roundPoint(segment.c), to: roundPoint(segment.to) };
+    case "A": {
+      const { rx, ry, rotation, large, sweep } = segment;
+      return { type: "A", rx, ry, rotation, large, sweep, to: roundPoint(segment.to) };
+    }
+  }
+}
+
+/**
+ * Guards a subpath's vertices, where two segments meet at an angle: a miter that would leave the
+ * canvas or run into another stroke is cut flat just inside the vertex, so the join reaches no
+ * further than the round join did. (The miter limit lets Lucide's acute vertices come to a point.)
+ * `strokes(skip)` gives every other stroke, leaving out this subpath's segments at `skip`.
+ */
+function guardJoins(
+  path: Subpath,
+  strokes: (skip: readonly number[]) => (readonly Point[])[],
+): Subpath {
+  const drawn = drawnItems(path);
+  const count = drawn.length;
+  if (count < 2) return path;
+  // Only a closed subpath joins at its start; an open one that ends there draws two caps.
+  const loop = path.closed;
+  // Trimmed copies of the segments: the vertex at the end of drawn[i] meets drawn[next].
+  const trimmed = drawn.slice();
+  const bridges = new Map<number, true>();
+  for (let index = 0; index < count; index += 1) {
+    const next = index + 1 < count ? index + 1 : loop ? 0 : -1;
+    if (next < 0 || next === index) continue;
+    const ends = [tangents(drawn[index]), tangents(drawn[next])];
+    if (!ends[0] || !ends[1]) continue;
+    const u = ends[0].end;
+    const v = ends[1].start;
+    if (angleBetween(u, v) <= smoothAngle) continue;
+    const vertex = drawn[index].to;
+    // A vertex beside a bridge this guard wrote (or any line as short) is already cut.
+    const short = (segment: Drawn) =>
+      (segment.type === "L" || segment.type === "Z") &&
+      length(sub(segment.to, segment.from)) <= 2 * vertexCut + 0.01;
+    if (short(drawn[index]) || short(drawn[next])) continue;
+    // This subpath's own segments next to the vertex are part of the join, not obstacles.
+    const near = [index - 1, index, index + 1, index + 2]
+      .map((n) => (loop ? (n + count) % count : n))
+      .filter((n) => n >= 0 && n < count);
+    const clear =
+      joinExtent(vertex, u, v).every(onCanvas) &&
+      !runsInto([], vertex, u, v, { point: vertex }, strokes(near));
+    if (clear) continue;
+    trimmed[index] = trim(trimmed[index], "end", vertexCut);
+    trimmed[next] = trim(trimmed[next], "start", vertexCut);
+    bridges.set(index, true);
+  }
+  if (bridges.size === 0) return path;
+  // Rebuild from the trimmed segments, bridging each cut vertex with a short line. A cut where the
+  // subpath closes moves its start to the far side of the cut.
+  const wrap = loop && bridges.has(count - 1);
+  const start = wrap ? trimmed[0].from : path.start;
+  const items: Item[] = [];
+  trimmed.forEach((segment, index) => {
+    const isClosing = segment.type === "Z";
+    if (index > 0 && bridges.has(index - 1))
+      items.push({ type: "L", to: roundPoint(segment.from), added: true });
+    if (!isClosing) items.push(itemOf(segment));
+    else items.push({ type: "L", to: roundPoint(segment.to), added: true });
+  });
+  // The closing line was written out; the subpath still closes, now from the cut back to start.
+  if (drawn[count - 1].type === "Z" && !wrap) items.pop();
+  return { start: roundPoint(start), items, closed: path.closed };
+}
+
 /**
  * Rewrites path data with its corner roundings squared off. Returns the input unchanged when the
  * path has none, otherwise absolute commands with at most three decimals. `context` holds the
@@ -1161,8 +1431,6 @@ export function sharpenPathData(d: string, context: OutlineContext = emptyContex
   for (const { index, result, points, start } of planCorners(segments, context)) {
     if (result === "corner" || result === "chamfer") replaced.set(index, { points, start });
   }
-  if (replaced.size === 0) return d;
-
   const paths: Subpath[] = [];
   segments.forEach((segment, index) => {
     if (segment.type === "M") {
@@ -1206,9 +1474,27 @@ export function sharpenPathData(d: string, context: OutlineContext = emptyContex
     }
   });
 
+  const tidied = paths.map(tidy);
+  // Every stroke of the icon but these two items, for the join guard.
+  const strokesBesides = (path: number, skip: readonly number[]) => [
+    ...(context.strokes ?? []),
+    ...tidied.flatMap((other, index) =>
+      drawnItems(other)
+        .filter((_, item) => index !== path || !skip.includes(item))
+        .map((segment) => flatten(segment)),
+    ),
+  ];
+  let guarded = false;
+  const finished = tidied.map((path, index) => {
+    const result = guardJoins(path, (skip) => strokesBesides(index, skip));
+    guarded ||= result !== path;
+    return result;
+  });
+  if (replaced.size === 0 && !guarded) return d;
+
   const parts: string[] = [];
   const at = (p: Point) => `${coordinate(p[0])} ${coordinate(p[1])}`;
-  for (const { start, items, closed } of paths.map(tidy)) {
+  for (const { start, items, closed } of finished) {
     parts.push(`M${at(start)}`);
     let current = start;
     for (const item of items) {
@@ -1310,6 +1596,33 @@ function sharpenElement(
       if (d === undefined) return [tag, attributes];
       const sharpened = sharpenPathData(d, context);
       return [tag, attributes.map(([key, v]) => (key === "d" ? [key, sharpened] : [key, v]))];
+    }
+    case "polyline":
+    case "polygon": {
+      // No roundings to square, but the vertices get the same join guard as a path's.
+      const lines = elementLines(tag, attributes).filter(([a, b]) => !same(a, b));
+      if (lines.length < 2) return [tag, attributes];
+      const path: Subpath = {
+        start: lines[0][0],
+        items: lines.map(([, to]) => ({ type: "L", to }) as Item),
+        closed: tag === "polygon",
+      };
+      const own = (skip: readonly number[]) => [
+        ...(context.strokes ?? []),
+        ...lines.filter((_, index) => !skip.includes(index)).map((line) => [...line]),
+      ];
+      const guarded = guardJoins(path, own);
+      if (guarded === path) return [tag, attributes];
+      let points = [guarded.start, ...guarded.items.map((item) => item.to)];
+      // A polygon closes itself; drop a last point that repeats its first.
+      if (tag === "polygon" && points.length > 1 && same(points[0], points.at(-1) as Point)) {
+        points = points.slice(0, -1);
+      }
+      const written = points.map((point) => `${coordinate(point[0])} ${coordinate(point[1])}`);
+      return [
+        tag,
+        attributes.map(([key, v]) => (key === "points" ? [key, written.join(" ")] : [key, v])),
+      ];
     }
     default:
       return [tag, attributes];

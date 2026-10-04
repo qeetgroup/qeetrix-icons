@@ -22,6 +22,7 @@ export type DiagnosticCode =
   | "QXI-META-002"
   | "QXI-META-003"
   | "QXI-VAR-001"
+  | "QXI-STYLE-001"
   | "QXI-GEN-001"
   | "QXI-GEN-002"
   | "QXI-GEN-003";

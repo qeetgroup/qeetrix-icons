@@ -1,4 +1,4 @@
-import type { IconDirectionality, IconVariant } from "./icon.js";
+import type { IconDirectionality, IconShape, IconVariant } from "./icon.js";
 
 /**
  * The generated icon catalogue, published as `@qeetrix/icons/manifest`. Metadata for tooling,
@@ -27,6 +27,11 @@ export type IconManifestEntry = {
   readonly categories: readonly string[];
   /** Drawings available through the `variant` prop, in configured order; always starts with `outline`. */
   readonly variants: readonly IconVariant[];
+  /**
+   * Drawing styles available through the `shape` prop, default first: `["round", "sharp"]`. Every
+   * shape has exactly the drawings listed in `variants`.
+   */
+  readonly shapes: readonly IconShape[];
   /** Whether the concept follows reading direction in RTL. See docs/rtl.md. */
   readonly directionality: IconDirectionality;
   /** Search keywords: `["delete", "remove", …]` for `trash`. */

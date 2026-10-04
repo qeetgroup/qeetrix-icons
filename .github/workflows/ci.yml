@@ -26,6 +26,7 @@ jobs:
       - run: bun run test
       - run: bun run check:icons
       - run: bun run check:filled
+      - run: bun run check:sharp
       - run: bun run check:generated
       - run: bun run build
       - run: bun run playground:build

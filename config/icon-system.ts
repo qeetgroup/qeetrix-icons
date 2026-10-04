@@ -72,12 +72,13 @@ export const iconSystem = {
     linejoin: "round",
     safeAreaInset: 1,
     // The sharp style (`@qeetrix/icons/sharp`): the same geometry with square caps, mitered joins,
-    // and corner roundings squared off. A miter limit of 2 bevels joins sharper than 60°, so no
-    // spike reaches past the padding.
+    // and corner roundings squared off, acute tips included. A miter limit of 4 lets joins down to
+    // about 29° (a star's or triangle's tip) come to a point and bevels only sharper ones; where a
+    // point would leave the canvas or run into another stroke, derivation cuts the corner flat.
     sharp: {
       linecap: "square",
       linejoin: "miter",
-      miterLimit: 2,
+      miterLimit: 4,
     },
   },
 } as const satisfies IconSystemConfig;

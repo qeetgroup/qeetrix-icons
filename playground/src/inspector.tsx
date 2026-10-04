@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { iconSystem } from "../../config/icon-system.js";
-import type { IconVariant } from "../../src/types/icon.js";
+import type { IconShape, IconVariant } from "../../src/types/icon.js";
 import { type CatalogueIcon, importSnippets, mirrorsInPreview } from "./catalogue.js";
 import { typefaces, useFontAvailability } from "./fonts.js";
 import { checklistFor, designValues } from "./qa.js";
@@ -32,6 +32,7 @@ export type InspectorTab = (typeof tabs)[number]["id"];
 
 type InspectorProps = {
   icon: CatalogueIcon;
+  shape: IconShape;
   variant: IconVariant;
   size: number;
   direction: Direction;
@@ -45,18 +46,20 @@ type InspectorProps = {
 /** One rendered drawing, optionally inside the playground-only RTL mirror. */
 function Glyph({
   icon,
+  shape,
   variant,
   size,
   mirrored = false,
 }: {
   icon: CatalogueIcon;
+  shape: IconShape;
   variant: IconVariant;
   size: number;
   mirrored?: boolean;
 }) {
   return (
     <span className={mirrored ? "glyph mirrored" : "glyph"}>
-      <icon.Component variant={variant} size={size} />
+      <icon.Component shape={shape} variant={variant} size={size} />
     </span>
   );
 }
@@ -88,6 +91,7 @@ function Section({
 
 export function Inspector({
   icon,
+  shape,
   variant,
   size,
   direction,
@@ -149,6 +153,12 @@ export function Inspector({
             <code>{icon.componentName}</code>
             <CopyButton text={icon.componentName} label="Copy component name" />
           </span>
+          <span
+            className="chip"
+            data-tone={shape === architecture.defaultStyle ? undefined : "brand"}
+          >
+            {shape} shape
+          </span>
           <span className="chip">{icon.categoryLabel}</span>
           <span className="chip" data-tone={icon.directionality === "mirror" ? "brand" : undefined}>
             {icon.directionality === "mirror" ? "Mirrors in RTL" : "Preserved in RTL"}
@@ -158,7 +168,7 @@ export function Inspector({
 
       <section className="hero" aria-label="Preview">
         <div className="hero-stage" dir={direction}>
-          <Glyph icon={icon} variant={variant} size={heroSize} mirrored={mirrored} />
+          <Glyph icon={icon} shape={shape} variant={variant} size={heroSize} mirrored={mirrored} />
         </div>
         <div className="hero-overlay">
           {mirrored ? <span className="hero-badge">RTL QA preview</span> : <span />}
@@ -211,14 +221,14 @@ export function Inspector({
                   className={smallSizes.includes(recommended) ? "critical" : undefined}
                 >
                   <div className="size-art">
-                    <Glyph icon={icon} variant={variant} size={recommended} />
+                    <Glyph icon={icon} shape={shape} variant={variant} size={recommended} />
                   </div>
                   <figcaption>{recommended}px</figcaption>
                 </figure>
               ))}
               <figure className="custom">
                 <div className="size-art">
-                  <Glyph icon={icon} variant={variant} size={size} />
+                  <Glyph icon={icon} shape={shape} variant={variant} size={size} />
                 </div>
                 <figcaption>{size}px custom</figcaption>
               </figure>
@@ -230,7 +240,13 @@ export function Inspector({
           >
             <div className="pixel-strip">
               {smallSizes.map((small) => (
-                <PixelPreview key={small} icon={icon} variant={variant} size={small} />
+                <PixelPreview
+                  key={small}
+                  icon={icon}
+                  shape={shape}
+                  variant={variant}
+                  size={small}
+                />
               ))}
             </div>
           </Section>
@@ -243,8 +259,8 @@ export function Inspector({
                 {icon.variants.map((option) => (
                   <figure key={option}>
                     <div className="compare-art">
-                      <Glyph icon={icon} variant={option} size={24} />
-                      <Glyph icon={icon} variant={option} size={48} />
+                      <Glyph icon={icon} shape={shape} variant={option} size={24} />
+                      <Glyph icon={icon} shape={shape} variant={option} size={48} />
                     </div>
                     <figcaption>{option}</figcaption>
                   </figure>
@@ -258,8 +274,8 @@ export function Inspector({
       {panel(
         "construction",
         <>
-          <Construction icon={icon} variant={variant} />
-          {icon.variants.includes("outline") && <StrokeComparison icon={icon} />}
+          <Construction icon={icon} shape={shape} variant={variant} />
+          {icon.variants.includes("outline") && <StrokeComparison icon={icon} shape={shape} />}
         </>,
       )}
 
@@ -275,7 +291,13 @@ export function Inspector({
                 <div key={surface} className={`surface surface-${surface}`}>
                   <span className="surface-name">{surface}</span>
                   {[16, 24, 32].map((surfaceSize) => (
-                    <Glyph key={surfaceSize} icon={icon} variant={variant} size={surfaceSize} />
+                    <Glyph
+                      key={surfaceSize}
+                      icon={icon}
+                      shape={shape}
+                      variant={variant}
+                      size={surfaceSize}
+                    />
                   ))}
                   <span className="surface-label">Account settings</span>
                 </div>
@@ -291,14 +313,20 @@ export function Inspector({
                 ["Danger", "--danger"],
               ].map(([label, token]) => (
                 <li key={token} style={{ color: `var(${token})` }}>
-                  <Glyph icon={icon} variant={variant} size={20} />
+                  <Glyph icon={icon} shape={shape} variant={variant} size={20} />
                   <span>{label}</span>
                 </li>
               ))}
             </ul>
           </Section>
-          <Contexts icon={icon} variant={variant} direction={direction} mirrored={mirrored} />
-          <Typography icon={icon} variant={variant} />
+          <Contexts
+            icon={icon}
+            shape={shape}
+            variant={variant}
+            direction={direction}
+            mirrored={mirrored}
+          />
+          <Typography icon={icon} shape={shape} variant={variant} />
           <Section
             title="Direction"
             note={`Manifest directionality: ${icon.directionality}. Only the manifest decides; names never do.`}
@@ -306,8 +334,8 @@ export function Inspector({
             <div className="compare">
               <figure>
                 <div className="compare-art" dir="ltr">
-                  <Glyph icon={icon} variant={variant} size={24} />
-                  <Glyph icon={icon} variant={variant} size={48} />
+                  <Glyph icon={icon} shape={shape} variant={variant} size={24} />
+                  <Glyph icon={icon} shape={shape} variant={variant} size={48} />
                 </div>
                 <figcaption>LTR</figcaption>
               </figure>
@@ -315,12 +343,14 @@ export function Inspector({
                 <div className="compare-art" dir="rtl">
                   <Glyph
                     icon={icon}
+                    shape={shape}
                     variant={variant}
                     size={24}
                     mirrored={icon.directionality === "mirror"}
                   />
                   <Glyph
                     icon={icon}
+                    shape={shape}
                     variant={variant}
                     size={48}
                     mirrored={icon.directionality === "mirror"}
@@ -337,7 +367,7 @@ export function Inspector({
         </>,
       )}
 
-      {panel("code", <Usage icon={icon} />)}
+      {panel("code", <Usage icon={icon} shape={shape} variant={variant} />)}
 
       {panel(
         "review",
@@ -357,7 +387,7 @@ export function Inspector({
               ))}
             </div>
           </Section>
-          <DesignValues />
+          <DesignValues shape={shape} />
         </>,
       )}
     </article>
@@ -403,10 +433,12 @@ function SizeControl({ size, onSize }: { size: number; onSize: (size: number) =>
  */
 function PixelPreview({
   icon,
+  shape,
   variant,
   size,
 }: {
   icon: CatalogueIcon;
+  shape: IconShape;
   variant: IconVariant;
   size: number;
 }) {
@@ -428,7 +460,7 @@ function PixelPreview({
   return (
     <figure className="pixel">
       <span ref={source} hidden>
-        <icon.Component variant={variant} size={size} />
+        <icon.Component shape={shape} variant={variant} size={size} />
       </span>
       <div className="pixel-canvas" style={{ width: size * 8, height: size * 8 }}>
         <canvas
@@ -445,7 +477,15 @@ function PixelPreview({
   );
 }
 
-function Construction({ icon, variant }: { icon: CatalogueIcon; variant: IconVariant }) {
+function Construction({
+  icon,
+  shape,
+  variant,
+}: {
+  icon: CatalogueIcon;
+  shape: IconShape;
+  variant: IconVariant;
+}) {
   const [guides, setGuides] = useState({ grid: true, axes: true, safeArea: true });
   const { width, height } = architecture.grid;
   const inset = design.safeAreaInset;
@@ -474,7 +514,7 @@ function Construction({ icon, variant }: { icon: CatalogueIcon; variant: IconVar
       </div>
       <div className="construction-frame">
         <div className="construction" style={{ width: width * scale, height: height * scale }}>
-          <icon.Component variant={variant} size={width * scale} />
+          <icon.Component shape={shape} variant={variant} size={width * scale} />
           <svg
             className="guides"
             viewBox={architecture.viewBox}
@@ -517,7 +557,7 @@ function Construction({ icon, variant }: { icon: CatalogueIcon; variant: IconVar
  * it. The override is a render-time CSS `stroke-width` on this preview only (CSS outranks the SVG
  * attributes), so the source and every other view keep the authored width.
  */
-function StrokeComparison({ icon }: { icon: CatalogueIcon }) {
+function StrokeComparison({ icon, shape }: { icon: CatalogueIcon; shape: IconShape }) {
   return (
     <Section
       title="Stroke width"
@@ -527,7 +567,13 @@ function StrokeComparison({ icon }: { icon: CatalogueIcon }) {
         <figure className="source">
           <div className="compare-art">
             {[16, 24, 48].map((strokeSize) => (
-              <Glyph key={strokeSize} icon={icon} variant="outline" size={strokeSize} />
+              <Glyph
+                key={strokeSize}
+                icon={icon}
+                shape={shape}
+                variant="outline"
+                size={strokeSize}
+              />
             ))}
           </div>
           <figcaption>Actual source rendering</figcaption>
@@ -540,7 +586,13 @@ function StrokeComparison({ icon }: { icon: CatalogueIcon }) {
           >
             <div className="compare-art">
               {[16, 24, 48].map((strokeSize) => (
-                <Glyph key={strokeSize} icon={icon} variant="outline" size={strokeSize} />
+                <Glyph
+                  key={strokeSize}
+                  icon={icon}
+                  shape={shape}
+                  variant="outline"
+                  size={strokeSize}
+                />
               ))}
             </div>
             <figcaption>
@@ -556,17 +608,19 @@ function StrokeComparison({ icon }: { icon: CatalogueIcon }) {
 
 function Contexts({
   icon,
+  shape,
   variant,
   direction,
   mirrored,
 }: {
   icon: CatalogueIcon;
+  shape: IconShape;
   variant: IconVariant;
   direction: Direction;
   mirrored: boolean;
 }) {
   const glyph = (size: number) => (
-    <Glyph icon={icon} variant={variant} size={size} mirrored={mirrored} />
+    <Glyph icon={icon} shape={shape} variant={variant} size={size} mirrored={mirrored} />
   );
   return (
     <Section
@@ -660,7 +714,15 @@ const typeSamples = [
   { family: "Qeet Text", variable: "--font-text", text: 16, icon: 20 },
 ] as const;
 
-function Typography({ icon, variant }: { icon: CatalogueIcon; variant: IconVariant }) {
+function Typography({
+  icon,
+  shape,
+  variant,
+}: {
+  icon: CatalogueIcon;
+  shape: IconShape;
+  variant: IconVariant;
+}) {
   const availability = useFontAvailability();
   const missing = typefaces.filter(({ family }) => availability?.[family] === false);
   return (
@@ -679,7 +741,7 @@ function Typography({ icon, variant }: { icon: CatalogueIcon; variant: IconVaria
               className="type-row"
               style={{ fontFamily: `var(${sample.variable})`, fontSize: sample.text }}
             >
-              <Glyph icon={icon} variant={variant} size={sample.icon} />
+              <Glyph icon={icon} shape={shape} variant={variant} size={sample.icon} />
               Review pending invoices
             </p>
             <figcaption>
@@ -692,13 +754,22 @@ function Typography({ icon, variant }: { icon: CatalogueIcon; variant: IconVaria
   );
 }
 
-function Usage({ icon }: { icon: CatalogueIcon }) {
-  const snippets = importSnippets(icon);
+function Usage({
+  icon,
+  shape,
+  variant,
+}: {
+  icon: CatalogueIcon;
+  shape: IconShape;
+  variant: IconVariant;
+}) {
+  const snippets = importSnippets(icon, shape, variant);
   return (
     <>
       <Section title="Import" note="Public entry points only; generated paths are not API.">
         <Snippet label="Root import" code={snippets.root} />
         <Snippet label="Direct import" code={snippets.direct} />
+        <Snippet label="Usage" code={snippets.usage} />
       </Section>
       <Section title="Metadata" note="From the generated manifest.">
         <dl className="metadata">
@@ -736,14 +807,14 @@ function Snippet({ label, code }: { label: string; code: string }) {
   );
 }
 
-export function DesignValues() {
+export function DesignValues({ shape = architecture.defaultStyle }: { shape?: IconShape }) {
   return (
     <Section
       title="Design values"
-      note={`Lucide's drawing rules. Default variant: ${architecture.defaultVariant}.`}
+      note={`Lucide's drawing rules, ${shape} shape. Default variant: ${architecture.defaultVariant}.`}
     >
       <dl className="metadata">
-        {designValues().map(({ name, value }) => (
+        {designValues(shape).map(({ name, value }) => (
           <div key={name}>
             <dt>{name}</dt>
             <dd>{value}</dd>

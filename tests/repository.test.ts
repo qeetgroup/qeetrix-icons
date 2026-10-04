@@ -4,7 +4,8 @@ import { describe, expect, expectTypeOf, it } from "vitest";
 import { categories } from "../config/categories.js";
 import { filledRecipes } from "../config/filled.js";
 import { iconMetadata } from "../config/icon-metadata.js";
-import { iconSystem } from "../config/icon-system.js";
+import { type IconStyle, iconSystem } from "../config/icon-system.js";
+import { brandSourceDirectory } from "../scripts/check/validate-repository.js";
 import { iconExportName, validateIconName } from "../scripts/check/validate-source-path.js";
 import { createGenerationPlan } from "../scripts/lib/generation-plan.js";
 import type { LucideData } from "../scripts/lib/lucide.js";
@@ -18,6 +19,7 @@ import {
   type DatabaseIcon,
   type IconDirectionality,
   type IconProps,
+  type IconShape,
   type IconVariant,
   type LockIcon,
   PlusIcon,
@@ -46,7 +48,12 @@ describe("public entry point", () => {
     );
   });
 
-  it("exports the variant, directionality, and variant-generic props types", () => {
+  it("exports the shape, variant, directionality, and variant-generic props types", () => {
+    expectTypeOf<IconShape>().toEqualTypeOf<"round" | "sharp">();
+    // The public shapes are the source styles.
+    expectTypeOf<IconShape>().toEqualTypeOf<IconStyle>();
+    expectTypeOf<IconProps["shape"]>().toEqualTypeOf<IconShape | undefined>();
+    expectTypeOf<IconProps<"outline">["shape"]>().toEqualTypeOf<IconShape | undefined>();
     expectTypeOf<IconVariant>().toEqualTypeOf<"outline" | "filled">();
     expectTypeOf<IconDirectionality>().toEqualTypeOf<"mirror" | "preserve">();
     expectTypeOf<IconProps["size"]>().toEqualTypeOf<number | string | undefined>();
@@ -186,20 +193,35 @@ describe("icon-system contract", () => {
 });
 
 describe("production sources and generated output", () => {
+  // Brand logos have a pipeline of their own.
+  const brands = `${brandSourceDirectory.slice("icons/".length)}/`;
   const drawings = readdirSync(join(PKG, "icons"), { encoding: "utf8", recursive: true })
-    .filter((file) => file.endsWith(".svg"))
+    .filter((file) => file.endsWith(".svg") && !file.startsWith(brands))
     .sort();
 
-  it("has one drawing per manifest variant in every style", () => {
+  it("has one drawing per manifest shape and variant", () => {
     expect(drawings).toEqual(
-      iconSystem.architecture.styles
-        .flatMap((style) =>
-          iconManifest.icons.flatMap(({ name, category, variants }) =>
-            variants.map((variant) => `${style}-${variant}/${category}/${name}.svg`),
+      iconManifest.icons
+        .flatMap(({ name, category, variants, shapes }) =>
+          shapes.flatMap((shape) =>
+            variants.map((variant) => `${shape}-${variant}/${category}/${name}.svg`),
           ),
         )
         .sort(),
     );
+  });
+
+  it("offers every concept in every configured style, the default first", () => {
+    const { defaultStyle, styles } = iconSystem.architecture;
+    const expected = [defaultStyle, ...styles.filter((style) => style !== defaultStyle)];
+    for (const { id, shapes } of iconManifest.icons) expect(shapes, id).toEqual(expected);
+  });
+
+  it("generates both shapes of a concept into its one module", () => {
+    const trash = readFileSync(join(PKG, "src/generated/icons/trash.tsx"), "utf8");
+    expect(trash.match(/<svg\b/g)).toHaveLength(4);
+    expect(trash).toContain('if (props.shape === "sharp") {');
+    expect(trash).toContain(`strokeMiterlimit="${iconSystem.design.sharp.miterLimit}"`);
   });
 
   it("has exactly one generated module per manifest concept", () => {
@@ -218,12 +240,15 @@ describe("production sources and generated output", () => {
     expect(iconManifest).toEqual(json);
   });
 
-  it.each([".storybook", "src/generated/icons/index.ts", "src/generated/categories"])(
-    "does not introduce Storybook or extra barrels at %s",
-    (path) => {
-      expect(existsSync(join(PKG, path))).toBe(false);
-    },
-  );
+  it.each([
+    ".storybook",
+    "src/generated/icons/index.ts",
+    "src/generated/categories",
+    "src/generated/sharp",
+    "src/sharp.ts",
+  ])("does not introduce Storybook, extra barrels, or per-shape entry points at %s", (path) => {
+    expect(existsSync(join(PKG, path))).toBe(false);
+  });
 });
 
 describe("package manifest", () => {
@@ -276,10 +301,12 @@ describe("package manifest", () => {
 
 describe("source layout", () => {
   it("keeps every drawing in one icons/<style>-<variant>/ tree", () => {
-    // Folders that hold drawings; dotfiles and empty work-in-progress folders don't count.
+    // Folders that hold drawings; dotfiles, empty work-in-progress folders, and the brand logos'
+    // own tree don't count.
     const folders = readdirSync(join(PKG, "icons")).filter(
       (name) =>
         !name.startsWith(".") &&
+        `icons/${name}` !== brandSourceDirectory &&
         readdirSync(join(PKG, "icons", name), { recursive: true }).some((file) =>
           String(file).endsWith(".svg"),
         ),
@@ -330,6 +357,7 @@ describe("well-known concepts", () => {
         componentName,
         category,
         variants: filled.has(id) ? ["outline", "filled"] : ["outline"],
+        shapes: ["round", "sharp"],
         directionality: "preserve",
       }),
     );
@@ -355,6 +383,10 @@ describe("well-known concepts", () => {
     expectTypeOf<Variant<typeof DatabaseIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
     expectTypeOf<Variant<typeof StarIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
     expectTypeOf<Variant<typeof TrashIcon>>().toEqualTypeOf<"outline" | "filled" | undefined>();
+    // Every icon takes every shape.
+    type Shape<T extends (props: never) => unknown> = NonNullable<Parameters<T>[0]>["shape"];
+    expectTypeOf<Shape<typeof PlusIcon>>().toEqualTypeOf<IconShape | undefined>();
+    expectTypeOf<Shape<typeof TrashIcon>>().toEqualTypeOf<IconShape | undefined>();
   });
 
   it("mirrors only semantic reading-direction concepts, never physical directions", () => {

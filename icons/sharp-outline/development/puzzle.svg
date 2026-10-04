@@ -1,3 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2">
-  <path d="M15.39 4.39A1 1 0 0 0 17.07 3.916A2.5 2.5 0 1 1 20.084 6.931A1 1 0 0 0 19.61 8.611L22 11V13L19.61 15.39A1 1 0 0 1 17.93 14.916A2.5 2.5 0 1 0 14.916 17.931A1 1 0 0 1 15.39 19.611L12.999 22H11L8.61 19.61A1 1 0 0 0 6.93 20.084A2.5 2.5 0 1 1 3.916 17.069A1 1 0 0 0 4.39 15.389L2 13V11L4.39 8.61A1 1 0 0 1 6.07 9.084A2.5 2.5 0 1 0 9.084 6.069A1 1 0 0 1 8.61 4.389L11.001 2H13Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
+  <path d="M16.712 5.411L17.07 3.916A2.5 2.5 0 1 1 20.084 6.931L18.588 7.289L18.522 7.524L22 11V13L18.523 16.477L18.288 16.411L17.93 14.916A2.5 2.5 0 1 0 14.916 17.931L16.412 18.289L16.478 18.524L12.999 22H11L7.523 18.523L7.288 18.589L6.93 20.084A2.5 2.5 0 1 1 3.916 17.069L5.412 16.711L5.478 16.476L2 13V11L5.477 7.523L5.712 7.589L6.07 9.084A2.5 2.5 0 1 0 9.084 6.069L7.588 5.711L7.522 5.476L11.001 2H13L16.477 5.477Z"/>
 </svg>

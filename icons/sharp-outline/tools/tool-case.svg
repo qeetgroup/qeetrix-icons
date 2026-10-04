@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
   <path d="M10 15h4"/>
-  <path d="m14.817 10.995-.971-1.45 1.034-1.232a2 2 0 0 0-2.025-3.238l-1.82.364L9.91 3.885a2 2 0 0 0-3.625.748L6.141 6.55l-1.725.426a2 2 0 0 0-.19 3.756l.657.27"/>
-  <path d="M18.822 10.995L21.082 5.615A1 1 0 0 0 20.525 4.297L16.058 2.549L14.749 5.555"/>
+  <path d="M14.817 10.995L13.846 9.545L15.83 7.181L14.279 4.701L12.855 5.075L11.035 5.439L9.111 2.782L6.532 3.314L6.285 4.633L6.141 6.55L4.416 6.976L3.075 7.387L2.932 10.2L4.883 11.002"/>
+  <path d="M18.822 10.995L21.479 4.67L16.058 2.549L14.749 5.555"/>
   <path d="M4 11H20V21H4Z"/>
 </svg>

@@ -1,7 +1,8 @@
 import { type Dirent, lstatSync, readdirSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import type { IconMetadata } from "../../config/icon-metadata.js";
-import { iconSystem } from "../../config/icon-system.js";
+import { type IconStyle, iconSystem } from "../../config/icon-system.js";
+import type { IconVariant } from "../../src/types/icon.js";
 import { compareText, type Diagnostic, diagnostic, sortDiagnostics } from "../lib/diagnostics.js";
 import { noMetadata, validateMetadata } from "./validate-metadata.js";
 import {
@@ -26,6 +27,51 @@ export type SourceScan = ValidationResult & {
   readonly sources: readonly IconSource[];
 };
 
+/**
+ * Original brand logos, `icons/brand-icons/<collection>/<slug>/<variant>.svg`. They are not icon
+ * drawings: a separate pipeline with its own validator (scripts/check/validate-brands.ts) owns
+ * them, so the icon scanner skips the whole directory.
+ */
+export const brandSourceDirectory = "icons/brand-icons";
+
+/** One drawing's identity across the source tree: a name in one style and variant. */
+function drawingKey(style: IconStyle, variant: IconVariant, name: string): string {
+  return `${style}/${variant}/${name}`;
+}
+
+/**
+ * Styles mirror one another, with the default style as the reference: once any other style has a
+ * drawing, that style must have exactly the default style's drawings, name for name and variant
+ * for variant, so every component offers every style as a `shape` with the same variants. Sources
+ * in the default style only, such as most test fixtures, are valid. Categories are compared by
+ * QXI-DUP-004, not here.
+ */
+export function validateStyleParity(drawings: readonly IconLocation[]): Diagnostic[] {
+  const { defaultStyle, styles } = iconSystem.architecture;
+  const keys = new Set(
+    drawings.map(({ style, variant, name }) => drawingKey(style, variant, name)),
+  );
+  const used = new Set(drawings.map(({ style }) => style));
+  const diagnostics: Diagnostic[] = [];
+  for (const style of styles) {
+    if (style === defaultStyle || !used.has(style)) continue;
+    for (const location of drawings) {
+      const other =
+        location.style === defaultStyle ? style : location.style === style ? defaultStyle : null;
+      if (!other || keys.has(drawingKey(other, location.variant, location.name))) continue;
+      const counterpart = `icons/${sourceFolder(other, location.variant)}/${location.category}/${location.name}.svg`;
+      diagnostics.push(
+        diagnostic(
+          "QXI-STYLE-001",
+          location.file,
+          `Styles mirror one another: this drawing needs its ${other} counterpart ${counterpart}.`,
+        ),
+      );
+    }
+  }
+  return diagnostics;
+}
+
 export function validateSources(
   sources: readonly IconSource[],
   metadata: Readonly<Record<string, IconMetadata>> = noMetadata,
@@ -47,7 +93,7 @@ export function validateSources(
       diagnostics.push(entry);
     }
 
-    const variantKey = `${location.style}/${location.variant}/${location.name}`;
+    const variantKey = drawingKey(location.style, location.variant, location.name);
     const previousVariant = variantNames.get(variantKey);
     if (previousVariant) {
       diagnostics.push(
@@ -113,7 +159,7 @@ export function validateSources(
   for (const location of variantNames.values()) {
     if (
       location.variant !== defaultVariant &&
-      !variantNames.has(`${location.style}/${defaultVariant}/${location.name}`)
+      !variantNames.has(drawingKey(location.style, defaultVariant, location.name))
     ) {
       const outline = `icons/${sourceFolder(location.style, defaultVariant)}/${location.category}/${location.name}.svg`;
       diagnostics.push(
@@ -125,6 +171,7 @@ export function validateSources(
       );
     }
   }
+  diagnostics.push(...validateStyleParity([...variantNames.values()]));
   diagnostics.push(...validateMetadata(metadata, canonicalNames));
   return { iconCount: sources.length, diagnostics: sortDiagnostics(diagnostics) };
 }
@@ -177,7 +224,9 @@ export function scanIconSources(repositoryRoot: string): SourceScan {
     for (const entry of entries.sort((left, right) => compareText(left.name, right.name))) {
       const file = `${directory.relative}/${entry.name}`;
       const absolute = join(directory.absolute, entry.name);
-      if (entry.isSymbolicLink()) {
+      if (file === brandSourceDirectory) {
+        // Not icon drawings; validated by the brand pipeline.
+      } else if (entry.isSymbolicLink()) {
         diagnostics.push(
           diagnostic("QXI-IO-001", file, "Symbolic links are not allowed in production sources."),
         );

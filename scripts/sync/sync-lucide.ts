@@ -12,9 +12,10 @@ import {
 } from "../lib/lucide.js";
 
 /**
- * `bun run sync:lucide [version]` replaces icons/round-outline/ with the given Lucide release (default:
- * the version pinned in config/lucide.json), rewrites config/lucide.json and config/categories.ts,
- * then re-derives the filled drawings and regenerates the components and manifest.
+ * `bun run sync:lucide [version]` replaces icons/round-outline/ with the given Lucide release
+ * (default: the version pinned in config/lucide.json), rewrites config/lucide.json and
+ * config/categories.ts, then re-derives the round filled and sharp drawings and regenerates the
+ * components and manifest.
  */
 
 const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
@@ -73,4 +74,5 @@ try {
 }
 
 run("bun", ["run", "derive:filled"]);
+run("bun", ["run", "derive:sharp"]);
 run("bun", ["run", "generate"]);

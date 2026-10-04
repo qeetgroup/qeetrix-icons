@@ -12,8 +12,9 @@ import { tmpdir } from "node:os";
 import { join, relative, sep } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { iconMetadata } from "../config/icon-metadata.js";
+import { iconSystem } from "../config/icon-system.js";
 import { iconManifest } from "../src/manifest.js";
-import { apiFixtureMetadata, apiFixtures, writeFixture } from "./helpers.js";
+import { apiFixtureMetadata, apiFixtures, sharpApiFixtures, writeFixture } from "./helpers.js";
 
 /**
  * The published contract, proved against a real tarball.
@@ -81,6 +82,13 @@ const outlineTraces = new Map(
     tracesOf(readFileSync(join(PKG, "icons/round-outline", category, `${id}.svg`), "utf8")),
   ]),
 );
+/** The sharp outline drawing's patterns: what `shape="sharp"` shows. */
+const sharpOutlineTraces = new Map(
+  production.map(({ id, category }) => [
+    id,
+    tracesOf(readFileSync(join(PKG, "icons/sharp-outline", category, `${id}.svg`), "utf8")),
+  ]),
+);
 const traces = new Map(
   production.map(({ id }) => {
     const shapes = [...generatedSource(id).matchAll(/<(?:circle|ellipse|rect|line)\b([^>]*?)\/>/g)];
@@ -130,7 +138,10 @@ beforeAll(() => {
         .some((part) => ["node_modules", "dist", ".git", "coverage"].includes(part)),
   });
   symlinkSync(join(PKG, "node_modules"), join(repository, "node_modules"), "junction");
-  for (const { file, source } of apiFixtures) writeFixture(repository, file, source);
+  // Both shapes: once a repository has sharp drawings, every concept needs them.
+  for (const { file, source } of [...apiFixtures, ...sharpApiFixtures]) {
+    writeFixture(repository, file, source);
+  }
   writeFixture(
     repository,
     "config/icon-metadata.ts",
@@ -197,6 +208,8 @@ describe("packed @qeetrix/icons", () => {
       ]),
     );
     expect(entries.filter((entry) => entry.includes("filled"))).toEqual([]);
+    // Shapes are a prop of each component, not an entry point or module of their own.
+    expect(entries.filter((entry) => entry.includes("sharp"))).toEqual([]);
   });
 
   it("resolves one component per concept from root, direct, and manifest entry points", () => {
@@ -215,14 +228,18 @@ describe("packed @qeetrix/icons", () => {
         byDefault: render(FixtureStarIcon, { size: 20 }),
         outline: render(FixtureStarIcon, { size: 20, variant: "outline" }),
         filled: render(FixtureStarIcon, { size: 20, variant: "filled", "aria-label": "Starred" }),
+        round: render(FixtureStarIcon, { size: 20, shape: "round" }),
+        sharp: render(FixtureStarIcon, { size: 20, shape: "sharp" }),
+        sharpFilled: render(FixtureStarIcon, { size: 20, shape: "sharp", variant: "filled", "aria-label": "Starred" }),
         manifest: iconManifest.icons
           .filter(({ id }) => id.startsWith("fixture-"))
-          .map(({ id, componentName, variants, directionality }) => [id, componentName, variants, directionality]),
+          .map(({ id, componentName, variants, shapes, directionality }) => [id, componentName, variants, shapes, directionality]),
         production: iconManifest.icons.filter(({ id }) => !id.startsWith("fixture-")),
       }));
     `) as Record<string, unknown>;
     const outline =
       '<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" focusable="false" aria-hidden="true"><circle cx="12" cy="12" r="6.25"></circle></svg>';
+    const { sharp } = iconSystem.design;
     expect(result).toEqual({
       root: [
         "FixtureArrowIcon",
@@ -236,15 +253,67 @@ describe("packed @qeetrix/icons", () => {
       outline,
       filled:
         '<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Starred" width="20" height="20" focusable="false" role="img"><circle cx="12" cy="12" r="7.5"></circle></svg>',
+      round: outline,
+      sharp: `<svg fill="none" stroke="currentColor" stroke-linecap="${sharp.linecap}" stroke-linejoin="${sharp.linejoin}" stroke-miterlimit="${sharp.miterLimit}" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" focusable="false" aria-hidden="true"><circle cx="12" cy="12" r="6.875"></circle></svg>`,
+      sharpFilled:
+        '<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Starred" width="20" height="20" focusable="false" role="img"><circle cx="12" cy="12" r="8.125"></circle></svg>',
       manifest: [
-        ["fixture-search", "FixtureSearchIcon", ["outline"], "preserve"],
-        ["fixture-arrow", "FixtureArrowIcon", ["outline"], "mirror"],
-        ["fixture-star", "FixtureStarIcon", ["outline", "filled"], "preserve"],
+        ["fixture-search", "FixtureSearchIcon", ["outline"], ["round", "sharp"], "preserve"],
+        ["fixture-arrow", "FixtureArrowIcon", ["outline"], ["round", "sharp"], "mirror"],
+        ["fixture-star", "FixtureStarIcon", ["outline", "filled"], ["round", "sharp"], "preserve"],
       ],
       production,
     });
     // Imports every production concept through three entry points.
   }, 60_000);
+
+  it("renders a production icon's sharp drawings from the same component, with the same props behaviour", () => {
+    const result = node(`
+      import { TrashIcon } from "@qeetrix/icons";
+      import { TrashIcon as Direct } from "@qeetrix/icons/icons/trash";
+      import { createElement } from "react";
+      import { renderToStaticMarkup } from "react-dom/server";
+      const render = (props) => renderToStaticMarkup(createElement(TrashIcon, props));
+      const props = { size: "1.5em", className: "x", "aria-label": "Delete" };
+      console.log(JSON.stringify({
+        same: TrashIcon === Direct,
+        round: render(props),
+        sharp: render({ ...props, shape: "sharp" }),
+        sharpFilled: render({ ...props, shape: "sharp", variant: "filled" }),
+        roundFilled: render({ ...props, variant: "filled" }),
+        decorative: render({ shape: "sharp" }),
+      }));
+    `) as { same: boolean } & Record<
+      "round" | "sharp" | "sharpFilled" | "roundFilled" | "decorative",
+      string
+    >;
+    const { same, ...markup } = result;
+    expect(same).toBe(true);
+    // The drawing differs; everything the props control is identical.
+    const props = (svg: string) =>
+      (svg.match(/^<svg([^>]*)>/)?.[1] ?? "")
+        .replace(/ (?:fill|stroke[\w-]*|viewBox|xmlns)="[^"]*"/g, "")
+        .trim();
+    const { sharp } = iconSystem.design;
+    expect(markup.sharp).not.toBe(markup.round);
+    expect(markup.sharpFilled).not.toBe(markup.roundFilled);
+    expect(markup.sharp).toContain(
+      `stroke-linecap="${sharp.linecap}" stroke-linejoin="${sharp.linejoin}" stroke-miterlimit="${sharp.miterLimit}"`,
+    );
+    for (const svg of [markup.round, markup.sharp, markup.sharpFilled, markup.roundFilled]) {
+      expect(props(svg)).toBe(
+        'class="x" aria-label="Delete" width="1.5em" height="1.5em" focusable="false" role="img"',
+      );
+      expect(svg).not.toMatch(/shape|variant/);
+    }
+    expect(props(markup.decorative)).toBe(
+      'width="24" height="24" focusable="false" aria-hidden="true"',
+    );
+    expect(sharpOutlineTraces.get("trash")?.length).toBeGreaterThan(0);
+    for (const pattern of sharpOutlineTraces.get("trash") ?? []) {
+      expect(markup.sharp).toMatch(pattern);
+    }
+  });
 
   it.each(sampled.map(({ id, componentName }) => [id, componentName]))(
     "serves production concept %s from the root and its direct subpath",
@@ -258,14 +327,21 @@ describe("packed @qeetrix/icons", () => {
           same: root.${componentName} === ${componentName},
           markup: renderToStaticMarkup(createElement(${componentName})),
           outline: renderToStaticMarkup(createElement(${componentName}, { variant: "outline" })),
+          round: renderToStaticMarkup(createElement(${componentName}, { shape: "round" })),
+          sharp: renderToStaticMarkup(createElement(${componentName}, { shape: "sharp" })),
         }));
-      `) as { same: boolean; markup: string; outline: string };
+      `) as { same: boolean; markup: string; outline: string; round: string; sharp: string };
       expect(result.same).toBe(true);
       expect(result.markup).toBe(result.outline);
+      expect(result.markup).toBe(result.round);
       expect(result.markup).toContain('stroke="currentColor"');
       expect(result.markup).not.toContain("variant");
       expect(outlineTraces.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
       for (const pattern of outlineTraces.get(id) ?? []) expect(result.markup).toMatch(pattern);
+      expect(result.sharp).toContain(`stroke-linecap="${iconSystem.design.sharp.linecap}"`);
+      expect(result.sharp).not.toMatch(/shape|variant/);
+      expect(sharpOutlineTraces.get(id)?.length, `${id} sharp geometry`).toBeGreaterThan(0);
+      for (const pattern of sharpOutlineTraces.get(id) ?? []) expect(result.sharp).toMatch(pattern);
     },
   );
 
@@ -285,6 +361,10 @@ describe("packed @qeetrix/icons", () => {
       "@qeetrix/icons/icons/fixture-search.js",
       "@qeetrix/icons/icons/fixture-star-filled",
       "@qeetrix/icons/icons/../runtime/resolve-icon-props",
+      "@qeetrix/icons/sharp",
+      "@qeetrix/icons/sharp/icons/fixture-star",
+      "@qeetrix/icons/icons/sharp/fixture-star",
+      "@qeetrix/icons/icons/sharp-outline/shapes/fixture-star",
     ];
     const result = node(`
       const outcomes = {};
@@ -335,7 +415,9 @@ import {
   FixtureStarIcon,
   type IconDirectionality,
   type IconProps,
+  type IconShape,
   type IconVariant,
+  TrashIcon,
 } from "@qeetrix/icons";
 import { FixtureArrowIcon } from "@qeetrix/icons/icons/fixture-arrow";
 import { PlusIcon as DirectPlusIcon } from "@qeetrix/icons/icons/plus";
@@ -352,8 +434,11 @@ import { FixtureStarFilledIcon as BySubpath } from "@qeetrix/icons/icons/fixture
 import { FixtureStarFilledIcon } from "@qeetrix/icons";
 // @ts-expect-error the manifest is not a root export
 import { iconManifest as rootManifest } from "@qeetrix/icons";
+// @ts-expect-error shapes are a prop, never an entry point
+import { TrashIcon as SharpEntry } from "@qeetrix/icons/sharp";
 
 declare const saved: boolean;
+declare const shape: IconShape;
 const ref = createRef<SVGSVGElement>();
 const props: IconProps<"outline"> = { size: "1em", "aria-label": "Fixture" };
 const manifest: IconManifest = iconManifest;
@@ -381,6 +466,18 @@ export const usage = [
   // @ts-expect-error not a Qeetrix variant
   <FixtureStarIcon key="g" variant="solid" />,
   <FixtureArrowIcon key="h" aria-labelledby="label" />,
+  <TrashIcon key="s1" shape="sharp" />,
+  <TrashIcon key="s2" shape="sharp" variant="filled" />,
+  <PlusIcon key="s3" shape={shape} ref={ref} />,
+  <DirectStarIcon key="s4" shape="sharp" variant={saved ? "filled" : "outline"} />,
+  <FixtureSearchIcon key="s5" shape="round" {...props} />,
+  // @ts-expect-error the calibration icons are outline-only in every shape
+  <PlusIcon key="s6" shape="sharp" variant="filled" />,
+  // @ts-expect-error FixtureSearch has no filled drawing in any shape
+  <FixtureSearchIcon key="s7" shape="sharp" variant="filled" />,
+  // @ts-expect-error not a Qeetrix shape
+  <TrashIcon key="s8" shape="square" />,
+  SharpEntry,
   variants,
   directionality,
   resolveIconProps,
@@ -408,26 +505,38 @@ export const usage = [
     };
     const occurrences = (output: string, text: string) => output.split(text).length - 1;
 
+    // Other concepts' drawings in both shapes, and the catalogue.
+    const otherThanSearch = ["6.25", "7.5", "9.375", "6.875", "8.125", "9.625"];
     for (const entry of [
       'import { FixtureSearchIcon } from "@qeetrix/icons"; console.log(FixtureSearchIcon);',
       'import { FixtureSearchIcon } from "@qeetrix/icons/icons/fixture-search"; console.log(FixtureSearchIcon);',
     ]) {
       const output = bundle(entry);
+      // Both shapes of the imported concept: its one module carries them.
       expect(output).toContain("M 3.125 7 L 11 13");
+      expect(output).toContain("M 3.375 7 L 11 13");
       expect(output).toContain("aria-hidden");
-      for (const excluded of ["6.25", "7.5", "9.375", "schemaVersion", "directionality"]) {
+      for (const excluded of [...otherThanSearch, "schemaVersion", "directionality"]) {
         expect(output, excluded).not.toContain(excluded);
       }
     }
 
-    // Both drawings of the imported concept ship together; nothing else does. Mixing root and
+    // Every drawing of the imported concept ships together; nothing else does. Mixing root and
     // direct imports still bundles the concept module once.
     const star = bundle(
       'import { FixtureStarIcon } from "@qeetrix/icons"; import { FixtureStarIcon as Direct } from "@qeetrix/icons/icons/fixture-star"; console.log(FixtureStarIcon, Direct);',
     );
-    expect(occurrences(star, '"6.25"')).toBe(1);
-    expect(occurrences(star, '"7.5"')).toBe(1);
-    for (const excluded of ["3.125", "9.375", "schemaVersion", "directionality"]) {
+    for (const own of ['"6.25"', '"7.5"', '"6.875"', '"8.125"']) {
+      expect(occurrences(star, own), own).toBe(1);
+    }
+    for (const excluded of [
+      "3.125",
+      "9.375",
+      "3.375",
+      "9.625",
+      "schemaVersion",
+      "directionality",
+    ]) {
       expect(star, excluded).not.toContain(excluded);
     }
 
@@ -435,7 +544,7 @@ export const usage = [
       'import { iconManifest } from "@qeetrix/icons/manifest"; console.log(iconManifest);',
     );
     expect(manifestOnly).toContain("fixture-star");
-    expect(manifestOnly).not.toMatch(/3\.125|6\.25|aria-hidden|viewBox/);
+    expect(manifestOnly).not.toMatch(/3\.125|6\.25|3\.375|6\.875|aria-hidden|viewBox/);
   });
 
   it.each(sampled.map(({ id, componentName }) => [id, componentName]))(

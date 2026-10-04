@@ -131,22 +131,25 @@ function inspectOutput(repositoryRoot: string): Inventory {
 
 /**
  * Proves the plan writes exactly the canonical set: one module per concept at the path derived from
- * its validated sources (which must agree on name and category, default variant first), plus the
- * fixed package artifacts, each once.
+ * its validated sources (which must agree on name and category, default style and variant first),
+ * plus the fixed package artifacts, each once.
  */
 function expectedFiles(plan: GenerationPlan): Map<string, string> {
   const allowed = new Set(packageArtifactPaths);
+  const { defaultStyle, defaultVariant } = iconSystem.architecture;
   for (const concept of plan.concepts) {
     const canonical =
       concept.id === concept.name &&
       concept.outputPath === generatedOutputPath(concept.name) &&
-      concept.sources[0]?.variant === iconSystem.architecture.defaultVariant &&
-      concept.sources.every(({ file, name, category, variant }) => {
+      concept.sources[0]?.style === defaultStyle &&
+      concept.sources[0].variant === defaultVariant &&
+      concept.sources.every(({ file, name, category, style, variant }) => {
         const source = validateSourcePath(file);
         return (
           source.diagnostics.length === 0 &&
           source.location?.name === name &&
           source.location.category === category &&
+          source.location.style === style &&
           source.location.variant === variant &&
           name === concept.name &&
           category === concept.category

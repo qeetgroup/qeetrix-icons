@@ -1,4 +1,5 @@
 import { iconSystem } from "../../config/icon-system.js";
+import type { IconShape } from "../../src/types/icon.js";
 import type { IconManifestEntry } from "../../src/types/icon-manifest.js";
 
 /**
@@ -58,12 +59,32 @@ export function checklistFor(icon: IconManifestEntry): ChecklistGroup[] {
   ];
 }
 
-/** The design values every outline follows: Lucide's drawing rules, from the shared config. */
-export function designValues(): { readonly name: string; readonly value: string }[] {
+/**
+ * How a shape's outlines end and join their strokes, from the shared config: Lucide's round caps
+ * and joins, or the sharp style's square caps and miters with its miter limit.
+ */
+export function strokeStyle(shape: IconShape): {
+  readonly linecap: string;
+  readonly linejoin: string;
+  readonly miterLimit?: number;
+} {
   const { design } = iconSystem;
+  return shape === "sharp" ? design.sharp : { linecap: design.linecap, linejoin: design.linejoin };
+}
+
+/**
+ * The design values every outline of a shape follows: Lucide's drawing rules, with the sharp
+ * style's caps, joins, and miter limit in place of round ones. From the shared config.
+ */
+export function designValues(
+  shape: IconShape = iconSystem.architecture.defaultStyle,
+): { readonly name: string; readonly value: string }[] {
+  const { design } = iconSystem;
+  const { linecap, linejoin, miterLimit } = strokeStyle(shape);
   return [
     { name: "Stroke width", value: String(design.strokeWidth) },
-    { name: "Stroke caps and joins", value: `${design.linecap} / ${design.linejoin}` },
+    { name: "Stroke caps and joins", value: `${linecap} / ${linejoin}` },
+    ...(miterLimit === undefined ? [] : [{ name: "Miter limit", value: String(miterLimit) }]),
     { name: "Safe-area inset", value: `${design.safeAreaInset} unit per edge` },
     { name: "Recommended sizes", value: design.recommendedSizes.join(", ") },
   ];

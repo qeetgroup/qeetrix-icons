@@ -17,9 +17,10 @@ import {
   mirrorsInPreview,
   moduleId,
   selectedVariant,
+  shapeOptions,
   variantFilterOptions,
 } from "../playground/src/catalogue.js";
-import { checklistFor, designValues } from "../playground/src/qa.js";
+import { checklistFor, designValues, strokeStyle } from "../playground/src/qa.js";
 import {
   defaultUrlState,
   parseUrlState,
@@ -29,7 +30,7 @@ import {
 import { createGenerationPlan } from "../scripts/lib/generation-plan.js";
 import { iconManifest } from "../src/manifest.js";
 import type { IconManifest } from "../src/types/icon-manifest.js";
-import { apiFixtureMetadata, apiFixtures, writeFixture } from "./helpers.js";
+import { apiFixtureMetadata, apiFixtures, sharpApiFixtures, writeFixture } from "./helpers.js";
 
 const PKG = join(import.meta.dirname, "..");
 
@@ -189,11 +190,33 @@ describe("playground inspection rules", () => {
     expect(mirrorsInPreview({ ...star, id: "arrow-back", name: "arrow-back" }, "rtl")).toBe(false);
   });
 
-  it("shows public imports only, never generated paths", () => {
-    expect(importSnippets(star)).toEqual({
+  it("shows public imports only, never generated paths, with the props on show", () => {
+    const imports = {
       root: 'import { FixtureStarIcon } from "@qeetrix/icons";',
       direct: 'import { FixtureStarIcon } from "@qeetrix/icons/icons/fixture-star";',
+    };
+    expect(importSnippets(star)).toEqual({ ...imports, usage: "<FixtureStarIcon />" });
+    expect(importSnippets(star, "round", "outline")).toEqual(importSnippets(star));
+    // Every shape comes from the same imports: the shape is a prop, never an entry point.
+    expect(importSnippets(star, "sharp")).toEqual({
+      ...imports,
+      usage: '<FixtureStarIcon shape="sharp" />',
     });
+    expect(importSnippets(star, "sharp", "filled").usage).toBe(
+      '<FixtureStarIcon shape="sharp" variant="filled" />',
+    );
+    expect(importSnippets(star, "round", "filled").usage).toBe(
+      '<FixtureStarIcon variant="filled" />',
+    );
+  });
+
+  it("offers the configured styles as shapes, default first", () => {
+    expect(shapeOptions()).toEqual([
+      { value: "round", label: "Round" },
+      { value: "sharp", label: "Sharp" },
+    ]);
+    expect(shapeOptions().map(({ value }) => value)).toEqual(iconSystem.architecture.styles);
+    expect(shapeOptions()[0].value).toBe(iconSystem.architecture.defaultStyle);
   });
 
   it("adds variant and RTL review items only where they apply", () => {
@@ -212,21 +235,34 @@ describe("playground inspection rules", () => {
     expect(values["Recommended sizes"]).toBe(iconSystem.design.recommendedSizes.join(", "));
     expect(values["Safe-area inset"]).toContain(String(iconSystem.design.safeAreaInset));
     expect(values["Stroke caps and joins"]).toBe("round / round");
+    expect(values).not.toHaveProperty("Miter limit");
+
+    const { sharp } = iconSystem.design;
+    const sharpValues = Object.fromEntries(
+      designValues("sharp").map(({ name, value }) => [name, value]),
+    );
+    expect(sharpValues["Stroke caps and joins"]).toBe(`${sharp.linecap} / ${sharp.linejoin}`);
+    expect(sharpValues["Miter limit"]).toBe(String(sharp.miterLimit));
+    expect(sharpValues["Stroke width"]).toBe(values["Stroke width"]);
+    expect(strokeStyle("round")).toEqual({ linecap: "round", linejoin: "round" });
+    expect(strokeStyle("sharp")).toEqual(sharp);
   });
 });
 
 describe("playground URL state", () => {
-  it("defaults to the configured size, system theme, and LTR", () => {
+  it("defaults to the round shape, configured size, system theme, and LTR", () => {
     expect(parseUrlState("")).toEqual({ ...defaultUrlState, icon: undefined, variant: undefined });
+    expect(defaultUrlState.shape).toBe(iconSystem.architecture.defaultStyle);
     expect(defaultUrlState.size).toBe(iconSystem.design.defaultSize);
     expect(serializeUrlState(defaultUrlState)).toBe("");
   });
 
   it("round-trips shareable inspection state", () => {
-    const search = "?icon=fixture-star&variant=filled&size=16&theme=dark&dir=rtl";
+    const search = "?icon=fixture-star&shape=sharp&variant=filled&size=16&theme=dark&dir=rtl";
     const state = parseUrlState(search);
     expect(state).toEqual({
       icon: "fixture-star",
+      shape: "sharp",
       variant: "filled",
       size: 16,
       theme: "dark",
@@ -234,10 +270,14 @@ describe("playground URL state", () => {
     });
     expect(serializeUrlState(state)).toBe(search);
     expect(serializeUrlState({ ...state, variant: "outline" })).not.toContain("variant");
+    expect(serializeUrlState({ ...state, shape: "round" })).not.toContain("shape");
+    expect(parseUrlState("?shape=sharp")).toEqual({ ...defaultUrlState, shape: "sharp" });
   });
 
   it.each([
     "?icon=Star&variant=solid&size=500&theme=neon&dir=up",
+    "?shape=square",
+    "?shape=Sharp&variant=sharp",
     "?icon=../star&size=12.5",
     "?size=abc&variant=",
     `?size=${sizeRange.min - 1}`,
@@ -288,7 +328,10 @@ describe("playground build", () => {
           .some((part) => ["node_modules", "dist", ".git", "coverage"].includes(part)),
     });
     symlinkSync(join(PKG, "node_modules"), join(workspace, "node_modules"), "junction");
-    for (const { file, source } of apiFixtures) writeFixture(workspace, file, source);
+    // Both shapes, as validation requires once the repository has sharp drawings.
+    for (const { file, source } of [...apiFixtures, ...sharpApiFixtures]) {
+      writeFixture(workspace, file, source);
+    }
     writeFixture(
       workspace,
       "config/icon-metadata.ts",
@@ -319,8 +362,20 @@ export const iconMetadata: Readonly<Record<string, IconMetadata>> = ${JSON.strin
       .filter((file) => file.endsWith(".js"))
       .map((file) => readFileSync(join(assets, file), "utf8"))
       .join("\n");
-    // Both drawings of the two-variant concept, the other concepts, and the manifest entries.
-    for (const marker of ["3.125", "6.25", "7.5", "9.375", "fixture-star", "FixtureArrowIcon"]) {
+    // Every drawing in both shapes, the other concepts, and the manifest entries, through the one
+    // module glob: the sharp drawings travel inside each concept's module.
+    for (const marker of [
+      "3.125",
+      "6.25",
+      "7.5",
+      "9.375",
+      "3.375",
+      "6.875",
+      "8.125",
+      "9.625",
+      "fixture-star",
+      "FixtureArrowIcon",
+    ]) {
       expect(bundle, marker).toContain(marker);
     }
   }, 60_000);

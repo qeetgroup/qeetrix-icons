@@ -51,7 +51,8 @@ describe("normalizeLucideSvg", () => {
         expect(normalizeLucideSvg(source), file).toBe(source);
       }
     }
-  });
+    // Normalizes every round outline in the repository.
+  }, 60_000);
 
   it("rejects nested elements rather than flattening them", () => {
     expect(() =>

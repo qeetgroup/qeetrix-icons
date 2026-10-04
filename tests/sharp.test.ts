@@ -34,7 +34,8 @@ describe("sharp outline sources", () => {
     expect(root).toBe(
       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${iconSystem.architecture.viewBox}" fill="none" stroke="${iconSystem.architecture.color}" stroke-width="${strokeWidth}" stroke-linecap="${sharp.linecap}" stroke-linejoin="${sharp.linejoin}" stroke-miterlimit="${sharp.miterLimit}">`,
     );
-    expect(root).toContain('stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2"');
+    // A miter limit of 4 lets acute tips (a star's, a triangle's) come to a point.
+    expect(root).toContain('stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4"');
   });
 
   it("keep every element, in order, one per line", () => {
@@ -154,6 +155,54 @@ describe("sharp path data", () => {
     );
   });
 
+  it("brings acute tips to a point", () => {
+    expect(sharpenPathData("M8 16 12 8a1 1 0 0 1 1.789 0L18 16")).toBe("M8 16L12.872 6.257L18 16");
+    // Lucide's star: tips of 128° come to points, unless the point would leave the canvas.
+    const star =
+      "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z";
+    const tips = analyzePathData(star).filter(({ turn }) => turn > 90);
+    expect(tips.map(({ result }) => result)).toEqual([
+      "chamfer",
+      "chamfer",
+      "corner",
+      "corner",
+      "chamfer",
+    ]);
+  });
+
+  it("keeps wave crests, hooks, and tips that would grow a spike round", () => {
+    // A tilde: two wide roundings bending opposite ways carry each other on.
+    const tilde = "M8 14a2.5 2.5 0 0 1 4 0 2.5 2.5 0 0 0 4 0";
+    expect(sharpenPathData(tilde)).toBe(tilde);
+    // An S's end: a wide rounding where the path stops is a hook.
+    const hook = "M16 4H9a3 3 0 0 0-2.83 4";
+    expect(sharpenPathData(hook)).toBe(hook);
+    // A croissant's 148° horn on a radius of 2 would reach far past the round drawing: cut flat.
+    const croissant =
+      "M8.709 2.554a10 10 0 0 0-6.155 6.155 1.5 1.5 0 0 0 .676 1.626l9.807 5.42a2 2 0 0 0 2.718-2.718l-5.42-9.807a1.5 1.5 0 0 0-1.626-.676";
+    const horn = analyzePathData(croissant).find(({ turn }) => turn > 140);
+    expect(horn?.result).toBe("chamfer");
+  });
+
+  it("cuts a plain vertex flat where its miter would leave the canvas", () => {
+    expect(sharpenPathData("m12 1.5 9 20H3z")).toBe("M12.103 1.728L21 21.5H3L11.897 1.728Z");
+    expect(sharpenOne('<polygon points="12 2 19 21 12 17 5 21 12 2"/>')).toBe(
+      '  <polygon points="12.086 2.235 19 21 12 17 5 21 11.914 2.235"/>',
+    );
+    // Clear of the edges, the same vertex comes to a point.
+    expect(sharpenPathData("m12 6 6 14H6z")).toBe("m12 6 6 14H6z");
+  });
+
+  it("keeps listed figurative circles round, such as a figure's head", () => {
+    const figure = syntheticSvg({}, '<circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/>');
+    expect(elements(sharpenOutline(figure, "person-standing"))[0]).toBe(
+      '  <circle cx="12" cy="5" r="1"/>',
+    );
+    expect(elements(sharpenOutline(figure, "some-other-icon"))[0]).toBe(
+      '  <rect width="2" height="2" x="11" y="4"/>',
+    );
+  });
+
   it("keeps smooth curves' shapes when the segment before them is replaced", () => {
     // The S reflects the replaced cubic's control point (8 2.9), not the new corner.
     expect(sharpenPathData("M2 2h4c1.1 0 2 .9 2 2s2 6 6 6")).toBe("M2 2H8V4C8 5.1 10 10 14 10");
@@ -197,13 +246,14 @@ describe("sharp path data", () => {
       {},
       `<path d="M12 6a2 2 0 0 0-3.414-1.414l-6 6a2 2 0 0 0 0 2.828l6 6A2 2 0 0 0 12 18z"/><path d="${back}"/>`,
     );
-    // Alone, the back triangle's tip squares; beside the front triangle it would pierce its side.
-    expect(analyzePathData(back).map(({ result }) => result)).toEqual(["corner"]);
-    expect(analyzePathData(back, outlineContext(rewind, 1)).map(({ result }) => result)).toEqual([
-      "chamfer",
-    ]);
+    // Alone, the back triangle's left tip squares; beside the front triangle it would pierce its
+    // side. (Its two 135° corners at the right edge would leave the canvas either way.)
+    const results = (context?: ReturnType<typeof outlineContext>) =>
+      analyzePathData(back, context).map(({ result }) => result);
+    expect(results()).toEqual(["chamfer", "corner", "chamfer"]);
+    expect(results(outlineContext(rewind, 1))).toEqual(["chamfer", "chamfer", "chamfer"]);
     expect(elements(sharpenOutline(rewind))[1]).toBe(
-      '  <path d="M22 6A2 2 0 0 0 18.586 4.586L12 11.172V12.828L18.586 19.414A2 2 0 0 0 22 18Z"/>',
+      '  <path d="M22 4.664L19.531 3.641L12 11.172V12.828L19.531 20.359L22 19.336Z"/>',
     );
   });
 

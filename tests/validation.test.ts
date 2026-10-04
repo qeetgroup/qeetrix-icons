@@ -10,6 +10,7 @@ import {
   scanIconSources,
   validateRepository,
   validateSources,
+  validateStyleParity,
 } from "../scripts/check/validate-repository.js";
 import {
   componentNameFromFilename,
@@ -19,7 +20,13 @@ import {
 } from "../scripts/check/validate-source-path.js";
 import { maxSvgBytes, validateSvg } from "../scripts/check/validate-svg.js";
 import { diagnostic, formatDiagnostics, sortDiagnostics } from "../scripts/lib/diagnostics.js";
-import { createRepositoryFixture, syntheticSvg, writeFixture } from "./helpers.js";
+import {
+  createRepositoryFixture,
+  filledAttributes,
+  sharpAttributes,
+  syntheticSvg,
+  writeFixture,
+} from "./helpers.js";
 
 const outlineFile = "icons/round-outline/arrows/fixture.svg";
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
@@ -73,24 +80,27 @@ describe("repository-wide identity", () => {
   });
 
   it("checks each style separately, and keeps every drawing of a name in one category", () => {
-    const sharp = {
-      "stroke-linecap": "square",
-      "stroke-linejoin": "miter",
-      "stroke-miterlimit": "2",
-    };
     const round = { file: "icons/round-outline/arrows/fixture.svg", source: syntheticSvg() };
+    const roundFilled = {
+      file: "icons/round-filled/arrows/fixture.svg",
+      source: syntheticSvg(filledAttributes),
+    };
     const sharpOutline = {
       file: "icons/sharp-outline/arrows/fixture.svg",
-      source: syntheticSvg(sharp),
+      source: syntheticSvg(sharpAttributes),
     };
     const sharpFilled = {
       file: "icons/sharp-filled/arrows/fixture.svg",
-      source: syntheticSvg({ fill: "currentColor" }),
+      source: syntheticSvg(filledAttributes),
     };
-    expect(validateSources([round, sharpOutline, sharpFilled]).diagnostics).toEqual([]);
-    expect(validateSources([round, sharpFilled]).diagnostics).toEqual([
+    expect(validateSources([round, roundFilled, sharpOutline, sharpFilled]).diagnostics).toEqual(
+      [],
+    );
+    expect(validateSources([round, roundFilled, sharpFilled]).diagnostics).toEqual([
+      expect.objectContaining({ code: "QXI-STYLE-001", file: round.file }),
       expect.objectContaining({
         code: "QXI-VAR-001",
+        file: sharpFilled.file,
         message: expect.stringContaining("icons/sharp-outline/arrows/fixture.svg"),
       }),
     ]);
@@ -187,6 +197,89 @@ describe("repository-wide identity", () => {
   });
 });
 
+describe("style parity", () => {
+  const roundOutline = { file: outlineFile, source: syntheticSvg() };
+  const roundFilled = {
+    file: "icons/round-filled/arrows/fixture.svg",
+    source: syntheticSvg(filledAttributes),
+  };
+  const sharpOutline = {
+    file: "icons/sharp-outline/arrows/fixture.svg",
+    source: syntheticSvg(sharpAttributes),
+  };
+  const sharpFilled = {
+    file: "icons/sharp-filled/arrows/fixture.svg",
+    source: syntheticSvg(filledAttributes),
+  };
+  const other = { file: "icons/round-outline/shapes/other-fixture.svg", source: syntheticSvg() };
+  const otherSharp = {
+    file: "icons/sharp-outline/shapes/other-fixture.svg",
+    source: syntheticSvg(sharpAttributes),
+  };
+
+  it("does not apply while every drawing is in the default style", () => {
+    expect(validateSources([roundOutline, roundFilled, other]).diagnostics).toEqual([]);
+  });
+
+  it("accepts styles that mirror one another drawing for drawing", () => {
+    const sources = [roundOutline, roundFilled, sharpOutline, sharpFilled, other, otherSharp];
+    expect(validateSources(sources)).toEqual({ iconCount: 6, diagnostics: [] });
+  });
+
+  it("requires every default-style drawing in each style that is in use", () => {
+    expect(validateSources([roundOutline, roundFilled, sharpOutline, other]).diagnostics).toEqual([
+      expect.objectContaining({
+        code: "QXI-STYLE-001",
+        file: roundFilled.file,
+        message: expect.stringContaining("sharp counterpart icons/sharp-filled/arrows/fixture.svg"),
+      }),
+      expect.objectContaining({
+        code: "QXI-STYLE-001",
+        file: other.file,
+        message: expect.stringContaining("icons/sharp-outline/shapes/other-fixture.svg"),
+      }),
+    ]);
+  });
+
+  it("requires a default-style drawing for every drawing in another style", () => {
+    expect(validateSources([roundOutline, sharpOutline, sharpFilled]).diagnostics).toEqual([
+      expect.objectContaining({
+        code: "QXI-STYLE-001",
+        file: sharpFilled.file,
+        message: expect.stringContaining("round counterpart icons/round-filled/arrows/fixture.svg"),
+      }),
+    ]);
+    // Sharp drawings alone: nothing for the package root to export.
+    expect(validateSources([sharpOutline, otherSharp]).diagnostics).toEqual([
+      expect.objectContaining({ code: "QXI-STYLE-001", file: sharpOutline.file }),
+      expect.objectContaining({ code: "QXI-STYLE-001", file: otherSharp.file }),
+    ]);
+  });
+
+  it("is independent of source order and pure over the locations it is given", () => {
+    const sources = [roundOutline, roundFilled, sharpOutline, other];
+    expect(validateSources([...sources].reverse())).toEqual(validateSources(sources));
+    const locations = [roundOutline, sharpFilled].flatMap(
+      ({ file }) => validateSourcePath(file).location ?? [],
+    );
+    expect(validateStyleParity(locations)).toEqual([
+      expect.objectContaining({ code: "QXI-STYLE-001", file: roundOutline.file }),
+      expect.objectContaining({ code: "QXI-STYLE-001", file: sharpFilled.file }),
+    ]);
+    expect(validateStyleParity([])).toEqual([]);
+  });
+
+  it("holds for the repository's own sources", () => {
+    const { sources } = scanIconSources(repositoryRoot);
+    const locations = sources.flatMap(({ file }) => validateSourcePath(file).location ?? []);
+    expect(new Set(locations.map(({ style }) => style))).toEqual(
+      new Set(iconSystem.architecture.styles),
+    );
+    expect(validateStyleParity(locations)).toEqual([]);
+    // Reads every drawing in the repository.
+  }, 60_000);
+});
+
 describe("production scanner and fixture isolation", () => {
   it("captures a sorted source snapshot for validation and generation", () => {
     const root = temporaryRepository();
@@ -222,6 +315,28 @@ describe("production scanner and fixture isolation", () => {
     );
     // Validates every drawing in the repository twice: once in the CLI, once here.
   }, 60_000);
+
+  it("leaves original brand logos in icons/brand-icons/ to their own validator", () => {
+    const root = temporaryRepository();
+    const source = syntheticSvg();
+    writeFixture(root, outlineFile, source);
+    writeFixture(root, "icons/brand-icons/simple-icons/github/mono.svg", "<script/>");
+    writeFixture(root, "icons/brand-icons/notes.txt", "not an icon");
+    expect(scanIconSources(root)).toEqual({
+      iconCount: 1,
+      sources: [{ file: outlineFile, source }],
+      diagnostics: [],
+    });
+    expect(validateRepository(root)).toEqual({ iconCount: 1, diagnostics: [] });
+    // Only that directory: a look-alike folder is still an unknown source folder.
+    writeFixture(root, "icons/brand-icons-old/arrows/fixture-old.svg", source);
+    expect(validateRepository(root).diagnostics).toEqual([
+      expect.objectContaining({
+        code: "QXI-PATH-003",
+        file: "icons/brand-icons-old/arrows/fixture-old.svg",
+      }),
+    ]);
+  });
 
   it("passes an empty source root and never scans test fixtures", () => {
     const root = temporaryRepository();
@@ -425,16 +540,21 @@ describe("SVG structure and paint", () => {
   });
 
   it("checks sharp sources against the sharp caps, joins, and miter limit", () => {
-    const sharp = {
-      "stroke-linecap": "square",
-      "stroke-linejoin": "miter",
-      "stroke-miterlimit": "2",
-    };
+    const sharp = sharpAttributes;
     const file = "icons/sharp-outline/arrows/fixture.svg";
     expect(validateSvg(syntheticSvg(sharp), file, "outline", "sharp")).toEqual([]);
     expect(
       validateSvg(
         syntheticSvg({ ...sharp, "stroke-miterlimit": undefined }),
+        file,
+        "outline",
+        "sharp",
+      ),
+    ).toEqual([expect.objectContaining({ code: "QXI-SVG-007" })]);
+    const otherLimit = String(iconSystem.design.sharp.miterLimit + 1);
+    expect(
+      validateSvg(
+        syntheticSvg({ ...sharp, "stroke-miterlimit": otherLimit }),
         file,
         "outline",
         "sharp",

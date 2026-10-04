@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
 import { categories } from "../../config/categories.js";
 import { iconSystem } from "../../config/icon-system.js";
-import type { IconDirectionality, IconVariant } from "../../src/types/icon.js";
+import type { IconDirectionality, IconShape, IconVariant } from "../../src/types/icon.js";
 import type { IconManifest, IconManifestEntry } from "../../src/types/icon-manifest.js";
 import type { IconProps } from "../../src/types/icon-props.js";
 
@@ -28,7 +28,7 @@ export type Catalogue = {
   readonly problems: readonly string[];
 };
 
-const { defaultVariant, variants } = iconSystem.architecture;
+const { defaultStyle, defaultVariant, styles, variants } = iconSystem.architecture;
 const categoryLabels = new Map<string, string>(categories.map(({ id, label }) => [id, label]));
 
 /** `…/src/generated/icons/star.tsx` → `star`. */
@@ -128,6 +128,11 @@ export function variantFilterOptions(): { value: VariantFilter; label: string }[
   ];
 }
 
+/** Shape switch choices: the source styles, in configured order (`Round`, `Sharp`). */
+export function shapeOptions(): { value: IconShape; label: string }[] {
+  return styles.map((style) => ({ value: style, label: capitalize(style) }));
+}
+
 /** The drawing to show: the requested one if this icon has it, otherwise the default. */
 export function selectedVariant(icon: IconManifestEntry, requested?: IconVariant): IconVariant {
   return requested && icon.variants.includes(requested) ? requested : defaultVariant;
@@ -141,10 +146,23 @@ export function mirrorsInPreview(icon: IconManifestEntry, direction: "ltr" | "rt
   return direction === "rtl" && icon.directionality === "mirror";
 }
 
-export function importSnippets(icon: IconManifestEntry) {
+/**
+ * How to import and render the drawing on show. Every shape and variant is a prop of the one
+ * component, so the imports never change; the usage line names only non-default props.
+ */
+export function importSnippets(
+  icon: IconManifestEntry,
+  shape: IconShape = defaultStyle,
+  variant: IconVariant = defaultVariant,
+) {
+  const props = [
+    ...(shape === defaultStyle ? [] : [`shape="${shape}"`]),
+    ...(variant === defaultVariant ? [] : [`variant="${variant}"`]),
+  ];
   return {
     root: `import { ${icon.componentName} } from "@qeetrix/icons";`,
     direct: `import { ${icon.componentName} } from "@qeetrix/icons/icons/${icon.id}";`,
+    usage: `<${[icon.componentName, ...props].join(" ")} />`,
   };
 }
 

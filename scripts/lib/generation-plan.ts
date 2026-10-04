@@ -1,7 +1,7 @@
 import { posix } from "node:path";
 import { categories } from "../../config/categories.js";
 import type { IconMetadata } from "../../config/icon-metadata.js";
-import { iconSystem } from "../../config/icon-system.js";
+import { type IconStyle, iconSystem } from "../../config/icon-system.js";
 import type { IconDirectionality } from "../../src/types/icon.js";
 import type { IconManifest } from "../../src/types/icon-manifest.js";
 import { noMetadata } from "../check/validate-metadata.js";
@@ -32,9 +32,9 @@ export const packageArtifactPaths: readonly string[] = [
 ];
 
 /**
- * One semantic icon concept: every drawing of one name, generated as one component. Internal
- * tooling data that drives the component, the barrel, and the manifest, which is its public
- * projection.
+ * One semantic icon concept: every drawing of one name, in every shape (source style) and variant,
+ * generated as one component. Internal tooling data that drives the component, the barrel, and the
+ * manifest, which is its public projection.
  */
 export type PlannedConcept = {
   /** Public id: the direct-import subpath and file name. Equal to `name`. */
@@ -47,7 +47,10 @@ export type PlannedConcept = {
   readonly directionality: IconDirectionality;
   readonly tags: readonly string[];
   readonly aliases: readonly string[];
-  /** One validated source per drawing, in configured variant order; the default comes first. */
+  /**
+   * One validated source per drawing: grouped by style, the default style first, then configured
+   * order; within a style, in configured variant order. The default drawing comes first.
+   */
   readonly sources: readonly IconLocation[];
   readonly outputPath: string;
 };
@@ -83,17 +86,22 @@ function failedPlan(iconCount: number, diagnostics: readonly Diagnostic[]): Gene
   };
 }
 
-const { variants, defaultDirectionality, defaultStyle } = iconSystem.architecture;
+const { variants, defaultDirectionality, defaultStyle, styles } = iconSystem.architecture;
 const categoryIds: readonly string[] = categories.map(({ id }) => id);
+/** Style order within a concept: the default style first, then configured order. */
+const styleRank = (style: IconStyle) => (style === defaultStyle ? -1 : styles.indexOf(style));
 
 /**
  * Validates every source and the authored metadata with the Phase 2B validator, groups the
  * drawings into concepts, then builds every generated artifact in memory from those concepts:
  * one component per concept, the root barrel, and the manifest as a typed module and as JSON.
  *
- * Validation guarantees each concept has exactly one default-variant drawing, at most one of each
- * other variant, and one category. Nothing is written here. Any scan, validation, or conversion
- * error yields a plan with no files, so a writer can never act on part of a library.
+ * A source style is a public `shape`: each component renders every shape of its concept, the
+ * default style's drawings when no `shape` is given. Validation guarantees each concept has, in
+ * each style, exactly one default-variant drawing, at most one of each other variant, and one
+ * category, and that styles mirror the default style. Nothing is written here. Any scan,
+ * validation, or conversion error yields a plan with no files, so a writer can never act on part
+ * of a library.
  */
 export function createGenerationPlan(
   sources: readonly IconSource[],
@@ -111,8 +119,6 @@ export function createGenerationPlan(
       const message = "Cannot generate component: validated source has no resolved location.";
       return failedPlan(iconCount, [diagnostic("QXI-GEN-001", file, message)]);
     }
-    // The package root is the default style; other styles have their own entry points.
-    if (location.style !== defaultStyle) continue;
     drawings.set(location.name, [...(drawings.get(location.name) ?? []), { location, source }]);
   }
 
@@ -122,9 +128,11 @@ export function createGenerationPlan(
   for (const [name, group] of drawings) {
     group.sort(
       (left, right) =>
+        styleRank(left.location.style) - styleRank(right.location.style) ||
         variants.indexOf(left.location.variant) - variants.indexOf(right.location.variant),
     );
     const [primary] = group;
+    const shapes = [...new Set(group.map(({ location }) => location.style))];
     // Own keys only, so a name such as `constructor` never reads Object.prototype.
     const entry = Object.hasOwn(metadata, name) ? metadata[name] : {};
     try {
@@ -145,10 +153,15 @@ export function createGenerationPlan(
         contents: renderComponentSource({
           outputPath: concept.outputPath,
           componentName: concept.componentName,
-          variants: group.map(({ location, source }) => ({
-            variant: location.variant,
-            sourcePath: location.file,
-            svg: svgToReact(source),
+          shapes: shapes.map((shape) => ({
+            shape,
+            variants: group
+              .filter(({ location }) => location.style === shape)
+              .map(({ location, source }) => ({
+                variant: location.variant,
+                sourcePath: location.file,
+                svg: svgToReact(source),
+              })),
           })),
         }),
       });
@@ -188,7 +201,11 @@ export function createGenerationPlan(
         componentName,
         category,
         categories,
-        variants: sources.map(({ variant }) => variant),
+        // Styles mirror one another, so the default style's variants are every style's.
+        variants: sources
+          .filter(({ style }) => style === defaultStyle)
+          .map(({ variant }) => variant),
+        shapes: [...new Set(sources.map(({ style }) => style))],
         directionality,
         tags,
         aliases,
