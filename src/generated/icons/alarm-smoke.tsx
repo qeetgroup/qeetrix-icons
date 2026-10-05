@@ -20,7 +20,7 @@ export function AlarmSmokeIcon(props: IconProps<"outline">) {
       >
         <path d="M11 21c0-2.5 2-2.5 2-5" />
         <path d="M16 21c0-2.5 2-2.5 2-5" />
-        <path d="M19 8L18.2 11L17.996 12H6.004L5.8 11L5 8" />
+        <path d="M18.742 8.966L18.2 11L17.996 12H6.004L5.8 11L5.258 8.966" />
         <path d="M22 3V8H2V3Z" />
         <path d="M6 21c0-2.5 2-2.5 2-5" />
       </svg>

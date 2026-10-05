@@ -20,7 +20,7 @@ export function Axis3dIcon(props: IconProps<"outline">) {
       >
         <path d="M13.5 10.5 15 9" />
         <path d="M4 4V20H20" />
-        <path d="M4.293 19.707 6 18" />
+        <path d="M5 19L6 18" />
         <path d="m9 15 1.5-1.5" />
       </svg>
     );

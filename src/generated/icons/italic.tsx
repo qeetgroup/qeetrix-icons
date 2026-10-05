@@ -20,7 +20,7 @@ export function ItalicIcon(props: IconProps<"outline">) {
       >
         <line x1="19" x2="10" y1="4" y2="4" />
         <line x1="14" x2="5" y1="20" y2="20" />
-        <line x1="15" x2="9" y1="4" y2="20" />
+        <line x1="14.649" x2="9.351" y1="4.936" y2="19.064" />
       </svg>
     );
   }

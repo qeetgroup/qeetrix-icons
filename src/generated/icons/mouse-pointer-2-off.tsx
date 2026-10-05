@@ -18,8 +18,8 @@ export function MousePointer2OffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15.55 8.45L21.022 10.673L20.974 11.394L13.972 13.201L13.199 13.972L11.394 20.974L10.673 21.022L8.45 15.551" />
-        <path d="M22 2 2 22" />
+        <path d="M16.476 8.826L21.022 10.673L20.974 11.394L13.972 13.201L13.199 13.972L11.394 20.974L10.673 21.022L8.826 16.477" />
+        <path d="M21.581 2.419L2.419 21.581" />
         <path d="M6.816 11.528L3.592 3.592L11.528 6.816" />
       </svg>
     );

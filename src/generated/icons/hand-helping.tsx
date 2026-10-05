@@ -19,8 +19,8 @@ export function HandHelpingIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M11 12H13A2 2 0 1 0 13 8H9.05L8.6 8.6L3 14" />
-        <path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" />
-        <path d="m2 13 6 6" />
+        <path d="M7.753 17.341L8.6 16.6C8.9 16.2 9.4 16 10 16H14C15.1 16 16.1 15.6 16.8 14.8L21.4 10.4A2 2 0 0 0 18.65 7.49L15.183 10.71" />
+        <path d="M3.126 14.126L8 19" />
       </svg>
     );
   }

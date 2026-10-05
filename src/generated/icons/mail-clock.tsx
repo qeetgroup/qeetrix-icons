@@ -19,9 +19,9 @@ export function MailClockIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 14v2.2l1.6 1" />
-        <path d="m22 7-.759.484" />
-        <path d="M6.835 20H2V4H22V8" />
-        <path d="M7.605 10.567 2 7" />
+        <path d="M21.614 7.246L21.241 7.484" />
+        <path d="M6.835 20H2V4H22V6.5" />
+        <path d="M7.605 10.567L2.844 7.537" />
         <circle cx="16" cy="16" r="6" />
       </svg>
     );

@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="M5 18H19V22H5Z"/>
-  <path d="m14.5 10 1.5 8"/>
+  <path d="M19 18V22H5V18Z"/>
+  <path d="M14.5 10L15.816 17.017"/>
   <path d="M7 10h10"/>
-  <path d="m8 18 1.5-8"/>
+  <path d="M8.184 17.017L9.5 10"/>
   <circle cx="12" cy="6" r="4"/>
 </svg>

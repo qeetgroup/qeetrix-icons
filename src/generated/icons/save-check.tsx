@@ -19,7 +19,7 @@ export function SaveCheckIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12.5 21H3V3H16L21 8V13.15" />
-        <path d="m16 19 2 2 4-4" />
+        <path d="M16 19L18 21L21.581 17.419" />
         <path d="M17 15.13V13H7V21" />
         <path d="M7 3V8H15" />
       </svg>

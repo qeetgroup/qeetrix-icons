@@ -21,8 +21,8 @@ export function ScreenShareOffIcon(props: IconProps<"outline">) {
         <path d="M13 3H2V17H22V12" />
         <path d="M8 21h8" />
         <path d="M12 17v4" />
-        <path d="m22 3-5 5" />
-        <path d="m17 3 5 5" />
+        <path d="M21.581 3.419L17 8" />
+        <path d="M17 3L21.581 7.581" />
       </svg>
     );
   }

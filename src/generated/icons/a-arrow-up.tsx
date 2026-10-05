@@ -18,10 +18,10 @@ export function AArrowUpIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m14 11 4-4 4 4" />
-        <path d="M18 16V7" />
-        <path d="M2 16L6.501 5.203L11 16" />
-        <path d="M3.304 13h6.392" />
+        <path d="M14 11L18 7L21.581 10.581" />
+        <path d="M18 16V8" />
+        <path d="M2.313 15.25L6.501 5.203L11 16" />
+        <path d="M4.304 13H8.696" />
       </svg>
     );
   }

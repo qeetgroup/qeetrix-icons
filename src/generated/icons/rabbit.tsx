@@ -18,11 +18,11 @@ export function RabbitIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13 16a3 3 0 0 1 2.24 5" />
+        <path d="M13 16A3 3 0 0 1 15.771 20.158" />
         <path d="M18 12h.01" />
         <path d="M18 21H10A4 4 0 0 1 6 17A7 7 0 0 1 13 10H13.2L9.6 6.4A1 1 0 1 1 12.4 3.6L15.8 7H16C19.3 7 22 9.7 22 13V16H16V19" />
-        <path d="M20 8.54V4a2 2 0 1 0-4 0v3" />
-        <path d="M7.612 12.524a3 3 0 1 0-1.6 4.3" />
+        <path d="M20 7.54V4A2 2 0 1 0 16 4V6" />
+        <path d="M6.985 11.75A3 3 0 1 0 5.032 17" />
       </svg>
     );
   }

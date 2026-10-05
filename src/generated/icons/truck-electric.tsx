@@ -22,7 +22,7 @@ export function TruckElectricIcon(props: IconProps<"outline">) {
         <path d="M15 19H9" />
         <path d="M19 19H22V14.005L17.996 9H14" />
         <path d="M2 13V19H5" />
-        <path d="M4 3L2.15 5.15L1.896 5.383L2.151 6.01H4.65A0.47 0.47 0 0 1 5 6.87L3 9.02" />
+        <path d="M4 3L2.15 5.15L1.21 6.01H4.65A0.47 0.47 0 0 1 5 6.87L3 9.02" />
         <circle cx="17" cy="19" r="2" />
         <circle cx="7" cy="19" r="2" />
       </svg>

@@ -19,7 +19,7 @@ export function FolderPenIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M2 11.5V3H9L11 6H22V20H10.5" />
-        <path d="M11.378 13.626A1 1 0 1 0 8.374 10.622L3.001 15.997L1.766 20.233L6.002 18.998Z" />
+        <path d="M11.378 13.626A1 1 0 1 0 8.374 10.622L3.001 15.997L2.007 19.407L2.016 20.16L6.002 18.998Z" />
       </svg>
     );
   }

@@ -18,7 +18,7 @@ export function ArrowRightIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M5 12h14" />
+        <path d="M5 12H18" />
         <path d="m12 5 7 7-7 7" />
       </svg>
     );

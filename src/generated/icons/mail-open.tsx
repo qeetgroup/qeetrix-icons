@@ -15,7 +15,7 @@ export function MailOpenIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 10.549L23 23L1 23L1 10.549L12 17.54L22.536 10.844L23 10.549ZM23 9.709L23 8.5L12 0.25L1 8.5L1 9.709L1.692 8.62L12 15.17L22.308 8.62L23 9.709Z"
+            d="M23 8.47L23 23L1 23L1 8.47L12 1.012L23 8.47ZM12 17.54L2 11.184L2 10L2.536 9.156L12 15.17L21.464 9.156L22 10L22 11.184L21.692 11.38L12 17.54Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,8 +33,8 @@ export function MailOpenIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 9V22H2V9L12 1.5Z" />
-        <path d="M22 10L12 16.355L2 10" />
+        <path d="M22 9V22H2V9L12 2.22Z" />
+        <path d="M21.156 10.536L12 16.355L2.844 10.536" />
       </svg>
     );
   }

@@ -18,7 +18,7 @@ export function UndoDotIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21 17a9 9 0 0 0-15-6.7L3 13" />
+        <path d="M21 17A9 9 0 0 0 6 10.3L3.743 12.331" />
         <path d="M3 7v6h6" />
         <rect height="2" width="2" x="11" y="16" />
       </svg>

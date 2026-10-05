@@ -15,7 +15,7 @@ export function MonitorUpIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 2L1 2L1 18L11 18L11 20L7 20L7 22L17 22L17 20L13 20L13 18L23 18L23 2ZM11.586 6L12 5.586L12.414 6L13 6L13 6.586L16.414 10L15 11.414L13 9.414L13 14L11 14L11 9.414L9 11.414L7.586 10L8.293 9.293L11 6.586L11 6L11.586 6Z"
+            d="M23 2L1 2L1 18L11 18L11 20L7 20L7 22L17 22L17 20L13 20L13 18L23 18L23 2ZM8.293 9.293L12 5.586L16.414 10L15 11.414L13 9.414L13 14L11 14L11 9.414L9 11.414L7.586 10L8.293 9.293Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function MonitorUpIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="m9 10 3-3 3 3" />
-        <path d="M12 13V7" />
+        <path d="M12 13V8" />
         <rect height="14" width="20" x="2" y="3" />
         <path d="M12 17v4" />
         <path d="M8 21h8" />

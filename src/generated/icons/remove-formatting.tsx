@@ -20,7 +20,7 @@ export function RemoveFormattingIcon(props: IconProps<"outline">) {
       >
         <path d="M4 7V4h16v3" />
         <path d="M5 20h6" />
-        <path d="M13 4 8 20" />
+        <path d="M12.702 4.954L8.298 19.046" />
         <path d="m15 15 5 5" />
         <path d="m20 15-5 5" />
       </svg>

@@ -19,9 +19,9 @@ export function TurtleIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 10L14 14V18H18V14A8 8 0 1 0 2 14V18H6V14L8 10Z" />
-        <path d="M4.82 7.9 8 10" />
-        <path d="M15.18 7.9 12 10" />
-        <path d="M16.93 10H20a2 2 0 0 1 0 4H2" />
+        <path d="M5.654 8.451L8 10" />
+        <path d="M14.346 8.451L12 10" />
+        <path d="M17.93 10H20A2 2 0 0 1 20 14H3" />
       </svg>
     );
   }

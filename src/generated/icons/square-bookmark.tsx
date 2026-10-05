@@ -15,7 +15,7 @@ export function SquareBookmarkIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M18 2L22 2L22 22L2 22L2 2L10 2L10 13.361L14 10.143L18 13.361L18 2ZM16 2L12 2L12 9.185L14 7.577L16 9.185L16 2Z"
+            d="M2 2L22 2L22 22L2 22L2 2ZM12 3L12 9.185L14 7.577L16 9.185L16 3L18 3L18 13.361L14 10.143L10 13.361L10 3L12 3Z"
             fillRule="evenodd"
           />
         </svg>

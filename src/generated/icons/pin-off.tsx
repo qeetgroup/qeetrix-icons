@@ -20,8 +20,8 @@ export function PinOffIcon(props: IconProps<"outline">) {
       >
         <path d="M12 17v5" />
         <path d="M15 9.34V6H16A2 2 0 0 0 16 2H7.89" />
-        <path d="m2 2 20 20" />
-        <path d="M9 9V11.989L5 14.011V17H17" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M9 10V11.989L5 14.011V17H16" />
       </svg>
     );
   }

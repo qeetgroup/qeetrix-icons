@@ -19,7 +19,7 @@ export function SquareArrowRightEnterIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m10 16 4-4-4-4" />
-        <path d="M3 12h11" />
+        <path d="M3 12H13" />
         <path d="M3 8V3H21V21H3V16" />
       </svg>
     );

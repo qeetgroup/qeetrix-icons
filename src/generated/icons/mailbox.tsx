@@ -20,7 +20,7 @@ export function MailboxIcon(props: IconProps<"outline">) {
       >
         <path d="M22 19H2V9.5C2 7 4 5 6.5 5H18C20.2 5 22 6.8 22 9Z" />
         <polyline points="15,9 18,9 18,11" />
-        <path d="M6.5 5C9 5 11 7 11 9.5V17.828L9.828 19H9" />
+        <path d="M8.102 5.289C9.802 5.93 11 7.565 11 9.5V17.828L9.828 19H9" />
         <line x1="6" x2="7" y1="10" y2="10" />
       </svg>
     );

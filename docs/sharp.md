@@ -103,10 +103,18 @@ one, with two differences:
 - Every element plays the role it plays in the round filled drawing, listed or inferred, so both
   shapes share one reviewed design. Inferring afresh could flip a role: square caps push a
   connector's ends further into the bodies it joins, or a dot's cap past its body.
+  `sharpFilledRoles` in `config/derived/<category>.ts` adjusts a role for the sharp drawing only.
+- Open bodies close, and cuts [run on through the edge](filled.md#cuts-that-reach-the-edge), from
+  the round outline's line ends and run-on decisions. Sharpening may pull a line's end back off
+  the stroke it meets, so its square cap stays inside, or move a corner a little; taking the ends
+  from the round outline keeps a flag's pole straight and makes both shapes part the same way.
 
 The output has the same format as a round filled drawing ([filled.md](filled.md#output)), with a
-comment naming the sharp outline and `bun run derive:sharp`. A name in `config/filled.ts`
-therefore always yields two filled drawings, one per shape.
+comment naming the sharp outline and `bun run derive:sharp`. A name under `filled` in
+`config/derived/` therefore always yields two filled drawings, one per shape. Either can be
+replaced by a reviewed override in `config/overrides/sharp-filled/`
+([filled.md](filled.md#overrides)), and the sharp outline by one in
+`config/overrides/sharp-outline/`.
 
 ## Changing the sharp style
 

@@ -15,7 +15,7 @@ export function FlagTriangleLeftIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M17 23L17 16.118L1.776 8.5L17.284 0.745L19 1.786L19 14.882L19.342 15.053L19 15.736L19 23L17 23Z"
+            d="M19 22L17.008 22.128L16.182 15.709L1.776 8.5L16.758 1.008L19 1.074L19 22Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FlagTriangleLeftIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M18 22V2.349L17.237 1.886L4.011 8.5L18 15.5" />
+        <path d="M18 22V2.045L16.98 2.015L4.011 8.5L17.106 15.053" />
       </svg>
     );
   }
@@ -46,7 +46,7 @@ export function FlagTriangleLeftIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path
-          d="M17 22L17 16.118L5.014 10.12Q4.548 9.894 4.274 9.456Q3.999 9.017 3.999 8.5Q3.999 7.983 4.274 7.544Q4.548 7.106 5.003 6.886L16.368 1.203Q16.756 1.001 17.193 0.999Q17.7 0.997 18.134 1.26Q18.567 1.524 18.8 1.974Q19 2.363 19 2.8L19 22C19 22.552 18.552 23 18 23C17.448 23 17 22.552 17 22Z"
+          d="M19 22C19 22.552 18.552 23 18 23C17.448 23 17 22.552 17 22L17 16.118L5.014 10.12Q4.548 9.894 4.274 9.456Q3.999 9.017 3.999 8.5Q3.999 7.983 4.274 7.544Q4.548 7.106 5.003 6.886L16.368 1.203Q16.756 1.001 17.193 0.999Q17.7 0.997 18.134 1.26Q18.567 1.524 18.8 1.974Q19 2.363 19 2.8L19 22Z"
           fillRule="evenodd"
         />
       </svg>

@@ -18,8 +18,8 @@ export function HeaterIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 8c2-3-2-3 0-6" />
-        <path d="M15.5 8c2-3-2-3 0-6" />
+        <path d="M11 8C12.856 5.216 9.546 5.016 10.656 2.605" />
+        <path d="M15.5 8C17.356 5.216 14.046 5.016 15.156 2.605" />
         <path d="M6 10h.01" />
         <path d="M6 14h.01" />
         <path d="M10 16v-4" />

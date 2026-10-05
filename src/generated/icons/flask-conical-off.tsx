@@ -20,9 +20,9 @@ export function FlaskConicalOffIcon(props: IconProps<"outline">) {
       >
         <path d="M10 2v2.343" />
         <path d="M14 2v6.343" />
-        <path d="m2 2 20 20" />
-        <path d="M20 20V22H2.627L9.472 9.477" />
-        <path d="M6.453 15H15" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M20 21V22L2.687 21.964L8.995 10.356" />
+        <path d="M7.453 15H14" />
         <path d="M8.5 2h7" />
       </svg>
     );

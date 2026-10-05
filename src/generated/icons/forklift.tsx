@@ -18,7 +18,7 @@ export function ForkliftIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 12H3V19" />
+        <path d="M12 12H3V18" />
         <path d="M15 19h7" />
         <path d="M16 19V2" />
         <path d="M6 12V5H11L15.695 9.695L16 10.43V10.828" />

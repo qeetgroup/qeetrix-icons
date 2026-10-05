@@ -14,7 +14,7 @@ export function MessageSquareIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path d="M23 20L6.414 20L3.112 23.302L1 22.428L1 2L23 2L23 20Z" fillRule="evenodd" />
+          <path d="M23 20L6.414 20L1 25.414L1 2L23 2L23 20Z" fillRule="evenodd" />
         </svg>
       );
     }
@@ -30,7 +30,7 @@ export function MessageSquareIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 19H6L2.877 22.123L2 21.76V3H22Z" />
+        <path d="M22 19H6L2 23V3H22Z" />
       </svg>
     );
   }

@@ -20,14 +20,14 @@ export function BroomSparklesIcon(props: IconProps<"outline">) {
       >
         <path d="M11 2v2" />
         <path d="M12 3h-2" />
-        <path d="M13.5 10.5 22 2" />
-        <path d="M15.509 12.51L11.491 8.49L2.076 13.975L1.951 14.951L9.051 22.051L10.026 21.924Z" />
+        <path d="M13.5 10.5L21.581 2.419" />
+        <path d="M15.509 12.51L11.491 8.49L2.019 14.008L2.016 15.016L8.985 21.985L9.993 21.982Z" />
         <path d="M20 15v4" />
         <path d="M22 17h-4" />
         <path d="M4 4v4" />
         <path d="m5 18 2-2" />
         <path d="M6 6H2" />
-        <path d="m7.699 10.7 5.602 5.601" />
+        <path d="M8.406 11.407L12.594 15.594" />
       </svg>
     );
   }

@@ -64,6 +64,7 @@
     "check:filled": "bun scripts/build/derive-filled.ts --check",
     "derive:sharp": "bun scripts/build/derive-sharp.ts",
     "check:sharp": "bun scripts/build/derive-sharp.ts --check",
+    "stamp:override": "bun scripts/build/stamp-override.ts",
     "sync:lucide": "bun scripts/sync/sync-lucide.ts",
     "sync:brands": "bun scripts/sync/sync-brands.ts",
     "check:brands": "bun scripts/check/check-brands.ts",

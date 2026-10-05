@@ -15,7 +15,7 @@ export function PentagonIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23.538 8.588L12.583 0.728L12 0.31L0.462 8.588L4.866 22L19.134 22L23.538 8.588Z"
+            d="M23.005 8.733L12.574 1.412L12 1.009L0.995 8.733L4.839 22L19.161 22L23.005 8.733Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function PentagonIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 1.541L22.359 8.973L18.41 21H5.59L1.641 8.973Z" />
+        <path d="M12 2.231L21.846 9.141L18.41 21H5.59L2.154 9.141Z" />
       </svg>
     );
   }

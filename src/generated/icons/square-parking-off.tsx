@@ -18,10 +18,10 @@ export function SquareParkingOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4.188 3H21V19.824" />
+        <path d="M5.188 3H21V18.824" />
         <path d="M3 8.7V21H15.3" />
-        <path d="m2 2 20 20" />
-        <path d="M13 13a3 3 0 1 0 0-6H9v2" />
+        <path d="M4.541 4.541L19.459 19.459" />
+        <path d="M13 13A3 3 0 1 0 13 7H9V8" />
         <path d="M9 17v-2.3" />
       </svg>
     );

@@ -20,7 +20,7 @@ export function BusIcon(props: IconProps<"outline">) {
       >
         <path d="M8 6v6" />
         <path d="M15 6v6" />
-        <path d="M2 12h19.6" />
+        <path d="M2 12H20.6" />
         <path d="M18 18H21C21 18 21.5 16.3 21.8 15.2C21.9 14.8 22 14.4 22 14C22 13.6 21.9 13.2 21.8 12.8L19.896 6H2V18H5" />
         <circle cx="7" cy="18" r="2" />
         <path d="M9 18h5" />

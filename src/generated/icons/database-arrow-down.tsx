@@ -18,11 +18,11 @@ export function DatabaseArrowDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m16 19 3 3 3-3" />
-        <path d="M19 16v6" />
-        <path d="M21 12.536V5" />
+        <path d="M16 19L19 21.66L21.583 19.369" />
+        <path d="M19 16V21" />
+        <path d="M21 12.536V6" />
         <path d="M3 12A9 3 0 0 0 15.182 14.806" />
-        <path d="M3 5V19A9 3 0 0 0 13.318 21.968" />
+        <path d="M3 6V19A9 3 0 0 0 13.318 21.968" />
         <ellipse cx="12" cy="5" rx="9" ry="3" />
       </svg>
     );

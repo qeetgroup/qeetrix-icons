@@ -18,11 +18,11 @@ export function SwitchCameraIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 19H2V5H9" />
-        <path d="M13 5H22V19H15" />
+        <path d="M11 19H2V5H8" />
+        <path d="M13 5H22V19H16" />
         <circle cx="12" cy="12" r="3" />
-        <path d="m18 22-3-3 3-3" />
-        <path d="m6 2 3 3-3 3" />
+        <path d="M17.581 21.581L15 19L18 16" />
+        <path d="M6.419 2.419L9 5L6 8" />
       </svg>
     );
   }

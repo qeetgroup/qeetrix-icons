@@ -18,7 +18,7 @@ export function FireExtinguisherIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 6.5V2H11V6.5" />
+        <path d="M15 5.5V2H11V5.5" />
         <path d="M9 18h8" />
         <path d="M18 3h-3" />
         <path d="M11 3a6 6 0 0 0-6 6v11" />

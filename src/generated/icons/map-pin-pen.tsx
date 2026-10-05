@@ -19,7 +19,7 @@ export function MapPinPenIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M17.97 9.304A8 8 0 0 0 2 10c0 4.69 4.887 9.562 7.022 11.468" />
-        <path d="M21.378 16.626A1 1 0 0 0 18.374 13.622L14.001 17.997L12.766 22.233L17.002 20.998Z" />
+        <path d="M21.378 16.626A1 1 0 0 0 18.374 13.622L14.001 17.997L12.839 21.983L13.592 21.992L17.002 20.998Z" />
         <circle cx="10" cy="10" r="3" />
       </svg>
     );

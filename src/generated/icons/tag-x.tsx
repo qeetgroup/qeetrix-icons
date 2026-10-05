@@ -18,7 +18,7 @@ export function TagXIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16.5 6.5L12 2H2V12L11.994 21.994H14.006L16.5 19.5" />
+        <path d="M16.5 6.5L12 2H2V12L11.996 21.996H14.004L16.5 19.5" />
         <path d="m16.5 10.5 5 5" />
         <path d="m21.5 10.5-5 5" />
         <rect fill="currentColor" height="1" width="1" x="7" y="7" />

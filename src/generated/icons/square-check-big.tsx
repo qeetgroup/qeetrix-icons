@@ -19,7 +19,7 @@ export function SquareCheckBigIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M21 10.656V21H3V3H17.344" />
-        <path d="m9 11 3 3L22 4" />
+        <path d="M9 11L12 14L21.581 4.419" />
       </svg>
     );
   }

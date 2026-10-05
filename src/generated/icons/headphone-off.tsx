@@ -20,8 +20,8 @@ export function HeadphoneOffIcon(props: IconProps<"outline">) {
       >
         <path d="M21 14h-1.343" />
         <path d="M9.128 3.47A9 9 0 0 1 21 12v3.343" />
-        <path d="m2 2 20 20" />
-        <path d="M19.828 21H16V16" />
+        <path d="M2.419 2.419L19.459 19.459" />
+        <path d="M18.828 21H16V17" />
         <path d="M3 14H8V21H3V12A9 9 0 0 1 5.636 5.636" />
       </svg>
     );

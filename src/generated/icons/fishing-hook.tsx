@@ -19,7 +19,7 @@ export function FishingHookIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M17.586 11.414L11.656 17.344A1 1 0 0 1 3.656 9.344L8 5V10" />
-        <path d="M20.414 8.586 22 7" />
+        <path d="M20.414 8.586L21.581 7.419" />
         <circle cx="19" cy="10" r="2" />
       </svg>
     );

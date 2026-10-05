@@ -20,7 +20,7 @@ export function BookLockIcon(props: IconProps<"outline">) {
       >
         <path d="M18 6V4a2 2 0 1 0-4 0v2" />
         <path d="M20 15V22H6.5A1 1 0 0 1 6.5 17H20" />
-        <path d="M4 19.5V2H10" />
+        <path d="M4 18.5V2H10" />
         <rect height="5" width="8" x="12" y="6" />
       </svg>
     );

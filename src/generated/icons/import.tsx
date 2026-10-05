@@ -18,7 +18,7 @@ export function ImportIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 3v12" />
+        <path d="M12 3V14" />
         <path d="m8 11 4 4 4-4" />
         <path d="M8 5H2V19H22V5H16" />
       </svg>

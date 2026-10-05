@@ -18,8 +18,8 @@ export function MoveLeftIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M6 8L2 12L6 16" />
-        <path d="M2 12H22" />
+        <path d="M6 8L2.36 12L6 16" />
+        <path d="M3 12H22" />
       </svg>
     );
   }

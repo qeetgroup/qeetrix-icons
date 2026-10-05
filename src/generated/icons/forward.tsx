@@ -19,7 +19,7 @@ export function ForwardIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m15 17 5-5-5-5" />
-        <path d="M4 18v-2a4 4 0 0 1 4-4h12" />
+        <path d="M4 18V16A4 4 0 0 1 8 12H19" />
       </svg>
     );
   }

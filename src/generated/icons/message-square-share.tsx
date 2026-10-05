@@ -18,9 +18,9 @@ export function MessageSquareShareIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 3H2V21.76L2.877 22.123L6 19H22V13" />
+        <path d="M12 3H2V23L6 19H22V13" />
         <path d="M16 3h6v6" />
-        <path d="m16 9 6-6" />
+        <path d="M16 9L21.293 3.707" />
       </svg>
     );
   }

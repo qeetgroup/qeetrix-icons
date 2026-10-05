@@ -26,8 +26,8 @@ export function SprayCanIcon(props: IconProps<"outline">) {
         <path d="M3 11h.01" />
         <rect height="4" width="4" x="15" y="5" />
         <path d="M19 9L21 11V22H13V11L15 9" />
-        <path d="m13 14 8-2" />
-        <path d="m13 19 8-2" />
+        <path d="M13.97 13.757L20.03 12.243" />
+        <path d="M13.97 18.757L20.03 17.243" />
       </svg>
     );
   }

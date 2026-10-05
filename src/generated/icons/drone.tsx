@@ -18,10 +18,10 @@ export function DroneIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 10 7 7" />
-        <path d="m10 14-3 3" />
-        <path d="m14 10 3-3" />
-        <path d="m14 14 3 3" />
+        <path d="M9.293 9.293L7 7" />
+        <path d="M9.293 14.707L7 17" />
+        <path d="M14.707 9.293L17 7" />
+        <path d="M14.707 14.707L17 17" />
         <path d="M14.205 4.139a4 4 0 1 1 5.439 5.863" />
         <path d="M19.637 14a4 4 0 1 1-5.432 5.868" />
         <path d="M4.367 10a4 4 0 1 1 5.438-5.862" />

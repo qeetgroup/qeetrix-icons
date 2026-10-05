@@ -20,7 +20,7 @@ export function CombineIcon(props: IconProps<"outline">) {
       >
         <path d="M14 3H15V10H14" />
         <path d="M19 3H20V10H19" />
-        <path d="m7 15 3 3" />
+        <path d="M7 15L9.293 17.293" />
         <path d="M7 21L10 18H3V14" />
         <rect height="7" width="7" x="14" y="14" />
         <rect height="7" width="7" x="3" y="3" />

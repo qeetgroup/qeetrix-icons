@@ -15,7 +15,7 @@ export function MessageSquareMoreIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M6.414 20L23 20L23 2L1 2L1 22.428L3.112 23.302L6.414 20ZM7 10L9.01 10L9.01 12L7 12L7 10ZM11 10L13.01 10L13.01 12L11 12L11 10ZM17.01 10L15 10L15 12L17.01 12L17.01 10Z"
+            d="M6.414 20L23 20L23 2L1 2L1 25.414L6.414 20ZM7 10L9.01 10L9.01 12L7 12L7 10ZM11 10L13.01 10L13.01 12L11 12L11 10ZM17.01 10L15 10L15 12L17.01 12L17.01 10Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MessageSquareMoreIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 19H6L2.877 22.123L2 21.76V3H22Z" />
+        <path d="M22 19H6L2 23V3H22Z" />
         <path d="M12 11h.01" />
         <path d="M16 11h.01" />
         <path d="M8 11h.01" />

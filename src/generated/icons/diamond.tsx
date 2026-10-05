@@ -15,7 +15,7 @@ export function DiamondIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M10.583 1.003L0.993 10.593L0.993 13.417L10.583 23.007L13.407 23.007L22.997 13.417L22.997 10.593L13.407 1.003L10.583 1.003Z"
+            d="M0.999 10.587L0.999 13.423L1.292 13.716L10.577 23.001L13.413 23.001L22.991 13.423L22.991 10.587L13.413 1.009L10.577 1.009L0.999 10.587Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function DiamondIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M1.993 11.007V13.003L10.997 22.007H12.993L21.997 13.003V11.007L12.993 2.003H10.997Z" />
+        <path d="M1.999 13.009L10.991 22.001H12.999L21.991 13.009V11.001L12.999 2.009H10.991L1.999 11.001Z" />
       </svg>
     );
   }

@@ -19,10 +19,10 @@ export function GitCompareArrowsIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <circle cx="5" cy="6" r="3" />
-        <path d="M12 6H19V15" />
+        <path d="M13 6H19V15" />
         <path d="m15 9-3-3 3-3" />
         <circle cx="19" cy="18" r="3" />
-        <path d="M12 18H5V9" />
+        <path d="M11 18H5V9" />
         <path d="m9 15 3 3-3 3" />
       </svg>
     );

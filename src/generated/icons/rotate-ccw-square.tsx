@@ -18,8 +18,8 @@ export function RotateCcwSquareIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M20 9V5H12" />
-        <path d="m15 2-3 3 3 3" />
+        <path d="M20 9V5H13" />
+        <path d="M14.581 2.419L12 5L15 8" />
         <path d="M20 13V20H4V5H8" />
       </svg>
     );

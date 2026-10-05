@@ -19,11 +19,11 @@ export function BrickWallFireIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 3v2.107" />
-        <path d="M17 9c1 3 2.5 3.5 3.5 4.5A5 5 0 0 1 22 17a5 5 0 0 1-10 0c0-.3 0-.6.1-.9a2 2 0 1 0 3.3-2C13 11.5 16 9 17 9" />
-        <path d="M21 8.274V3H3V21H8.938" />
-        <path d="M3 15h5.253" />
+        <path d="M17 9C18 12 19.5 12.5 20.5 13.5A5 5 0 0 1 22 17A5 5 0 0 1 12 17C12 16.7 12 16.4 12.1 16.1A2 2 0 1 0 15.4 14.1C13 11.5 16 9 17 9Z" />
+        <path d="M21 8.274V3H3V21H7.938" />
+        <path d="M3 15H6.253" />
         <path d="M3 9h8.228" />
-        <path d="M8 15v6" />
+        <path d="M8 16V21" />
         <path d="M8 3v6" />
       </svg>
     );

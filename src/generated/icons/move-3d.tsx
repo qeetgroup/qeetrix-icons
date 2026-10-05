@@ -18,10 +18,10 @@ export function Move3dIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M5 3v16h16" />
-        <path d="m5 19 6-6" />
-        <path d="m2 6 3-3 3 3" />
-        <path d="m18 16 3 3-3 3" />
+        <path d="M5 4V19H20" />
+        <path d="M5.707 18.293L11 13" />
+        <path d="M2.419 5.581L5 3L8 6" />
+        <path d="M18 16L21 19L18.419 21.581" />
       </svg>
     );
   }

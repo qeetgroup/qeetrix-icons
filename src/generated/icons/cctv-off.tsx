@@ -18,10 +18,10 @@ export function CctvOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.309 6.652L18 9.501L17.052 11.395L17.657 12H21.999L20.552 14.895" />
-        <path d="M15.166 15.166L14 17.5L2.535 11.762L1.774 9.474L3.996 4.981" />
+        <path d="M12.309 6.652L18 9.501L17.052 11.395L17.657 12L21.565 12.268L20.552 14.895" />
+        <path d="M14.719 16.061L14 17.5L2.02 11.504L2.011 8.995L3.996 4.981" />
         <path d="M2 19H7.014L9.001 14.998" />
-        <path d="m2 2 20 20" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M2 21v-4" />
         <path d="M7 9h.01" />
       </svg>

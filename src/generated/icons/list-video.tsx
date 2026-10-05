@@ -21,7 +21,7 @@ export function ListVideoIcon(props: IconProps<"outline">) {
         <path d="M21 5H3" />
         <path d="M10 12H3" />
         <path d="M10 19H3" />
-        <path d="M15 10.234L22.002 14.434V15.566L15 19.766Z" />
+        <path d="M15 10.234L21.986 14.424V15.576L15 19.766Z" />
       </svg>
     );
   }

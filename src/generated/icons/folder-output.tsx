@@ -19,8 +19,8 @@ export function FolderOutputIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M2 7.5V3H8.983L11.008 6H22V20H2.386" />
-        <path d="M2 13h10" />
-        <path d="m5 10-3 3 3 3" />
+        <path d="M3 13H12" />
+        <path d="M5 10L2.34 13L5 16" />
       </svg>
     );
   }

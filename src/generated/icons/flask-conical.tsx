@@ -15,7 +15,7 @@ export function FlaskConicalIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M7.5 1L16.5 1L16.5 3L7.5 3L7.5 1ZM9 4L9 8.257L5.86 14L18.14 14L15 8.257L15 4L9 4ZM18.547 14.745L18.547 16L5.453 16L5.453 14.745L0.941 23L23.059 23L18.547 14.745Z"
+            d="M7.5 1L16.5 1L16.5 3L7.5 3L7.5 1ZM9 4L9 8.258L1.005 22.964L22.995 22.964L15 8.258L15 4L9 4ZM7.017 14L6.453 15.037L6.453 16L17.547 16L17.547 15.037L16.983 14L7.017 14Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,8 +33,8 @@ export function FlaskConicalIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14 2V8.512L21.373 22H2.627L10 8.512V2" />
-        <path d="M6.453 15h11.094" />
+        <path d="M14 2V8.512L21.313 21.964H2.687L10 8.512V2" />
+        <path d="M7.453 15H16.547" />
         <path d="M8.5 2h7" />
       </svg>
     );

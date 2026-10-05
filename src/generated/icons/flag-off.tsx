@@ -18,10 +18,10 @@ export function FlagOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" />
-        <path d="m2 2 20 20" />
-        <path d="M4 22V4" />
-        <path d="M7.656 2H8C11 2 13 4 15.333 4Q17.333 4 18.4 3.2L20 2V14.347" />
+        <path d="M14.956 15.92C12.504 15.547 10.639 14 8 14A6 6 0 0 0 4.797 14.926" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M4 22V5" />
+        <path d="M7.656 2H8C11 2 13 4 15.333 4Q17.333 4 18.4 3.2L19.714 2.572L20 14.347" />
       </svg>
     );
   }

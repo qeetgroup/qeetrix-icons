@@ -22,7 +22,7 @@ export function AnvilIcon(props: IconProps<"outline">) {
         <path d="M7 4H22V5A7 7 0 0 1 15 12H7Z" />
         <path d="M9 12v5" />
         <path d="M15 12v5" />
-        <path d="M5 20V17H19V21H5V20" />
+        <path d="M5 17H19V21H5Z" />
       </svg>
     );
   }

@@ -21,9 +21,9 @@ export function ImageUpscaleIcon(props: IconProps<"outline">) {
         <path d="M16 3h5v5" />
         <path d="M17 21H21V19" />
         <path d="M21 12v3" />
-        <path d="m21 3-5 5" />
+        <path d="M20.293 3.707L16 8" />
         <path d="M3 7V3H5" />
-        <path d="M5 21L10 16L13 19" />
+        <path d="M5.707 20.293L10 16L12.293 18.293" />
         <path d="M9 3h3" />
         <rect height="10" width="10" x="3" y="11" />
       </svg>

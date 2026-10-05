@@ -18,11 +18,11 @@ export function PackageSearchIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 22V12" />
-        <path d="M20.27 18.27 22 20" />
-        <path d="M21 10.498V6.841L12 1.699L3 6.841V17.158L12 22.3L13.98 21.171" />
-        <path d="M3.29 7 12 12l8.71-5" />
-        <path d="m7.5 4.27 8.997 5.148" />
+        <path d="M12 21V12" />
+        <path d="M20.27 18.27L21.581 19.581" />
+        <path d="M21 10.498V6.841L12 2.139L3 6.841V17.158L12 21.9L13.98 21.171" />
+        <path d="M4.157 7.498L12 12L19.843 7.498" />
+        <path d="M8.368 4.767L15.629 8.921" />
         <circle cx="18.5" cy="16.5" r="2.5" />
       </svg>
     );

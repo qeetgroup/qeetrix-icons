@@ -18,9 +18,9 @@ export function SquareOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M19.812 21H3V4.176" />
+        <path d="M18.812 21H3V5.176" />
         <path d="M21 15.3V3H8.7" />
-        <path d="M22 22 2 2" />
+        <path d="M19.459 19.459L4.541 4.541" />
       </svg>
     );
   }

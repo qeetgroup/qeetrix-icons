@@ -19,7 +19,7 @@ export function HighlighterIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m9 11-6 6v3h9l3-3" />
-        <path d="M22 12L16 18L8 10L14 4" />
+        <path d="M21.581 12.419L16 18L8 10L14 4" />
       </svg>
     );
   }

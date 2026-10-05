@@ -20,8 +20,8 @@ export function FlashlightOffIcon(props: IconProps<"outline">) {
       >
         <path d="M11.652 6H18" />
         <path d="M12 13v1" />
-        <path d="M16 16V22H8V12A4 4 0 0 0 7.2 9.6L6 8V6" />
-        <path d="m2 2 20 20" />
+        <path d="M16 17V22H8V12A4 4 0 0 0 7.2 9.6L6 8V7" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M7.649 2H18V8L16.8 9.6A4 4 0 0 0 16.25 10.607" />
       </svg>
     );

@@ -15,7 +15,7 @@ export function ZapIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M17.522 2.451L15.209 9L20.17 9L21.449 12.087L9.856 23.679L6.478 21.549L8.795 15L3.83 15L2.551 11.913L14.144 0.321L16.846 2.025L17.522 2.451Z"
+            d="M17.586 2.269L15.209 9L20.17 9L21.457 12.107L9.888 22.991L6.413 21.731L8.795 15L3.83 15L2.543 11.893L14.112 1.009L16.654 1.931L17.586 2.269Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function ZapIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16.313 2.871L14.286 1.593L3.731 12.148L4.498 14H10.209L7.687 21.129L9.714 22.407L20.269 11.852L19.502 10H13.795Z" />
+        <path d="M16.313 2.871L14.349 2.159L3.731 12.148L4.498 14H10.209L7.687 21.129L9.651 21.841L20.269 11.852L19.502 10H13.795Z" />
       </svg>
     );
   }

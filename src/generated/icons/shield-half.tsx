@@ -18,8 +18,8 @@ export function ShieldHalfIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M20 13C20 18 16.5 20.5 12.34 21.95L12.003 22.064L11.67 21.94C7.5 20.5 4 18 4 13V5H5C7 5 9.5 3.8 11.24 2.28L12 1.631L12.76 2.28C14.51 3.81 17 5 19 5H20Z" />
-        <path d="M12 22V2" />
+        <path d="M20 13C20 18 16.5 20.5 12.34 21.95L12.004 21.984L11.67 21.94C7.5 20.5 4 18 4 13V5H5C7 5 9.5 3.8 11.24 2.28L12 2.051L12.76 2.28C14.51 3.81 17 5 19 5H20Z" />
+        <path d="M12 21V3" />
       </svg>
     );
   }

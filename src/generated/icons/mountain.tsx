@@ -15,7 +15,7 @@ export function MountainIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M8.894 2.553L12.274 9.312L17.437 4.149L23.387 22L0.613 22L7.815 0.393L8.894 2.553Z"
+            d="M8.926 3.079L12.249 9.337L17.459 4.127L22.998 21.738L1.006 21.716L7.827 1.008L8.926 3.079Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MountainIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
+        <path d="M8.043 3.548L12 11L17 6L21.635 20.737L2.388 20.717Z" />
       </svg>
     );
   }

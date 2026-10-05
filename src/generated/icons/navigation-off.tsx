@@ -18,9 +18,9 @@ export function NavigationOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M8.43 8.43 3 11l8 2 2 8 2.57-5.43" />
-        <path d="M17.39 11.73L21.893 2.226L21.774 2.107L12.27 6.61" />
-        <line x1="2" x2="22" y1="2" y2="22" />
+        <path d="M7.526 8.858L3.018 10.991L3.019 11.005L11 13L12.995 20.981L13.009 20.982L15.142 16.474" />
+        <path d="M17.39 11.73L21.786 2.452L21.548 2.214L12.27 6.61" />
+        <line x1="2.419" x2="21.581" y1="2.419" y2="21.581" />
       </svg>
     );
   }

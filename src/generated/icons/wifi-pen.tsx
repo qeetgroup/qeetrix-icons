@@ -18,8 +18,8 @@ export function WifiPenIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 8.82a15 15 0 0 1 20 0" />
-        <path d="M21.378 16.626A1 1 0 0 0 18.374 13.622L14.001 17.997L12.766 22.233L17.002 20.998Z" />
+        <path d="M2.424 8.455A15 15 0 0 1 21.576 8.455" />
+        <path d="M21.378 16.626A1 1 0 0 0 18.374 13.622L14.001 17.997L12.839 21.983L13.592 21.992L17.002 20.998Z" />
         <path d="M5 12.859a10 10 0 0 1 10.5-2.222" />
         <path d="M8.5 16.429a5 5 0 0 1 3-1.406" />
       </svg>

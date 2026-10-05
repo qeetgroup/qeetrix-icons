@@ -18,9 +18,9 @@ export function LoaderPinwheelIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 12a1 1 0 0 1-10 0 1 1 0 0 0-10 0" />
-        <path d="M7 20.7a1 1 0 1 1 5-8.7 1 1 0 1 0 5-8.6" />
-        <path d="M7 3.3a1 1 0 1 1 5 8.6 1 1 0 1 0 5 8.6" />
+        <path d="M21.565 14.039A5 5 0 0 1 12 12A5 5 0 0 0 2.435 9.961" />
+        <path d="M5.333 19.144A5.017 5.017 0 0 1 12 12A1 1 0 1 0 17 3.4" />
+        <path d="M9.231 2.633A4.974 4.974 0 0 1 12 11.9A4.974 4.974 0 0 0 16.091 20.913" />
         <circle cx="12" cy="12" r="10" />
       </svg>
     );

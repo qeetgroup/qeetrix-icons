@@ -19,7 +19,7 @@ export function ClipboardPenIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 4H20V8" />
-        <path d="M21.34 15.664A1 1 0 1 0 18.336 12.66L12.963 18.035L11.728 22.271L15.964 21.036Z" />
+        <path d="M21.34 15.664A1 1 0 1 0 18.336 12.66L12.963 18.035L11.801 22.021L12.554 22.03L15.964 21.036Z" />
         <path d="M8 22H4V4H8" />
         <rect height="4" width="8" x="8" y="2" />
       </svg>

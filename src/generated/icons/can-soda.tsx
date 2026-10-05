@@ -18,12 +18,12 @@ export function CanSodaIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M17 22L19 19V5L17 2" />
-        <path d="M18 22H6" />
-        <path d="M18 2H6" />
+        <path d="M17.555 21.168L19 19V5L17.555 2.832" />
+        <path d="M16 22H8.5" />
+        <path d="M16 2H8.5" />
         <path d="M5 17h14" />
         <path d="M5 7h14" />
-        <path d="M7 22L5 19V5L7 2" />
+        <path d="M6.445 21.168L5 19V5L6.445 2.832" />
       </svg>
     );
   }

@@ -15,7 +15,7 @@ export function BlocksIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13 1L23 1L23 11L13 11L13 1ZM19 23L1 23L1 5L11 5L11 13L19 13L19 23Z"
+            d="M13 1L23 1L23 11L13 11L13 1ZM9.586 23L11 24.414L11 23L19 23L19 13L11 13L11 5L1 5L1 13L-0.414 13L1 14.414L1 23L9.586 23Z"
             fillRule="evenodd"
           />
         </svg>

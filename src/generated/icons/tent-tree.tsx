@@ -19,12 +19,12 @@ export function TentTreeIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <circle cx="4" cy="4" r="2" />
-        <path d="m14 5 3-3 3 3" />
+        <path d="M14 5L17 2.34L20 5" />
         <path d="m14 10 3-3 3 3" />
-        <path d="M17 14V2" />
+        <path d="M17 14V3" />
         <path d="M17 14H7l-5 8h20Z" />
         <path d="M8 14v8" />
-        <path d="m9 14 5 8" />
+        <path d="M9.53 14.848L13.47 21.152" />
       </svg>
     );
   }

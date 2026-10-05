@@ -15,7 +15,7 @@ export function HexagonIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M22 17.739L22 6.261L21.496 5.973L12 0.547L2 6.261L2 17.739L12 23.453L22 17.739Z"
+            d="M22 6.235L22 17.765L12 22.989L2 17.765L2 6.235L12 1.011L21.463 5.955L22 6.235Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function HexagonIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21 6.841L12 1.699L3 6.841V17.159L12 22.301L21 17.159Z" />
+        <path d="M21 6.841L12 2.139L3 6.841V17.159L12 21.861L21 17.159Z" />
       </svg>
     );
   }

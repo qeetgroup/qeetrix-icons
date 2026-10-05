@@ -18,11 +18,11 @@ export function RobotArmIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 21 7.5 8.322" />
+        <path d="M11.666 20.058L7.834 9.264" />
         <path d="M14 7L15.75 3.233L16 2.838L20 5.005" />
         <path d="M20 8.998L16 11.165L15.75 10.77L14 7H8" />
         <path d="M3.486 21h10" />
-        <path d="M5 21V8.732" />
+        <path d="M5 21V9.732" />
         <circle cx="6" cy="7" r="2" />
       </svg>
     );

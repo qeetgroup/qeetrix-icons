@@ -18,9 +18,9 @@ export function CigaretteOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 12H2V16H16" />
+        <path d="M11 12H2V16H15" />
         <path d="M18 8c0-2.5-2-2.5-2-5" />
-        <path d="m2 2 20 20" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M21 12H22V15.577" />
         <path d="M22 8c0-2.5-2-2.5-2-5" />
         <path d="M7 12v4" />

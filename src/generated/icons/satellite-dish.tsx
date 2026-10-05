@@ -19,7 +19,7 @@ export function SatelliteDishIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M18 12a6 6 0 00-6-6" />
-        <path d="M2.824 10.459A8 8 0 0 0 13.541 21.176L14.635 20.635L3.365 9.365L2.824 10.459" />
+        <path d="M2.824 10.459A8 8 0 0 0 13.541 21.176L14.635 20.635L3.365 9.365Z" />
         <path d="M22 12A10 10 0 0012 2" />
         <path d="m9 15 4-4" />
       </svg>

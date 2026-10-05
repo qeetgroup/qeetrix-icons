@@ -19,7 +19,7 @@ export function SquareArrowOutUpLeftIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M13 3H21V21H3V13" />
-        <path d="m3 3 9 9" />
+        <path d="M3.707 3.707L12 12" />
         <path d="M3 9V3h6" />
       </svg>
     );

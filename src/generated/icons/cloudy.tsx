@@ -19,7 +19,7 @@ export function CloudyIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M17.5 12a1 1 0 1 1 0 9H9.006a7 7 0 1 1 6.702-9z" />
-        <path d="M21.125 7H16.793A5.5 5.5 0 0 0 6.073 7.61" />
+        <path d="M21.125 7H16.793A5.5 5.5 0 0 0 6.323 6.643" />
       </svg>
     );
   }

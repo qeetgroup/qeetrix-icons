@@ -21,10 +21,10 @@ export function ChessRookIcon(props: IconProps<"outline">) {
         <path d="M5 18H19V22H5Z" />
         <path d="M10 2v2" />
         <path d="M14 2v2" />
-        <path d="m17 18-1-9" />
+        <path d="M16.89 17.006L16.11 9.994" />
         <path d="M6 2V9H18V2" />
         <path d="M6 4h12" />
-        <path d="m7 18 1-9" />
+        <path d="M7.11 17.006L7.89 9.994" />
       </svg>
     );
   }

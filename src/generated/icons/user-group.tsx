@@ -18,9 +18,9 @@ export function UserGroupIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M17 21V18H7V21" />
-        <path d="M19 10H22V13" />
-        <path d="M5 10H2V13" />
+        <path d="M17 21v-1a2 2 0 00-2-2H9a2 2 0 00-2 2v1" />
+        <path d="M19 10h1a2 2 0 012 2v1" />
+        <path d="M5 10H4a2 2 0 00-2 2v1" />
         <circle cx="12" cy="11" r="3" />
         <circle cx="18" cy="4" r="2" />
         <circle cx="6" cy="4" r="2" />

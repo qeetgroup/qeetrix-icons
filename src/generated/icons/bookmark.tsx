@@ -14,7 +14,10 @@ export function BookmarkIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path d="M20 2L20 23.446L12 18.875L4 23.446L4 2L20 2Z" fillRule="evenodd" />
+          <path
+            d="M20 3.012L19.754 22.989L12 18.856L4.246 22.989L3.988 2L20.012 2L20 3.012Z"
+            fillRule="evenodd"
+          />
         </svg>
       );
     }
@@ -30,7 +33,7 @@ export function BookmarkIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M19 3V21.723L12 17.723L5 21.723V3Z" />
+        <path d="M19 3L18.774 21.334L12 17.723L5.226 21.334L5 3Z" />
       </svg>
     );
   }

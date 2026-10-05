@@ -18,8 +18,8 @@ export function MapPinSearchIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11.783 22.088L11.399 21.799C9.539 20.193 4 14.993 4 10A8 8 0 0 1 20 10C20 10.42 19.961 10.841 19.888 11.262" />
-        <path d="m22 22-1.88-1.88" />
+        <path d="M11.639 21.979L11.399 21.799C9.539 20.193 4 14.993 4 10A8 8 0 0 1 20 10C20 10.42 19.961 10.841 19.888 11.262" />
+        <path d="M21.581 21.581L20.12 20.12" />
         <circle cx="12" cy="10" r="3" />
         <circle cx="18" cy="18" r="3" />
       </svg>

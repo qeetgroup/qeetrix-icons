@@ -15,7 +15,7 @@ export function VolumeXIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M12 0.587L12 23.416L5.586 17L1 17L1 7L5.586 7L10.293 2.294L12 0.587ZM19 10.586L21.5 8.086L22.914 9.5L20.414 12L22.914 14.5L21.5 15.914L19 13.414L16.5 15.914L15.086 14.5L17.586 12L15.086 9.5L16.5 8.086L17.207 8.793L19 10.586Z"
+            d="M11.853 1.008L11.854 22.993L5.598 17L1 17L1 7L5.598 7L10.161 2.629L11.853 1.008ZM19 10.586L21.5 8.086L22.914 9.5L20.414 12L22.914 14.5L21.5 15.914L19 13.414L16.5 15.914L15.086 14.5L17.586 12L15.086 9.5L16.5 8.086L17.207 8.793L19 10.586Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function VolumeXIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 3.001L6 8H2V16H6L11 21.001Z" />
+        <path d="M10.853 3.351L6 8H2V16H6L10.854 20.65Z" />
         <path d="m16.5 14.5 5-5" />
         <path d="m16.5 9.5 5 5" />
       </svg>

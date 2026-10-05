@@ -19,7 +19,7 @@ export function DecimalsArrowLeftIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m13 21-3-3 3-3" />
-        <path d="M20 18H10" />
+        <path d="M20 18H11" />
         <path d="M3 11h.01" />
         <rect height="8" rx="2.5" width="5" x="6" y="3" />
       </svg>

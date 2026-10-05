@@ -15,7 +15,7 @@ export function TagIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M12.414 1L22.995 11.581L22.995 14.419L14.419 22.995L11.581 22.995L1 12.414L1 1L12.414 1ZM6 6L9 6L9 9L6 9L6 6Z"
+            d="M12.414 1L22.996 11.582L22.996 14.418L14.418 22.996L11.582 22.996L1 12.414L1 1L12.414 1ZM6 6L9 6L9 9L6 9L6 6Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function TagIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 2H2V12L11.995 21.995H14.005L21.995 14.005V11.995Z" />
+        <path d="M12 2H2V12L11.996 21.996H14.004L21.996 14.004V11.996Z" />
         <rect fill="currentColor" height="1" width="1" x="7" y="7" />
       </svg>
     );

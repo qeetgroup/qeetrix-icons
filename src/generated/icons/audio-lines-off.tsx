@@ -18,15 +18,15 @@ export function AudioLinesOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 10v11" />
+        <path d="M10 11V21" />
         <path d="M10 3v1.35" />
         <path d="M14 14v1" />
         <path d="M14 8v.35" />
         <path d="M18 5v7.35" />
         <path d="M2 10v3" />
-        <path d="m2 2 20 20" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M22 10v3" />
-        <path d="M6 6v11" />
+        <path d="M6 7V17" />
       </svg>
     );
   }

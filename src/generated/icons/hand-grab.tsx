@@ -18,10 +18,10 @@ export function HandGrabIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M18 11.5V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1.4" />
-        <path d="M14 10V8a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2" />
+        <path d="M18 10.5V9A2 2 0 0 0 16 7A2 2 0 0 0 14 9V9.4" />
+        <path d="M14 9V8A2 2 0 0 0 12 6A2 2 0 0 0 10 8V10" />
         <path d="M10 9.9V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v5" />
-        <path d="M6 14a2 2 0 0 0-2-2a2 2 0 0 0-2 2" />
+        <path d="M6 14A2 2 0 0 0 4 12A2 2 0 0 0 3.133 12.198" />
         <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8 2 2 0 1 1 4 0" />
       </svg>
     );

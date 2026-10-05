@@ -18,9 +18,9 @@ export function MergeIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m8 6 4-4 4 4" />
-        <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
-        <path d="m20 22-5-5" />
+        <path d="M8 6L12 2.36L16 6" />
+        <path d="M12 3V12.3A4 4 0 0 1 10.828 15.172L4.419 21.581" />
+        <path d="M19.581 21.581L15 17" />
       </svg>
     );
   }

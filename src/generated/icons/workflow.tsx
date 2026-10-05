@@ -15,7 +15,7 @@ export function WorkflowIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M12 2L2 2L2 12L6 12L6 18L12 18L12 22L22 22L22 12L12 12L12 2ZM12 16L8 16L8 12L12 12L12 16Z"
+            d="M12 2L2 2L2 12L6 12L6 18L12 18L12 22L22 22L22 12L12 12L12 2ZM12 16L12 12L8 12L8 16L12 16Z"
             fillRule="evenodd"
           />
         </svg>

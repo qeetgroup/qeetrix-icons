@@ -21,8 +21,8 @@ export function PilcrowLeftIcon(props: IconProps<"outline">) {
         <path d="M14 3v11" />
         <path d="M14 9h-3a3 3 0 0 1 0-6h9" />
         <path d="M18 3v11" />
-        <path d="M22 18H2.25L2.177 17.823L6 14" />
-        <path d="m6 22-4-4" />
+        <path d="M22 18H2.08L2.085 17.915L6 14" />
+        <path d="M5.581 21.581L3.414 19.414" />
       </svg>
     );
   }

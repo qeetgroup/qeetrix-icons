@@ -19,10 +19,10 @@ export function GavelIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381" />
-        <path d="m16 16 6-6" />
-        <path d="m21.5 10.5-8-8" />
-        <path d="m8 8 6-6" />
-        <path d="m8.5 7.5 8 8" />
+        <path d="M17.414 14.586L20.586 11.414" />
+        <path d="M20.793 9.793L14.207 3.207" />
+        <path d="M9.414 6.586L12.586 3.414" />
+        <path d="M9.207 8.207L15.793 14.793" />
       </svg>
     );
   }

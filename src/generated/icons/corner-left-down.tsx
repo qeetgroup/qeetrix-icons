@@ -19,7 +19,7 @@ export function CornerLeftDownIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m14 15-5 5-5-5" />
-        <path d="M20 4h-7a4 4 0 0 0-4 4v12" />
+        <path d="M20 4H13A4 4 0 0 0 9 8V19" />
       </svg>
     );
   }

@@ -19,8 +19,8 @@ export function MailBadgeIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M22 7.7V4H2V20H12.25" />
-        <path d="M11.436 12.996L2 7" />
-        <path d="M20.69 16.479L22.064 21.678L21.58 22.088L19.001 20.899L16.42 22.087L15.939 21.675L17.312 16.479" />
+        <path d="M11.436 12.996L2.844 7.536" />
+        <path d="M20.946 17.446L21.872 20.948L20.965 21.804L19.001 20.899L16.638 21.987L15.855 21.991L17.056 17.446" />
         <circle cx="19" cy="14" r="3" />
       </svg>
     );

@@ -18,10 +18,10 @@ export function MedalIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M7.21 15L1.997 5.994L5.002 2H19.002L21.997 6.006L16.79 15" />
-        <path d="M11 12 5.12 2.2" />
-        <path d="m13 12 5.88-9.8" />
-        <path d="M8 7h8" />
+        <path d="M6.722 14.127L2.187 6.005L5.002 2H19.002L21.817 6.017L17.278 14.127" />
+        <path d="M10.486 11.143L5.634 3.057" />
+        <path d="M13.514 11.143L18.366 3.057" />
+        <path d="M9 7H15" />
         <circle cx="12" cy="17" r="5" />
         <path d="M12 18v-2h-.5" />
       </svg>

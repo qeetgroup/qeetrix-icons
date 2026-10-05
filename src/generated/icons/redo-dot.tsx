@@ -20,7 +20,7 @@ export function RedoDotIcon(props: IconProps<"outline">) {
       >
         <rect height="2" width="2" x="11" y="16" />
         <path d="M21 7v6h-6" />
-        <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7" />
+        <path d="M3 17A9 9 0 0 1 12 8A9 9 0 0 1 18 10.3L20.257 12.331" />
       </svg>
     );
   }

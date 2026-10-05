@@ -19,9 +19,9 @@ export function BanknoteXIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M13 18H2V6H22V13" />
-        <path d="m17 17 5 5" />
+        <path d="M17 17L21.581 21.581" />
         <path d="M18 12h.01" />
-        <path d="m22 17-5 5" />
+        <path d="M21.581 17.419L17.419 21.581" />
         <path d="M6 12h.01" />
         <circle cx="12" cy="12" r="2" />
       </svg>

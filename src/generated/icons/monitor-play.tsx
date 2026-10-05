@@ -15,7 +15,7 @@ export function MonitorPlayIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 2L1 2L1 18L11 18L11 20L7 20L7 22L17 22L17 20L13 20L13 18L23 18L23 2ZM9 15.206L16.502 10.866L17.998 10L9 4.795L9 15.206ZM14.004 10L11 8.263L11 11.738L14.004 10Z"
+            d="M1 2L23 2L23 18L13 18L13 20L17 20L17 22L7 22L7 20L11 20L11 18L1 18L1 2ZM9 15.206L16.502 10.866L17.998 10L9 4.795L9 15.206ZM14.004 10L11 8.263L11 11.738L14.004 10Z"
             fillRule="evenodd"
           />
         </svg>

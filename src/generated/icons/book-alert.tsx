@@ -20,7 +20,7 @@ export function BookAlertIcon(props: IconProps<"outline">) {
       >
         <path d="M12 13h.01" />
         <path d="M12 6v3" />
-        <path d="M4 19.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
+        <path d="M4 18.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
       </svg>
     );
   }

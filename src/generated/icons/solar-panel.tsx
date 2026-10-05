@@ -19,10 +19,10 @@ export function SolarPanelIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M11 2h2" />
-        <path d="m14.28 14-4.56 8" />
-        <path d="m21 22-1.558-4H4.558" />
+        <path d="M13.785 14.869L10.215 21.131" />
+        <path d="M20.883 21.7L19.442 18H5.558" />
         <path d="M3 10v2" />
-        <path d="M6.838 14H21.722L17.162 22H2.279Z" />
+        <path d="M6.838 14L21.333 14.226L17.152 21.983L2.668 21.774Z" />
         <path d="M7 2a4 4 0 0 1-4 4" />
         <path d="m8.66 7.66 1.41 1.41" />
       </svg>

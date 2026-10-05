@@ -15,7 +15,7 @@ export function SquarePlayIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M2 2L22 2L22 22L2 22L2 2ZM18.89 12L9.514 6.376L8 5.468L8 18.532L18.89 12ZM10 9L10 15L15.002 12L10 9Z"
+            d="M2 2L22 2L22 22L2 22L2 2ZM9.514 6.376L18.89 12L8 18.532L8 5.468L9.514 6.376ZM15.002 12L10 15L10 9L15.002 12Z"
             fillRule="evenodd"
           />
         </svg>

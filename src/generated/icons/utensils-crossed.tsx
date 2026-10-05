@@ -18,9 +18,9 @@ export function UtensilsCrossedIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16 2L11.6 6.4L17.6 12.4L22 8" />
-        <path d="M15 15L3.3 3.3A4.2 4.2 0 0 0 3.3 9.3L11.907 17.907L13.4 16.6ZM15 15L22 22" />
-        <path d="m2.1 21.8 6.4-6.3" />
+        <path d="M15.581 2.419L11.6 6.4L17.6 12.4L21.581 8.419" />
+        <path d="M15 15L3.3 3.3A4.2 4.2 0 0 0 3.3 9.3L11.907 17.907L13.4 16.6ZM15 15L21.581 21.581" />
+        <path d="M2.419 21.486L8.5 15.5" />
         <path d="m19 5-7 7" />
       </svg>
     );

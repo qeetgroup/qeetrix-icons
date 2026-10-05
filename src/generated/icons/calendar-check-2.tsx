@@ -24,7 +24,7 @@ export function CalendarCheck2Icon(props: IconProps<"outline">) {
         <path d="M3 19V21H5" />
         <path d="M 3 5 L 3 19" />
         <path d="M5 3H3V5" />
-        <path d="m16 19 2 2 4-4" />
+        <path d="M16 19L18 21L21.581 17.419" />
         <path d="M16 2v3" />
         <path d="M3 9h18" />
         <path d="M5 21 L12.5 21" />

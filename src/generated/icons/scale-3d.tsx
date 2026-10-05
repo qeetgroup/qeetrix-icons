@@ -19,7 +19,7 @@ export function Scale3dIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M5 7V19H17" />
-        <path d="M5.293 18.707 11 13" />
+        <path d="M6 18L11 13" />
         <circle cx="19" cy="19" r="2" />
         <circle cx="5" cy="5" r="2" />
       </svg>

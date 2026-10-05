@@ -19,8 +19,8 @@ export function SummaryIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M15 4H7" />
-        <path d="m18 16 3 3-3 3" />
-        <path d="M3 4V19H21" />
+        <path d="M18 16L21 19L18.419 21.581" />
+        <path d="M3 4V19H20" />
         <path d="M7 14h7" />
         <path d="M7 9h12" />
       </svg>

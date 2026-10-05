@@ -18,9 +18,9 @@ export function SportShoeIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m15 10.42 4.8-5.07" />
+        <path d="M15 10.42L19.112 6.076" />
         <path d="M19 18h3" />
-        <path d="M9.5 22L22.058 8.735L21.931 6.948L15.102 1.826L14 2.386V6.499L8 8.251V9C7.845 15.393 5.918 18 4 18A2 2 0 0 0 4 22H18" />
+        <path d="M10.187 21.274L21.99 8.806L21.986 6.99L15.36 2.019H14V6.499L8 8.251V9C7.845 15.393 5.918 18 4 18A2 2 0 0 0 4 22H18" />
       </svg>
     );
   }

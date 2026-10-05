@@ -18,7 +18,7 @@ export function ImagesIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 11L19 8L11 16" />
+        <path d="M21.293 10.293L19 8L11.707 15.293" />
         <path d="M4 8H2V22H16V20" />
         <circle cx="13" cy="7" fill="currentColor" r="1" />
         <rect height="14" width="14" x="8" y="2" />

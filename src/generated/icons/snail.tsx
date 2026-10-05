@@ -18,11 +18,11 @@ export function SnailIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 13a6 6 0 1 0 12 0 4 4 0 1 0-8 0 2 2 0 0 0 4 0" />
+        <path d="M2.598 15.61A6 6 0 0 0 14 13A4 4 0 1 0 6 13A2 2 0 0 0 10 13" />
         <circle cx="10" cy="13" r="8" />
-        <path d="M2 21h12c4.4 0 8-3.6 8-8V7a2 2 0 1 0-4 0v6" />
+        <path d="M2 21H14C18.4 21 22 17.4 22 13V7A2 2 0 1 0 18 7V12" />
         <path d="M18 3 19.1 5.2" />
-        <path d="M22 3 20.9 5.2" />
+        <path d="M21.653 3.693L20.9 5.2" />
       </svg>
     );
   }

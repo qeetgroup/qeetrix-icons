@@ -15,7 +15,7 @@ export function SquareChevronLeftIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M2 2L22 2L22 22L2 22L2 2ZM8.586 12L13.293 16.707L14 17.414L15.414 16L11.414 12L15.414 8L14 6.586L8.586 12Z"
+            d="M2 2L22 2L22 22L2 22L2 2ZM13.293 16.707L8.586 12L14 6.586L15.414 8L11.414 12L15.414 16L14 17.414L13.293 16.707Z"
             fillRule="evenodd"
           />
         </svg>

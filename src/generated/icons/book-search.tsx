@@ -19,8 +19,8 @@ export function BookSearchIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M11 22H5.5a1 1 0 0 1 0-5h4.501" />
-        <path d="m21 22-1.879-1.878" />
-        <path d="M3 19.5V2H19V11" />
+        <path d="M20.581 21.581L19.121 20.122" />
+        <path d="M3 18.5V2H19V11" />
         <circle cx="17" cy="18" r="3" />
       </svg>
     );

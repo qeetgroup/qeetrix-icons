@@ -18,9 +18,9 @@ export function CaseSensitiveIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 16L6.501 5.203L11 16" />
+        <path d="M2.313 15.25L6.501 5.203L11 16" />
         <path d="M22 9v7" />
-        <path d="M3.304 13h6.392" />
+        <path d="M4.304 13H8.696" />
         <circle cx="18.5" cy="12.5" r="3.5" />
       </svg>
     );

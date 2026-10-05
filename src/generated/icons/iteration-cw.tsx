@@ -18,8 +18,8 @@ export function IterationCwIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 10a8 8 0 1 1 8 8H4" />
-        <path d="m8 22-4-4 4-4" />
+        <path d="M4 10A8 8 0 1 1 12 18H5" />
+        <path d="M7.581 21.581L4 18L8 14" />
       </svg>
     );
   }

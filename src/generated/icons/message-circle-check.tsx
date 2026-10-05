@@ -33,7 +33,7 @@ export function MessageCircleCheckIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2.992 16.342L3.218 16.911L3.086 17.509L2.021 20.799L1.686 22.426L6.67 20.969L7.233 20.857L7.769 21.061A10 10 0 1 0 2.992 16.342" />
+        <path d="M2.992 16.342L3.218 16.911L3.086 17.509L2.021 20.799L1.686 22.426L6.67 20.969L7.233 20.857L7.769 21.061A10 10 0 1 0 2.992 16.342Z" />
         <path d="m16 9-5.5 5.5L8 12" />
       </svg>
     );

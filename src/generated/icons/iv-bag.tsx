@@ -19,7 +19,7 @@ export function IvBagIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 18V22H20" />
-        <path d="M6 11c.72.5 1.44 1 3 1 3 0 3-2 6-2 1.56 0 2.28.5 3 1" />
+        <path d="M6.694 11.45C7.247 11.762 7.923 12 9 12C12 12 12 10 15 10C16.077 10 16.753 10.238 17.306 10.55" />
         <path d="M10 3L11 2H13L14 3H18V18H6V3Z" />
       </svg>
     );

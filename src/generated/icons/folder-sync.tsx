@@ -20,9 +20,9 @@ export function FolderSyncIcon(props: IconProps<"outline">) {
       >
         <path d="M9 20H2V3H8.983L11.008 6H22V8.5" />
         <path d="M12 10v4h4" />
-        <path d="m12 14 1.535-1.605a5 5 0 0 1 8 1.5" />
+        <path d="M12.691 13.277L13.535 12.395A5 5 0 0 1 21.535 13.895" />
         <path d="M22 22v-4h-4" />
-        <path d="m22 18-1.535 1.605a5 5 0 0 1-8-1.5" />
+        <path d="M21.309 18.723L20.465 19.605A5 5 0 0 1 12.465 18.105" />
       </svg>
     );
   }

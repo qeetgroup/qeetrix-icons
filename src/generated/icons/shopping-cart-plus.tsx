@@ -20,9 +20,9 @@ export function ShoppingCartPlusIcon(props: IconProps<"outline">) {
       >
         <path d="M16 5h6" />
         <path d="M19 2v6" />
-        <path d="M2.05 2.05L4 2L7 18H18" />
-        <path d="M4.564 5H12" />
-        <path d="M6.25 14H20.608L20.953 12.43L21.125 11.389" />
+        <path d="M2.05 2.05L3.981 2.023L7 18H17" />
+        <path d="M5.564 5H12" />
+        <path d="M7.25 14H20.608L20.953 12.43L21.125 11.389" />
         <circle cx="18" cy="20" r="2" />
         <circle cx="8" cy="20" r="2" />
       </svg>

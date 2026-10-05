@@ -15,7 +15,7 @@ export function PlayIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M4.502 2.975L7.012 1.532L22 10.276L22.003 13.722L7.012 22.468L4 20.737L4 3.263L4.502 2.975Z"
+            d="M6.351 1.147L22.986 10.852L22.986 13.148L6.114 22.991L4 22.976L4 1.024L6.114 1.009L6.351 1.147Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function PlayIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M5 3.842L7.008 2.688L21 10.851L21.002 13.148L7.008 21.312L5 20.158Z" />
+        <path d="M5.847 2.011L21.986 11.426V12.574L5.847 21.989L5 21.983V2.017Z" />
       </svg>
     );
   }

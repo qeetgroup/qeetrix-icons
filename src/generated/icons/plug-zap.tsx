@@ -18,8 +18,8 @@ export function PlugZapIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M8 22L12 18L6 12L2 16Z" />
-        <path d="m2 22 3-3" />
+        <path d="M8.006 21.61L12 18L6 12L2.39 15.999Z" />
+        <path d="M2.419 21.581L5 19" />
         <path d="M7.5 13.5 10 11" />
         <path d="M10.5 16.5 13 14" />
         <path d="m18 3-4 4h6l-4 4" />

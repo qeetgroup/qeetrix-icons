@@ -20,7 +20,7 @@ export function FilePenIcon(props: IconProps<"outline">) {
       >
         <path d="M12.659 22H20V7L15 2H4V13.34" />
         <path d="M14 2V8H20" />
-        <path d="M10.378 12.622A1 1 0 0 1 13.378 15.625L7.997 21L3.764 22.235L4.998 18.001Z" />
+        <path d="M10.378 12.622A1 1 0 0 1 13.378 15.625L7.997 21L4.59 21.994L3.837 21.985L4.998 18.001Z" />
       </svg>
     );
   }

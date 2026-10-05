@@ -19,11 +19,11 @@ export function LanguagesIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m5 8 6 6" />
-        <path d="m4 14 6-6 2-3" />
+        <path d="M4 14L10 8L11.445 5.832" />
         <path d="M2 5h12" />
         <path d="M7 2h1" />
-        <path d="m22 22-5-10-5 10" />
-        <path d="M14 18h6" />
+        <path d="M21.653 21.307L17 12L12.173 21.653" />
+        <path d="M15 18H19" />
       </svg>
     );
   }

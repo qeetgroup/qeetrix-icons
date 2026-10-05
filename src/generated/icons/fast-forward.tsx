@@ -15,7 +15,7 @@ export function FastForwardIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1.617 3.74L4.704 2.461L11 8.758L11 3.996L11.617 3.74L14.704 2.461L23 10.758L23 13.242L14.704 21.539L11 20.004L11 15.242L4.704 21.539L1 20.004L1 3.996L1.617 3.74Z"
+            d="M1.617 3.74L4.704 2.461L11 8.758L11 3.996L11.617 3.74L14.704 2.461L22.994 10.752L22.994 13.248L14.704 21.539L11 20.004L11 15.242L4.704 21.539L1 20.004L1 3.996L1.617 3.74Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FastForwardIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 4.664L14.469 3.641L22 11.172V12.828L14.469 20.359L12 19.336Z" />
+        <path d="M12 4.664L14.469 3.641L21.994 11.166V12.834L14.469 20.359L12 19.336Z" />
         <path d="M2 4.664L4.469 3.641L12 11.172V12.828L4.469 20.359L2 19.336Z" />
       </svg>
     );

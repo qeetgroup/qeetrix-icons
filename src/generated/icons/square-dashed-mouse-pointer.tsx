@@ -18,7 +18,7 @@ export function SquareDashedMousePointerIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11.622 11.622L22.011 15.662L21.986 16.372L17.7 17.701L16.372 21.986L15.662 22.011Z" />
+        <path d="M11.622 11.622L21.986 15.678V16.372L17.7 17.701L16.372 21.986H15.678Z" />
         <path d="M5 3H3V5" />
         <path d="M19 3H21V5" />
         <path d="M5 21H3V19" />

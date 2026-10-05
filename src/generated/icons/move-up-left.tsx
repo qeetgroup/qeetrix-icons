@@ -19,7 +19,7 @@ export function MoveUpLeftIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M5 11V5H11" />
-        <path d="M5 5L19 19" />
+        <path d="M5.707 5.707L19 19" />
       </svg>
     );
   }

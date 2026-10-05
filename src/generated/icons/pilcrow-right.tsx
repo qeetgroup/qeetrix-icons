@@ -19,10 +19,10 @@ export function PilcrowRightIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 3v11" />
-        <path d="M10 9H7a1 1 0 0 1 0-6h8" />
+        <path d="M10 9H7A1 1 0 0 1 7 3H14" />
         <path d="M14 3v11" />
-        <path d="M18 14L21.823 17.823L21.75 18H2" />
-        <path d="m22 18-4 4" />
+        <path d="M18 14L21.915 17.915L21.92 18H2" />
+        <path d="M20.586 19.414L18.419 21.581" />
       </svg>
     );
   }

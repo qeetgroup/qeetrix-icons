@@ -15,7 +15,7 @@ export function VolumeIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M12 0.587L12 23.416L5.586 17L1 17L1 7L5.586 7L10.293 2.294L12 0.587Z"
+            d="M11.853 1.008L11.854 22.993L5.598 17L1 17L1 7L5.598 7L10.161 2.629L11.853 1.008Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function VolumeIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 3.001L6 8H2V16H6L11 21.001Z" />
+        <path d="M10.853 3.351L6 8H2V16H6L10.854 20.65Z" />
       </svg>
     );
   }

@@ -21,8 +21,8 @@ export function ListStartIcon(props: IconProps<"outline">) {
         <path d="M3 5h6" />
         <path d="M3 12h13" />
         <path d="M3 19h13" />
-        <path d="m16 8-3-3 3-3" />
-        <path d="M21 19V5H13" />
+        <path d="M16 8L13 5L15.581 2.419" />
+        <path d="M21 19V5H14" />
       </svg>
     );
   }

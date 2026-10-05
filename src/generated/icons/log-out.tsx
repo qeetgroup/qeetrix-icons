@@ -19,7 +19,7 @@ export function LogOutIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m16 17 5-5-5-5" />
-        <path d="M21 12H9" />
+        <path d="M20 12H9" />
         <path d="M9 21H3V3H9" />
       </svg>
     );

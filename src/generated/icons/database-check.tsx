@@ -18,10 +18,10 @@ export function DatabaseCheckIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m16 19 2 2 4-4" />
-        <path d="M21 13.127V5" />
+        <path d="M16 19L18 21L21.581 17.419" />
+        <path d="M21 10.977V6" />
         <path d="M3 12A9 3 0 0 0 21 12" />
-        <path d="M3 5V19A9 3 0 0 0 13.318 21.968" />
+        <path d="M3 6V19A9 3 0 0 0 13.318 21.968" />
         <ellipse cx="12" cy="5" rx="9" ry="3" />
       </svg>
     );

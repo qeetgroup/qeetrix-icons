@@ -19,10 +19,10 @@ export function BirdhouseIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 18v4" />
-        <path d="m17 18 1.956-11.468" />
-        <path d="M3 8L12 1.538L21 8" />
+        <path d="M17.168 17.014L18.788 7.518" />
+        <path d="M3 8L12 2.198L21 8" />
         <path d="M4 18h16" />
-        <path d="M7 18 5.044 6.532" />
+        <path d="M6.832 17.014L5.212 7.518" />
         <circle cx="12" cy="10" r="2" />
       </svg>
     );

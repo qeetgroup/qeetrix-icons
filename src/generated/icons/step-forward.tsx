@@ -15,7 +15,7 @@ export function StepForwardIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M22.001 10.302L9.044 2.528L8.536 2.815L6 4.251L6 19.749L9.044 21.472L21.999 13.699L22.001 10.302ZM4 21L4 3L2 3L2 21L4 21Z"
+            d="M22.996 10.899L9.044 2.528L8.536 2.815L6 4.251L6 19.749L9.044 21.472L22.996 13.101L22.996 10.899ZM4 21L4 3L2 3L2 21L4 21Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function StepForwardIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M9.029 3.685L7 4.834V19.166L9.029 20.315L20.999 13.133L21.001 10.868Z" />
+        <path d="M9.029 3.685L7 4.834V19.166L9.029 20.315L21.996 12.535V11.465Z" />
         <path d="M3 4v16" />
       </svg>
     );

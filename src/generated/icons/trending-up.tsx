@@ -19,7 +19,7 @@ export function TrendingUpIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 7h6v6" />
-        <path d="m22 7-8.5 8.5-5-5L2 17" />
+        <path d="M21.293 7.707L13.5 15.5L8.5 10.5L2.419 16.581" />
       </svg>
     );
   }

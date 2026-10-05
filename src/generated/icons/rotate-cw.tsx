@@ -18,7 +18,7 @@ export function RotateCwIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+        <path d="M21 12A9 9 0 1 1 12 3C14.52 3 16.93 4 18.74 5.74L20.293 7.293" />
         <path d="M21 3v5h-5" />
       </svg>
     );

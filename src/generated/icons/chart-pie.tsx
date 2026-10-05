@@ -18,7 +18,7 @@ export function ChartPieIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22.05 12L21.95 11.002A10 10 0 0 0 12.997 2.051L11.999 1.951V12.001Z" />
+        <path d="M21.968 11.926L21.95 11.002A10 10 0 0 0 12.997 2.051L12.073 2.033L11.999 12.001Z" />
         <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
       </svg>
     );

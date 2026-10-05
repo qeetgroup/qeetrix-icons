@@ -18,8 +18,8 @@ export function ParasolIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.5 11.134 18.196 21" />
-        <path d="M20.425 5.299A10 10 0 0 0 3.484 15.079L3.829 16.14L21.171 6.128L20.424 5.298" />
+        <path d="M12.5 11.134L17.696 20.134" />
+        <path d="M20.425 5.299A10 10 0 0 0 3.484 15.079L3.829 16.14L21.171 6.128Z" />
         <path d="M21 21H3" />
       </svg>
     );

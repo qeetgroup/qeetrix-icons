@@ -21,7 +21,7 @@ export function CreditCardReaderIcon(props: IconProps<"outline">) {
         <path d="M15 16v1" />
         <path d="M16.76 7H7.242L3.373 21H20.626Z" />
         <path d="M2 7.903V3H22V7.902" />
-        <path d="m9 21 2-14" />
+        <path d="M9.141 20.01L10.859 7.99" />
       </svg>
     );
   }

@@ -18,7 +18,7 @@ export function DownloadIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 15V3" />
+        <path d="M12 14V3" />
         <path d="M21 15V21H3V15" />
         <path d="m7 10 5 5 5-5" />
       </svg>

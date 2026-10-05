@@ -19,9 +19,9 @@ export function PowerOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M18.36 6.64A9 9 0 0 1 20.77 15" />
-        <path d="M6.16 6.16a9 9 0 1 0 12.68 12.68" />
+        <path d="M5.431 6.844A9 9 0 0 0 18.156 19.569" />
         <path d="M12 2v4" />
-        <path d="m2 2 20 20" />
+        <path d="M2.419 2.419L21.581 21.581" />
       </svg>
     );
   }

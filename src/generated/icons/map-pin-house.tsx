@@ -19,7 +19,7 @@ export function MapPinHouseIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M14 22V16.465L18 13.798L22 16.465V22Z" />
-        <path d="M18 10A8 8 0 0 0 2 10C2 14.993 7.539 20.193 9.399 21.799L9.666 21.999" />
+        <path d="M18 10A8 8 0 0 0 2 10C2 14.993 7.539 20.193 9.399 21.799L9.639 21.979" />
         <path d="M18 22v-3" />
         <circle cx="10" cy="10" r="3" />
       </svg>

@@ -20,9 +20,9 @@ export function CaptionsOffIcon(props: IconProps<"outline">) {
       >
         <path d="M10.5 5H21V15.5" />
         <path d="M17 11h-.5" />
-        <path d="M19 19H3V5H5" />
-        <path d="m2 2 20 20" />
-        <path d="M7 11h4" />
+        <path d="M18 19H3V5H4" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M7 11H10" />
         <path d="M7 15h2.5" />
       </svg>
     );

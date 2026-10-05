@@ -18,9 +18,9 @@ export function Minimize2Icon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m14 10 7-7" />
+        <path d="M14.707 9.293L21 3" />
         <path d="M20 10h-6V4" />
-        <path d="m3 21 7-7" />
+        <path d="M3 21L9.293 14.707" />
         <path d="M4 14h6v6" />
       </svg>
     );

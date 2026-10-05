@@ -18,7 +18,7 @@ export function DecimalsArrowRightIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 18h10" />
+        <path d="M10 18H19" />
         <path d="m17 21 3-3-3-3" />
         <path d="M3 11h.01" />
         <rect height="8" rx="2.5" width="5" x="15" y="3" />

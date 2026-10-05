@@ -18,12 +18,12 @@ export function AmphoraIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 2V8.293L9.347 8.614A6 6 0 0 0 6 14C6.006 18 9 21 11 22" />
+        <path d="M10 2V8.293L9.347 8.614A6 6 0 0 0 6 14C6.005 17.575 8.398 20.351 10.334 21.615" />
         <path d="M10 5H8a2 2 0 0 0 0 4h.68" />
-        <path d="M14 2V8.293L14.652 8.614A6 6 0 0 1 18 14C18 18 15 21 13 22" />
+        <path d="M14 2V8.293L14.652 8.614A6 6 0 0 1 18 14C18 17.575 15.604 20.351 13.666 21.615" />
         <path d="M14 5h2a2 2 0 0 1 0 4h-.68" />
         <path d="M18 22H6" />
-        <path d="M9 2h6" />
+        <path d="M10 2H14" />
       </svg>
     );
   }

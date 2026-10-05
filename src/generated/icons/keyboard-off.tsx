@@ -20,12 +20,12 @@ export function KeyboardOffIcon(props: IconProps<"outline">) {
       >
         <path d="M20 4H22V6" />
         <path d="M 22 6 L 22 16.41" />
-        <path d="M 7 16 L 16 16" />
+        <path d="M7 16H15" />
         <path d="M 9.69 4 L 20 4" />
         <path d="M14 8h.01" />
         <path d="M18 8h.01" />
-        <path d="m2 2 20 20" />
-        <path d="M20 20H2V4H4" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M19 20H2V4H3" />
         <path d="M6 8h.01" />
         <path d="M8 12h.01" />
       </svg>

@@ -19,8 +19,8 @@ export function HandCoinsIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M11 15H13A2 2 0 1 0 13 11H9.05L8.6 11.6L3 17" />
-        <path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9" />
-        <path d="m2 16 6 6" />
+        <path d="M7.753 20.341L8.6 19.6C8.9 19.2 9.4 19 10 19H14C15.1 19 16.1 18.6 16.8 17.8L21.4 13.4A2 2 0 0 0 18.65 10.49L15.183 13.71" />
+        <path d="M3.126 17.126L6.167 20.167" />
         <circle cx="16" cy="9" r="2.9" />
         <circle cx="6" cy="5" r="3" />
       </svg>

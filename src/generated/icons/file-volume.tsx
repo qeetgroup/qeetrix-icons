@@ -21,7 +21,7 @@ export function FileVolumeIcon(props: IconProps<"outline">) {
         <path d="M4 11.55V2H15L20 7V22H16.05" />
         <path d="M14 2V8H20" />
         <path d="M12 15a5 5 0 0 1 0 6" />
-        <path d="M8 13.409L4.999 15.995H3V20.003H4.999L7.417 22.089L8 21.82Z" />
+        <path d="M8 13.409L4.999 15.995H3V20.003H4.999L7.303 21.991L8 21.992Z" />
       </svg>
     );
   }

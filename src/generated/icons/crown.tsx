@@ -15,7 +15,7 @@ export function CrownIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M16.269 8.393L12.885 1.968L12 0.288L7.731 8.394L2.627 4.02L0.764 5.229L4.295 17.999L19.705 17.999L23.237 5.229L21.376 4.019L16.269 8.393ZM20 20L4 20L4 22L20 22L20 20Z"
+            d="M16.236 8.421L12.868 2.528L12 1.008L7.764 8.422L2.46 3.877L1.005 5.466L4.284 17.999L19.716 17.999L22.996 5.466L21.543 3.875L16.236 8.421ZM20 20L4 20L4 22L20 22L20 20Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function CrownIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 2.434L15.968 9.967L21.458 5.265L22.078 5.668L18.944 16.999H5.056L1.923 5.669L2.544 5.266L8.032 9.969Z" />
+        <path d="M12 3.024L15.968 9.967L21.458 5.265L21.891 5.739L18.944 16.999H5.056L2.11 5.74L2.544 5.266L8.032 9.969Z" />
         <path d="M5 21h14" />
       </svg>
     );

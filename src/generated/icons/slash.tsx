@@ -18,7 +18,7 @@ export function SlashIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 2 2 22" />
+        <path d="M21.581 2.419L2.419 21.581" />
       </svg>
     );
   }

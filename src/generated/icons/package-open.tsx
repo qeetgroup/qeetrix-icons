@@ -18,10 +18,10 @@ export function PackageOpenIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 22v-9" />
-        <path d="M15.984 1.751L21.98 5.121V7.378L7.999 15.252L2.02 11.877V9.622Z" />
-        <path d="M20 13V18.13L12 22.237L4 18.13V13" />
-        <path d="M21.98 11.878V9.623L8.015 1.74L2.02 5.123V7.378L15.995 15.249Z" />
+        <path d="M12 21V13" />
+        <path d="M15.984 2.121L21.981 5.121L21.982 7.377L7.999 15.252L2.007 11.87L2.008 9.629Z" />
+        <path d="M20 14V18.13L12 21.887L4 18.13V14" />
+        <path d="M21.991 9.677L8.015 2.12L2.01 5.224L2.007 7.371L15.995 15.249L21.975 11.881Z" />
       </svg>
     );
   }

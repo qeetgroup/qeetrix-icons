@@ -18,7 +18,7 @@ export function BoneFractureIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14 4.5A1 1 0 0 1 19 4.5V5H19.5A1 1 0 0 1 19.5 10C18.69 10 17.7 9.3 17 10L14.852 12.147L14.275 9.724L11.852 9.147L14 7C14.7 6.3 14 5.31 14 4.5" />
+        <path d="M14 4.5A1 1 0 0 1 19 4.5V5H19.5A1 1 0 0 1 19.5 10C18.69 10 17.7 9.3 17 10L14.852 12.147L14.275 9.724L11.852 9.147L14 7C14.7 6.3 14 5.31 14 4.5Z" />
         <path d="m16 20-1-2" />
         <path d="m20 16-2-1" />
         <path d="m4 8 2 1" />
