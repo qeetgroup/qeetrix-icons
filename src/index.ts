@@ -1,34 +1,23 @@
 /**
- * `@qeetrix/icons` — the Qeet Group icon library.
+ * `@qeetrix/icons` - the Qeet Group icon and brand logo library.
  *
- * Every component is generated from `icons/<shape>-<variant>/<category>/<name>.svg` by
- * `scripts/generate.mjs`, and holds that file's SVG markup byte for byte. There
- * is no shared `<svg>` shell and no runtime: each component is a plain function
- * returning the source SVG, so what ships is what a designer exported.
+ * Every icon concept is one generated named export, such as `StarIcon`. Its `shape` prop selects
+ * the drawing style, `"round"` by default or `"sharp"`, which every icon has; its `variant` prop
+ * selects a drawing, `"outline"` by default, and is typed to the drawings that exist for that icon,
+ * the same in both shapes. Each icon is also importable on its own from
+ * `@qeetrix/icons/icons/<id>`.
  *
- * One component per icon name, with style on two independent props — `variant`
- * for strokes vs fills, `shape` for rounded vs squared corners:
+ * Every brand logo is one generated named export ending in `Logo`, such as `GithubLogo`. It renders
+ * the logo's published SVG file, unmodified, as an `<img>`; its `variant` prop selects one of the
+ * logo's files and is typed to the files that exist. Importing the root loads every icon and logo;
+ * see docs/logos.md for what that costs in Node.
  *
- *   import { Activity } from "@qeetrix/icons";
- *
- *   <Activity />                                 // round + outline (defaults)
- *   <Activity variant="solid" />
- *   <Activity shape="sharp" variant="solid" />   // once sharp artwork lands
- *   <Activity width={20} height={20} />
- *   <Activity className="size-5" />
- *
- * Colour is white by default, matching the source artwork, and retints from the
- * `color` prop or any CSS that sets `color` — which is what makes dark and light
- * mode work:
- *
- *   <Activity color="black" />
- *   <Activity className="text-black dark:text-white" />
- *
- * Every export is side-effect free (`sideEffects: false`), so a bundler drops
- * every icon a consumer does not import.
+ * Catalogue metadata is deliberately not exported here; tooling imports it from
+ * `@qeetrix/icons/manifest`. See docs/api.md and docs/logos.md.
  */
 
-// Every icon component. GENERATED — see src/icons/index.ts.
-export * from "./icons/index.js";
-// Public types.
-export type { IconShape, IconVariant, QeetrixIcon, QeetrixIconProps } from "./types.js";
+export * from "./generated/icon-index.js";
+export * from "./generated/logo-index.js";
+export type { IconDirectionality, IconShape, IconVariant } from "./types/icon.js";
+export type { IconProps } from "./types/icon-props.js";
+export type { LogoBackground, LogoComponent, LogoProps } from "./types/logo.js";

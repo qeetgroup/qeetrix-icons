@@ -21,13 +21,14 @@ jobs:
         with:
           bun-version: 1.3.14
       - run: bun install --frozen-lockfile
-
-      # Before `build`, which runs the generator: checking afterwards would
-      # overwrite a hand-edited component instead of reporting it.
-      - name: components match their source SVGs
-        run: bun run generate:check
-
       - run: bun run lint
       - run: bun run typecheck
       - run: bun run test
+      - run: bun run check:icons
+      - run: bun run check:filled
+      - run: bun run check:sharp
+      - run: bun run check:generated
+      - run: bun run check:brands
+      - run: bun run check:logos
       - run: bun run build
+      - run: bun run playground:build

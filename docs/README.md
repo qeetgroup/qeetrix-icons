@@ -1,44 +1,32 @@
 # Documentation
 
-Two audiences, and they want different things.
+Qeetrix Icons 2.0 ships the 1,863 outline icons of Lucide 1.52.0, in Lucide's 42 categories, as
+React 19 components with a manifest. Every icon also has a sharp style, and 794 have filled
+variants, all derived from the Lucide outlines. The package also ships 7,429 theSVG brand logos,
+each rendered exactly as published and under its own license. Validation, generation, the public
+API, and the visual QA playground are complete; 2.0 is not yet released.
 
-## Using the icons
-
-| | |
+| Document | Purpose |
 |:--|:--|
-| [usage.md](usage.md) | Install, size, colour, dark mode, the style axes, accessibility, entry points |
-| [../README.md](../README.md) | The overview, with the full prop table and worked examples |
+| [design.md](design.md) | Design values, Lucide's drawing rules as the outline spec, `strokeWidth`, shapes, and filled conventions |
+| [lucide.md](lucide.md) | What comes from Lucide, the sync, the upgrade procedure, and licensing |
+| [filled.md](filled.md) | How filled drawings are derived: roles, inference, composition, recipes, and adding one |
+| [sharp.md](sharp.md) | How the sharp style is derived: stroke style, sharpening rules, kept curves, and sharp filled drawings |
+| [logos.md](logos.md) | Brand logos: sources and sync, catalogue, components, backgrounds, licensing and trademarks, defects, performance |
+| [naming.md](naming.md) | Lucide names, component names, direct imports, aliases, and categories |
+| [api.md](api.md) | Public imports, `IconProps`, logos and `LogoProps`, the manifests, entry points, tree shaking, and semver |
+| [accessibility.md](accessibility.md) | Decorative defaults, named controls, and meaningful standalone icons |
+| [rtl.md](rtl.md) | Semantic directionality and which icons mirror |
+| [architecture.md](architecture.md) | Pipeline, file ownership, and dependencies |
+| [validation.md](validation.md) | Source rules, diagnostics, metadata checks, brand logo checks, and the parser decision |
+| [generation.md](generation.md) | Icon generation, the logo generator, generated files, runtime decision, and output safety |
+| [visual-qa.md](visual-qa.md) | The playground, the review workflow, and the per-icon checklist |
+| [contributing.md](contributing.md) | Bun setup, commands, common changes, conventions, and CI |
+| [releases.md](releases.md) | Release behavior, what each bump means, and why 2.0 must not reach `main` yet |
 
-Start with `usage.md`. To look at the icons, run the example app — searching pictures beats reading a
-table:
-
-```bash
-cd example && bun install && bun run dev
-```
-
-## Contributing icons
-
-| | |
-|:--|:--|
-| [contributing.md](contributing.md) | The workflow, the commands, the conventions |
-| [icon-design-system.md](icon-design-system.md) | The visual language: grid, stroke density, shared motifs, small-size rules |
-| [icon-guidelines.md](icon-guidelines.md) | The technical spec for a source SVG |
-| [naming.md](naming.md) | Naming governance |
-| [releases.md](releases.md) | Versioning, publishing, rollback |
-
-Read `contributing.md` first; it links to the rest at the point each becomes relevant.
-
-## The short version
-
-- **`icons/**/*.svg` is the only source of truth.** Everything under `src/icons/` is generated,
-  committed, and guarded by `bun run generate:check`.
-- **Never hand-edit a generated file.** The fix is always `bun run generate`.
-- **The SVG is preserved byte for byte.** A component holds its source file's markup — `<g clip-path>`,
-  `<defs>`, `<clipPath>` and all. Only two things change: kebab attributes take their JSX spelling, and
-  visible `white` paint becomes `currentColor` so the icon can be themed.
-- **Search before adding.** Run the example app and search by name and category.
-- **Look at a new icon beside its siblings**, at 16px, before opening a PR. The test suite proves an
-  icon is faithfully transcribed; only looking proves it belongs.
-- **Icon names are public API.** A name comes from its filename, so renaming a file is a major release.
-- **There is one script.** `scripts/generate.mjs` does all the code generation; `--check` proves the
-  committed output matches its source, and CI runs it on every PR.
+The machine-readable internal contracts are in `config/`, none of them package exports:
+[icon-system.ts](../config/icon-system.ts) (design values),
+[lucide.json](../config/lucide.json) and [categories.ts](../config/categories.ts) (synced from
+Lucide), [icon-metadata.ts](../config/icon-metadata.ts) (manifest metadata and RTL),
+[filled.ts](../config/filled.ts) (the filled list), and [brands.json](../config/brands.json)
+(synced from theSVG).

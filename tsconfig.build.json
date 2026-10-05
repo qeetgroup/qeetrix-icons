@@ -9,9 +9,5 @@
     "tsBuildInfoFile": "./node_modules/.cache/qeetrix-icons/tsconfig.build.tsbuildinfo"
   },
   "include": ["src"],
-  "exclude": ["dist"],
-  "tsc-alias": {
-    "resolveFullPaths": true,
-    "verbose": false
-  }
+  "exclude": ["dist"]
 }
