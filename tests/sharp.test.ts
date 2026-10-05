@@ -389,7 +389,8 @@ describe("the repository's outlines", () => {
       if (sharpenOutline(sharp, name) !== sharp) problems.push(`${name}: not idempotent`);
     }
     expect(problems).toEqual([]);
-  });
+    // Sharpens all ~1,900 outlines twice: several seconds on a CI runner.
+  }, 60_000);
 });
 
 /**
