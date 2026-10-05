@@ -18,8 +18,8 @@ export function FoldHorizontalIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 12h6" />
-        <path d="M22 12h-6" />
+        <path d="M2 12H7" />
+        <path d="M22 12H17" />
         <path d="M12 2v2" />
         <path d="M12 8v2" />
         <path d="M12 14v2" />

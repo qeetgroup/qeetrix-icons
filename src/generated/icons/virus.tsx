@@ -18,7 +18,7 @@ export function VirusIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 14.991h.01" />
+        <path d="M12 14.991h.01" strokeLinecap="round" />
         <path d="M12 22v-3" />
         <path d="M12 2v3" />
         <path d="M13 22h-2" />
@@ -36,7 +36,7 @@ export function VirusIcon(props: IconProps<"outline">) {
         <path d="m4.206 7.5 1.732 1" />
         <path d="m7.5 19.794 1-1.733" />
         <path d="m7.5 4.205 1 1.732" />
-        <path d="M9 12h.01" />
+        <path d="M9 12h.01" strokeLinecap="round" />
         <circle cx="12" cy="12" r="7" />
       </svg>
     );

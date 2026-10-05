@@ -19,7 +19,7 @@ export function ArrowDownFromLineIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M19 3H5" />
-        <path d="M12 21V7" />
+        <path d="M12 20V7" />
         <path d="m6 15 6 6 6-6" />
       </svg>
     );

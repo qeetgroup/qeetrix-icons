@@ -311,9 +311,11 @@ flowchart LR
   GL --> P
 ```
 
-- **Filled drawings** are derived with CanvasKit (Skia) path operations from recipes in
-  [config/filled.ts](config/filled.ts): bodies filled to the outline's painted extent, details cut
-  as negative lines, crossing lines cleared by a gap. See [docs/filled.md](docs/filled.md).
+- **Filled drawings** are derived with CanvasKit (Skia) path operations from per-category recipes
+  in [config/derived/](config/derived/README.md): bodies filled to the outline's painted extent,
+  details cut as negative lines (running cleanly through the edge they reach), crossing lines
+  cleared by a gap. A few hand-drawn, hash-stamped overrides in `config/overrides/` replace
+  derivations that rules cannot get right. See [docs/filled.md](docs/filled.md).
 - **Sharp drawings** square corner roundings at their tangent intersections, point acute tips with
   a miter limit of 4, and keep circles, pills, and organic curves round. See
   [docs/sharp.md](docs/sharp.md).
@@ -369,7 +371,8 @@ Ground rules:
 - **`sync:lucide` and `sync:brands` leave the repository consistent**: they re-derive and
   regenerate everything downstream.
 - **A missing or flawed outline belongs upstream** in Lucide; a filled or sharp result is changed
-  through [config/filled.ts](config/filled.ts) or the sharp rules.
+  through its category's file in [config/derived/](config/derived/README.md), an override, or the
+  sharp rules.
 - **CI and the release gate run** lint, typecheck, tests, every `check:*` command, the build, and
   the playground build.
 

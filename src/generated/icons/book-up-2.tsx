@@ -18,11 +18,11 @@ export function BookUp2Icon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 13V7" />
+        <path d="M12 13V8" />
         <path d="M18 2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
-        <path d="M4 19.5V2H6.5" />
+        <path d="M4 18.5V2H6.5" />
         <path d="m9 10 3-3 3 3" />
-        <path d="m9 5 3-3 3 3" />
+        <path d="M9 5L11.887 2.113H12.113L15 5" />
       </svg>
     );
   }

@@ -15,7 +15,7 @@ export function LensConcaveIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M3 1L21 1L18.6 4.2Q17.368 5.842 16.703 7.784Q16 9.833 16 12Q16 14.167 16.703 16.216Q17.368 18.158 18.6 19.8L21 23L3 23L5.4 19.8Q6.632 18.158 7.297 16.216Q8 14.167 8 12Q8 9.833 7.297 7.784Q6.632 5.842 5.4 4.2L4.2 2.6L3 1Z"
+            d="M21 23L3 23L5.4 19.8Q6.632 18.158 7.297 16.216Q8 14.167 8 12Q8 9.833 7.297 7.784Q6.632 5.842 5.4 4.2L3 1L21 1L18.6 4.2Q17.368 5.842 16.703 7.784Q16 9.833 16 12Q16 14.167 16.703 16.216Q17.368 18.158 18.6 19.8L21 23Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function LensConcaveIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M5 2L6.2 3.6A14 14 0 0 1 6.2 20.4L5 22H19L17.8 20.4A14 14 0 0 1 17.8 3.6L19 2Z" />
+        <path d="M19 22L17.8 20.4A14 14 0 0 1 17.8 3.6L19 2H5L6.2 3.6A14 14 0 0 1 6.2 20.4L5 22Z" />
       </svg>
     );
   }

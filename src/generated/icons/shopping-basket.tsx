@@ -18,13 +18,13 @@ export function ShoppingBasketIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m15 11-1 9" />
-        <path d="m19 11-4-7" />
+        <path d="M14.89 11.994L14.11 19.006" />
+        <path d="M18.504 10.132L15 4" />
         <path d="M2 11h20" />
-        <path d="M3.5 11L5.446 20H18.532L20.6 11" />
-        <path d="M4.5 15.5h15" />
-        <path d="m5 11 4-7" />
-        <path d="m9 11 1 9" />
+        <path d="M3.711 11.977L5.446 20H18.532L20.376 11.975" />
+        <path d="M5.5 15.5H18.5" />
+        <path d="M5.496 10.132L9 4" />
+        <path d="M9.11 11.994L9.89 19.006" />
       </svg>
     );
   }

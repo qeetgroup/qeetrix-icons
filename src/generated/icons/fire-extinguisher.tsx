@@ -18,12 +18,12 @@ export function FireExtinguisherIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 6.5V2H11V6.5" />
+        <path d="M15 5.5V2H11V5.5" />
         <path d="M9 18h8" />
         <path d="M18 3h-3" />
         <path d="M11 3a6 6 0 0 0-6 6v11" />
         <path d="M5 13h4" />
-        <path d="M17 10A4 4 0 0 0 9 10V22H17Z" />
+        <path d="M9 10V22H17V10A4 4 0 0 0 9 10Z" />
       </svg>
     );
   }

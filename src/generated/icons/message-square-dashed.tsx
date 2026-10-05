@@ -21,7 +21,7 @@ export function MessageSquareDashedIcon(props: IconProps<"outline">) {
         <path d="M14 3h2" />
         <path d="M16 19h-2" />
         <path d="M2 12v-2" />
-        <path d="M2 16V21.76L2.877 22.123L4.361 20.639" />
+        <path d="M2 16V21.34L3.174 21.826L4.361 20.639" />
         <path d="M20 19H22V16" />
         <path d="M22 10v2" />
         <path d="M22 6V3H20" />

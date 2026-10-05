@@ -20,7 +20,7 @@ export function FileMusicIcon(props: IconProps<"outline">) {
       >
         <path d="M11.65 22H20V7L15 2H4V14.35" />
         <path d="M14 2V8H20" />
-        <path d="M8 20v-7l3 1.474" />
+        <path d="M8 19V13L11 14.474" />
         <circle cx="6" cy="20" r="2" />
       </svg>
     );

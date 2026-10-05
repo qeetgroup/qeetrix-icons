@@ -19,7 +19,7 @@ export function EclipseIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a7 7 0 1 0 10 10" />
+        <path d="M11.345 2.755A7.071 7.071 0 0 0 21.245 12.655" />
       </svg>
     );
   }

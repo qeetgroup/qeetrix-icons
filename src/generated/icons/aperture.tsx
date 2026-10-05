@@ -19,12 +19,12 @@ export function ApertureIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <circle cx="12" cy="12" r="10" />
-        <path d="m14.31 8 5.74 9.94" />
-        <path d="M9.69 8h11.48" />
-        <path d="m7.38 12 5.74-9.94" />
-        <path d="M9.69 16 3.95 6.06" />
-        <path d="M14.31 16H2.83" />
-        <path d="m16.62 12-5.74 9.94" />
+        <path d="M14.81 8.866L19.55 17.074" />
+        <path d="M10.69 8H20.17" />
+        <path d="M7.88 11.134L12.62 2.926" />
+        <path d="M9.19 15.134L4.45 6.926" />
+        <path d="M13.31 16H3.83" />
+        <path d="M16.12 12.866L11.38 21.074" />
       </svg>
     );
   }

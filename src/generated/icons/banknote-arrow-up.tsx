@@ -20,8 +20,8 @@ export function BanknoteArrowUpIcon(props: IconProps<"outline">) {
       >
         <path d="M12 18H2V6H22V13" />
         <path d="M18 12h.01" />
-        <path d="M19 22v-6" />
-        <path d="m22 19-3-3-3 3" />
+        <path d="M19 22V17" />
+        <path d="M21.581 18.581L19 16L16.419 18.581" />
         <path d="M6 12h.01" />
         <circle cx="12" cy="12" r="2" />
       </svg>

@@ -20,7 +20,7 @@ export function ClefBassIcon(props: IconProps<"outline">) {
       >
         <path d="M19 11h.01" />
         <path d="M19 6h.01" />
-        <path d="M5 8c0-4 4-4 4-4 6 0 6 6 6 6 0 7-10 11-10 11" />
+        <path d="M7.248 4.386C8.159 4 9 4 9 4C15 4 15 10 15 10C15 17 5 21 5 21" />
         <circle cx="7" cy="8" r="2" />
       </svg>
     );

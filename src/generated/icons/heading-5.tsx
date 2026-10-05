@@ -22,7 +22,7 @@ export function Heading5Icon(props: IconProps<"outline">) {
         <path d="M4 18V6" />
         <path d="M12 18V6" />
         <path d="M17 13v-3h4" />
-        <path d="M17 17.7c.4.2.8.3 1.3.3 1.5 0 2.7-1.1 2.7-2.5S19.8 13 18.3 13H17" />
+        <path d="M17 17.7C17.4 17.9 17.8 18 18.3 18C19.8 18 21 16.9 21 15.5C21 14.1 19.8 13 18.3 13H17V12" />
       </svg>
     );
   }

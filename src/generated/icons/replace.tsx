@@ -23,7 +23,7 @@ export function ReplaceIcon(props: IconProps<"outline">) {
         <path d="M21 4V3H20" />
         <path d="M21 9V10H20" />
         <path d="m3 7 3 3 3-3" />
-        <path d="M6 10V3H10" />
+        <path d="M6 9V3H10" />
         <rect height="7" width="7" x="3" y="14" />
       </svg>
     );

@@ -18,7 +18,7 @@ export function SquareMousePointerIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11.622 11.622L22.011 15.662L21.986 16.372L17.7 17.701L16.372 21.986L15.662 22.011Z" />
+        <path d="M22.004 15.862L21.986 16.372L17.7 17.701L16.372 21.986L15.862 22.004L15.59 21.825L11.622 11.622L21.825 15.59Z" />
         <path d="M21 11V3H3V21H11" />
       </svg>
     );

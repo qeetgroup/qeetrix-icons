@@ -18,7 +18,7 @@ export function BluetoothConnectedIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M7 7L17 17L12.177 21.823L12 21.75V2.25L12.177 2.177L17 7L7 17" />
+        <path d="M7 7L17 17L12.198 21.802L12 21.72V2.28L12.198 2.198L17 7L7 17" />
         <line x1="18" x2="21" y1="12" y2="12" />
         <line x1="3" x2="6" y1="12" y2="12" />
       </svg>

@@ -19,7 +19,7 @@ export function SofaIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M20 9V4H4V9" />
-        <path d="M2 18H22V11A2 2 0 0 0 18 11V13H6V11A2 2 0 0 0 2 11Z" />
+        <path d="M22 18V11A2 2 0 0 0 18 11V13H6V11A2 2 0 0 0 2 11V18Z" />
         <path d="M4 18v2" />
         <path d="M20 18v2" />
         <path d="M12 4v9" />

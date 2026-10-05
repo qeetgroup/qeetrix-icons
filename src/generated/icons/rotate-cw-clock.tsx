@@ -20,7 +20,7 @@ export function RotateCwClockIcon(props: IconProps<"outline">) {
       >
         <path d="M12 7v5l4 2" />
         <path d="M16 8h5V3" />
-        <path d="m21 8-2.3-2.3A9.7 9.7 0 0012 3a9 9 0 109 9" />
+        <path d="M20.293 7.293L18.7 5.7A9.7 9.7 0 0 0 12 3A9 9 0 1 0 21 12" />
       </svg>
     );
   }

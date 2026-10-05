@@ -19,10 +19,10 @@ export function MailSearchIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M22 12.5V4H2V20H11.5" />
-        <path d="M22 7L12 13.355L2 7" />
+        <path d="M21.156 7.536L12 13.355L2.844 7.536" />
         <path d="M18 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
         <circle cx="18" cy="18" r="3" />
-        <path d="m22 22-1.5-1.5" />
+        <path d="M21.581 21.581L20.919 20.919" />
       </svg>
     );
   }

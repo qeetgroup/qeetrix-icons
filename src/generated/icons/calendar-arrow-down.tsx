@@ -18,9 +18,9 @@ export function CalendarArrowDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m14 17 4 4 4-4" />
+        <path d="M14.419 17.419L18 21L21.581 17.419" />
         <path d="M16 2v3" />
-        <path d="M18 13v8" />
+        <path d="M18 13V20" />
         <path d="M21 10.354V3H3V21H12.343" />
         <path d="M3 9h18" />
         <path d="M8 2v3" />

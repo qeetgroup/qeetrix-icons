@@ -18,10 +18,10 @@ export function BridgeIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 9.728V16" />
-        <path d="M14 9.728V16" />
+        <path d="M10 10.728V16" />
+        <path d="M14 10.728V16" />
         <path d="M18 20V4" />
-        <path d="m22 11-4-4A7.5 7.5 0 0 1 6 7l-4 4" />
+        <path d="M21.581 10.581L18 7A7.5 7.5 0 0 1 6 7L2.419 10.581" />
         <path d="M22 16H2" />
         <path d="M6 20V4" />
       </svg>

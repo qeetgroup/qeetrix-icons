@@ -15,7 +15,7 @@ export function SquareActivityIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M2 2L22 2L22 22L2 22L2 2ZM15.677 13L18 13L18 11L14.323 11L13.321 13.505L11.883 6.317L10.255 6.168L8.323 11L6 11L6 13L9.677 13L10.679 10.495L12.117 17.683L13.745 17.832L15.677 13Z"
+            d="M2 2L22 2L22 22L2 22L2 2ZM15.677 13L18 13L18 11L14.323 11L13.321 13.506L11.905 6.426L10.215 6.269L8.323 11L6 11L6 13L9.677 13L10.679 10.494L12.095 17.574L13.785 17.731L15.677 13Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function SquareActivityIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <rect height="18" width="18" x="3" y="3" />
-        <path d="M17 12H15L13.093 16.768L12.951 16.755L11.049 7.245L10.907 7.232L9 12H7" />
+        <path d="M17 12H15L13.134 16.666L12.929 16.647L11.071 7.353L10.866 7.334L9 12H7" />
       </svg>
     );
   }

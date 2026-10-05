@@ -15,7 +15,7 @@ export function CrossIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1 8L8 8L8 1L16 1L16 8L23 8L23 16L16 16L16 23L8 23L8 16L1 16L1 8Z"
+            d="M1 16L1 8L8 8L8 1L16 1L16 8L23 8L23 16L16 16L16 23L8 23L8 16L1 16Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function CrossIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 9V15H9V22H15V15H22V9H15V2H9V9Z" />
+        <path d="M2 15H9V22H15V15H22V9H15V2H9V9H2Z" />
       </svg>
     );
   }

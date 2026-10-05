@@ -33,8 +33,10 @@ Upstream icons marked deprecated are skipped. In 1.52.0 these are `badge-swiss-f
 
 Never edit `icons/round-outline/`, `config/lucide.json`, or `config/categories.ts` by hand: the
 next sync rewrites them. A problem in an outline belongs upstream, in Lucide. What this repository
-owns is the filled list ([config/filled.ts](../config/filled.ts)), the sharpening rules and their
-`keepRound` exceptions ([scripts/lib/sharp.ts](../scripts/lib/sharp.ts)), the RTL list in
+owns is the per-category derivation tables ([config/derived/](../config/derived/README.md): the
+filled list and roles, and the sharp style's `keepRound` and `tipHeight` exceptions), the
+hand-drawn overrides (`config/overrides/`), the sharpening rules
+([scripts/lib/sharp.ts](../scripts/lib/sharp.ts)), the RTL list in
 [config/icon-metadata.ts](../config/icon-metadata.ts), and the design values in
 [config/icon-system.ts](../config/icon-system.ts), which restate Lucide's and add the sharp style
 ([design.md](design.md)).
@@ -68,7 +70,7 @@ fix the cause and run the remaining commands yourself.
 
 1. Run `bun run sync:lucide <new version>`.
 2. If `derive:filled` or `derive:sharp` failed, fix the cause: in
-   [config/filled.ts](../config/filled.ts), remove or rename entries for icons Lucide removed or
+   [config/derived/](../config/derived/README.md), remove or rename entries for icons Lucide removed or
    renamed, and fix recipes whose role indices no longer exist; a sharpening failure names the icon
    and element. If `generate` failed with `QXI-META-001`, a name in the RTL list of
    [config/icon-metadata.ts](../config/icon-metadata.ts) no longer exists; update it. Then run
@@ -83,8 +85,9 @@ fix the cause and run the remaining commands yourself.
      ([filled.md](filled.md#adding-a-filled-drawing)).
    - `icons/sharp-outline/` and `icons/sharp-filled/`: every sharp drawing of a new or redrawn
      icon. Review them with the playground's shape set to Sharp ([sharp.md](sharp.md)).
-4. Re-check the `roles` overrides in `config/filled.ts` and the `keepRound` entries in
-   [scripts/lib/sharp.ts](../scripts/lib/sharp.ts) for every icon whose outline changed. Both are
+4. Re-check the `roles`, `keepRound`, and `tipHeight` entries in `config/derived/` for every icon
+   whose outline changed. Overrides of a changed outline fail derivation until someone redraws or
+   re-stamps them ([filled.md](filled.md#overrides)). The entries are
    keyed by element index, so a redrawn outline can shift indices and an entry then applies to the
    wrong element, sometimes without failing.
 5. Check whether new Lucide icons belong in the RTL list ([rtl.md](rtl.md)) or the filled list.

@@ -20,7 +20,7 @@ export function PipetteIcon(props: IconProps<"outline">) {
       >
         <path d="M12 9L3 18V20.172A2 2 0 0 1 2.414 21.586A2 2 0 0 1 3.828 21H6L15 12" />
         <path d="m18 9 .4.4a1 1 0 1 1-3 3l-3.8-3.8a1 1 0 1 1 3-3l.4.4 3.4-3.4a1 1 0 1 1 3 3z" />
-        <path d="m2 22 .414-.414" />
+        <path d="M2.202 21.798L2.414 21.586" />
       </svg>
     );
   }

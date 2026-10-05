@@ -18,7 +18,7 @@ export function TicketsIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M3.173 8.18L15.992 2.353L18.56 8" />
+        <path d="M3.173 8.18L15.992 2.353L18.146 7.09" />
         <path d="M6 10V8" />
         <path d="M6 14v1" />
         <path d="M6 19v2" />

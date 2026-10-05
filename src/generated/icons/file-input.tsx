@@ -20,7 +20,7 @@ export function FileInputIcon(props: IconProps<"outline">) {
       >
         <path d="M4 11V2H15L20 7V22H4V19" />
         <path d="M14 2V8H20" />
-        <path d="M2 15h10" />
+        <path d="M2 15H11" />
         <path d="m9 18 3-3-3-3" />
       </svg>
     );

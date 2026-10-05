@@ -19,7 +19,7 @@ export function MailXIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M22 12.532V4H2V20H12.792" />
-        <path d="M22 7L12.005 13.367L2 7" />
+        <path d="M21.157 7.537L12.005 13.367L2.844 7.537" />
         <path d="m16.5 16.5 5 5" />
         <path d="m21.5 16.5-5 5" />
       </svg>

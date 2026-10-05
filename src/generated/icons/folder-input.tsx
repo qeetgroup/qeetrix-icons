@@ -19,7 +19,7 @@ export function FolderInputIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M2 9V3H8.983L11.008 6H22V20H2V17" />
-        <path d="M2 13h10" />
+        <path d="M2 13H11" />
         <path d="m9 16 3-3-3-3" />
       </svg>
     );

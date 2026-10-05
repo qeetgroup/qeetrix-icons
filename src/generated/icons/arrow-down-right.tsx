@@ -18,7 +18,7 @@ export function ArrowDownRightIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m7 7 10 10" />
+        <path d="M7 7L16.293 16.293" />
         <path d="M17 7v10H7" />
       </svg>
     );

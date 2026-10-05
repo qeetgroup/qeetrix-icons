@@ -18,9 +18,9 @@ export function MoveVerticalIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 2v20" />
-        <path d="m8 18 4 4 4-4" />
-        <path d="m8 6 4-4 4 4" />
+        <path d="M12 3V21" />
+        <path d="M8 18L11.887 21.887H12.113L16 18" />
+        <path d="M8 6L11.887 2.113H12.113L16 6" />
       </svg>
     );
   }

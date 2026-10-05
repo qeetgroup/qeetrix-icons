@@ -19,7 +19,7 @@ export function TowelRackIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M22 7h-2" />
-        <path d="M6.5 3H20V21H9V5.5A1 1 0 0 0 4 5.5V18H9" />
+        <path d="M7.5 3H20V21H9V5.5A1 1 0 0 0 4 5.5V18H9" />
         <path d="M9 7H2" />
       </svg>
     );

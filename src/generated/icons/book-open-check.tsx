@@ -18,8 +18,8 @@ export function BookOpenCheckIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 5v16" />
-        <path d="m16 12 2 2 4-4" />
+        <path d="M12 5V20" />
+        <path d="M16 12L18 14L21.581 10.419" />
         <path d="M22 6V2.999L16 3.002A5 5 0 0 0 12 5A5 5 0 0 0 8 3H2V19H8A5 5 0 0 1 12 21A5 5 0 0 1 16 19H22V15.656" />
       </svg>
     );

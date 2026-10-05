@@ -22,7 +22,7 @@ export function MapPlusIcon(props: IconProps<"outline">) {
         <path d="M15 5.764V12" />
         <path d="M18 15v6" />
         <path d="M21 18h-6" />
-        <path d="M9 3.236v15" />
+        <path d="M9 4.236V18.236" />
       </svg>
     );
   }

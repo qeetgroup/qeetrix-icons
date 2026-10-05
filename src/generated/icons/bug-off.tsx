@@ -18,17 +18,17 @@ export function BugOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 20v-8" />
+        <path d="M12 19V13" />
         <path d="M12.656 7H14a4 4 0 0 1 4 4v1.344" />
-        <path d="M14.12 3.88 16 2" />
-        <path d="M17.123 17.123A6 6 0 0 1 6 14v-3a4 4 0 0 1 1.72-3.287" />
-        <path d="m2 2 20 20" />
-        <path d="M21 5a4 4 0 0 1-3.55 3.97" />
+        <path d="M14.539 3.461L15.581 2.419" />
+        <path d="M16.534 17.93A6 6 0 0 1 6 14V11A4 4 0 0 1 6.978 8.379" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M21 5A4 4 0 0 1 18.419 8.735" />
         <path d="M22 13h-3.344" />
-        <path d="M3 21a4 4 0 0 1 3.81-4" />
-        <path d="M3 5a4 4 0 0 0 3.55 3.97" />
+        <path d="M3 21A4 4 0 0 1 5.827 17.171" />
+        <path d="M3 5A4 4 0 0 0 5.581 8.735" />
         <path d="M6 13H2" />
-        <path d="m8 2 1.88 1.88" />
+        <path d="M8.419 2.419L9.461 3.461" />
         <path d="M9.712 4.06A3 3 0 0 1 15 6v1.13" />
       </svg>
     );

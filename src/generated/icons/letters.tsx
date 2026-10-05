@@ -18,7 +18,7 @@ export function LettersIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 8H9" />
+        <path d="M14 8H10" />
         <path d="M21 15.354a4 4 0 100 5.292" />
         <path d="M3 18H7A2 2 0 0 1 7 22H3V14H6A2 2 0 0 1 6 18" />
         <path d="M8 10L11.613 1.999H12.387L16 10" />

@@ -18,8 +18,8 @@ export function BookHeartIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 19.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
-        <path d="M8.62 9.8A2.25 2.25 0 1 1 12 6.836A2.25 2.25 0 1 1 15.38 9.802L12 13.478Z" />
+        <path d="M4 18.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
+        <path d="M15.38 9.802L12 13.478L8.62 9.8A2.25 2.25 0 1 1 12 6.836A2.25 2.25 0 1 1 15.38 9.802Z" />
       </svg>
     );
   }

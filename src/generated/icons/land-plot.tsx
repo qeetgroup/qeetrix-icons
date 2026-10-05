@@ -18,10 +18,10 @@ export function LandPlotIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m12 8 6-3-6-3v10" />
-        <path d="M8 11.99L1.993 15.419V16.58L12 22.302L22.007 16.58V15.418L16 12" />
-        <path d="m6.49 12.85 11.02 6.3" />
-        <path d="M17.51 12.85 6.5 19.15" />
+        <path d="M12.894 7.553L18 5L12.268 2.134L12 2.3V12" />
+        <path d="M8 11.99L2.002 15.414L2.001 16.585L11.479 22.004H12.521L22.001 16.584L21.999 15.414L16 12" />
+        <path d="M7.358 13.346L16.642 18.654" />
+        <path d="M16.642 13.347L7.368 18.653" />
       </svg>
     );
   }

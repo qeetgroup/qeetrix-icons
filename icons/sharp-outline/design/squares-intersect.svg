@@ -8,6 +8,6 @@
   <path d="M22 14v2"/>
   <path d="M22 20V22H20"/>
   <path d="M4 16H2V14"/>
-  <path d="M8 8H16V16H8Z"/>
+  <path d="M16 8V16H8V8Z"/>
   <path d="M8 2h2"/>
 </svg>

@@ -21,8 +21,8 @@ export function TextInitialIcon(props: IconProps<"outline">) {
         <path d="M15 5h6" />
         <path d="M15 12h6" />
         <path d="M3 19h18" />
-        <path d="M3 12L7 3.304L11 12" />
-        <path d="M3.92 10h6.16" />
+        <path d="M3 12L6.68 4H7.32L11 12" />
+        <path d="M4.92 10H9.08" />
       </svg>
     );
   }

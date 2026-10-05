@@ -22,8 +22,8 @@ export function TrianglesCenterlineDashedVerticalIcon(props: IconProps<"outline"
         <path d="M12 20v2" />
         <path d="M12 2v2" />
         <path d="M12 8v2" />
-        <path d="M20.764 17.179L22 16.671V7.329L20.764 6.821L15.586 12.001Z" />
-        <path d="M3.236 17.179L2 16.671V7.329L3.236 6.821L8.414 12.001Z" />
+        <path d="M22 7.329L20.764 6.821L15.586 12.001L20.764 17.179L22 16.671Z" />
+        <path d="M2 7.329L3.236 6.821L8.414 12.001L3.236 17.179L2 16.671Z" />
       </svg>
     );
   }

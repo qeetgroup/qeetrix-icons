@@ -15,7 +15,7 @@ export function Navigation2Icon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13.024 1.889L20.887 23.23L12 18.152L3.113 23.23L11.217 1.235L12.783 1.235L13.024 1.889Z"
+            d="M13.042 1.936L20.075 21.027L18.854 22.068L12 18.152L5.146 22.068L3.925 21.027L11.199 1.282L12.801 1.282L13.042 1.936Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function Navigation2Icon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <polygon points="12.086 2.235 19 21 12 17 5 21 11.914 2.235" />
+        <polygon points="12.104 2.282 18.896 20.718 18.74 20.851 12 17 5.26 20.851 5.104 20.718 11.896 2.282" />
       </svg>
     );
   }

@@ -19,7 +19,7 @@ export function PhoneOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10.1 13.9A14 14 0 0 0 13.832 16.568L14.559 16.902L16.011 15H22V22H20A18 18 0 0 1 7.272 16.728" />
-        <path d="M22 2 2 22" />
+        <path d="M21.581 2.419L2.419 21.581" />
         <path d="M4.76 13.582A18 18 0 0 1 2 4V2H9V8L7.078 9.441L7.44 10.184A14 14 0 0 0 7.684 10.657" />
       </svg>
     );

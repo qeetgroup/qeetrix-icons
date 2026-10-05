@@ -18,10 +18,10 @@ export function SaveOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13 13H7V21" />
+        <path d="M12 13H7V21" />
         <path d="M14 8h1" />
-        <path d="M17 21v-4" />
-        <path d="m2 2 20 20" />
+        <path d="M17 21V18" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M19.824 21H3V4.176" />
         <path d="M9 3H16L21 8V15" />
       </svg>

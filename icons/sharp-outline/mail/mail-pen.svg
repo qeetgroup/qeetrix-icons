@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="M15 17.997L13.765 22.233L18.001 20.998L21.377 17.626A1 1 0 1 0 18.373 14.622Z"/>
+  <path d="M14.975 21.88L18.001 20.998L21.377 17.626A1 1 0 1 0 18.373 14.622L15 17.997L14.118 21.023Z"/>
   <path d="M22 10.38V4H2V20H10.25"/>
-  <path d="M22 7L12.005 13.367L2 7"/>
+  <path d="M21.157 7.537L12.005 13.367L2.844 7.537"/>
 </svg>

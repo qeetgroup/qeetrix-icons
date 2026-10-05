@@ -18,9 +18,9 @@ export function BookAIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 19.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
+        <path d="M4 18.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
         <path d="m8 13 4-7 4 7" />
-        <path d="M9.1 11h5.7" />
+        <path d="M10.1 11H13.8" />
       </svg>
     );
   }

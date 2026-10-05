@@ -18,8 +18,8 @@ export function ArrowUpFromDotIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m5 9 7-7 7 7" />
-        <path d="M12 16V2" />
+        <path d="M5 9L11.887 2.113H12.113L19 9" />
+        <path d="M12 16V3" />
         <rect height="2" width="2" x="11" y="20" />
       </svg>
     );

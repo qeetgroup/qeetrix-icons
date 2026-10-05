@@ -21,7 +21,7 @@ export function FileChartPieIcon(props: IconProps<"outline">) {
         <path d="M15.941 22H20V7.002L14.998 2H4V7.512" />
         <path d="M14 2V8H20" />
         <path d="M4.017 11.512a6 6 0 1 0 8.466 8.475" />
-        <path d="M8 16V9.917L8.995 10.083A6 6 0 0 1 13.917 15.005L14.083 16Z" />
+        <path d="M8 16V10A6 6 0 0 1 14 16Z" />
       </svg>
     );
   }

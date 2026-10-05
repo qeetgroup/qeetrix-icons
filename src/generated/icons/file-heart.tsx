@@ -20,7 +20,7 @@ export function FileHeartIcon(props: IconProps<"outline">) {
       >
         <path d="M13 22H20V7L15 2H4V11" />
         <path d="M14 2V8H20" />
-        <path d="M3.62 18.8A2.25 2.25 0 1 1 7 15.836A2.25 2.25 0 1 1 10.38 18.802L7 22.478Z" />
+        <path d="M10.38 18.802L7.433 22.007H6.567L3.62 18.8A2.25 2.25 0 1 1 7 15.836A2.25 2.25 0 1 1 10.38 18.802Z" />
       </svg>
     );
   }

@@ -19,7 +19,7 @@ export function StickyNoteOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M15 3V9H21" />
-        <path d="m2 2 20 20" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M3 4.172V21H19.828" />
         <path d="M8.656 3H16L21 8V15.344" />
       </svg>

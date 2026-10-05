@@ -20,8 +20,8 @@ export function ScrollTextIcon(props: IconProps<"outline">) {
       >
         <path d="M15 12h-5" />
         <path d="M15 8h-5" />
-        <path d="M19 17V3H4" />
-        <path d="M8 21H22V17H10V19A2 2 0 1 1 6 19V5A2 2 0 1 0 2 5V8H6" />
+        <path d="M19 17V3H5" />
+        <path d="M9 21H22V17H10V19A2 2 0 1 1 6 19V5A2 2 0 1 0 2 5V8H6" />
       </svg>
     );
   }

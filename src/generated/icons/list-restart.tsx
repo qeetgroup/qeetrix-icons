@@ -21,7 +21,7 @@ export function ListRestartIcon(props: IconProps<"outline">) {
         <path d="M21 5H3" />
         <path d="M7 12H3" />
         <path d="M7 19H3" />
-        <path d="M12 18a5 5 0 0 0 9-3 4.5 4.5 0 0 0-4.5-4.5c-1.33 0-2.54.54-3.41 1.41L11 14" />
+        <path d="M12 18A5 5 0 0 0 21 15A4.5 4.5 0 0 0 16.5 10.5C15.17 10.5 13.96 11.04 13.09 11.91L11.707 13.293" />
         <path d="M11 10v4h4" />
       </svg>
     );

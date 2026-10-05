@@ -19,8 +19,8 @@ export function TicketsPlaneIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10.5 17H12.5L18 12" />
-        <path d="m12 13.5 3.794.506" />
-        <path d="M3.173 8.18L15.992 2.353L18.56 8" />
+        <path d="M12 13.5L14.803 13.874" />
+        <path d="M3.173 8.18L15.992 2.353L18.146 7.09" />
         <path d="M6 10V8" />
         <path d="M6 14v1" />
         <path d="M6 19v2" />

@@ -20,7 +20,7 @@ export function TimerResetIcon(props: IconProps<"outline">) {
       >
         <path d="M10 2h4" />
         <path d="M12 14v-4" />
-        <path d="M4 13a8 8 0 0 1 8-7 8 8 0 1 1-5.3 14L4 17.6" />
+        <path d="M4 13A8 8 0 0 1 12 6A8 8 0 1 1 6.7 20L4.747 18.264" />
         <path d="M9 17H4v5" />
       </svg>
     );

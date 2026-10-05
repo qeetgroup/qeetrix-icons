@@ -19,9 +19,9 @@ export function ArrowLeftRightIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M8 3 4 7l4 4" />
-        <path d="M4 7h16" />
+        <path d="M5 7H20" />
         <path d="m16 21 4-4-4-4" />
-        <path d="M20 17H4" />
+        <path d="M19 17H4" />
       </svg>
     );
   }

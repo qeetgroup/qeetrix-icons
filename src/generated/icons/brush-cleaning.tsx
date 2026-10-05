@@ -18,10 +18,10 @@ export function BrushCleaningIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m16 22-1-4" />
+        <path d="M15.757 21.03L15 18" />
         <path d="M19 14H20V10H14V4A2 2 0 0 0 10 4V10H4V14H5" />
         <path d="M19 14H5L2.668 22H21.332Z" />
-        <path d="m8 22 1-4" />
+        <path d="M8.243 21.03L9 18" />
       </svg>
     );
   }

@@ -20,7 +20,7 @@ export function FolderTreeIcon(props: IconProps<"outline">) {
       >
         <path d="M21 10V5H17L15.5 3H12V10Z" />
         <path d="M21 21V16H16.492L15.504 14H12V21Z" />
-        <path d="M3 5V5.828L4.172 7H8" />
+        <path d="M3 5V7H8" />
         <path d="M3 3V18H8" />
       </svg>
     );

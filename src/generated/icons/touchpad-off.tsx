@@ -21,8 +21,8 @@ export function TouchpadOffIcon(props: IconProps<"outline">) {
         <path d="M12 20v-6" />
         <path d="M19.656 14H22" />
         <path d="M2 14h12" />
-        <path d="m2 2 20 20" />
-        <path d="M20 20H2V4H4" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M19 20H2V4H3" />
         <path d="M9.656 4H22V16.344" />
       </svg>
     );

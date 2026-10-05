@@ -19,7 +19,7 @@ export function ArrowDown10Icon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m3 16 4 4 4-4" />
-        <path d="M7 20V4" />
+        <path d="M7 19V4" />
         <path d="M17 10V4h-2" />
         <path d="M15 10h4" />
         <rect height="6" ry="2" width="4" x="15" y="14" />

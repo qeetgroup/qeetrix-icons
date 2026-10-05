@@ -136,7 +136,10 @@ stroke width, cap, and join, read directly from `design` in the shared config:
 Explicit descendant stroke width, cap, join, and miter limit must agree; otherwise those
 properties inherit from the root. A descendant may set its own `fill`, which the
 paint rule limits to `currentColor` or `none`: Lucide draws small solid dots, such as the hole in
-`tag`, with `fill="currentColor"`.
+`tag`, with `fill="currentColor"`. One cap exception exists: in a sharp source, a dot path (one
+move and one line shorter than 0.1, like `M9 9h.01`) may set `stroke-linecap="round"`. That is how
+a figurative dot the sharp style keeps round, such as an eye, paints round under the root's square
+caps ([sharp.md](sharp.md#kept-round)). Any other descendant cap must match the root.
 
 Filled roots declare `fill="currentColor"`. Descendants may use `currentColor` or `none`; any
 optional stroke remains subject to the same color and numeric rules. A filled drawing needs its

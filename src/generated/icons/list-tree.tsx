@@ -21,7 +21,7 @@ export function ListTreeIcon(props: IconProps<"outline">) {
         <path d="M8 5h13" />
         <path d="M13 12h8" />
         <path d="M13 19h8" />
-        <path d="M3 10V10.828L4.172 12H8" />
+        <path d="M3 10V12H8" />
         <path d="M3 5V19H8" />
       </svg>
     );

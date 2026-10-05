@@ -18,9 +18,9 @@ export function WavesHorizontalIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 12q2.5 2 5 0t5 0 5 0 5 0" />
-        <path d="M2 19q2.5 2 5 0t5 0 5 0 5 0" />
-        <path d="M2 5q2.5 2 5 0t5 0 5 0 5 0" />
+        <path d="M2.479 12.346Q4.739 13.808 7 12Q9.5 10 12 12Q14.5 14 17 12Q19.261 10.192 21.521 11.654" />
+        <path d="M2.479 19.346Q4.739 20.808 7 19Q9.5 17 12 19Q14.5 21 17 19Q19.261 17.192 21.521 18.654" />
+        <path d="M2.479 5.346Q4.739 6.808 7 5Q9.5 3 12 5Q14.5 7 17 5Q19.261 3.192 21.521 4.654" />
       </svg>
     );
   }

@@ -18,7 +18,7 @@ export function SunsetIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 10V2" />
+        <path d="M12 9V2" />
         <path d="m4.93 10.93 1.41 1.41" />
         <path d="M2 18h2" />
         <path d="M20 18h2" />

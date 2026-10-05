@@ -19,13 +19,13 @@ export function TrashOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 11v6" />
-        <path d="M14 17v-3" />
+        <path d="M14 17V15" />
         <path d="M16 6V2H9.025" />
         <path d="M19 6v7.344" />
-        <path d="m2 2 20 20" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M21 6h-9.344" />
         <path d="M3 6h3" />
-        <path d="M5 6V22H19V19" />
+        <path d="M5 6V22H19V20" />
       </svg>
     );
   }

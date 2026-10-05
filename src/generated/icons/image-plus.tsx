@@ -21,7 +21,7 @@ export function ImagePlusIcon(props: IconProps<"outline">) {
         <path d="M16 5h6" />
         <path d="M19 2v6" />
         <path d="M21 11.5V21H3V3H12.5" />
-        <path d="M21 15L16.5 10.5L6 21" />
+        <path d="M20.293 14.293L16.5 10.5L6.707 20.293" />
         <circle cx="9" cy="9" r="2" />
       </svg>
     );

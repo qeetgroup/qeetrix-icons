@@ -19,7 +19,7 @@ export function Grid2x2CheckIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 3V21H3V3H21V12H3" />
-        <path d="m16 19 2 2 4-4" />
+        <path d="M16 19L18 21L21.581 17.419" />
       </svg>
     );
   }

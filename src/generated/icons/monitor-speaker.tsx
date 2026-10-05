@@ -22,7 +22,7 @@ export function MonitorSpeakerIcon(props: IconProps<"outline">) {
         <path d="M17 9h.01" />
         <rect height="16" width="10" x="12" y="4" />
         <path d="M8 6H2V16H8" />
-        <rect height="2" width="2" x="16" y="14" />
+        <circle cx="17" cy="15" r="1" />
       </svg>
     );
   }

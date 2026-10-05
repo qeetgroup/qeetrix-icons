@@ -20,7 +20,7 @@ export function WallpaperIcon(props: IconProps<"outline">) {
       >
         <path d="M12 17v4" />
         <path d="M8 21h8" />
-        <path d="M9 17L16.5 9.5L22 15" />
+        <path d="M9.707 16.293L16.5 9.5L21.293 14.293" />
         <circle cx="8" cy="9" r="2" />
         <rect height="14" width="20" x="2" y="3" />
       </svg>

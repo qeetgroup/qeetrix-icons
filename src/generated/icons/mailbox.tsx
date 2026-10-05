@@ -18,9 +18,9 @@ export function MailboxIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 19H2V9.5C2 7 4 5 6.5 5H18C20.2 5 22 6.8 22 9Z" />
+        <path d="M2 19V9.5C2 7 4 5 6.5 5H18C20.2 5 22 6.8 22 9V19Z" />
         <polyline points="15,9 18,9 18,11" />
-        <path d="M6.5 5C9 5 11 7 11 9.5V17.828L9.828 19H9" />
+        <path d="M8.471 5.448C9.973 6.174 11 7.709 11 9.5V17.828L9.828 19H9" />
         <line x1="6" x2="7" y1="10" y2="10" />
       </svg>
     );

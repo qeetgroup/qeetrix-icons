@@ -18,7 +18,7 @@ export function SquareArrowRightExitIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 12h11" />
+        <path d="M10 12H20" />
         <path d="m17 16 4-4-4-4" />
         <path d="M21 6.344V3H3V21H21V17.656" />
       </svg>

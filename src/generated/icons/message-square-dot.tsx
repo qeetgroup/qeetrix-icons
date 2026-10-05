@@ -18,7 +18,7 @@ export function MessageSquareDotIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.7 3H2V21.76L2.877 22.123L6 19H22V12.3" />
+        <path d="M12.7 3H2V21.34L3.174 21.826L6 19H22V12.3" />
         <circle cx="19" cy="6" r="3" />
       </svg>
     );

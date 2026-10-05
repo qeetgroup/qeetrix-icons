@@ -19,7 +19,7 @@ export function MailQuestionMarkIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M22 10.5V4H2V20H16.5" />
-        <path d="M22 7L12 13.355L2 7" />
+        <path d="M21.156 7.536L12 13.355L2.844 7.536" />
         <path d="M18 15.28c.2-.4.5-.8.9-1a2.1 2.1 0 0 1 2.6.4c.3.4.5.8.5 1.3 0 1.3-2 2-2 2" />
         <path d="M20 22v.01" />
       </svg>

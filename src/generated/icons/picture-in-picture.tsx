@@ -19,7 +19,7 @@ export function PictureInPictureIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M2 10h6V4" />
-        <path d="m2 4 6 6" />
+        <path d="M2.419 4.419L6.874 8.874" />
         <path d="M21 10V5H12" />
         <path d="M3 14V18H8" />
         <rect height="7" width="10" x="12" y="14" />

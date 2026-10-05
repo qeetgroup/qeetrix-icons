@@ -18,8 +18,8 @@ export function CloudDownloadIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 13v8l-4-4" />
-        <path d="m12 21 4-4" />
+        <path d="M12 13V20.7L11.788 20.788L8 17" />
+        <path d="M11.293 20.293L12 21L16 17" />
         <path d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284" />
       </svg>
     );

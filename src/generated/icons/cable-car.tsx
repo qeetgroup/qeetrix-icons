@@ -20,8 +20,8 @@ export function CableCarIcon(props: IconProps<"outline">) {
       >
         <path d="M10 3h.01" />
         <path d="M14 2h.01" />
-        <path d="m2 9 20-5" />
-        <path d="M12 12V6.5" />
+        <path d="M2.218 8.946L21.782 4.054" />
+        <path d="M12 12V7.5" />
         <rect height="10" width="16" x="4" y="12" />
         <path d="M9 12v5" />
         <path d="M15 12v5" />

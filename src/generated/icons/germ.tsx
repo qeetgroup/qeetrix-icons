@@ -18,17 +18,17 @@ export function GermIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m11 2 .925 1.848" />
-        <path d="M13 15h.01" />
+        <path d="M11.174 2.347L11.925 3.848" />
+        <path d="M13 15h.01" strokeLinecap="round" />
         <path d="m16 21-1-2.472" />
-        <path d="m19 2-1 1.804" />
-        <path d="m2 19 2.746-1.373" />
-        <path d="m22 16-2.474-2.13" />
-        <path d="m22 5-1.804 1" />
-        <path d="m3 10 2 2" />
-        <path d="M9 16h.01" />
+        <path d="M18.798 2.364L18 3.804" />
+        <path d="M2.347 18.827L4.746 17.627" />
+        <path d="M21.585 15.642L20.284 14.522" />
+        <path d="M21.636 5.202L20.196 6" />
+        <path d="M3 10L4.293 11.293" />
+        <path d="M9 16h.01" strokeLinecap="round" />
         <path d="M9 20v2" />
-        <path d="M9.33 7.035c-.51 1.478-1.786 2.93-3.09 3.794A5 5 0 009 20a12.1 12.1 0 0011.902-9.916A6 6 0 009.33 7.035" />
+        <path d="M9.33 7.035C8.82 8.513 7.544 9.965 6.24 10.829A5 5 0 0 0 9 20A12.1 12.1 0 0 0 20.902 10.084A6 6 0 0 0 9.33 7.035Z" />
         <circle cx="15" cy="9" r="2" />
       </svg>
     );

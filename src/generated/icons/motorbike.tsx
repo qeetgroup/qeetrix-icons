@@ -19,7 +19,7 @@ export function MotorbikeIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m18 14-1-3" />
-        <path d="M3 9L9 11A2 2 0 0 1 11 9H14.817L14.99 10.81" />
+        <path d="M3 9L9 11A2 2 0 0 1 11 9H14.817L14.895 9.815" />
         <path d="M8 17H12V16A6 6 0 0 1 18 10H19V8.25A5 5 0 0 0 17 5" />
         <circle cx="19" cy="17" r="3" />
         <circle cx="5" cy="17" r="3" />

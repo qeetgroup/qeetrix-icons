@@ -23,9 +23,9 @@ export function TimelineIcon(props: IconProps<"outline">) {
         <path d="M4 20h.01" />
         <path d="M4 4h.01" />
         <path d="M4 8h.01" />
-        <path d="M10 14H20V10H10L8 12Z" />
-        <path d="M10 22H20V18H10L8 20Z" />
-        <path d="M10 6H20V2H10L8 4Z" />
+        <path d="M20 14V10H10L8 12L10 14Z" />
+        <path d="M20 22V18H10L8 20L10 22Z" />
+        <path d="M20 6V2H10L8 4L10 6Z" />
       </svg>
     );
   }

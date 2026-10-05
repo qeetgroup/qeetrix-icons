@@ -18,7 +18,7 @@ export function FolderSymlinkIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 9.35V3H8.983L11.008 6H22V20H2V13H11" />
+        <path d="M2 9.35V3H8.983L11.008 6H22V20H2V13H10" />
         <path d="m8 16 3-3-3-3" />
       </svg>
     );

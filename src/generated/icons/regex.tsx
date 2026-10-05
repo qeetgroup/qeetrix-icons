@@ -21,7 +21,7 @@ export function RegexIcon(props: IconProps<"outline">) {
         <path d="M17 3v10" />
         <path d="m12.67 5.5 8.66 5" />
         <path d="m12.67 10.5 8.66-5" />
-        <path d="M9 15H3V21H9Z" />
+        <path d="M3 15V21H9V15Z" />
       </svg>
     );
   }

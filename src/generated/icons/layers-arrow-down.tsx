@@ -18,11 +18,11 @@ export function LayersArrowDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 7v15" />
-        <path d="M1.998 12.646L7.673 15.226" />
-        <path d="M22.005 12.649L16.333 15.228" />
-        <path d="M8 10.37L2.002 7.638V6.351L11.999 1.802L22.018 6.362V7.649L16.028 10.371" />
-        <path d="m9 19 3 3 3-3" />
+        <path d="M12 7V21" />
+        <path d="M2 12L1.998 12.646L7.673 15.226" />
+        <path d="M22 12L22.005 12.649L16.333 15.228" />
+        <path d="M8 10.37L2.009 7.641V6.348L11.58 1.993H12.418L22.013 6.36V7.651L16.028 10.371" />
+        <path d="M9 19L11.887 21.887H12.113L15 19" />
       </svg>
     );
   }

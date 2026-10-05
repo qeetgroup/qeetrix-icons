@@ -20,7 +20,7 @@ export function FileSearchCornerIcon(props: IconProps<"outline">) {
       >
         <path d="M11.1 22H4V2H15L20 6.999V11.25" />
         <path d="M14 2V8H20" />
-        <path d="m21 22-2.88-2.88" />
+        <path d="M20.581 21.581L18.539 19.539" />
         <circle cx="16" cy="17" r="3" />
       </svg>
     );

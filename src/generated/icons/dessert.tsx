@@ -18,8 +18,8 @@ export function DessertIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10.162 3.167A10 10 0 0 0 2 13a2 2 0 0 0 4 0v-1a2 2 0 0 1 4 0v4a2 2 0 0 0 4 0v-4a2 2 0 0 1 4 0v1a2 2 0 0 0 4-.006 10 10 0 0 0-8.161-9.826" />
-        <path d="M20.804 14.869a9 9 0 0 1-17.608 0" />
+        <path d="M9.19 3.4A10 10 0 0 0 2 13A2 2 0 0 0 6 13V12A2 2 0 0 1 10 12V16A2 2 0 0 0 14 16V12A2 2 0 0 1 18 12V13A2 2 0 0 0 22 12.994A10 10 0 0 0 14.811 3.401" />
+        <path d="M20.543 15.834A9 9 0 0 1 3.457 15.834" />
         <circle cx="12" cy="4" r="2" />
       </svg>
     );

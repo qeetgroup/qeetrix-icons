@@ -19,7 +19,7 @@ export function UserPenIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M11.5 15H7a4 4 0 0 0-4 4v2" />
-        <path d="M21.378 16.626A1 1 0 0 0 18.374 13.622L14.001 17.997L12.766 22.233L17.002 20.998Z" />
+        <path d="M18.374 13.622L14.001 17.997L13.119 21.023L13.976 21.88L17.002 20.998L21.378 16.626A1 1 0 0 0 18.374 13.622Z" />
         <circle cx="10" cy="7" r="4" />
       </svg>
     );

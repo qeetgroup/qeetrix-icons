@@ -18,8 +18,8 @@ export function SpoolIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M17 13.44L2.791 17.561L3.265 21H20.737L21.227 17.558L17 16.345V7.66" />
-        <path d="M7 10.56L21.209 6.439L20.735 3H3.263L2.773 6.442L7 7.655V16.341" />
+        <path d="M16.04 13.719L2.791 17.561L3.265 21H20.737L21.227 17.558L17 16.345V8.66" />
+        <path d="M7.96 10.281L21.209 6.439L20.735 3H3.263L2.773 6.442L7 7.655V15.341" />
       </svg>
     );
   }

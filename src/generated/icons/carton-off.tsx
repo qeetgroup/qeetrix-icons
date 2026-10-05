@@ -18,12 +18,12 @@ export function CartonOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 10H5V22H19V19" />
-        <path d="M13 22v-9" />
+        <path d="M9 10H5V22H19V20" />
+        <path d="M13 22V14" />
         <path d="M13.902 8.245 16 6h-4.343" />
         <path d="M19 13.343V9.21L16 6V2H8.434" />
-        <path d="m2 2 20 20" />
-        <path d="M7.034 7.034L5 9.21" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M6.351 7.765L5 9.21V10" />
       </svg>
     );
   }

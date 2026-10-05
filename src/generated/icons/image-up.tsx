@@ -18,9 +18,9 @@ export function ImageUpIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10.3 21H3V3H21V15L16.5 10.5L6 21" />
+        <path d="M10.3 21H3V3H21V15L16.5 10.5L6.707 20.293" />
         <path d="m14 19.5 3-3 3 3" />
-        <path d="M17 22v-5.5" />
+        <path d="M17 22V17.5" />
         <circle cx="9" cy="9" r="2" />
       </svg>
     );

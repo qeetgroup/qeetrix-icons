@@ -22,7 +22,7 @@ export function GitPullRequestArrowIcon(props: IconProps<"outline">) {
         <path d="M5 9v12" />
         <circle cx="19" cy="18" r="3" />
         <path d="m15 9-3-3 3-3" />
-        <path d="M12 6H19V15" />
+        <path d="M13 6H19V15" />
       </svg>
     );
   }

@@ -1,4 +1,5 @@
 import { DOMParser, Element, onWarningStopParsing } from "@xmldom/xmldom";
+import { derived } from "../../config/derived/index.js";
 import { iconSystem } from "../../config/icon-system.js";
 
 /**
@@ -88,10 +89,15 @@ const smoothAngle = 10;
  * the tip of an eye or a map pin, where much flatter curves meet.
  */
 const continuationRatio = 2;
-/** A neighbouring line within this many degrees of a corner's end tangent is that tangent. */
-const snapAngle = 3;
+/**
+ * A neighbouring line within this many degrees of a rounding's end tangent is that tangent: Lucide's
+ * roundings often meet their lines with a slight kink, and the corner belongs where the lines meet.
+ */
+const snapAngle = 20;
 /** Lengths below this are zero. */
 const tiny = 1e-6;
+/** Roundings link into one chain only when their radii agree within this factor. */
+const chainRatio = 1.15;
 
 /**
  * Outline elements left as they are, by icon name and element index, where the general rules
@@ -103,21 +109,11 @@ const tiny = 1e-6;
  * between them would square into stairs; Lucide draws the same shapes elsewhere as glyph details
  * (`quote`) or mechanical parts (`settings`), so they too are listed by hand.
  */
-export const keepRound: Readonly<Record<string, readonly number[]>> = {
-  accessibility: [0], // The figure's head.
-  atom: [0], // The nucleus, a ball inside round orbits.
-  bike: [2], // The rider's head.
-  earth: [0, 1, 2], // Continents' coastlines.
-  "earth-lock": [0, 1, 2], // Continents' coastlines.
-  galaxy: [4], // The galaxy's round core.
-  images: [2], // The picture's sun, round in `image` too.
-  "party-popper": [5, 6, 7], // Streamers' squiggles.
-  "person-standing": [0], // The figure's head.
-  "scan-eye": [4], // The eye's pupil.
-  skull: [2, 3], // The skull's eyes.
-  usb: [0, 1], // The USB symbol's round terminals, distinct from its square one.
-  view: [2], // The eye's pupil.
-};
+/** Elements kept round, by outline name: the merge of every `config/derived/<category>.ts`. */
+export const keepRound: Readonly<Record<string, readonly number[]>> = derived.keepRound;
+
+/** Elements whose acute tips are cut at the round outline's extent, by outline name. */
+export const tipHeight: Readonly<Record<string, readonly number[]>> = derived.tipHeight ?? {};
 
 const degrees = Math.PI / 180;
 
@@ -528,11 +524,6 @@ export type CornerDecision = {
   readonly start?: Point;
 };
 
-const canvas = {
-  width: iconSystem.architecture.grid.width,
-  height: iconSystem.architecture.grid.height,
-};
-
 /** Point and direction of travel halfway along a curve. */
 function middle(segment: Drawn): { point: Point; tangent: Point } | undefined {
   switch (segment.type) {
@@ -584,9 +575,6 @@ function joinExtent(corner: Point, incoming: Point, outgoing: Point): Point[] {
   return [add(corner, scale(normal(u), half)), add(corner, scale(normal(v), half))];
 }
 
-const onCanvas = ([x, y]: Point) =>
-  x >= -0.001 && y >= -0.001 && x <= canvas.width + 0.001 && y <= canvas.height + 0.001;
-
 /** Splits segments into subpaths, each a move followed by drawn segments. */
 function subpaths(segments: readonly Segment[]): { indices: number[]; closed: boolean }[] {
   const runs: { indices: number[]; closed: boolean }[] = [];
@@ -610,6 +598,8 @@ export type OutlineContext = {
   readonly ends: readonly { readonly point: Point; readonly tangent: Point }[];
   /** The other elements' strokes, flattened, which a squared corner must not run into. */
   readonly strokes?: readonly (readonly Point[])[];
+  /** Whether this element's acute tips are cut at the round outline's extent (`tipHeight`). */
+  readonly tipHeight?: boolean;
 };
 
 const emptyContext: OutlineContext = { lines: [], ends: [] };
@@ -622,24 +612,49 @@ const dashReach = 6;
  * `side` gives (1 ahead, -1 behind), within `dashReach` of the point.
  */
 function continuedBy(context: OutlineContext, point: Point, direction: Point, side: 1 | -1) {
-  const unit = scale(direction, 1 / length(direction));
-  const parallel = (d: Point) => length(d) > tiny && Math.abs(cross(unit, d)) / length(d) < 0.035;
-  const onLine = (q: Point) => Math.abs(cross(unit, sub(q, point))) <= 0.05;
-  const reach = (q: Point) => dot(unit, sub(q, point)) * side;
-  const lines = context.lines.some(([a, b]) => {
-    if (!parallel(sub(b, a)) || !onLine(a) || !onLine(b)) return false;
-    const nearest = Math.min(reach(a), reach(b));
-    return nearest >= -0.05 && nearest <= dashReach;
-  });
+  return continuationOf(context, point, direction, side) !== undefined;
+}
+
+/** Widest angle, in degrees, between a corner piece's end tangent and the dash it continues. */
+const dashAngle = 8;
+
+/**
+ * The direction of a straight stroke in `context` that continues the line through `point` in
+ * `direction`, on the side `side` gives (1 ahead, -1 behind), within `dashReach` of the point and
+ * `dashAngle` of the direction (Lucide's dash corners are not always quite tangent to the dashes),
+ * pointing away from the point; undefined if there is none.
+ */
+function continuationOf(
+  context: OutlineContext,
+  point: Point,
+  direction: Point,
+  side: 1 | -1,
+): Point | undefined {
+  const ray = scale(direction, side / length(direction));
+  const limit = Math.sin(dashAngle * degrees);
+  const reach = (q: Point) => dot(ray, sub(q, point));
+  // Within the cone round the ray, allowing for three-decimal coordinates near the point.
+  const inCone = (q: Point) => {
+    const along = reach(q);
+    return (
+      along >= -0.05 &&
+      along <= dashReach &&
+      Math.abs(cross(ray, sub(q, point))) <= 0.05 + limit * Math.max(along, 0)
+    );
+  };
+  const aligned = (d: Point) => length(d) > tiny && Math.abs(cross(ray, d)) / length(d) <= limit;
+  for (const [a, b] of context.lines) {
+    if (!aligned(sub(b, a)) || !inCone(a) || !inCone(b)) continue;
+    const away = reach(a) <= reach(b) ? sub(b, a) : sub(a, b);
+    return scale(away, 1 / length(away));
+  }
   // Another path's open end, travelling the same line: the next corner piece. (Not this one.)
-  const ends = context.ends.some(
-    (end) =>
-      parallel(end.tangent) &&
-      onLine(end.point) &&
-      reach(end.point) > 0.05 &&
-      reach(end.point) <= dashReach,
-  );
-  return lines || ends;
+  for (const end of context.ends) {
+    if (!aligned(end.tangent) || !inCone(end.point) || reach(end.point) <= 0.05) continue;
+    const t = scale(end.tangent, 1 / length(end.tangent));
+    return dot(t, ray) >= 0 ? t : scale(t, -1);
+  }
+  return undefined;
 }
 
 /** Straight segments and open ends of one outline element, for `continuedBy`. */
@@ -814,7 +829,7 @@ function crosses(p: Point, q: Point, polyline: readonly Point[]): boolean {
 
 /**
  * Furthest a squared tip may paint past the rounding it replaces, in grid units along the
- * corner's bisector: a triangle's 120° tip reaches 3. A wider turn on a larger radius (a
+ * corner's bisector: a triangle's 120° tip reaches about 3. A wider turn on a larger radius (a
  * croissant's horn) would grow a spike, so it is cut flat instead.
  */
 const maxTipReach = 3.05;
@@ -899,8 +914,13 @@ function runsInto(
   const roundGap = gap(roundEdge);
   const sharpGap = gap(sharpEdge);
   // A plain vertex whose round join already touches another stroke is attached to it by design
-  // (Lucide often sets a vertex on another stroke); its miter adds no new contact.
-  if (curve.length === 0 && roundGap <= 0.1) return false;
+  // (Lucide often sets a vertex on another stroke). Its miter may sit inside what it touches, but
+  // must not pass through and show beyond it (a scale pan's apex just under the beam).
+  if (curve.length === 0 && roundGap <= 0.1) {
+    return tips.some((tip) =>
+      others.some((line) => crosses(corner, tip, line) && distanceTo(tip, line) > h + 0.02),
+    );
+  }
   if (sharpGap < touchingGap && roundGap - sharpGap > 0.25) return true;
   // From just inside the rounding's middle, the corner's painted tip must not cross a stroke that
   // the rounding itself does not reach across.
@@ -920,6 +940,8 @@ function planCorners(
 ): CornerDecision[] {
   /** Neighbouring non-zero-length segments, wrapping around closed subpaths. */
   const neighbours = new Map<number, { previous?: number; next?: number }>();
+  /** Segments of closed subpaths. */
+  const inClosed = new Set<number>();
   for (const { indices, closed: explicit } of subpaths(segments)) {
     const drawn = indices.filter((index) => tangents(segments[index] as Drawn) !== undefined);
     // An open path that ends where it starts (Lucide's eye and speech bubbles) loops all the same.
@@ -927,6 +949,7 @@ function planCorners(
     const last = drawn.length > 0 ? (segments[drawn.at(-1) as number] as Drawn).to : undefined;
     // Within rounding: Lucide's store awning ends 0.001 short of its start.
     const closed = explicit || (first !== undefined && length(sub(first, last as Point)) < 0.002);
+    if (closed) for (const index of indices) inClosed.add(index);
     drawn.forEach((index, position) => {
       const previous = position > 0 ? drawn[position - 1] : closed ? drawn.at(-1) : undefined;
       const next =
@@ -980,7 +1003,8 @@ function planCorners(
     const own = tangents(segments[index] as Drawn) as Ends;
     const theirs = tangents(segments[next] as Drawn) as Ends;
     const bend = bendAt(segments[index] as Drawn, "end");
-    const tip = Math.max(angleBetween(own.start, own.end), angleBetween(theirs.start, theirs.end));
+    // Both crests wide: a tilde's. A star's tip beside its inner corner is a tip and a corner.
+    const tip = Math.min(angleBetween(own.start, own.end), angleBetween(theirs.start, theirs.end));
     if (
       tip > cornerSweep &&
       angleBetween(own.end, theirs.start) <= smoothAngle &&
@@ -1000,9 +1024,17 @@ function planCorners(
     if (done.has(seed)) continue;
     const linked = (index: number, side: "start" | "end") => {
       const other = neighbours.get(index)?.[side === "start" ? "previous" : "next"];
-      return other !== undefined && candidates.has(other) && continues(index, other, side)
-        ? other
-        : undefined;
+      if (other === undefined || !candidates.has(other) || !continues(index, other, side)) {
+        return undefined;
+      }
+      // Roundings of one corner (or one round end) share a radius; a corner beside a wider crest
+      // (a receipt's corner, then its zigzag) are two roundings.
+      const theirSide = side === "start" ? "end" : "start";
+      const radii = [
+        radiusAt(segments[index] as Drawn, side),
+        radiusAt(segments[other] as Drawn, theirSide),
+      ];
+      return Math.max(...radii) <= chainRatio * Math.min(...radii) ? other : undefined;
     };
     const chain = [seed];
     let wraps = false;
@@ -1071,7 +1103,11 @@ function planCorners(
     }
     // A tip is where two strokes meet; at an open end of the path it is a hook (an S's end, a
     // signature's flourish), which stays round.
-    if (total > cornerSweep && free !== undefined) {
+    const cornerPiece =
+      free === "both" &&
+      (continuedBy(context, first.from, ends[0].start, -1) ||
+        continuedBy(context, last.to, (ends.at(-1) as Ends).end, 1));
+    if (total > cornerSweep && free !== undefined && !cornerPiece) {
       decide("curve");
       continue;
     }
@@ -1079,9 +1115,12 @@ function planCorners(
     // as in a dashed square's corner pieces, the squared corner simply ends in a short leg.)
     const meets = (other: number | undefined, own: Point, side: "start" | "end") => {
       if (other === undefined) return "free";
-      const theirs = tangents(segments[other] as Drawn) as Ends;
+      const neighbour = segments[other] as Drawn;
+      const theirs = tangents(neighbour) as Ends;
       const tangent = side === "start" ? theirs.end : theirs.start;
-      return angleBetween(own, tangent) <= smoothAngle ? "smooth" : "cusp";
+      // A straight neighbour may meet a rounding with a slight kink and still be what it rounds.
+      const straight = neighbour.type === "L" || neighbour.type === "Z";
+      return angleBetween(own, tangent) <= (straight ? snapAngle : smoothAngle) ? "smooth" : "cusp";
     };
     const joins = [
       meets(previous, ends[0].start, "start"),
@@ -1102,8 +1141,13 @@ function planCorners(
       decide("curve");
       continue;
     }
-    const startTangent = snap(ends[0].start, previous);
-    const endTangent = snap((ends.at(-1) as Ends).end, next);
+    // A lone corner piece's legs run along the dashes it continues (a dashed triangle's corner).
+    const dashIn = cornerPiece ? continuationOf(context, first.from, ends[0].start, -1) : undefined;
+    const dashOut = cornerPiece
+      ? continuationOf(context, last.to, (ends.at(-1) as Ends).end, 1)
+      : undefined;
+    const startTangent = dashIn ? scale(dashIn, -1) : snap(ends[0].start, previous);
+    const endTangent = dashOut ?? snap((ends.at(-1) as Ends).end, next);
     const hit = intersect(first.from, startTangent, last.to, endTangent);
     if (!hit || hit[0] <= tiny || hit[1] >= -tiny) {
       decide("degenerate");
@@ -1120,17 +1164,72 @@ function planCorners(
         segment.type === "M" || attached.has(index) ? [] : [flatten(segment)],
       ),
     ];
+    // Where the point would cross the padding is settled for the whole icon later (`fitIcon`).
     const tips = joinExtent(corner, startTangent, endTangent);
+    // An element listed in `tipHeight` has its acute tips cut at the round outline's extent.
+    const heldTip = context.tipHeight === true && total > cornerSweep;
     const clear =
-      tips.every(onCanvas) &&
+      !heldTip &&
       (!half || tipReach(tips, half.point, startTangent, endTangent) <= maxTipReach) &&
       !(half && runsInto(curve, corner, startTangent, endTangent, half, others));
     if (clear) {
       // A partial rounding where the path stops (a back page fading out behind the front one)
       // squares to the corner and stops there, rather than ending in a short slanted leg.
-      if (free === "end" && total < partialTurn) decide("corner", [corner]);
-      else if (free === "start" && total < partialTurn) decide("corner", [last.to], corner);
-      else decide("corner", [corner, last.to]);
+      // Where the free end sits on another stroke (a fold line ending on a page's edge), the leg is
+      // hidden in that stroke and stays, so the corner shows as a corner.
+      // The element's own other subpaths count too (a fold line ending on its own page's edge).
+      const ownLines = subpaths(segments)
+        .filter(({ indices }) => !indices.includes(chain[0]))
+        .flatMap(({ indices }) => indices.map((index) => flatten(segments[index] as Drawn)));
+      const onStroke = (point: Point, leg: Point) =>
+        [...(context.strokes ?? []), ...ownLines].some((line) => {
+          if (distanceTo(point, line) > iconSystem.design.strokeWidth / 2 + 0.05) return false;
+          // The stroke's direction where it passes the free end.
+          let best = 0;
+          for (let index = 1; index < line.length; index += 1) {
+            const d = distanceTo(point, [line[index - 1], line[index]]);
+            if (d <= distanceTo(point, [line[best], line[Math.min(best + 1, line.length - 1)]])) {
+              best = index - 1;
+            }
+          }
+          const along = sub(line[Math.min(best + 1, line.length - 1)], line[best]);
+          if (length(along) < tiny) return false;
+          const turn = angleBetween(along, leg);
+          return turn < 10 || turn > 170;
+        });
+      const legOut = sub(corner, last.to);
+      const legIn = sub(corner, first.from);
+      // A path stopping at the corner ends there heading along the incoming line; one starting
+      // there leaves along the outgoing line, so its cap points back.
+      const capOut = startTangent;
+      const capIn = scale(endTangent, -1);
+      // Stopping at the corner leaves its square cap pointing along the leg; only where that cap
+      // stays inside the padding (otherwise the leg stays, ending as drawn).
+      const inset = iconSystem.design.safeAreaInset;
+      const capInside = (leg: Point) =>
+        length(leg) < tiny ||
+        capCorners(corner, unit(leg)).every(
+          ([x, y]) =>
+            x >= inset - 0.01 &&
+            y >= inset - 0.01 &&
+            x <= iconSystem.architecture.grid.width - inset + 0.01 &&
+            y <= iconSystem.architecture.grid.height - inset + 0.01,
+        );
+      if (
+        free === "end" &&
+        total < partialTurn &&
+        !onStroke(last.to, legOut) &&
+        capInside(capOut)
+      ) {
+        decide("corner", [corner]);
+      } else if (
+        free === "start" &&
+        total < partialTurn &&
+        !onStroke(first.from, legIn) &&
+        capInside(capIn)
+      ) {
+        decide("corner", [last.to], corner);
+      } else decide("corner", [corner, last.to]);
       continue;
     }
     // The point would push the join past the canvas or into another stroke: cut the corner flat
@@ -1250,45 +1349,13 @@ function tidy({ start, items, closed }: Subpath): Subpath {
   return { start, items: kept, closed };
 }
 
-/** A subpath's items as standalone segments, the closing line included when it has length. */
-function drawnItems({ start, items, closed }: Subpath): Drawn[] {
-  const drawn: Drawn[] = [];
-  let from = start;
-  for (const item of items) {
-    switch (item.type) {
-      case "L":
-        drawn.push({ type: "L", from, to: item.to });
-        break;
-      case "C":
-        drawn.push({ type: "C", from, c1: item.c1, c2: item.c2, to: item.to });
-        break;
-      case "Q":
-        drawn.push({ type: "Q", from, c: item.c, to: item.to });
-        break;
-      case "A":
-        drawn.push({ ...item, from });
-        break;
-    }
-    from = item.to;
-  }
-  if (closed && !same(from, start)) drawn.push({ type: "Z", from, to: start });
-  return drawn;
-}
-
-/** How far along each line a vertex's guard cut starts, in grid units. */
-const vertexCut = 0.25;
-
 /**
  * The part of a segment at least `reach` (in grid units, measured along it, roughly) from one end:
  * `"end"` trims its end, `"start"` its start. Returns the trimmed segment and the new end point.
  */
-function trim(segment: Drawn, end: "start" | "end", reach: number): Drawn {
-  const points = flatten(segment, 24);
-  let total = 0;
-  for (let index = 1; index < points.length; index += 1) {
-    total += length(sub(points[index], points[index - 1]));
-  }
-  const fraction = Math.min(0.4, reach / Math.max(total, tiny));
+function trim(segment: Drawn, end: "start" | "end", reach: number, most = 0.4): Drawn {
+  const total = segmentLength(segment);
+  const fraction = Math.min(most, reach / Math.max(total, tiny));
   const t = end === "end" ? 1 - fraction : fraction;
   const lerp = (a: Point, b: Point, k: number): Point => add(a, scale(sub(b, a), k));
   switch (segment.type) {
@@ -1335,6 +1402,17 @@ function trim(segment: Drawn, end: "start" | "end", reach: number): Drawn {
   }
 }
 
+/** A segment's length, measured along it. */
+function segmentLength(segment: Drawn): number {
+  if (segment.type === "L" || segment.type === "Z") return length(sub(segment.to, segment.from));
+  const points = flatten(segment, 48);
+  let total = 0;
+  for (let index = 1; index < points.length; index += 1) {
+    total += length(sub(points[index], points[index - 1]));
+  }
+  return total;
+}
+
 /** A drawn segment as a subpath item. */
 function itemOf(segment: Drawn): Item {
   switch (segment.type) {
@@ -1358,65 +1436,38 @@ function itemOf(segment: Drawn): Item {
 }
 
 /**
- * Guards a subpath's vertices, where two segments meet at an angle: a miter that would leave the
- * canvas or run into another stroke is cut flat just inside the vertex, so the join reaches no
- * further than the round join did. (The miter limit lets Lucide's acute vertices come to a point.)
- * `strokes(skip)` gives every other stroke, leaving out this subpath's segments at `skip`.
+ * Rotates each closed subpath to start on a straight segment, so a rounding the path happens to
+ * start or end on is planned like every other corner (a sail's apex, a wingtip before the close).
  */
-function guardJoins(
-  path: Subpath,
-  strokes: (skip: readonly number[]) => (readonly Point[])[],
-): Subpath {
-  const drawn = drawnItems(path);
-  const count = drawn.length;
-  if (count < 2) return path;
-  // Only a closed subpath joins at its start; an open one that ends there draws two caps.
-  const loop = path.closed;
-  // Trimmed copies of the segments: the vertex at the end of drawn[i] meets drawn[next].
-  const trimmed = drawn.slice();
-  const bridges = new Map<number, true>();
-  for (let index = 0; index < count; index += 1) {
-    const next = index + 1 < count ? index + 1 : loop ? 0 : -1;
-    if (next < 0 || next === index) continue;
-    const ends = [tangents(drawn[index]), tangents(drawn[next])];
-    if (!ends[0] || !ends[1]) continue;
-    const u = ends[0].end;
-    const v = ends[1].start;
-    if (angleBetween(u, v) <= smoothAngle) continue;
-    const vertex = drawn[index].to;
-    // A vertex beside a bridge this guard wrote (or any line as short) is already cut.
-    const short = (segment: Drawn) =>
-      (segment.type === "L" || segment.type === "Z") &&
-      length(sub(segment.to, segment.from)) <= 2 * vertexCut + 0.01;
-    if (short(drawn[index]) || short(drawn[next])) continue;
-    // This subpath's own segments next to the vertex are part of the join, not obstacles.
-    const near = [index - 1, index, index + 1, index + 2]
-      .map((n) => (loop ? (n + count) % count : n))
-      .filter((n) => n >= 0 && n < count);
-    const clear =
-      joinExtent(vertex, u, v).every(onCanvas) &&
-      !runsInto([], vertex, u, v, { point: vertex }, strokes(near));
-    if (clear) continue;
-    trimmed[index] = trim(trimmed[index], "end", vertexCut);
-    trimmed[next] = trim(trimmed[next], "start", vertexCut);
-    bridges.set(index, true);
+function rotateClosed(segments: Segment[]): Segment[] {
+  const out: Segment[] = [];
+  for (const { indices, closed } of subpaths(segments)) {
+    const move = segments[(indices[0] ?? 1) - 1] as Segment;
+    let drawn = indices.map((index) => segments[index] as Drawn);
+    const closing = drawn.at(-1);
+    if (!closed || closing?.type !== "Z") {
+      out.push(move, ...drawn);
+      continue;
+    }
+    drawn = drawn.slice(0, -1);
+    if (!same(closing.from, closing.to))
+      drawn.push({ type: "L", from: closing.from, to: closing.to });
+    const first = drawn.findIndex(
+      (segment) => segment.type === "L" && !same(segment.from, segment.to),
+    );
+    if (first <= 0 || drawn[0].type === "L") {
+      out.push(move, ...indices.map((index) => segments[index]));
+      continue;
+    }
+    const turned = [...drawn.slice(first), ...drawn.slice(0, first)];
+    const start = turned[0].from;
+    out.push({ type: "M", to: start }, ...turned, {
+      type: "Z",
+      from: (turned.at(-1) as Drawn).to,
+      to: start,
+    });
   }
-  if (bridges.size === 0) return path;
-  // Rebuild from the trimmed segments, bridging each cut vertex with a short line. A cut where the
-  // subpath closes moves its start to the far side of the cut.
-  const wrap = loop && bridges.has(count - 1);
-  const start = wrap ? trimmed[0].from : path.start;
-  const items: Item[] = [];
-  trimmed.forEach((segment, index) => {
-    const isClosing = segment.type === "Z";
-    if (index > 0 && bridges.has(index - 1))
-      items.push({ type: "L", to: roundPoint(segment.from), added: true });
-    if (!isClosing) items.push(itemOf(segment));
-    else items.push({ type: "L", to: roundPoint(segment.to), added: true });
-  });
-  // The closing line was written out; the subpath still closes, now from the cut back to start.
-  if (drawn[count - 1].type === "Z" && !wrap) items.pop();
-  return { start: roundPoint(start), items, closed: path.closed };
+  return out;
 }
 
 /**
@@ -1426,7 +1477,7 @@ function guardJoins(
  * dashed outline's corner piece, and whether a corner would run into another stroke.
  */
 export function sharpenPathData(d: string, context: OutlineContext = emptyContext): string {
-  const segments = parsePath(d);
+  const segments = rotateClosed(parsePath(d));
   const replaced = new Map<number, { points: readonly Point[]; start?: Point }>();
   for (const { index, result, points, start } of planCorners(segments, context)) {
     if (result === "corner" || result === "chamfer") replaced.set(index, { points, start });
@@ -1474,27 +1525,15 @@ export function sharpenPathData(d: string, context: OutlineContext = emptyContex
     }
   });
 
-  const tidied = paths.map(tidy);
-  // Every stroke of the icon but these two items, for the join guard.
-  const strokesBesides = (path: number, skip: readonly number[]) => [
-    ...(context.strokes ?? []),
-    ...tidied.flatMap((other, index) =>
-      drawnItems(other)
-        .filter((_, item) => index !== path || !skip.includes(item))
-        .map((segment) => flatten(segment)),
-    ),
-  ];
-  let guarded = false;
-  const finished = tidied.map((path, index) => {
-    const result = guardJoins(path, (skip) => strokesBesides(index, skip));
-    guarded ||= result !== path;
-    return result;
-  });
-  if (replaced.size === 0 && !guarded) return d;
+  if (replaced.size === 0) return d;
+  return writeSubpaths(paths.map(tidy));
+}
 
+/** Path data for subpaths: absolute commands, three decimals at most. */
+function writeSubpaths(paths: readonly Subpath[]): string {
   const parts: string[] = [];
   const at = (p: Point) => `${coordinate(p[0])} ${coordinate(p[1])}`;
-  for (const { start, items, closed } of finished) {
+  for (const { start, items, closed } of paths) {
     parts.push(`M${at(start)}`);
     let current = start;
     for (const item of items) {
@@ -1535,6 +1574,1025 @@ function straightOn(a: Point, b: Point, c: Point): boolean {
   if (dot(ab, bc) <= 0) return false;
   const ac = sub(c, a);
   return Math.abs(cross(ac, ab)) / length(ac) < 0.002;
+}
+
+// Fitting the whole icon. Sharp caps and miters reach further than round ones: a square cap pokes
+// past a stroke it ends on, and a mitered tip reaches √2 from a right-angled vertex where the round
+// join reached 1. These steps settle that across all elements at once, until nothing changes.
+
+/** One subpath as standalone segments; a closing line with length is a `Z` segment. */
+type Run = { segs: Drawn[]; closed: boolean };
+
+/** One outline element, as runs the fitting can edit. */
+type Piece = {
+  readonly tag: string;
+  attributes: Attribute[];
+  runs: Run[];
+  /** Paths, lines, polylines, and polygons; rects, circles, and ellipses are only obstacles. */
+  readonly editable: boolean;
+  /** Kept round: only its ends may be trimmed where they sit on another stroke. */
+  readonly endsOnly?: boolean;
+  changed: boolean;
+};
+
+/** Below this length a subpath is a dot, drawn by its caps alone. */
+const dotLength = 0.5;
+/** Lengths an arm or an end segment keeps at least, whatever is trimmed from it. */
+const minArm = 0.3;
+/** Shortest line written to cut a vertex flat; anything shorter renders as the point it cuts. */
+const minBridge = 0.2;
+/** Paint may touch the padding; only crossing it by more than this counts. */
+const padSlack = 0.01;
+/** Slack for coordinates written with three decimals. */
+const slack = 0.005;
+
+const unit = (p: Point): Point => scale(p, 1 / length(p));
+
+/** Splits path data into runs. */
+function runsOfPath(d: string): Run[] {
+  const segments = parsePath(d);
+  return subpaths(segments)
+    .map(({ indices, closed }) => ({
+      segs: indices
+        .map((index) => segments[index] as Drawn)
+        .filter((segment) => !(segment.type === "Z" && same(segment.from, segment.to))),
+      closed,
+    }))
+    .filter((run) => run.segs.length > 0);
+}
+
+function pieceOf(tag: string, attributes: Attribute[]): Piece {
+  const value = (name: string) => attributes.find(([key]) => key === name)?.[1];
+  const n = (name: string) => Number(value(name) ?? 0);
+  const piece = (runs: Run[], editable: boolean): Piece => ({
+    tag,
+    attributes,
+    runs,
+    editable,
+    changed: false,
+  });
+  switch (tag) {
+    case "path": {
+      // An open subpath that ends where it starts (Lucide's eye, a store's awning) is a loop: it is
+      // closed, so its ends join instead of drawing two square caps over each other.
+      let closed = false;
+      const runs = runsOfPath(value("d") ?? "").map((run) => {
+        const first = run.segs[0].from;
+        const last = run.segs.at(-1) as Drawn;
+        if (run.closed || run.segs.length < 2 || length(sub(first, last.to)) >= 0.002) return run;
+        closed = true;
+        const segs = [...run.segs.slice(0, -1), { ...last, to: first } as Drawn];
+        // A start in the middle of a straight edge (triangle-alert's) is merged away, so the
+        // corners either side keep their full arms.
+        const [head, tail] = [segs[0], segs.at(-1) as Drawn];
+        if (
+          segs.length > 2 &&
+          head.type === "L" &&
+          tail.type === "L" &&
+          straightOn(tail.from, head.from, head.to)
+        ) {
+          return {
+            segs: [...segs.slice(1, -1), { type: "L", from: tail.from, to: head.to } as Drawn],
+            closed: true,
+          };
+        }
+        return { segs, closed: true };
+      });
+      return { ...piece(runs, true), changed: closed };
+    }
+    case "line":
+      return piece(
+        [
+          {
+            segs: [{ type: "L", from: [n("x1"), n("y1")], to: [n("x2"), n("y2")] }],
+            closed: false,
+          },
+        ],
+        true,
+      );
+    case "polyline":
+    case "polygon": {
+      const lines = elementLines(tag, attributes).filter(([a, b]) => !same(a, b));
+      const segs: Drawn[] = lines.map(([from, to], index) =>
+        tag === "polygon" && index === lines.length - 1
+          ? { type: "Z", from, to }
+          : { type: "L", from, to },
+      );
+      return piece([{ segs, closed: tag === "polygon" }], segs.length > 0);
+    }
+    default:
+      return piece(runsOfPath(shapeData(tag, attributes)), false);
+  }
+}
+
+/** Writes an edited piece's geometry back into its attributes. */
+function writePiece(piece: Piece): Attribute[] {
+  if (!piece.changed) return piece.attributes;
+  if (piece.tag === "line" && piece.runs[0].segs.length > 1) {
+    const d = writeSubpaths(
+      piece.runs.map(({ segs, closed }) => ({
+        start: roundPoint(segs[0].from),
+        items: segs.filter((segment) => segment.type !== "Z").map(itemOf),
+        closed,
+      })),
+    );
+    const kept = piece.attributes.filter(([key]) => !["x1", "y1", "x2", "y2"].includes(key));
+    return [["d", d], ...kept];
+  }
+  const at = (p: Point) => `${coordinate(p[0])} ${coordinate(p[1])}`;
+  const set = (values: Record<string, string>) =>
+    piece.attributes.map(([key, v]): Attribute => [key, values[key] ?? v]);
+  switch (piece.tag) {
+    case "line": {
+      const { from, to } = piece.runs[0].segs[0];
+      return set({
+        x1: coordinate(from[0]),
+        y1: coordinate(from[1]),
+        x2: coordinate(to[0]),
+        y2: coordinate(to[1]),
+      });
+    }
+    case "polyline":
+    case "polygon": {
+      const { segs, closed } = piece.runs[0];
+      const points = [segs[0].from, ...segs.map((segment) => segment.to)];
+      // A polygon closes itself; its last point repeats its first.
+      if (closed && points.length > 1 && same(points[0], points.at(-1) as Point)) points.pop();
+      return set({ points: points.map(at).join(" ") });
+    }
+    default: {
+      const paths = piece.runs.map(({ segs, closed }): Subpath => {
+        const items = segs.filter((segment) => segment.type !== "Z").map(itemOf);
+        return { start: roundPoint(segs[0].from), items, closed };
+      });
+      return set({ d: writeSubpaths(paths.map(tidy)) });
+    }
+  }
+}
+
+/** Points along a segment no further apart than about 0.2, for distances. */
+function fine(segment: Drawn): Point[] {
+  if (segment.type === "L" || segment.type === "Z") return [segment.from, segment.to];
+  return flatten(segment, Math.min(96, Math.max(8, Math.ceil(segmentLength(segment) / 0.2))));
+}
+
+/** A run's open ends: where they are, which way the path leaves through them, and their segment. */
+function runEnds(run: Run): { side: "start" | "end"; point: Point; out: Point; seg: number }[] {
+  if (run.closed) return [];
+  const total = run.segs.reduce((sum, segment) => sum + segmentLength(segment), 0);
+  if (total < tiny) return [];
+  const firstIndex = run.segs.findIndex((segment) => tangents(segment));
+  const lastIndex =
+    run.segs.length - 1 - [...run.segs].reverse().findIndex((segment) => tangents(segment));
+  if (firstIndex < 0) return [];
+  const first = tangents(run.segs[firstIndex]) as Ends;
+  const last = tangents(run.segs[lastIndex]) as Ends;
+  return [
+    { side: "start", point: run.segs[0].from, out: unit(scale(first.start, -1)), seg: firstIndex },
+    { side: "end", point: (run.segs.at(-1) as Drawn).to, out: unit(last.end), seg: lastIndex },
+  ];
+}
+
+/** Corners of the square cap at an end. */
+function capCorners(point: Point, out: Point): [Point, Point] {
+  const h = iconSystem.design.strokeWidth / 2;
+  const tip = add(point, scale(out, h));
+  const across: Point = [-out[1] * h, out[0] * h];
+  return [add(tip, across), sub(tip, across)];
+}
+
+/** The outermost points a join paints: the miter tip (or bevel ends) and both outer edges. */
+function joinPoints(corner: Point, incoming: Point, outgoing: Point): Point[] {
+  const h = iconSystem.design.strokeWidth / 2;
+  const u = unit(incoming);
+  const v = unit(outgoing);
+  const side = Math.sign(cross(u, v));
+  if (side === 0) return [];
+  const normal = (t: Point): Point => [t[1] * side, -t[0] * side];
+  return [
+    ...joinExtent(corner, u, v),
+    add(corner, scale(normal(u), h)),
+    add(corner, scale(normal(v), h)),
+  ];
+}
+
+/** The vertices of a run: indices of the segment pairs that meet at an angle. */
+function runVertices(run: Run): [number, number][] {
+  const pairs: [number, number][] = [];
+  const count = run.segs.length;
+  for (let index = 0; index < count; index += 1) {
+    const next = index + 1 < count ? index + 1 : run.closed ? 0 : -1;
+    if (next < 0 || next === index) continue;
+    if (!same(run.segs[index].to, run.segs[next].from)) continue;
+    const a = tangents(run.segs[index]);
+    const b = tangents(run.segs[next]);
+    if (!a || !b || angleBetween(a.end, b.start) <= 1) continue;
+    pairs.push([index, next]);
+  }
+  return pairs;
+}
+
+type Bounds = { lo: Point; hi: Point };
+
+/** How far a point lies outside the bounds; negative inside. */
+const outside = ({ lo, hi }: Bounds, [x, y]: Point) =>
+  Math.max(lo[0] - x, lo[1] - y, x - hi[0], y - hi[1]);
+
+/**
+ * Where the sharp drawing may paint: Lucide's padding (the safe area inside a 1-unit margin), or as
+ * far as the drawing already reaches beyond it. A round source reaches its centerline plus half a
+ * stroke all round; a sharp source (sharpened again) is taken at its own painted extent.
+ */
+function allowedBounds(pieces: readonly Piece[], sharpInput: boolean): Bounds {
+  const { grid, viewBox } = iconSystem.architecture;
+  const inset = iconSystem.design.safeAreaInset;
+  const [x0, y0] = viewBox.split(" ").map(Number);
+  const h = iconSystem.design.strokeWidth / 2;
+  const points: Point[] = [];
+  for (const piece of pieces) {
+    for (const run of piece.runs) {
+      for (const segment of run.segs) {
+        const along = fine(segment);
+        if (!sharpInput) {
+          for (const p of along) points.push(add(p, [-h, -h]), add(p, [h, h]));
+          continue;
+        }
+        along.forEach((p, index) => {
+          const t = sub(
+            along[Math.min(index + 1, along.length - 1)],
+            along[Math.max(index - 1, 0)],
+          );
+          if (length(t) < tiny) return;
+          const normal: Point = [-unit(t)[1] * h, unit(t)[0] * h];
+          points.push(add(p, normal), sub(p, normal));
+        });
+      }
+      if (sharpInput) {
+        for (const [a, b] of runVertices(run)) {
+          const ends = [tangents(run.segs[a]) as Ends, tangents(run.segs[b]) as Ends];
+          points.push(...joinPoints(run.segs[a].to, ends[0].end, ends[1].start));
+        }
+        for (const end of runEnds(run)) points.push(...capCorners(end.point, end.out));
+      }
+    }
+  }
+  const lo: [number, number] = [x0 + inset, y0 + inset];
+  const hi: [number, number] = [x0 + grid.width - inset, y0 + grid.height - inset];
+  for (const [x, y] of points) {
+    lo[0] = Math.min(lo[0], x);
+    lo[1] = Math.min(lo[1], y);
+    hi[0] = Math.max(hi[0], x);
+    hi[1] = Math.max(hi[1], y);
+  }
+  return { lo, hi };
+}
+
+/**
+ * The strokes an end can sit on: every other run (open ends lengthened by their square caps), and
+ * the end's own run except the segment it ends and the one before that.
+ */
+type Cap = { readonly point: Point; readonly out: Point };
+type Obstacles = { readonly lines: Point[][]; readonly caps: Cap[] };
+
+function obstacles(pieces: readonly Piece[], run: Run, seg: number): Obstacles {
+  const lines: Point[][] = [];
+  const caps: Cap[] = [];
+  for (const piece of pieces) {
+    for (const other of piece.runs) {
+      if (other === run) {
+        other.segs.forEach((segment, index) => {
+          if (Math.abs(index - seg) > 1) lines.push(fine(segment));
+        });
+        continue;
+      }
+      // Other subpaths of the same element count like other elements (shrink's arrowheads).
+      for (const segment of other.segs) lines.push(fine(segment));
+      for (const end of runEnds(other)) caps.push({ point: end.point, out: end.out });
+    }
+  }
+  return { lines, caps };
+}
+
+/**
+ * Whether a point is painted by one of the obstacles, within `limit` of a centerline or inside a
+ * square cap (a cap is a rectangle: it covers nothing beyond its far edge).
+ */
+function covered(point: Point, { lines, caps }: Obstacles, limit: number): boolean {
+  const h = iconSystem.design.strokeWidth / 2;
+  const slackBeyond = limit - h;
+  return (
+    lines.some((line) => distanceTo(point, line) <= limit) ||
+    caps.some(({ point: end, out }) => {
+      const offset = sub(point, end);
+      const along = dot(offset, out);
+      return (
+        along >= -h && along <= h + slackBeyond && Math.abs(cross(out, offset)) <= h + slackBeyond
+      );
+    })
+  );
+}
+
+/**
+ * Whether segment pq crosses a polyline, counting a crossing at one of the polyline's own vertices
+ * or ends (a crossbar centred on a stem's end passes through the stem's end).
+ */
+function passesThrough(p: Point, q: Point, polyline: readonly Point[]): boolean {
+  for (let index = 0; index + 1 < polyline.length; index += 1) {
+    const a = polyline[index];
+    const b = polyline[index + 1];
+    const d1 = cross(sub(q, p), sub(a, p));
+    const d2 = cross(sub(q, p), sub(b, p));
+    const d3 = cross(sub(b, a), sub(p, a));
+    const d4 = cross(sub(b, a), sub(q, a));
+    if (d1 * d2 <= 0 && d3 * d4 < 0 && (Math.abs(d1) > tiny || Math.abs(d2) > tiny)) return true;
+  }
+  return false;
+}
+
+/**
+ * Whether a run's end stops on one of `lines`: it lies within that stroke, having come in from
+ * outside, and does not reach the stroke's far edge. A line that passes through a stroke (a
+ * calendar's tab through the frame, a slider's knob across its bar) ends beyond it, not on it.
+ */
+function endsOn(
+  run: Run,
+  end: { side: "start" | "end"; point: Point; out: Point; seg: number },
+  lines: readonly (readonly Point[])[],
+): boolean {
+  const h = iconSystem.design.strokeWidth / 2;
+  const along = fine(run.segs[end.seg]);
+  const back = end.side === "end" ? [...along].reverse() : along;
+  return lines.some((line) => {
+    const gap = distanceTo(end.point, line);
+    if (gap > h + 0.02) return false;
+    // Nearest to one of the stroke's ends, and beyond it in the direction the run leaves: the run
+    // has passed that stroke's end alongside it (a plug's plate past the body's corner).
+    const [first, last] = [line[0], line.at(-1) as Point];
+    const tip = [first, last].find((p) => Math.abs(length(sub(end.point, p)) - gap) < 1e-6);
+    if (tip && gap > 0.05 && dot(unit(sub(end.point, tip)), end.out) > 0.7) return false;
+    let walked = 0;
+    for (let index = 1; index < back.length && walked <= 2 * h; index += 1) {
+      if (passesThrough(back[index - 1], back[index], line)) return gap < h - 0.05;
+      walked += length(sub(back[index], back[index - 1]));
+    }
+    return true;
+  });
+}
+
+/** Trims a run's end segment by `reach` along it; returns the new end and its outward tangent. */
+function trimmedEnd(run: Run, side: "start" | "end", seg: number, reach: number) {
+  const segment = trim(run.segs[seg], side, reach, 0.95);
+  const ends = tangents(segment);
+  if (!ends) return undefined;
+  return side === "start"
+    ? { segment, point: segment.from, out: unit(scale(ends.start, -1)) }
+    : { segment, point: segment.to, out: unit(ends.end) };
+}
+
+/**
+ * What corner sharpening would decide for one segment of a run: trimming a curve must not change
+ * that, or sharpening the result again would treat the curve differently.
+ */
+function decisionOf(run: Run, seg: number, replacement: Drawn): string {
+  const segs = run.segs.map((segment, index) => (index === seg ? replacement : segment));
+  const segments: Segment[] = [{ type: "M", to: segs[0].from }, ...segs];
+  if (run.closed && segs.at(-1)?.type !== "Z") {
+    segments.push({ type: "Z", from: (segs.at(-1) as Drawn).to, to: segs[0].from });
+  }
+  return planCorners(segments).find(({ index }) => index === seg + 1)?.result ?? "none";
+}
+
+/**
+ * A vertex cut flat by `reach` along both arms: the trimmed arms, the bridge between them, and
+ * the two joins the cut makes (corner, incoming, outgoing).
+ */
+function cutVertex(
+  inSeg: Drawn,
+  outSeg: Drawn,
+  reach: number,
+  most: readonly [number, number] = [0.45, 0.45],
+) {
+  const a = trim(inSeg, "end", reach, most[0]);
+  const b = trim(outSeg, "start", reach, most[1]);
+  const [ea, eb] = [tangents(a), tangents(b)];
+  const across = sub(b.from, a.to);
+  if (!ea || !eb || length(across) < minBridge) return undefined;
+  const bridge: Drawn = { type: "L", from: a.to, to: b.from };
+  const joins: [Point, Point, Point][] = [
+    [a.to, ea.end, across],
+    [b.from, across, eb.start],
+  ];
+  return { a, b, bridge, joins };
+}
+
+/** One subpath of the drawing as given, as a polyline, for where its round stroke paints. */
+type RoundRun = { readonly element: number; readonly points: Point[]; readonly ends: Point[] };
+
+/** How far along each arm an inner corner (see `addJointLegs`) is bevelled. */
+const innerBevel = 0.3;
+/** Furthest a concave cusp's miter reaches from its vertex: the round join's reach plus a unit. */
+const cuspReach = 2;
+/** Below this, a gap between strokes reads as closed. */
+const closedGap = 0.5;
+/** The round drawing's gaps this wide or more are kept by miters. */
+const keptGap = 0.8;
+
+/**
+ * Whether a join's miter harms a neighbouring element: (b) it passes through that element's
+ * stroke and ends outside it, past the far side (a scale pan's apex through the beam, a ferris
+ * wheel's frame from the hub ring into its hole), or (a) it nearly closes a gap the round drawing
+ * kept to that element (a radical's tip reaching the frame). A miter that only sits beside another
+ * stroke, pointing into open space, harms nothing: that is the sharp style. A stroke that ends on the
+ * vertex (an arrow's shaft at its head's apex) is part of the joint, not a neighbour.
+ */
+function miterHarms(
+  corner: Point,
+  incoming: Point,
+  outgoing: Point,
+  own: readonly RoundRun[],
+  others: readonly RoundRun[],
+): boolean {
+  const h = iconSystem.design.strokeWidth / 2;
+  const u = unit(incoming);
+  const v = unit(outgoing);
+  const outward = sub(u, v);
+  if (length(outward) < tiny) return false;
+  const bisector = unit(outward);
+  // Where the element's own round stroke reached along the bisector.
+  const base = own.reduce<Point | undefined>((best, run) => {
+    const near = nearestOn(corner, run.points);
+    return !best || length(sub(near, corner)) < length(sub(best, corner)) ? near : best;
+  }, undefined);
+  const roundTip = add(base ?? corner, scale(bisector, h));
+  const neighbours = others.filter((run) =>
+    run.ends.every((end) => length(sub(end, corner)) > 0.05),
+  );
+  const covered = (p: Point) => others.some((run) => distanceTo(p, run.points) <= h + 0.02);
+  return joinExtent(corner, u, v).some((tip) => {
+    if (length(sub(tip, corner)) <= h + 0.02) return false;
+    return neighbours.some((run) => {
+      // Through: across the stroke, or from on it into the area it encloses (a hole or counter,
+      // not the open space outside it).
+      const through =
+        passesThrough(corner, tip, run.points) ||
+        (distanceTo(corner, run.points) <= 0.1 && enclosedBy(tip, run.points));
+      if (through && distanceTo(tip, run.points) > h + 0.02 && !covered(tip)) return true;
+      const roundGap = distanceTo(roundTip, run.points) - h;
+      const sharpGap = distanceTo(tip, run.points) - h;
+      return roundGap >= keptGap && sharpGap < closedGap;
+    });
+  });
+}
+
+/** Whether a point lies inside the area a polyline encloses (closed by its chord if open). */
+function enclosedBy([x, y]: Point, polyline: readonly Point[]): boolean {
+  let inside = false;
+  for (let index = 0, previous = polyline.length - 1; index < polyline.length; previous = index++) {
+    const [xi, yi] = polyline[index];
+    const [xj, yj] = polyline[previous];
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+/** The point of a polyline nearest to `point`. */
+function nearestOn(point: Point, polyline: readonly Point[]): Point {
+  let best = polyline[0];
+  for (let index = 0; index + 1 < polyline.length; index += 1) {
+    const a = polyline[index];
+    const ab = sub(polyline[index + 1], a);
+    const span = dot(ab, ab);
+    const t = span < tiny ? 0 : Math.min(1, Math.max(0, dot(sub(point, a), ab) / span));
+    const candidate = add(a, scale(ab, t));
+    if (length(sub(point, candidate)) < length(sub(point, best))) best = candidate;
+  }
+  return best;
+}
+
+/** Unit directions of a vertex's two arms, pointing away from it. */
+function vertexArms(run: Run, a: number, b: number): [Point, Point] {
+  const [ea, eb] = [tangents(run.segs[a]) as Ends, tangents(run.segs[b]) as Ends];
+  return [unit(scale(ea.end, -1)), unit(eb.start)];
+}
+
+/** The reflections a mirror twin may be related by: across a vertical, horizontal, or diagonal. */
+const reflections: readonly ((
+  p: Point,
+  q: Point,
+) => [(p: Point) => Point, (d: Point) => Point] | undefined)[] = [
+  (p, q) =>
+    Math.abs(p[1] - q[1]) < 0.02
+      ? [([x, y]) => [p[0] + q[0] - x, y], ([dx, dy]) => [-dx, dy]]
+      : undefined,
+  (p, q) =>
+    Math.abs(p[0] - q[0]) < 0.02
+      ? [([x, y]) => [x, p[1] + q[1] - y], ([dx, dy]) => [dx, -dy]]
+      : undefined,
+  (p, q) =>
+    Math.abs(p[1] - q[0] - (q[1] - p[0])) < 0.02
+      ? [([x, y]) => [y - (p[1] - q[0]), x + (p[1] - q[0])], ([dx, dy]) => [dy, dx]]
+      : undefined,
+  (p, q) =>
+    Math.abs(q[0] + p[1] - (p[0] + q[1])) < 0.02
+      ? [([x, y]) => [q[0] + p[1] - y, q[0] + p[1] - x], ([dx, dy]) => [-dy, -dx]]
+      : undefined,
+];
+
+const sameDirection = (u: Point, v: Point) => angleBetween(u, v) < 1;
+
+/** Whether two sets of segments are alike: the same kinds and lengths, in either order. */
+function similar(left: readonly Drawn[], right: readonly Drawn[]): boolean {
+  const key = (segment: Drawn) => ({
+    kind: segment.type === "Z" ? "L" : segment.type,
+    size: segmentLength(segment),
+  });
+  const match = (a: Drawn, b: Drawn) => {
+    const [x, y] = [key(a), key(b)];
+    return x.kind === y.kind && Math.abs(x.size - y.size) <= 0.05 + 0.03 * Math.max(x.size, y.size);
+  };
+  if (left.length !== right.length) return false;
+  if (left.length === 1) return match(left[0], right[0]);
+  return (
+    (match(left[0], right[0]) && match(left[1], right[1])) ||
+    (match(left[0], right[1]) && match(left[1], right[0]))
+  );
+}
+
+/** Whether vertex q, with arms `qa`, mirrors vertex p, with arms `pa`. */
+function mirrored(p: Point, pa: readonly Point[], q: Point, qa: readonly Point[]): boolean {
+  if (same(p, q)) return false;
+  return reflections.some((reflect) => {
+    const found = reflect(p, q);
+    if (!found) return false;
+    const [point, direction] = found;
+    if (length(sub(point(p), q)) > 0.02) return false;
+    const [m0, m1] = pa.map(direction);
+    return (
+      (sameDirection(m0, qa[0]) && sameDirection(m1, qa[1])) ||
+      (sameDirection(m0, qa[1]) && sameDirection(m1, qa[0]))
+    );
+  });
+}
+
+/** Whether end q, leaving along `qo`, mirrors end p, leaving along `po`. */
+function mirroredEnd(p: Point, po: Point, q: Point, qo: Point): boolean {
+  if (same(p, q)) return false;
+  return reflections.some((reflect) => {
+    const found = reflect(p, q);
+    if (!found) return false;
+    const [point, direction] = found;
+    return length(sub(point(p), q)) <= 0.02 && sameDirection(direction(po), qo);
+  });
+}
+
+/**
+ * Strokes meeting at a point act as one corner. Where a run's open end lands on another run's end
+ * or vertex at an angle (two arrowhead arms drawn as separate strokes, a line ending on a frame's
+ * corner), the end gets a short leg along the other stroke: the meeting is then drawn as a real
+ * join, mitered or cut like any polyline corner, instead of two square caps overlapping. A run that
+ * arrives inside the other stroke's corner (an arrow's shaft at its head's apex) is not a corner
+ * of it; that end is left to the attached-end rule.
+ */
+function addJointLegs(pieces: readonly Piece[]): Map<Run, Set<string>> {
+  /** Vertices of other runs that a leg now makes into an inner corner (see below). */
+  const inner = new Map<Run, Set<string>>();
+  const near = (a: Point, b: Point) => length(sub(a, b)) <= 0.05;
+  // Legs are planned on the drawing as given and added at the end, so one leg never counts as
+  // another stroke's corner.
+  const additions: { piece: Piece; run: Run; side: "start" | "end"; leg: Drawn }[] = [];
+  for (const piece of pieces) {
+    if (!piece.editable || piece.endsOnly) continue;
+    for (const run of piece.runs) {
+      const total = run.segs.reduce((sum, segment) => sum + segmentLength(segment), 0);
+      if (total < dotLength) continue;
+      for (const end of runEnds(run)) {
+        // Directions leaving the meeting point along every other run, with their segments.
+        const leaving: { d: Point; segment: Drawn; run: Run }[] = [];
+        for (const other of pieces) {
+          for (const otherRun of other.runs) {
+            if (otherRun === run) continue;
+            for (const segment of otherRun.segs) {
+              const ends = tangents(segment);
+              if (!ends) continue;
+              if (near(segment.from, end.point))
+                leaving.push({ d: unit(ends.start), segment, run: otherRun });
+              if (near(segment.to, end.point)) {
+                leaving.push({ d: unit(scale(ends.end, -1)), segment, run: otherRun });
+              }
+            }
+          }
+        }
+        if (leaving.length === 0) continue;
+        const back = scale(end.out, -1);
+        const inside = leaving.some(({ d: d1 }, i) =>
+          leaving.some(({ d: d2 }, j) => {
+            if (j <= i) return false;
+            const span = angleBetween(d1, d2);
+            if (span > 179) return false;
+            const [x, y] = [angleBetween(d1, back), angleBetween(back, d2)];
+            return x > 1 && y > 1 && Math.abs(x + y - span) < 0.5;
+          }),
+        );
+        if (inside) continue;
+        if (leaving.some(({ d }) => angleBetween(end.out, d) < 10)) continue;
+        // A corner, not a junction: the run and everything leaving the point lie on one side of
+        // some line through it (a Y or T junction spreads all round).
+        const directions = [back, ...leaving.map(({ d }) => d)];
+        const oneSide = directions.some((axis) =>
+          [axis, scale(axis, -1)].some((normalDir) => {
+            const n: Point = [-normalDir[1], normalDir[0]];
+            return directions.every((d) => dot(d, n) >= -0.02);
+          }),
+        );
+        if (!oneSide) continue;
+        const candidates = leaving
+          .filter(({ d, segment }) => {
+            const turn = angleBetween(end.out, d);
+            const straight = segment.type === "L" || segment.type === "Z";
+            return turn >= 10 && turn <= 170 && straight && segmentLength(segment) >= 2;
+          })
+          .sort((left, right) => angleBetween(end.out, left.d) - angleBetween(end.out, right.d));
+        const chosen = candidates[0];
+        if (!chosen) continue;
+        const leg = Math.min(1, segmentLength(chosen.segment) - 1);
+        const tip = add(end.point, scale(chosen.d, leg));
+        const legSegment: Drawn =
+          end.side === "end"
+            ? { type: "L", from: end.point, to: tip }
+            : { type: "L", from: tip, to: end.point };
+        additions.push({ piece, run, side: end.side, leg: legSegment });
+        // Where the other stroke turns at this point (an arrow's arm into its shaft), its own
+        // corner now lies inside the one the leg makes; its miter would only spike out past it.
+        const turning = leaving.filter(({ run: other }) => other === chosen.run);
+        if (turning.length > 1) {
+          const set = inner.get(chosen.run) ?? new Set<string>();
+          set.add(`${coordinate(end.point[0])},${coordinate(end.point[1])}`);
+          inner.set(chosen.run, set);
+        }
+      }
+    }
+  }
+  for (const { piece, run, side, leg } of additions) {
+    if (side === "end") run.segs.push(leg);
+    else run.segs.unshift(leg);
+    piece.changed = true;
+  }
+  return inner;
+}
+
+/**
+ * The share of each arm a vertex's cut may take: 45% where the arm's other end is another vertex,
+ * which may be cut too, and all but `minArm` where the arm ends the path (a corner piece's legs).
+ */
+function armShares(run: Run, a: number, b: number): [number, number] {
+  const share = (segment: Drawn, free: boolean) =>
+    free ? Math.max(0.45, 1 - minArm / Math.max(segmentLength(segment), tiny)) : 0.45;
+  const count = run.segs.length;
+  return [
+    share(run.segs[a], !run.closed && a === 0),
+    share(run.segs[b], !run.closed && b === count - 1),
+  ];
+}
+
+/** Icons whose fitting could not satisfy a rule, and why, for review. */
+export const fitProblems: string[] = [];
+
+/**
+ * Fits a sharpened icon: hides square caps that end on other strokes, keeps every miter and cap
+ * inside the padding, and cuts joins that would run into another stroke. Edits `pieces` in place.
+ */
+function fitIcon(
+  pieces: Piece[],
+  input: readonly Piece[],
+  sharpInput: boolean,
+  name: string,
+): void {
+  const bounds = allowedBounds(input, sharpInput);
+  const h = iconSystem.design.strokeWidth / 2;
+  // The drawing as given: where its strokes paint. A sharp source's open ends carry square caps,
+  // so its polylines run on half a stroke past them.
+  const roundRuns: RoundRun[] = input.flatMap((piece, element) =>
+    piece.runs.map((run) => {
+      const points = run.segs.flatMap((segment, index) => fine(segment).slice(index === 0 ? 0 : 1));
+      const ends = runEnds(run).map((end) =>
+        sharpInput ? add(end.point, scale(end.out, h)) : end.point,
+      );
+      if (sharpInput && ends.length === 2) {
+        points.unshift(ends[0]);
+        points.push(ends[1]);
+      }
+      return { element, points, ends };
+    }),
+  );
+  const reported = new Set<string>();
+  const problem = (what: string) => {
+    if (!reported.has(what)) fitProblems.push(`${name}: ${what}`);
+    reported.add(what);
+  };
+  const innerCorners = addJointLegs(pieces);
+  // Vertices a cut created; they are never cut again (that would facet a tip into a polygon).
+  const frozen = new Set<string>();
+  const key = (p: Point) => `${coordinate(p[0])},${coordinate(p[1])}`;
+  for (let round = 0; round < 8; round += 1) {
+    let changed = false;
+    const edit = (piece: Piece) => {
+      piece.changed = true;
+      changed = true;
+    };
+
+    // Vertices. A miter outside the padding, or one that runs from another stroke's paint into
+    // space the round drawing leaves empty, is cut flat: perpendicular to its bisector (the same
+    // reach along both arms, so neither edge changes direction), just far enough in. A vertex is
+    // never moved. The cut is planned for every vertex first, given to mirror twins, then applied.
+    type VertexPlan = {
+      piece: Piece;
+      run: Run;
+      a: number;
+      b: number;
+      reach: number;
+      /** Cut for the padding, which mirror twins share; not for running into paint. */
+      bounds: boolean;
+    };
+    const plans: VertexPlan[] = [];
+    pieces.forEach((piece, element) => {
+      if (!piece.editable || piece.endsOnly) return;
+      const otherRuns = roundRuns.filter((run) => run.element !== element);
+      piece.runs.forEach((run) => {
+        for (const [a, b] of runVertices(run)) {
+          const [inSeg, outSeg] = [run.segs[a], run.segs[b]];
+          const ends = [tangents(inSeg), tangents(outSeg)];
+          if (!ends[0] || !ends[1]) continue;
+          const vertex = inSeg.to;
+          const ownRuns = roundRuns.filter((other) => other.element === element);
+          const crosses = (corner: Point, incoming: Point, outgoing: Point) =>
+            joinPoints(corner, incoming, outgoing).some((p) => outside(bounds, p) > padSlack);
+          const harms = (corner: Point, incoming: Point, outgoing: Point) =>
+            miterHarms(corner, incoming, outgoing, ownRuns, otherRuns);
+          if (frozen.has(key(vertex))) continue;
+          const straightArms = [inSeg, outSeg].every(
+            (segment) => segment.type === "L" || segment.type === "Z",
+          );
+          if (innerCorners.get(run)?.has(key(vertex)) && straightArms) {
+            const cut = cutVertex(inSeg, outSeg, innerBevel);
+            if (cut) {
+              plans.push({ piece, run, a, b, reach: innerBevel, bounds: false });
+              continue;
+            }
+          }
+          const forBounds = crosses(vertex, ends[0].end, ends[1].start);
+          const forPaint = harms(vertex, ends[0].end, ends[1].start);
+          // A concave cusp's miter points into its own shape; it may reach a unit past the round
+          // join and no further (a cannabis leaf's inner spikes, a fan blade's root).
+          const own = run.segs.flatMap((segment, k) => fine(segment).slice(k === 0 ? 0 : 1));
+          const spikeTips = joinExtent(vertex, unit(ends[0].end), unit(ends[1].start));
+          const forCusp =
+            spikeTips.length === 1 &&
+            length(sub(spikeTips[0], vertex)) > cuspReach + 0.05 &&
+            enclosedBy(spikeTips[0], own);
+          if (!forBounds && !forPaint && !forCusp) continue;
+          // How deep a cut for a neighbour goes: to where the element's own round stroke reached
+          // (a squared rounding's middle; a plain vertex's own point), keeping the round drawing's
+          // gap to the neighbour.
+          const depth = forPaint
+            ? Math.min(...ownRuns.map((other) => distanceTo(vertex, other.points)))
+            : 0;
+          const bisector = unit(sub(unit(ends[0].end), unit(ends[1].start)));
+          const shares = armShares(run, a, b);
+          const most = Math.min(
+            shares[0] * segmentLength(inSeg),
+            shares[1] * segmentLength(outSeg),
+            4,
+          );
+          let reach: number | undefined;
+          let best: { reach: number; over: number } | undefined;
+          for (let r = 0.02; r <= most + 1e-9; r += 0.02) {
+            const cut = cutVertex(inSeg, outSeg, r, shares);
+            if (!cut) continue;
+            const shaped =
+              piece.endsOnly ||
+              (decisionOf(run, a, cut.a) === decisionOf(run, a, inSeg) &&
+                decisionOf(run, b, cut.b) === decisionOf(run, b, outSeg));
+            if (!shaped) break;
+            const joins = cut.joins;
+            const over = Math.max(
+              ...joins.flatMap(([p, u, v]) => joinPoints(p, u, v).map((q) => outside(bounds, q))),
+            );
+            if (!best || over < best.over - 1e-6) best = { reach: r, over };
+            const deep = Math.min(
+              dot(sub(vertex, cut.a.to), bisector),
+              dot(sub(vertex, cut.b.from), bisector),
+            );
+            const inBounds = joins.every(([p, u, v]) => !crosses(p, u, v));
+            const clear = joins.every(([p, u, v]) => !harms(p, u, v));
+            const outward = Math.max(
+              ...joins.flatMap(([p, u, v]) =>
+                joinPoints(p, u, v).map((q) => dot(sub(q, vertex), bisector)),
+              ),
+            );
+            const short = !forCusp || outward <= cuspReach + 0.01;
+            if (inBounds && clear && short && (!forPaint || deep >= depth - 0.005)) {
+              reach = r;
+              break;
+            }
+          }
+          if (reach === undefined) {
+            problem(
+              `vertex at ${coordinate(vertex[0])},${coordinate(vertex[1])} cannot be fitted (${forBounds ? "padding" : ""}${forPaint ? "neighbour" : ""} ${best ? best.over.toFixed(2) : "-"})`,
+            );
+            // The round extent instead: a flat through where the round stroke reached.
+            const own = Math.min(...ownRuns.map((other) => distanceTo(vertex, other.points)));
+            for (let r = 0.02; r <= most + 1e-9 && reach === undefined; r += 0.02) {
+              const cut = cutVertex(inSeg, outSeg, r, shares);
+              if (!cut) continue;
+              const deep = Math.min(
+                dot(sub(vertex, cut.a.to), bisector),
+                dot(sub(vertex, cut.b.from), bisector),
+              );
+              if (deep >= own - 0.005) reach = r;
+            }
+            if (reach === undefined) {
+              if (!best) continue;
+              reach = best.reach;
+            }
+          }
+          plans.push({ piece, run, a, b, reach, bounds: forBounds });
+        }
+      });
+    });
+    // Mirror twins take the same cut, so symmetric shapes stay symmetric.
+    for (const plan of plans.filter((each) => each.bounds)) {
+      const vertex = plan.run.segs[plan.a].to;
+      const arms = vertexArms(plan.run, plan.a, plan.b);
+      // Twins within the same element only: across elements a match is a coincidence.
+      for (const piece of [plan.piece]) {
+        for (const run of piece.runs) {
+          for (const [a, b] of runVertices(run)) {
+            if (run === plan.run && a === plan.a) continue;
+            const twin = run.segs[a].to;
+            const turnOf = (r: Run, k: number, m: number) =>
+              angleBetween((tangents(r.segs[k]) as Ends).end, (tangents(r.segs[m]) as Ends).start);
+            const tip = turnOf(plan.run, plan.a, plan.b);
+            if (!mirrored(vertex, arms, twin, vertexArms(run, a, b))) continue;
+            // An acute tip's cut is copied (a pointed tip beside a flat twin reads as a mistake), and
+            // twins that both need a cut take the same one; an obtuse corner that needs none (a
+            // hexagon's other vertex) keeps its point.
+            const planned = plans.some((other) => other.run === run && other.a === a);
+            // Left and right twins (at the same height) always match: a scale's pans, an A's feet.
+            const sideBySide = Math.abs(twin[1] - vertex[1]) < 0.02;
+            if (tip <= cornerSweep && !planned && !sideBySide) continue;
+            const alike = similar(
+              [plan.run.segs[plan.a], plan.run.segs[plan.b]],
+              [run.segs[a], run.segs[b]],
+            );
+            if (!alike) continue;
+            const twinShares = armShares(run, a, b);
+            const most = Math.min(
+              twinShares[0] * segmentLength(run.segs[a]),
+              twinShares[1] * segmentLength(run.segs[b]),
+              4,
+            );
+            const existing = plans.find((other) => other.run === run && other.a === a);
+            const reach = Math.min(plan.reach, most);
+            if (existing) existing.reach = Math.max(existing.reach, reach);
+            else plans.push({ piece, run, a, b, reach, bounds: true });
+          }
+        }
+      }
+    }
+    // Apply, last vertex of each run first so earlier indices stay put.
+    plans.sort((left, right) => right.a - left.a);
+    for (const { piece, run, a, b, reach } of plans) {
+      const cut = cutVertex(run.segs[a], run.segs[b], reach, armShares(run, a, b));
+      if (!cut) continue;
+      run.segs[a] = cut.a;
+      run.segs[b] = cut.b;
+      run.segs.splice(b === 0 ? run.segs.length : b, 0, cut.bridge);
+      frozen.add(key(cut.bridge.from));
+      frozen.add(key(cut.bridge.to));
+      edit(piece);
+    }
+    if (changed) continue;
+
+    // Ends on another stroke: a square cap whose corners would show past that stroke is drawn as a
+    // butt end instead, by trimming half a stroke (or further, until both corners are hidden).
+    for (const piece of pieces) {
+      if (!piece.editable) continue;
+      for (const run of piece.runs) {
+        const total = run.segs.reduce((sum, segment) => sum + segmentLength(segment), 0);
+        if (total < dotLength) continue;
+        for (const end of runEnds(run)) {
+          const near = obstacles(pieces, run, end.seg);
+          if (!endsOn(run, end, near.lines)) continue;
+          // An end that meets another end (a split stroke continuing, or two strokes meeting at a
+          // corner) joins it as drawn; trimming either would leave a notch.
+          const meets = near.caps.some(({ point }) => length(sub(point, end.point)) <= 0.05);
+          if (meets) continue;
+          // Two strokes overlapping each other's ends (a frame's side and a flap's stub on it) are
+          // one shape already; trimming either opens a notch between them.
+          const own = run.segs.map(fine);
+          const mutual = near.caps.some(
+            ({ point }) =>
+              length(sub(point, end.point)) <= 2 * h &&
+              own.some((line) => distanceTo(point, line) <= h + 0.05),
+          );
+          if (mutual) continue;
+          const hidden = (point: Point, out: Point, limit: number) =>
+            capCorners(point, out).every((corner) => covered(corner, near, limit));
+          if (hidden(end.point, end.out, h + 0.03)) continue;
+          // Never more than a cap's length: the square cap becomes a butt end, nothing shorter.
+          const most = Math.min(h, segmentLength(run.segs[end.seg]) - minArm);
+          let choice: ReturnType<typeof trimmedEnd>;
+          // A curve trimmed so short it reads as a corner rounding would be squared if sharpened
+          // again; it keeps its length (and is reported) instead.
+          // (An element kept round is never sharpened, so its curves may shorten freely.)
+          const before = piece.endsOnly ? "" : decisionOf(run, end.seg, run.segs[end.seg]);
+          const keepsShape = (trimmed: Drawn) =>
+            piece.endsOnly || decisionOf(run, end.seg, trimmed) === before;
+          for (let reach = h; reach <= most + 1e-9 && !choice; reach += 0.05) {
+            const trimmed = trimmedEnd(run, end.side, end.seg, reach);
+            if (trimmed && !keepsShape(trimmed.segment)) break;
+            if (trimmed && hidden(trimmed.point, trimmed.out, h)) choice = trimmed;
+          }
+          if (!choice) {
+            problem(`end at ${coordinate(end.point[0])},${coordinate(end.point[1])} still shows`);
+            const fallback = most >= h ? trimmedEnd(run, end.side, end.seg, h) : undefined;
+            if (fallback && keepsShape(fallback.segment)) choice = fallback;
+          }
+          if (!choice) continue;
+          run.segs[end.seg] = choice.segment;
+          edit(piece);
+        }
+      }
+    }
+
+    // Free ends: a square cap outside the padding is shortened by its overshoot, and so is its
+    // mirror twin (an A's other foot, a chevron's other arm).
+    type EndPlan = { piece: Piece; run: Run; side: "start" | "end"; seg: number; need: number };
+    const endPlans: EndPlan[] = [];
+    const allEnds: (EndPlan & { point: Point; out: Point })[] = [];
+    for (const piece of pieces) {
+      if (!piece.editable || piece.endsOnly) continue;
+      for (const run of piece.runs) {
+        const total = run.segs.reduce((sum, segment) => sum + segmentLength(segment), 0);
+        if (total < dotLength) continue;
+        for (const end of runEnds(run)) {
+          const entry = { piece, run, side: end.side, seg: end.seg, need: 0 };
+          allEnds.push({ ...entry, point: end.point, out: end.out });
+          let need = 0;
+          let possible = true;
+          for (const corner of capCorners(end.point, end.out)) {
+            for (const axis of [0, 1] as const) {
+              const over = Math.max(bounds.lo[axis] - corner[axis], corner[axis] - bounds.hi[axis]);
+              if (over <= slack) continue;
+              const toward = corner[axis] > bounds.hi[axis] ? end.out[axis] : -end.out[axis];
+              if (toward < 0.05) possible = false;
+              else need = Math.max(need, (over + slack) / toward);
+            }
+          }
+          if (need === 0 && possible) continue;
+          if (!possible) {
+            problem(
+              `cap at ${coordinate(end.point[0])},${coordinate(end.point[1])} crosses the padding`,
+            );
+            continue;
+          }
+          endPlans.push({ ...entry, need });
+        }
+      }
+    }
+    for (const plan of [...endPlans]) {
+      const self = allEnds.find((end) => end.run === plan.run && end.side === plan.side);
+      if (!self) continue;
+      for (const end of allEnds.filter((each) => each.piece === plan.piece)) {
+        if (end === self || !mirroredEnd(self.point, self.out, end.point, end.out)) continue;
+        if (!similar([self.run.segs[self.seg]], [end.run.segs[end.seg]])) continue;
+        const existing = endPlans.find((other) => other.run === end.run && other.side === end.side);
+        if (existing) existing.need = Math.max(existing.need, plan.need);
+        else endPlans.push({ ...end, need: plan.need });
+      }
+    }
+    for (const plan of endPlans) {
+      const { run, side, seg } = plan;
+      const most = segmentLength(run.segs[seg]) - minArm;
+      let need = plan.need;
+      if (need > most) {
+        const point = side === "start" ? run.segs[0].from : (run.segs.at(-1) as Drawn).to;
+        problem(`cap at ${coordinate(point[0])},${coordinate(point[1])} crosses the padding`);
+        if (most <= 0) continue;
+        need = most;
+      }
+      const trimmed = trimmedEnd(run, side, seg, need);
+      if (!trimmed) continue;
+      if (decisionOf(run, seg, trimmed.segment) !== decisionOf(run, seg, run.segs[seg])) {
+        problem(`cap at ${coordinate(trimmed.point[0])},${coordinate(trimmed.point[1])} kept`);
+        continue;
+      }
+      run.segs[seg] = trimmed.segment;
+      edit(plan.piece);
+    }
+    if (!changed) return;
+  }
+  problem("fitting did not settle");
 }
 
 const rootAttributes = (): string => {
@@ -1597,36 +2655,33 @@ function sharpenElement(
       const sharpened = sharpenPathData(d, context);
       return [tag, attributes.map(([key, v]) => (key === "d" ? [key, sharpened] : [key, v]))];
     }
-    case "polyline":
-    case "polygon": {
-      // No roundings to square, but the vertices get the same join guard as a path's.
-      const lines = elementLines(tag, attributes).filter(([a, b]) => !same(a, b));
-      if (lines.length < 2) return [tag, attributes];
-      const path: Subpath = {
-        start: lines[0][0],
-        items: lines.map(([, to]) => ({ type: "L", to }) as Item),
-        closed: tag === "polygon",
-      };
-      const own = (skip: readonly number[]) => [
-        ...(context.strokes ?? []),
-        ...lines.filter((_, index) => !skip.includes(index)).map((line) => [...line]),
-      ];
-      const guarded = guardJoins(path, own);
-      if (guarded === path) return [tag, attributes];
-      let points = [guarded.start, ...guarded.items.map((item) => item.to)];
-      // A polygon closes itself; drop a last point that repeats its first.
-      if (tag === "polygon" && points.length > 1 && same(points[0], points.at(-1) as Point)) {
-        points = points.slice(0, -1);
-      }
-      const written = points.map((point) => `${coordinate(point[0])} ${coordinate(point[1])}`);
-      return [
-        tag,
-        attributes.map(([key, v]) => (key === "points" ? [key, written.join(" ")] : [key, v])),
-      ];
-    }
     default:
       return [tag, attributes];
   }
+}
+
+/**
+ * A Lucide dot (a path drawn by its caps alone, such as `M9 9h.01`) that is kept round: the same
+ * path with `stroke-linecap="round"`, so its caps paint it round under the sharp root's square
+ * caps. (A tiny stroked circle would look the same in theory, but renderers stroke a circle much
+ * smaller than the stroke width unreliably and leave it faint.) Undefined for any other element.
+ */
+function roundDot(piece: Piece): string | undefined {
+  if (piece.tag !== "path" || piece.runs.length !== 1) return undefined;
+  const { segs } = piece.runs[0];
+  const total = segs.reduce((sum, segment) => sum + segmentLength(segment), 0);
+  if (total >= 0.1) return undefined;
+  const kept = piece.attributes.filter(([key]) => key !== "stroke-linecap");
+  return `  <path${kept.map(([key, v]) => ` ${key}="${v}"`).join("")} stroke-linecap="round"/>`;
+}
+
+/** Whether a source is already drawn in the sharp style (its root carries the sharp caps). */
+function isSharpSource(source: string): boolean {
+  const root = new DOMParser({ onError: onWarningStopParsing }).parseFromString(
+    source,
+    "application/xml",
+  ).documentElement;
+  return root?.getAttribute("stroke-linecap") === iconSystem.design.sharp.linecap;
 }
 
 function parseOutline(source: string, name: string): { tag: string; attributes: Attribute[] }[] {
@@ -1680,8 +2735,15 @@ export function outlineContext(source: string, element = -1, name = "icon"): Out
  * Rewrites one outline source in the sharp style. Pure and deterministic; sharpening a sharp
  * source changes nothing. `name` labels errors and selects `keepRound` exceptions.
  */
-export function sharpenOutline(source: string, name = "icon"): string {
-  const keep = new Set(keepRound[name] ?? []);
+export function sharpenOutline(
+  source: string,
+  name = "icon",
+  /** Elements kept round; by default those `config/derived` lists for `name`. */
+  kept: readonly number[] = keepRound[name] ?? [],
+  /** Elements whose acute tips are cut at the round extent; by default from `config/derived`. */
+  heldTips: readonly number[] = tipHeight[name] ?? [],
+): string {
+  const keep = new Set(kept);
   const elements = parseOutline(source, name);
   const fail = (index: number, error: unknown): never => {
     const message = error instanceof Error ? error.message : String(error);
@@ -1702,12 +2764,13 @@ export function sharpenOutline(source: string, name = "icon"): string {
   const strokes = elements.map(({ tag, attributes }, index) =>
     guarded(index, () => elementStrokes(tag, attributes)),
   );
-  const lines = elements.map(({ tag, attributes }, index) => {
+  const sharpened = elements.map(({ tag, attributes }, index) => {
     let [outTag, result] = [tag, attributes];
     if (!keep.has(index)) {
       const context = {
         ...shared,
         strokes: strokes.flatMap((own, other) => (other === index ? [] : own)),
+        tipHeight: heldTips.includes(index),
       };
       try {
         [outTag, result] = sharpenElement(tag, attributes, context);
@@ -1715,7 +2778,27 @@ export function sharpenOutline(source: string, name = "icon"): string {
         fail(index, error);
       }
     }
-    return `  <${outTag}${result.map(([key, v]) => ` ${key}="${v}"`).join("")}/>`;
+    return { tag: outTag, attributes: result };
+  });
+  // Elements kept round still take part as obstacles, but fitting leaves them as they are.
+  const pieces = sharpened.map(({ tag, attributes }, index) => {
+    const piece = guarded(index, () => pieceOf(tag, attributes));
+    return keep.has(index) ? { ...piece, endsOnly: true } : piece;
+  });
+  // The padding's exceptions come from the drawing as given, before any corner was squared.
+  const input = elements.map(({ tag, attributes }, index) =>
+    guarded(index, () => pieceOf(tag, attributes)),
+  );
+  // Fitting measures the sharp drawing against the round one it comes from. A sharp source (being
+  // sharpened again) has been fitted already and has no round drawing to measure against.
+  if (!isSharpSource(source)) fitIcon(pieces, input, false, name);
+  const lines = pieces.map((piece, index) => {
+    const dot = keep.has(index) ? roundDot(piece) : undefined;
+    if (dot) return dot;
+    const written = writePiece(piece);
+    // A line given a leg (see `addJointLegs`) is written as a path.
+    const tag = piece.tag === "line" && written[0]?.[0] === "d" ? "path" : piece.tag;
+    return `  <${tag}${written.map(([key, v]) => ` ${key}="${v}"`).join("")}/>`;
   });
   return [`<svg ${rootAttributes()}>`, ...lines, "</svg>", ""].join("\n");
 }
