@@ -49,7 +49,7 @@ describe("public entry point", () => {
     // Icons end in Icon and logos in Logo, so the two families can never collide.
     for (const name of icons) expect(name).toMatch(/Icon$/);
     for (const name of logos) expect(name).toMatch(/Logo$/);
-  }, 60_000);
+  }, 120_000);
 
   it("exports the shape, variant, directionality, and variant-generic props types", () => {
     expectTypeOf<IconShape>().toEqualTypeOf<"round" | "sharp">();
@@ -64,10 +64,10 @@ describe("public entry point", () => {
     expectTypeOf<IconProps<"outline">["variant"]>().toEqualTypeOf<"outline" | undefined>();
   });
 
-  it("re-exports generated icons and logos and never imports catalogue metadata", () => {
+  it("re-exports icons and logos from the root, and never imports catalogue metadata", () => {
     const root = readFileSync(join(PKG, "src/index.ts"), "utf8");
-    const imports = [...root.matchAll(/from "([^"]+)"/g)].map(([, source]) => source);
-    expect(imports.sort()).toEqual([
+    const imports = [...root.matchAll(/from "([^"]+)"/g)].map(([, source]) => source).sort();
+    expect(imports).toEqual([
       "./generated/icon-index.js",
       "./generated/logo-index.js",
       "./types/icon-props.js",
@@ -260,6 +260,7 @@ describe("production sources and generated output", () => {
     "src/generated/sharp",
     "src/generated/logos/index.ts",
     "src/generated-logos",
+    "src/logos.ts",
     "src/sharp.ts",
   ])("does not introduce Storybook, extra barrels, or per-shape entry points at %s", (path) => {
     expect(existsSync(join(PKG, path))).toBe(false);
@@ -279,18 +280,13 @@ describe("package manifest", () => {
     expect(manifest.peerDependencies).toEqual({ react: "^19.0.0" });
   });
 
-  it("exposes only the root, per-icon, per-logo, manifest, and package.json entry points", () => {
+  it("exposes only the root, per-icon, manifest, and package.json entry points", () => {
     expect(manifest.exports).toEqual({
       ".": { types: "./dist/index.d.ts", import: "./dist/index.js", default: "./dist/index.js" },
       "./icons/*": {
         types: "./dist/generated/icons/*.d.ts",
         import: "./dist/generated/icons/*.js",
         default: "./dist/generated/icons/*.js",
-      },
-      "./logos/*": {
-        types: "./dist/generated/logos/*.d.ts",
-        import: "./dist/generated/logos/*.js",
-        default: "./dist/generated/logos/*.js",
       },
       "./manifest": {
         types: "./dist/manifest.d.ts",
@@ -305,8 +301,8 @@ describe("package manifest", () => {
     expect((manifest as { sideEffects?: unknown }).sideEffects).toBe(false);
   });
 
-  it("publishes only dist", () => {
-    expect(manifest.files).toEqual(["dist"]);
+  it("publishes only dist and the licence texts", () => {
+    expect(manifest.files).toEqual(["dist", "licenses"]);
   });
 
   it("keeps config, validators, and fixtures outside the production build", () => {

@@ -1,6 +1,7 @@
 import { existsSync, lstatSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import type { LogoBackground } from "../../src/types/logo.js";
+import type { BrandsData } from "./brands.js";
 import {
   type LogoUpstream,
   logoBarrelPath,
@@ -12,6 +13,7 @@ import {
   type PlannedLogo,
   type PlannedLogoVariant,
 } from "./logo-module.js";
+import { logoNoticesPath, renderLogoNotices } from "./logo-notices.js";
 import { LogoSourceError, readSvgIntrinsicSize, svgDataUri } from "./logo-source.js";
 
 /** The brand catalogue written by `sync:brands`, relative to the repository root. */
@@ -195,6 +197,7 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
     }
     files.set(logoBarrelPath, logoBarrelSource(logos, upstream));
     files.set(logoManifestPath, logoManifestSource(logos, upstream));
+    files.set(logoNoticesPath, renderLogoNotices(repositoryRoot, config as unknown as BrandsData));
   }
   return { upstream, logos, files, diagnostics, warnings };
 }

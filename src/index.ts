@@ -9,8 +9,8 @@
  *
  * Every brand logo is one generated named export ending in `Logo`, such as `GithubLogo`. It renders
  * the logo's published SVG file, unmodified, as an `<img>`; its `variant` prop selects one of the
- * logo's files and is typed to the files that exist. Each logo is also importable on its own from
- * `@qeetrix/icons/logos/<id>`.
+ * logo's files and is typed to the files that exist. Importing the root loads every icon and logo;
+ * see docs/logos.md for what that costs in Node.
  *
  * Catalogue metadata is deliberately not exported here; tooling imports it from
  * `@qeetrix/icons/manifest`. See docs/api.md and docs/logos.md.

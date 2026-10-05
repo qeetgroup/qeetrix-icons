@@ -31,7 +31,8 @@
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "licenses"
   ],
   "exports": {
     ".": {
@@ -43,11 +44,6 @@
       "types": "./dist/generated/icons/*.d.ts",
       "import": "./dist/generated/icons/*.js",
       "default": "./dist/generated/icons/*.js"
-    },
-    "./logos/*": {
-      "types": "./dist/generated/logos/*.d.ts",
-      "import": "./dist/generated/logos/*.js",
-      "default": "./dist/generated/logos/*.js"
     },
     "./manifest": {
       "types": "./dist/manifest.d.ts",

@@ -7,7 +7,6 @@ and license. Icons end in `Icon` and logos in `Logo`, so the two never collide.
 
 ```tsx
 import { GithubLogo } from "@qeetrix/icons";
-import { GithubLogo as Direct } from "@qeetrix/icons/logos/github";
 import { logoManifest } from "@qeetrix/icons/manifest";
 
 <GithubLogo />                          // the default file, 24px tall
@@ -95,12 +94,15 @@ the page or with other logos, and it needs no hooks, so it renders in React Serv
 
 The component name is PascalCase of the slug's parts plus `Logo`:
 
-| Slug | Component | Direct import |
-|:--|:--|:--|
-| `github` | `GithubLogo` | `@qeetrix/icons/logos/github` |
-| `arch-linux` | `ArchLinuxLogo` | `@qeetrix/icons/logos/arch-linux` |
-| `archlinux` | `ArchlinuxLogo` | `@qeetrix/icons/logos/archlinux` |
-| `1password` | `Brand1passwordLogo` | `@qeetrix/icons/logos/1password` |
+| Slug | Component |
+|:--|:--|
+| `github` | `GithubLogo` |
+| `arch-linux` | `ArchLinuxLogo` |
+| `archlinux` | `ArchlinuxLogo` |
+| `1password` | `Brand1passwordLogo` |
+
+Every logo is exported from the package root, `@qeetrix/icons`, next to the icons; there is no
+separate logo entry point.
 
 Slugs starting with a digit get a `Brand` prefix, so the name is a valid identifier. Slugs with
 and without a hyphen are different upstream logos and stay distinct.
@@ -175,7 +177,7 @@ Check `license` before you ship a logo, and filter on it in tooling, for example
 `CC0-1.0`, `MIT`, and `Apache-2.0`. Logos are trademarks of their owners, included for
 identification only; a license on the artwork grants no trademark rights, and brand guidelines,
 linked in `guidelines` where known, still apply. Per-logo licenses and the required notices are
-collected in [THIRD-PARTY-LOGOS.md](../THIRD-PARTY-LOGOS.md) and [LICENSE](../LICENSE);
+collected in [licenses/third-party-logos.md](../licenses/third-party-logos.md) and [LICENSE](../LICENSE);
 `package.json` declares `"license": "SEE LICENSE IN LICENSE"`.
 
 ## Known upstream defects
@@ -197,11 +199,13 @@ All logo modules together are roughly 40 MB of JavaScript, almost all of it data
 - **Production builds** include only the logos you import: every module is free of side effects
   (`sideEffects: false`), the barrel is static re-exports, and the catalogue is a pure
   `JSON.parse` that bundlers drop when unused.
+- **Node** (server rendering, test runners) loads every icon and logo module the first time
+  anything is imported from `@qeetrix/icons`: about 9,300 modules and roughly 40 MB of logo
+  data. Measured on a development laptop, a cold first import took about 20 s and 360 MB of
+  memory, against about 1.8 s and 124 MB for the icons alone. It is paid once per process.
 - **Development servers** that pre-bundle a dependency's whole root, such as Vite's
-  `optimizeDeps` and Next.js in development, process every logo when you import from
-  `@qeetrix/icons`. In large apps, import from the direct subpaths, `@qeetrix/icons/logos/<id>`
-  and `@qeetrix/icons/icons/<id>`, or, in Next.js, set
-  `experimental.optimizePackageImports: ["@qeetrix/icons"]`.
+  `optimizeDeps` and Next.js in development, process every logo too, so the first dev start
+  after installing or upgrading is slower; later starts reuse their cache.
 
 ## Validation
 

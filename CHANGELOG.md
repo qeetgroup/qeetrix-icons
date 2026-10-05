@@ -43,7 +43,7 @@
     background (`light`, `dark`, or `any`), because theSVG's own `light` and `dark` names are mostly
     inverted.
   - One component per logo, `<PascalCase slug>Logo` (`GithubLogo`; `Brand1passwordLogo` for slugs
-    starting with a digit), exported from the root and from `@qeetrix/icons/logos/<slug>`. Each
+    starting with a digit), exported from the package root next to the icons. Each
     renders its published file unmodified as an `<img>` with a lossless `data:image/svg+xml` URI:
     no recolouring, no style or id clashes, no hooks. `LogoProps`: native `<img>` props except
     `src`, `srcSet`, and `sizes`, plus `variant` (typed per logo), `height` (default 24), and
@@ -103,7 +103,7 @@
   - `LICENSE` keeps the MIT License for the package code and adds Lucide's license verbatim (ISC,
     with the Feather MIT notice it includes) for the icon artwork, the derived drawings, and the
     generated icon components. Per-logo licenses and notices are in `LICENSE` and
-    `THIRD-PARTY-LOGOS.md`. `package.json` declares `SEE LICENSE IN LICENSE`.
+    `licenses/third-party-logos.md`. `package.json` declares `SEE LICENSE IN LICENSE`.
 
   **Removed**
 

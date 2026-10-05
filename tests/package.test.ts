@@ -181,10 +181,13 @@ export const iconMetadata: Readonly<Record<string, IconMetadata>> = ${JSON.strin
 }, 300_000);
 
 afterAll(() => {
+  // The workspace holds the copied repository and the built package (tens of thousands of files).
   if (workspace) rmSync(workspace, { recursive: true, force: true });
-});
+}, 120_000);
 
-describe("packed @qeetrix/icons", () => {
+// Importing the root loads every icon and every logo (~9,300 modules), which takes seconds in Node,
+// so every test that consumes the packed package gets a generous default timeout.
+describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
   it("ships only built output and package metadata", () => {
     const entries = run("tar", ["-tzf", tarball], workspace)
       .trim()
@@ -193,7 +196,9 @@ describe("packed @qeetrix/icons", () => {
       .sort();
     for (const entry of entries) {
       expect(
-        ["package.json", "README.md", "LICENSE"].includes(entry) || entry.startsWith("dist/"),
+        ["package.json", "README.md", "LICENSE"].includes(entry) ||
+          entry.startsWith("dist/") ||
+          entry.startsWith("licenses/"),
         entry,
       ).toBe(true);
       expect(entry, entry).not.toMatch(
@@ -202,6 +207,9 @@ describe("packed @qeetrix/icons", () => {
     }
     expect(entries).toEqual(
       expect.arrayContaining([
+        "LICENSE",
+        "licenses/third-party-logos.md",
+        "licenses/Apache-2.0.txt",
         "dist/index.js",
         "dist/index.d.ts",
         "dist/manifest.js",
@@ -273,7 +281,7 @@ describe("packed @qeetrix/icons", () => {
       production,
     });
     // Imports every production concept through three entry points.
-  }, 60_000);
+  }, 300_000);
 
   it("renders a production icon's sharp drawings from the same component, with the same props behaviour", () => {
     const result = node(`
@@ -323,51 +331,66 @@ describe("packed @qeetrix/icons", () => {
     }
   });
 
-  it.each(sampled.map(({ id, componentName }) => [id, componentName]))(
-    "serves production concept %s from the root and its direct subpath",
-    (id, componentName) => {
-      const result = node(`
-        import * as root from "@qeetrix/icons";
-        import { ${componentName} } from "@qeetrix/icons/icons/${id}";
-        import { createElement } from "react";
-        import { renderToStaticMarkup } from "react-dom/server";
-        console.log(JSON.stringify({
-          same: root.${componentName} === ${componentName},
-          markup: renderToStaticMarkup(createElement(${componentName})),
-          outline: renderToStaticMarkup(createElement(${componentName}, { variant: "outline" })),
-          round: renderToStaticMarkup(createElement(${componentName}, { shape: "round" })),
-          sharp: renderToStaticMarkup(createElement(${componentName}, { shape: "sharp" })),
-        }));
-      `) as { same: boolean; markup: string; outline: string; round: string; sharp: string };
-      expect(result.same).toBe(true);
-      expect(result.markup).toBe(result.outline);
-      expect(result.markup).toBe(result.round);
-      expect(result.markup).toContain('stroke="currentColor"');
-      expect(result.markup).not.toContain("variant");
-      expect(outlineTraces.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
-      for (const pattern of outlineTraces.get(id) ?? []) expect(result.markup).toMatch(pattern);
-      expect(result.sharp).toContain(`stroke-linecap="${iconSystem.design.sharp.linecap}"`);
-      expect(result.sharp).not.toMatch(/shape|variant/);
-      expect(sharpOutlineTraces.get(id)?.length, `${id} sharp geometry`).toBeGreaterThan(0);
-      for (const pattern of sharpOutlineTraces.get(id) ?? []) expect(result.sharp).toMatch(pattern);
-    },
-  );
-
-  it("serves brand logos from the root and their direct subpath, embedding each file unmodified", () => {
-    const result = node(`
+  it("serves every sampled production concept from the root and its direct subpath", () => {
+    // One process for all of them: importing the root loads every icon and logo, which takes
+    // seconds in Node, so it is paid once here rather than once per concept.
+    const results = node(`
       import * as root from "@qeetrix/icons";
-      import { GithubLogo } from "@qeetrix/icons/logos/github";
+      import { createElement } from "react";
+      import { renderToStaticMarkup } from "react-dom/server";
+      const sampled = ${JSON.stringify(sampled.map(({ id, componentName }) => [id, componentName]))};
+      const results = {};
+      for (const [id, name] of sampled) {
+        const direct = (await import("@qeetrix/icons/icons/" + id))[name];
+        const render = (props) => renderToStaticMarkup(createElement(direct, props));
+        results[id] = {
+          same: root[name] === direct,
+          markup: render(undefined),
+          outline: render({ variant: "outline" }),
+          round: render({ shape: "round" }),
+          sharp: render({ shape: "sharp" }),
+        };
+      }
+      console.log(JSON.stringify(results));
+    `) as Record<
+      string,
+      { same: boolean; markup: string; outline: string; round: string; sharp: string }
+    >;
+    expect(Object.keys(results).sort()).toEqual(sampled.map(({ id }) => id).sort());
+    for (const { id } of sampled) {
+      const result = results[id];
+      expect(result.same, id).toBe(true);
+      expect(result.markup, id).toBe(result.outline);
+      expect(result.markup, id).toBe(result.round);
+      expect(result.markup, id).toContain('stroke="currentColor"');
+      expect(result.markup, id).not.toContain("variant");
+      expect(outlineTraces.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
+      for (const pattern of outlineTraces.get(id) ?? []) expect(result.markup, id).toMatch(pattern);
+      expect(result.sharp, id).toContain(`stroke-linecap="${iconSystem.design.sharp.linecap}"`);
+      expect(result.sharp, id).not.toMatch(/shape|variant/);
+      expect(sharpOutlineTraces.get(id)?.length, `${id} sharp geometry`).toBeGreaterThan(0);
+      for (const pattern of sharpOutlineTraces.get(id) ?? [])
+        expect(result.sharp, id).toMatch(pattern);
+    }
+  }, 180_000);
+
+  it("serves brand logos from the root, embedding each file unmodified", () => {
+    const result = node(`
+      import { GithubLogo } from "@qeetrix/icons";
       import { logoManifest } from "@qeetrix/icons/manifest";
       import { createElement } from "react";
       import { renderToStaticMarkup } from "react-dom/server";
       const render = (props) => renderToStaticMarkup(createElement(GithubLogo, props));
       console.log(JSON.stringify({
-        same: root.GithubLogo === GithubLogo,
         decorative: render({}),
         mono: render({ variant: "mono", height: 40, "aria-label": "GitHub" }),
         entry: logoManifest.logos.find(({ id }) => id === "github"),
       }));
-    `) as { same: boolean; decorative: string; mono: string; entry: { componentName: string } };
+    `) as {
+      decorative: string;
+      mono: string;
+      entry: { componentName: string };
+    };
     const srcOf = (markup: string) =>
       decodeURIComponent(
         markup
@@ -380,7 +403,6 @@ describe("packed @qeetrix/icons", () => {
       );
     const file = (variant: string) =>
       readFileSync(join(PKG, "icons/brand-icons/brands/github", `${variant}.svg`), "utf8");
-    expect(result.same).toBe(true);
     expect(result.entry.componentName).toBe("GithubLogo");
     expect(result.decorative).toMatch(/^<img /);
     expect(result.decorative).toContain('alt=""');
@@ -417,6 +439,9 @@ describe("packed @qeetrix/icons", () => {
       "@qeetrix/icons/runtime/resolve-icon-props",
       "@qeetrix/icons/types/icon-props",
       "@qeetrix/icons/generated/icon-index",
+      "@qeetrix/icons/logos",
+      "@qeetrix/icons/logos/github",
+      "@qeetrix/icons/generated/logos/github",
       "@qeetrix/icons/generated/icons/fixture-alpha",
       "@qeetrix/icons/config/icon-system",
       "@qeetrix/icons/scripts/lib/generation-plan",
@@ -614,9 +639,14 @@ export const usage = [
     expect(manifestOnly).not.toMatch(/3\.125|6\.25|3\.375|6\.875|aria-hidden|viewBox/);
   });
 
-  it.each(sampled.map(({ id, componentName }) => [id, componentName]))(
-    "tree-shakes production concept %s away from every other concept and the manifest",
-    (id, componentName) => {
+  it("tree-shakes a spread of production concepts away from every other concept, the logos, and the manifest", () => {
+    // One bundle per concept: Bun does not tree-shake several entry points of one run separately,
+    // and each run parses the whole root (every icon and logo), so a spread of eight concepts,
+    // with and without filled drawings, stands for all of them.
+    const spread = sampled.filter((_, index) => index % Math.ceil(sampled.length / 8) === 0);
+    expect(spread.length).toBeGreaterThanOrEqual(8);
+    expect(spread.some(({ variants }) => variants.includes("filled"))).toBe(true);
+    for (const { id, componentName } of spread) {
       writeFixture(
         consumer,
         "entry.js",
@@ -628,7 +658,7 @@ export const usage = [
         consumer,
       );
       expect(traces.get(id)?.length, `${id} geometry`).toBeGreaterThan(0);
-      for (const pattern of traces.get(id) ?? []) expect(output).toMatch(pattern);
+      for (const pattern of traces.get(id) ?? []) expect(output, id).toMatch(pattern);
       const own = new Set(geometry.get(id));
       for (const [other, values] of geometry) {
         if (other === id) continue;
@@ -639,11 +669,16 @@ export const usage = [
           if (!own.has(value)) expect(output, `${other} in ${id}`).not.toContain(`"${value}"`);
         }
       }
-      for (const excluded of ["schemaVersion", "directionality", "fixture-"]) {
-        expect(output, excluded).not.toContain(excluded);
+      for (const excluded of [
+        "schemaVersion",
+        "directionality",
+        "fixture-",
+        "data:image/svg+xml",
+      ]) {
+        expect(output, `${excluded} in ${id}`).not.toContain(excluded);
       }
-    },
-  );
+    }
+  }, 300_000);
 
   it("samples every category, with and without filled drawings", () => {
     const categories = new Set(production.map(({ category }) => category));

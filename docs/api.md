@@ -114,15 +114,14 @@ To hold an arbitrary icon, for example in a button component, type it as
 
 ```tsx
 import { GithubLogo, type LogoProps } from "@qeetrix/icons";
-import { GithubLogo as Direct } from "@qeetrix/icons/logos/github";
 
 <GithubLogo />
 <GithubLogo variant="wordmark" height={32} alt="GitHub" />
 ```
 
 Each logo is one named export, PascalCase of its slug plus `Logo` (`Brand` in front when the slug
-starts with a digit: `Brand1passwordLogo`), and is also importable as
-`@qeetrix/icons/logos/<id>`. It renders its published SVG file unmodified as an `<img>`, so it
+starts with a digit: `Brand1passwordLogo`), exported from the package root like every icon. It
+renders its published SVG file unmodified as an `<img>`, so it
 keeps its own colours and cannot be recoloured with CSS. `LogoProps<V>` is the native `<img>`
 props without `src`, `srcSet`, and `sizes`, plus `variant` (typed to the logo's files, default the
 logo's `defaultVariant`), `height` (default 24), and `width` (from the file's aspect ratio unless
@@ -192,7 +191,6 @@ type IconManifestEntry = {
 |:--|:--|
 | `@qeetrix/icons` | Every icon and logo component, plus the `IconProps`, `IconShape`, `IconVariant`, `IconDirectionality`, `LogoProps`, `LogoComponent`, and `LogoBackground` types |
 | `@qeetrix/icons/icons/<id>` | One icon component |
-| `@qeetrix/icons/logos/<id>` | One logo component |
 | `@qeetrix/icons/manifest` | `iconManifest` and `logoManifest`, with the `IconManifest`, `IconManifestEntry`, `LogoManifest`, `LogoManifestEntry`, `LogoManifestVariant`, and `LogoBackground` types |
 | `@qeetrix/icons/package.json` | Package metadata |
 

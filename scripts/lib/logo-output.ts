@@ -10,6 +10,7 @@ import {
 } from "node:fs";
 import { join, posix } from "node:path";
 import { logoBarrelPath, logoManifestPath, logoModuleDirectory } from "./logo-module.js";
+import { logoNoticesPath } from "./logo-notices.js";
 
 export type LogoOutputComparison = {
   readonly stale: readonly string[];
@@ -18,7 +19,7 @@ export type LogoOutputComparison = {
 };
 
 /** Generated files outside the module directory: written and compared, never deleted. */
-const ownedFiles: readonly string[] = [logoBarrelPath, logoManifestPath];
+const ownedFiles: readonly string[] = [logoBarrelPath, logoManifestPath, logoNoticesPath];
 
 function statIfPresent(path: string): Stats | undefined {
   try {
