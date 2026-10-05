@@ -18,12 +18,12 @@ export function TriangleDashedIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10.17 4.193a2 2 0 0 1 3.666.013" />
+        <path d="M10.163 4.189L11.415 1.997L12.585 1.997L13.844 4.201" />
         <path d="M14 21h2" />
         <path d="m15.874 7.743 1 1.732" />
         <path d="m18.849 12.952 1 1.732" />
-        <path d="M21.824 18.18a2 2 0 0 1-1.835 2.824" />
-        <path d="M4.024 21a2 2 0 0 1-1.839-2.839" />
+        <path d="M21.83 18.176L21.846 18.204L20.224 21L19.989 21" />
+        <path d="M4.024 21L3.776 21L2.154 18.204L2.18 18.158" />
         <path d="m5.136 12.952-1 1.732" />
         <path d="M8 21h2" />
         <path d="m8.102 7.743-1 1.732" />

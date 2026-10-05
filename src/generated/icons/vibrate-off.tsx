@@ -18,11 +18,11 @@ export function VibrateOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m2 8 2 2-2 2 2 2-2 2" />
-        <path d="m22 8-2 2 2 2-2 2 2 2" />
-        <path d="M8 8V19H16V16" />
+        <path d="M2.419 8.419L4 10L2.113 11.887V12.113L4 14L2.419 15.581" />
+        <path d="M21.581 8.419L20 10L21.887 11.887V12.113L20 14L21.581 15.581" />
+        <path d="M8 9V19H16V17" />
         <path d="M16 10.34V5H10.66" />
-        <line x1="2" x2="22" y1="2" y2="22" />
+        <line x1="2.419" x2="21.581" y1="2.419" y2="21.581" />
       </svg>
     );
   }

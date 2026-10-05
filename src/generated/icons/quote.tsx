@@ -15,7 +15,7 @@ export function QuoteIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M2 2L11 2L11 15Q11 16.335 10.509 17.577Q9.975 18.925 8.95 19.95Q7.925 20.975 6.577 21.509Q5.335 22 4 22L2 22L2 16L5 16L5 14L2 14L2 2ZM22 2L13 2L13 14L16 14L16 16L13 16L13 22L15 22Q16.335 22 17.577 21.509Q18.925 20.975 19.95 19.95Q20.975 18.925 21.509 17.577Q22 16.335 22 15L22 2Z"
+            d="M2 14L2 2L11 2L11 15Q11 16.335 10.509 17.577Q9.975 18.925 8.95 19.95Q7.925 20.975 6.577 21.509Q5.335 22 4 22L2 22L2 16L5 16L5 14L2 14ZM13 2L13 14L16 14L16 16L13 16L13 22L15 22Q16.335 22 17.577 21.509Q18.925 20.975 19.95 19.95Q20.975 18.925 21.509 17.577Q22 16.335 22 15L22 2L13 2Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,8 +33,8 @@ export function QuoteIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14 3V13H17V17H14V21H15A6 6 0 0 0 21 15V3Z" />
-        <path d="M3 3V13H6V17H3V21H4A6 6 0 0 0 10 15V3Z" />
+        <path d="M14 13H17V17H14V21H15A6 6 0 0 0 21 15V3H14Z" />
+        <path d="M3 13H6V17H3V21H4A6 6 0 0 0 10 15V3H3Z" />
       </svg>
     );
   }

@@ -18,11 +18,11 @@ export function SyringeIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m18 2 4 4" />
+        <path d="M18.419 2.419L21.581 5.581" />
         <path d="m17 7 3-3" />
-        <path d="M19 9L6.911 21.089L5.3 19.3L2.911 16.911L4.7 15.3L15 5" />
+        <path d="M19 9L7 21L3 17L15 5" />
         <path d="m9 11 4 4" />
-        <path d="m5 19-3 3" />
+        <path d="M4.581 19.419L2.419 21.581" />
         <path d="m14 4 6 6" />
       </svg>
     );

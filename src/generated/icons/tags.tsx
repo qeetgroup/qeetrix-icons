@@ -18,8 +18,8 @@ export function TagsIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14 2L22.006 10.006V11.994L15 19L6 10V2Z" />
-        <path d="M2 7V14L9.946 21.946L11.769 22.056L12.487 21.489" />
+        <path d="M22.01 11.99L15 19L6 10V2H14L22.01 10.01Z" />
+        <path d="M2 7V14L9.879 21.879L11.848 21.994L12.487 21.489" />
         <rect fill="currentColor" height="1" width="1" x="10" y="6" />
       </svg>
     );

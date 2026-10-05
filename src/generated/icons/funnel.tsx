@@ -15,7 +15,7 @@ export function FunnelIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M9 21.236L9 13.616L0.644 4.376L1.7 2L22.299 2L23.352 4.378L15 13.616L15 22.115L13.104 23.288L9.553 21.512L9 21.236Z"
+            d="M15 21.476L12.53 23.002L9 21.236L9 13.616L0.992 4.76L2.218 2L21.78 2L23.006 4.762L15 13.616L15 21.476Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FunnelIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 20.618L13.052 22.144L14 21.558V13.231L22.175 4.189L21.648 3H2.35L1.822 4.188L10 13.231Z" />
+        <path d="M14 20.918V13.231L21.828 4.573L21.13 3H2.868L2.17 4.572L10 13.231V20.618L12.479 21.858Z" />
       </svg>
     );
   }

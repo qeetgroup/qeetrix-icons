@@ -19,8 +19,8 @@ export function CaseUpperIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M15 11H19.5A1 1 0 0 1 19.5 16H15V6H18.5A1 1 0 0 1 18.5 11" />
-        <path d="M2 16L6.501 5.203L11 16" />
-        <path d="M3.304 13h6.392" />
+        <path d="M2.313 15.25L6.167 6.002H6.834L10.687 15.25" />
+        <path d="M4.304 13H8.696" />
       </svg>
     );
   }

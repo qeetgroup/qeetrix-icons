@@ -18,7 +18,7 @@ export function UploadIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 3v12" />
+        <path d="M12 4V15" />
         <path d="m17 8-5-5-5 5" />
         <path d="M21 15V21H3V15" />
       </svg>

@@ -18,9 +18,9 @@ export function TrendingUpDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14.828 14.828 21 21" />
+        <path d="M14.828 14.828L20.293 20.293" />
         <path d="M21 16v5h-5" />
-        <path d="m21 3-9 9-4-4-6 6" />
+        <path d="M20.293 3.707L12 12L8 8L2.419 13.581" />
         <path d="M21 8V3h-5" />
       </svg>
     );

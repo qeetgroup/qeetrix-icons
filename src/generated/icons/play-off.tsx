@@ -18,9 +18,9 @@ export function PlayOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10.215 4.56L21 10.85L21.002 13.146L19.615 13.958" />
-        <path d="M16.042 16.042L7.008 21.311L5 20.158V5" />
-        <path d="m2 2 20 20" />
+        <path d="M10.215 4.56L21.999 11.433V12.563L19.615 13.958" />
+        <path d="M15.178 16.546L6.088 21.847L5 21.222V6" />
+        <path d="M2.419 2.419L21.581 21.581" />
       </svg>
     );
   }

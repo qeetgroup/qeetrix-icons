@@ -18,7 +18,7 @@ export function BookKeyIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13 2H4V19.5" />
+        <path d="M13 2H4V18.5" />
         <path d="M17 2v6" />
         <path d="M17 4h2" />
         <path d="M20 15.2V22H6.5A1 1 0 0 1 6.5 17H20" />

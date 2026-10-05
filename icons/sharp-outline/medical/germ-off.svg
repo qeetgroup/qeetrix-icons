@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="m11 2 .925 1.848"/>
-  <path d="M13 15h.01"/>
+  <path d="M11.174 2.347L11.925 3.848"/>
+  <path d="M13 15h.01" stroke-linecap="round"/>
   <path d="M13.424 7.768a2 2 0 112.808 2.808"/>
   <path d="m16 21-1-2.472"/>
-  <path d="M16.988 16.988A12 12 0 019 20a5 5 0 01-2.759-9.171 8.8 8.8 0 002.307-2.28"/>
-  <path d="m19 2-1 1.804"/>
-  <path d="m2 19 2.746-1.373"/>
-  <path d="m2 2 20 20"/>
-  <path d="m22 16-2.474-2.13a12 12 0 001.376-3.786 6 6 0 00-10.313-5.151"/>
-  <path d="m22 5-1.804 1"/>
-  <path d="m3 10 2 2"/>
-  <path d="M9 16h.01"/>
+  <path d="M16.212 17.619A12 12 0 0 1 9 20A5 5 0 0 1 6.241 10.829A8.8 8.8 0 0 0 7.933 9.337"/>
+  <path d="M18.798 2.364L18 3.804"/>
+  <path d="M2.347 18.827L4.746 17.627"/>
+  <path d="M2.419 2.419L21.581 21.581"/>
+  <path d="M21.585 15.642L19.526 13.87A12 12 0 0 0 20.902 10.084A6 6 0 0 0 10.589 4.933"/>
+  <path d="M21.636 5.202L20.196 6"/>
+  <path d="M3 10L4.293 11.293"/>
+  <path d="M9 16h.01" stroke-linecap="round"/>
   <path d="M9 20v2"/>
 </svg>

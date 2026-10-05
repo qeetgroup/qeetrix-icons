@@ -18,7 +18,7 @@ export function ShieldLockIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M20 9.807V5H19C17 5 14.51 3.81 12.76 2.28L12 1.631L11.24 2.28C9.5 3.8 7 5 5 5H4V13C4 16.88 6.107 19.254 9 20.796" />
+        <path d="M20 9.807V5H19C17 5 14.51 3.81 12.76 2.28L12.335 1.917H11.665L11.24 2.28C9.5 3.8 7 5 5 5H4V13C4 16.88 6.107 19.254 9 20.796" />
         <path d="M19 17v-2a2 2 0 00-4 0v2" />
         <rect height="5" width="8" x="13" y="17" />
       </svg>

@@ -19,7 +19,7 @@ export function ExternalLinkIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M15 3h6v6" />
-        <path d="M10 14 21 3" />
+        <path d="M10 14L20.293 3.707" />
         <path d="M18 13V21H3V6H11" />
       </svg>
     );

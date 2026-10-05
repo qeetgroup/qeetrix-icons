@@ -18,7 +18,7 @@ export function RadarIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M19.07 4.93A10 10 0 0 0 6.99 3.34" />
+        <path d="M18.363 5.637L19.07 4.93A10 10 0 0 0 6.99 3.34" />
         <path d="M4 6h.01" />
         <path d="M2.29 9.62A10 10 0 1 0 21.31 8.35" />
         <path d="M16.24 7.76A6 6 0 1 0 8.23 16.67" />

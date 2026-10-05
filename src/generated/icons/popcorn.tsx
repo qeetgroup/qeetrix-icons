@@ -19,9 +19,9 @@ export function PopcornIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M18 8a2 2 0 0 0 0-4 2 2 0 0 0-4 0 2 2 0 0 0-4 0 2 2 0 0 0-4 0 2 2 0 0 0 0 4" />
-        <path d="M10 22 9 8" />
-        <path d="m14 22 1-14" />
-        <path d="M21.017 8L17.983 22H6.017L2.983 8Z" />
+        <path d="M9.929 21.003L9.071 8.997" />
+        <path d="M14.071 21.003L14.929 8.997" />
+        <path d="M17.983 22H6.017L2.983 8H21.017Z" />
       </svg>
     );
   }

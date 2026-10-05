@@ -18,7 +18,7 @@ export function BackpackIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 10A4 4 0 0 1 8 6H16A4 4 0 0 1 20 10V22H4Z" />
+        <path d="M8 6H16A4 4 0 0 1 20 10V22H4V10A4 4 0 0 1 8 6Z" />
         <path d="M8 10h8" />
         <path d="M8 18h8" />
         <path d="M8 22V14H16V22" />

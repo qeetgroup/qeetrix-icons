@@ -33,7 +33,7 @@ export function FolderCheckIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
         <path d="m9 13 2 2 4-4" />
       </svg>
     );

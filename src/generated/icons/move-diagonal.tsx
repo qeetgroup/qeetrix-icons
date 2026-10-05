@@ -20,7 +20,7 @@ export function MoveDiagonalIcon(props: IconProps<"outline">) {
       >
         <path d="M11 19H5v-6" />
         <path d="M13 5h6v6" />
-        <path d="M19 5 5 19" />
+        <path d="M18.293 5.707L5.707 18.293" />
       </svg>
     );
   }

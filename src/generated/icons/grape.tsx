@@ -18,7 +18,7 @@ export function GrapeIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 5V2.25L21.823 2.177L16.11 7.89" />
+        <path d="M22 5V2.28L21.802 2.198L16.11 7.89" />
         <circle cx="16.6" cy="15.89" r="3" />
         <circle cx="8.11" cy="7.4" r="3" />
         <circle cx="12.35" cy="11.65" r="3" />

@@ -101,6 +101,20 @@ function hasValidPathTokens(value: string): boolean {
   );
 }
 
+/** A path drawn by its caps alone: one move and one line shorter than a tenth of a unit. */
+function isDotPath(element: Element): boolean {
+  if (element.tagName !== "path") return false;
+  const match = (element.getAttribute("d") ?? "")
+    .trim()
+    .match(
+      /^M\s*-?[\d.]+[\s,]+-?[\d.]+\s*(?:[hv]\s*(-?[\d.]+)|l\s*(-?[\d.]+)[\s,]+(-?[\d.]+))\s*$/,
+    );
+  if (!match) return false;
+  const [, run, dx, dy] = match;
+  const length = run !== undefined ? Math.abs(Number(run)) : Math.hypot(Number(dx), Number(dy));
+  return Number.isFinite(length) && length < 0.1;
+}
+
 function validateVariant(
   element: Element,
   variant: IconVariant,
@@ -132,6 +146,16 @@ function validateVariant(
     // An outline descendant may fill itself: Lucide draws small solid dots, such as the hole in
     // `tag`, with fill="currentColor". The paint check above still limits fill to currentColor.
     if (!root && (variant === "filled" || name === "fill" || !element.hasAttribute(name))) continue;
+    // A sharp dot kept round (an eye, a spot: see config/derived keepRound) caps itself round.
+    if (
+      !root &&
+      style === "sharp" &&
+      name === "stroke-linecap" &&
+      element.getAttribute(name)?.trim() === "round" &&
+      isDotPath(element)
+    ) {
+      continue;
+    }
     const actual = element.getAttribute(name)?.trim();
     const matches =
       name === "stroke-width" || name === "stroke-miterlimit"

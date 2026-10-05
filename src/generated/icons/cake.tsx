@@ -24,9 +24,9 @@ export function CakeIcon(props: IconProps<"outline">) {
         <path d="M7 8v3" />
         <path d="M12 8v3" />
         <path d="M17 8v3" />
-        <path d="M7 4h.01" />
-        <path d="M12 4h.01" />
-        <path d="M17 4h.01" />
+        <path d="M7 4h.01" strokeLinecap="round" />
+        <path d="M12 4h.01" strokeLinecap="round" />
+        <path d="M17 4h.01" strokeLinecap="round" />
       </svg>
     );
   }

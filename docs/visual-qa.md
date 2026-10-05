@@ -4,10 +4,10 @@ Automated checks prove that an SVG is structurally valid and that derived and ge
 match their inputs; only a person can judge whether an icon reads well. Three things need that
 judgment here:
 
-- **Every filled drawing**, before it is listed in [config/filled.ts](../config/filled.ts) and
+- **Every filled drawing**, before it is listed in [config/derived/](../config/derived/README.md) and
   again whenever it changes. Filled drawings are derived by rule, and a rule can produce a
   valid but poor drawing ([filled.md](filled.md)).
-- **Every change to the sharp style**: a rule in `scripts/lib/sharp.ts` or a `keepRound` entry
+- **Every change to the sharp style**: a rule in `scripts/lib/sharp.ts` or a `keepRound` or `tipHeight` entry
   can change hundreds of sharp drawings at once ([sharp.md](sharp.md)).
 - **Every Lucide upgrade**: added and redrawn outlines, the filled and sharp drawings they change,
   and RTL decisions for new icons ([lucide.md](lucide.md#upgrading-lucide)). Outline problems are
@@ -113,7 +113,7 @@ views always show source geometry.
 
 For a filled drawing:
 
-1. Add the name to [config/filled.ts](../config/filled.ts), or change its recipe.
+1. Add the name to its category's file in [config/derived/](../config/derived/README.md), or change its recipe.
 2. Run `bun run derive:filled`, `bun run derive:sharp`, and `bun run generate`.
 3. Open the playground with `bun run playground`, select the icon, and switch to `filled`.
 4. Compare it with the outline at 16, 24, and 48 px, using the sizes view and the shapes and

@@ -19,7 +19,7 @@ export function MouseRightIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 7.318V10" />
-        <path d="M19 10v5a7 7 0 0 1-14 0V9c0-3.527 2.608-6.515 6-7" />
+        <path d="M19 10V15A7 7 0 0 1 5 15V9C5 5.875 7.048 3.172 9.874 2.26" />
         <circle cx="17" cy="4" r="2" />
       </svg>
     );

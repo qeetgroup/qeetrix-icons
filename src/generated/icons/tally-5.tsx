@@ -22,7 +22,7 @@ export function Tally5Icon(props: IconProps<"outline">) {
         <path d="M9 4v16" />
         <path d="M14 4v16" />
         <path d="M19 4v16" />
-        <path d="M22 6 2 18" />
+        <path d="M21.623 6.226L2.377 17.774" />
       </svg>
     );
   }

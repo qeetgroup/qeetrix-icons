@@ -35,7 +35,7 @@ export function FolderCodeIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M10 10.5 8 13l2 2.5" />
         <path d="m14 10.5 2 2.5-2 2.5" />
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
       </svg>
     );
   }

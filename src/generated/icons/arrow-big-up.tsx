@@ -14,7 +14,10 @@ export function ArrowBigUpIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path d="M8 21L8 13L0.586 13L12 1.586L23.414 13L16 13L16 21L8 21Z" fillRule="evenodd" />
+          <path
+            d="M8 21L8 13L2.612 13L2.018 11.567L12 1.586L21.982 11.567L21.388 13L16 13L16 21L8 21Z"
+            fillRule="evenodd"
+          />
         </svg>
       );
     }
@@ -30,7 +33,7 @@ export function ArrowBigUpIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M9 20H15V12H21L12 3L3 12H9Z" />
+        <path d="M15 20V12H20.72L20.802 11.802L12 3L3.198 11.802L3.28 12H9V20Z" />
       </svg>
     );
   }

@@ -20,7 +20,7 @@ export function SquaresSubtractIcon(props: IconProps<"outline">) {
       >
         <path d="M10 22H8V20" />
         <path d="M16 22h-2" />
-        <path d="M16 2H2V16H8V8H16Z" />
+        <path d="M2 2V16H8V8H16V2Z" />
         <path d="M20 8H22V10" />
         <path d="M22 14v2" />
         <path d="M22 20V22H20" />

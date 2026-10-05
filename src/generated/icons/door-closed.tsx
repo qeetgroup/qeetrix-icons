@@ -15,7 +15,7 @@ export function DoorClosedIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M20 19L4 19L4 2L20 2L20 19ZM8 11L10.01 11L10.01 13L8 13L8 11ZM1 20L23 20L23 22L1 22L1 20Z"
+            d="M4 19L20 19L20 2L4 2L4 19ZM8 11L10.01 11L10.01 13L8 13L8 11ZM1 20L23 20L23 22L1 22L1 20Z"
             fillRule="evenodd"
           />
         </svg>

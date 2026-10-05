@@ -19,9 +19,9 @@ export function CalendarOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 2v3" />
-        <path d="m2 2 20 20" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M21 9h-5.5" />
-        <path d="M3 9h6" />
+        <path d="M3 9H8" />
         <path d="M3 4.172V21H19.828" />
         <path d="M8.656 3H21V15.344" />
       </svg>

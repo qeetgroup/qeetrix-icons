@@ -15,7 +15,7 @@ export function CardSimIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M15.707 1.293L21 6.586L21 23L3 23L3 1L15.414 1L15.707 1.293ZM17 9L7 9L7 19L17 19L17 9ZM15 13L15 11L9 11L9 13L15 13ZM9 15L9 17L11 17L11 15L9 15ZM13 17L15 17L15 15L13 15L13 17Z"
+            d="M21 6.586L21 23L3 23L3 1L15.414 1L21 6.586ZM17 9L7 9L7 19L17 19L17 9ZM15 15L13 15L13 17L15 17L15 15ZM11 17L11 15L9 15L9 17L11 17ZM15 13L15 11L9 11L9 13L15 13Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function CardSimIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 14v4" />
-        <path d="M15 2L20 7V22H4V2Z" />
+        <path d="M20 7V22H4V2H15Z" />
         <path d="M8 14h8" />
         <rect height="8" width="8" x="8" y="10" />
       </svg>

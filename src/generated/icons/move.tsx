@@ -18,12 +18,12 @@ export function MoveIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 2v20" />
-        <path d="m15 19-3 3-3-3" />
-        <path d="m19 9 3 3-3 3" />
-        <path d="M2 12h20" />
-        <path d="m5 9-3 3 3 3" />
-        <path d="m9 5 3-3 3 3" />
+        <path d="M12 3V21" />
+        <path d="M15 19L12.113 21.887H11.887L9 19" />
+        <path d="M19 9L21.887 11.887V12.113L19 15" />
+        <path d="M3 12H21" />
+        <path d="M5 9L2.113 11.887V12.113L5 15" />
+        <path d="M9 5L11.887 2.113H12.113L15 5" />
       </svg>
     );
   }

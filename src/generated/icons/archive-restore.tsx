@@ -22,7 +22,7 @@ export function ArchiveRestoreIcon(props: IconProps<"outline">) {
         <path d="M4 8V21H8" />
         <path d="M20 8V21H16" />
         <path d="m9 15 3-3 3 3" />
-        <path d="M12 12v9" />
+        <path d="M12 13V21" />
       </svg>
     );
   }

@@ -18,10 +18,10 @@ export function RepeatIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m17 2 4 4-4 4" />
-        <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
-        <path d="m7 22-4-4 4-4" />
-        <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+        <path d="M17.419 2.419L21 6L17.419 9.581" />
+        <path d="M3 11V10A4 4 0 0 1 7 6H20" />
+        <path d="M6.581 21.581L3 18L6.581 14.419" />
+        <path d="M21 13V14A4 4 0 0 1 17 18H4" />
       </svg>
     );
   }

@@ -18,9 +18,9 @@ export function BusFrontIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 6 2 7" />
+        <path d="M3.106 6.447L2.347 6.827" />
         <path d="M10 6h4" />
-        <path d="m22 7-2-1" />
+        <path d="M21.653 6.827L20.894 6.447" />
         <rect height="16" width="16" x="4" y="3" />
         <path d="M4 11h16" />
         <path d="M8 15h.01" />

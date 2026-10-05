@@ -19,9 +19,9 @@ export function ArrowUpDownIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m21 16-4 4-4-4" />
-        <path d="M17 20V4" />
+        <path d="M17 19V4" />
         <path d="m3 8 4-4 4 4" />
-        <path d="M7 4v16" />
+        <path d="M7 5V20" />
       </svg>
     );
   }

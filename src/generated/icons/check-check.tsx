@@ -18,8 +18,8 @@ export function CheckCheckIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M18 6 7 17l-5-5" />
-        <path d="m22 10-7.5 7.5L13 16" />
+        <path d="M18 6L7 17L2.419 12.419" />
+        <path d="M21.581 10.419L14.5 17.5L13 16" />
       </svg>
     );
   }

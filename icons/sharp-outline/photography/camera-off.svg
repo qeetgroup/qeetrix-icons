@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="M14.564 14.558a3 3 0 1 1-4.122-4.121"/>
-  <path d="m2 2 20 20"/>
-  <path d="M20 20H2V7H6.426"/>
+  <path d="M13.913 15.311A3 3 0 1 1 10.442 10.437"/>
+  <path d="M2.419 2.419L21.581 21.581"/>
+  <path d="M19 20H2V7H6.426"/>
   <path d="M9.849 4H15.19L16.81 7H22V16.344"/>
 </svg>

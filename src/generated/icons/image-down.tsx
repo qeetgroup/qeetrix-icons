@@ -18,9 +18,9 @@ export function ImageDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10.3 21H3V3H21V15L16.5 10.5L6 21" />
-        <path d="M14 19L16.823 21.823L17 21.75V16.5" />
-        <path d="m17 22 3-3" />
+        <path d="M10.3 21H3V3H21V15L16.5 10.5L6.707 20.293" />
+        <path d="M14 19L16.788 21.788L17 21.7V16.5" />
+        <path d="M16.293 21.293L16.887 21.887H17.113L20 19" />
         <circle cx="9" cy="9" r="2" />
       </svg>
     );

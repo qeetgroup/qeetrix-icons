@@ -18,8 +18,8 @@ export function BookImageIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M20 13.7L16.5 10.2L9.7 17" />
-        <path d="M4 19.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
+        <path d="M19.293 12.993L16.5 10.2L10.407 16.293" />
+        <path d="M4 18.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
         <circle cx="10" cy="8" r="2" />
       </svg>
     );

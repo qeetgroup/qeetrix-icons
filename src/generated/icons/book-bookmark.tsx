@@ -19,7 +19,7 @@ export function BookBookmarkIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 2V10.273L13 7.86L16 10.273V2" />
-        <path d="M4 19.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
+        <path d="M4 18.5V2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
       </svg>
     );
   }

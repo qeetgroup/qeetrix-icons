@@ -18,8 +18,8 @@ export function CodeIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m16 18 6-6-6-6" />
-        <path d="m8 6-6 6 6 6" />
+        <path d="M16 18L21.887 12.113V11.887L16 6" />
+        <path d="M8 6L2.113 11.887V12.113L8 18" />
       </svg>
     );
   }

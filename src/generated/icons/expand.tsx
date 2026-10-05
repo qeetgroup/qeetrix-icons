@@ -18,14 +18,14 @@ export function ExpandIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m15 15 6 6" />
-        <path d="m15 9 6-6" />
+        <path d="M15 15L20.293 20.293" />
+        <path d="M15 9L20.293 3.707" />
         <path d="M21 16v5h-5" />
         <path d="M21 8V3h-5" />
         <path d="M3 16v5h5" />
-        <path d="m3 21 6-6" />
+        <path d="M3.707 20.293L9 15" />
         <path d="M3 8V3h5" />
-        <path d="M9 9 3 3" />
+        <path d="M9 9L3.707 3.707" />
       </svg>
     );
   }

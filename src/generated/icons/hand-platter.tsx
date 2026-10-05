@@ -19,7 +19,7 @@ export function HandPlatterIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 3V2" />
-        <path d="M15.4 17.4L18.6 14.6A2 2 0 1 1 21.4 17.5L17.8 20.8C17.1 21.6 16.1 22 15 22H11C9.9 22 8.9 21.6 8.2 20.8L6.599 19H5" />
+        <path d="M16.153 16.741L18.6 14.6A2 2 0 1 1 21.4 17.5L17.8 20.8C17.1 21.6 16.1 22 15 22H11C9.9 22 8.9 21.6 8.2 20.8L6.599 19H5" />
         <path d="M2 14h12a2 2 0 0 1 0 4h-2" />
         <path d="M4 10h16" />
         <path d="M5 10a7 7 0 0 1 14 0" />

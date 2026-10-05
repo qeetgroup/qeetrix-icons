@@ -18,8 +18,8 @@ export function SignpostBigIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 9H4L2 7l2-2h6" />
-        <path d="M14 5h6l2 2-2 2h-6" />
+        <path d="M10 9H4L2.113 7.113V6.887L4 5H10" />
+        <path d="M14 5H20L21.887 6.887V7.113L20 9H14" />
         <path d="M10 22V4a2 2 0 1 1 4 0v18" />
         <path d="M8 22h8" />
       </svg>

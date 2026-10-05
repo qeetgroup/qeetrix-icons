@@ -19,7 +19,7 @@ export function MailsIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M17 19V21H2V9.845" />
-        <path d="M22 5.5L14.5 10.383L7 5.5" />
+        <path d="M21.162 6.046L14.5 10.383L7.838 6.046" />
         <rect height="12" width="15" x="7" y="3" />
       </svg>
     );

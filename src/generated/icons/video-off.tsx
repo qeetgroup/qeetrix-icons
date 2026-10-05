@@ -19,8 +19,8 @@ export function VideoOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10.66 6H16V10.5L22 6.999V16.066" />
-        <path d="M16 16V18H2V6H6" />
-        <path d="m2 2 20 20" />
+        <path d="M16 17V18H2V6H5" />
+        <path d="M2.419 2.419L21.581 21.581" />
       </svg>
     );
   }

@@ -15,7 +15,7 @@ export function LampWallDownIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M9 2L3 2L3 10L9 10L9 7L13 7L13 12L9.647 12L6.047 21L21.955 21L18.353 12L15 12L15 5L9 5L9 2Z"
+            d="M9 2L3 2L3 10L9 10L9 7L13 7L13 12L9.647 12L6.596 19.629L6.047 21L21.955 21L18.353 12L15 12L15 5L9 5L9 2Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,8 +33,8 @@ export function LampWallDownIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M20.478 20H7.524L10.324 13H17.676Z" />
-        <path d="M8 3V9H4V3Z" />
+        <path d="M7.524 20L10.324 13H17.676L20.478 20Z" />
+        <path d="M8 9H4V3H8Z" />
         <path d="M8 6H14V13" />
       </svg>
     );

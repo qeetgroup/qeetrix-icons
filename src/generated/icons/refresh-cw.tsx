@@ -18,9 +18,9 @@ export function RefreshCwIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+        <path d="M3 12A9 9 0 0 1 12 3A9.75 9.75 0 0 1 18.74 5.74L20.293 7.293" />
         <path d="M21 3v5h-5" />
-        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+        <path d="M21 12A9 9 0 0 1 12 21A9.75 9.75 0 0 1 5.26 18.26L3.707 16.707" />
         <path d="M8 16H3v5" />
       </svg>
     );

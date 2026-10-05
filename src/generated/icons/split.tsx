@@ -20,8 +20,8 @@ export function SplitIcon(props: IconProps<"outline">) {
       >
         <path d="M16 3h5v5" />
         <path d="M8 3H3v5" />
-        <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3" />
-        <path d="m15 9 6-6" />
+        <path d="M12 22V13.7A4 4 0 0 0 10.828 10.828L3.707 3.707" />
+        <path d="M15 9L20.293 3.707" />
       </svg>
     );
   }

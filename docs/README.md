@@ -28,5 +28,7 @@ The machine-readable internal contracts are in `config/`, none of them package e
 [icon-system.ts](../config/icon-system.ts) (design values),
 [lucide.json](../config/lucide.json) and [categories.ts](../config/categories.ts) (synced from
 Lucide), [icon-metadata.ts](../config/icon-metadata.ts) (manifest metadata and RTL),
-[filled.ts](../config/filled.ts) (the filled list), and [brands.json](../config/brands.json)
+[derived/](../config/derived/README.md) (per category: the filled list and roles, `keepRound`, and
+`tipHeight`), [overrides/](../config/derived/README.md) (hand-drawn replacements), and
+[brands.json](../config/brands.json)
 (synced from theSVG).

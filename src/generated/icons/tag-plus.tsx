@@ -19,7 +19,7 @@ export function TagPlusIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 13h6" />
-        <path d="M16.5 6.5L12 2H2V12L11.995 21.995H14.005L16.5 19.5" />
+        <path d="M16.5 6.5L12 2H2V12L11.996 21.996H14.004L16.5 19.5" />
         <path d="M19 10v6" />
         <rect fill="currentColor" height="1" width="1" x="7" y="7" />
       </svg>

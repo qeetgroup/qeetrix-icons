@@ -18,7 +18,7 @@ export function StickyNotesIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 8L16 13V22H2V8Z" />
+        <path d="M16 13V22H2V8H11Z" />
         <path d="M10 8V14H16" />
         <path d="M8 4V2H17L22 7V16H20" />
         <path d="M16 2V8H22" />

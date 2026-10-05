@@ -15,7 +15,7 @@ export function SquareArrowUpRightIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M22 2L2 2L2 22L22 22L22 2ZM14.586 8L15 7.586L15.414 8L16 8L16 8.586L16.414 9L16 9.414L16 16L14 16L14 11.414L9 16.414L7.586 15L12.586 10L8 10L8 8L14.586 8Z"
+            d="M22 2L2 2L2 22L22 22L22 2ZM12.586 10L7.586 15L9 16.414L14 11.414L14 16L16 16L16 8L8 8L8 10L12.586 10Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function SquareArrowUpRightIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M15 15V9H9" />
-        <path d="m9 15 6-6" />
+        <path d="M9 15L14.293 9.707" />
         <rect height="18" width="18" x="3" y="3" />
       </svg>
     );

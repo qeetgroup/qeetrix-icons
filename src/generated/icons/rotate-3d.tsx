@@ -19,8 +19,8 @@ export function Rotate3dIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m15.194 13.707 3.814 1.86-1.86 3.814" />
-        <path d="M16.47214 7.52786 A 5 10 0 1 0 13 21.79796" />
-        <path d="M21.79796 11 A 10 5 0 1 0 19 15.57071" />
+        <path d="M16.129 6.36A5 10 0 1 0 13 21.798" />
+        <path d="M21.646 10.681A10 5 0 1 0 18.06 15.977" />
       </svg>
     );
   }

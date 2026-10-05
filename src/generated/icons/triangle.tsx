@@ -15,7 +15,7 @@ export function TriangleIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23.457 19.007L13.741 2.004L10.259 2.004L0.543 19.007L2.269 22L21.731 22L23.457 19.007Z"
+            d="M3.2 22L1 18.208L10.833 1L13.167 1L23 18.208L20.8 22L3.2 22Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function TriangleIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13.161 3.004H10.839L1.696 19.005L2.847 21H21.153L22.304 19.005Z" />
+        <path d="M3.776 21H20.224L21.846 18.204L12.585 1.997H11.415L2.154 18.204Z" />
       </svg>
     );
   }

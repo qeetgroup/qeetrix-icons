@@ -18,11 +18,11 @@ export function WavesLadderIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M19 5H17V18" />
-        <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+        <path d="M19 5H17V17" />
+        <path d="M2.398 18.321C2.894 18.694 3.483 19 4.5 19C7 19 7 17 9.5 17C12.1 17 11.9 19 14.5 19C17 19 17 17 19.5 17C20.517 17 21.106 17.306 21.602 17.679" />
         <path d="M7 13h10" />
         <path d="M7 9h10" />
-        <path d="M9 5H7V18" />
+        <path d="M9 5H7V17" />
       </svg>
     );
   }

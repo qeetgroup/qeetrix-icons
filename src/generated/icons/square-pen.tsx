@@ -19,7 +19,7 @@ export function SquarePenIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 3H3V21H21V12" />
-        <path d="M18.375 2.625A1 1 0 0 1 21.375 5.625L12.001 15L7.76 16.24L8.999 12.002Z" />
+        <path d="M21.375 5.625L12.001 15L7.76 16.24L8.999 12.002L18.375 2.625A1 1 0 0 1 21.375 5.625Z" />
       </svg>
     );
   }

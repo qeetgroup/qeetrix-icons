@@ -18,14 +18,14 @@ export function UnfoldVerticalIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 22v-6" />
-        <path d="M12 8V2" />
+        <path d="M12 21V16" />
+        <path d="M12 8V3" />
         <path d="M4 12H2" />
         <path d="M10 12H8" />
         <path d="M16 12h-2" />
         <path d="M22 12h-2" />
-        <path d="m15 19-3 3-3-3" />
-        <path d="m15 5-3-3-3 3" />
+        <path d="M15 19L12.113 21.887H11.887L9 19" />
+        <path d="M15 5L12.113 2.113H11.887L9 5" />
       </svg>
     );
   }

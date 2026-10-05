@@ -19,7 +19,7 @@ export function VanIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M13 6V12H20.52L22 13.5V18H18" />
-        <path d="M5 18H2V6H17.896L19.576 12" />
+        <path d="M5 18H2V6H17.896L19.306 11.037" />
         <path d="M9 18h5" />
         <circle cx="16" cy="18" r="2" />
         <circle cx="7" cy="18" r="2" />

@@ -21,7 +21,7 @@ export function ClipboardCopyIcon(props: IconProps<"outline">) {
         <rect height="4" width="8" x="8" y="2" />
         <path d="M8 4H4V22H20V18" />
         <path d="M16 4H20V10" />
-        <path d="M21 14H11" />
+        <path d="M21 14H12" />
         <path d="m15 10-4 4 4 4" />
       </svg>
     );

@@ -18,8 +18,8 @@ export function ShareIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 2v13" />
-        <path d="m16 6-4-4-4 4" />
+        <path d="M12 3V15" />
+        <path d="M16 6L12.113 2.113H11.887L8 6" />
         <path d="M4 12V22H20V12" />
       </svg>
     );

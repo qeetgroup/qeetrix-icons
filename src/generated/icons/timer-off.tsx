@@ -20,9 +20,9 @@ export function TimerOffIcon(props: IconProps<"outline">) {
       >
         <path d="M10 2h4" />
         <path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7" />
-        <path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2" />
-        <path d="m2 2 20 20" />
-        <path d="M12 12v-2" />
+        <path d="M8.255 6.883A8 8 0 0 1 17.7 8.4A8 8 0 0 1 19.117 17.745" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M12 11V10" />
       </svg>
     );
   }

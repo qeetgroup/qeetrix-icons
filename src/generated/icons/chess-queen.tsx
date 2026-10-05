@@ -18,11 +18,11 @@ export function ChessQueenIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 18H20V22H4Z" />
+        <path d="M20 18V22H4V18Z" />
         <path d="M12.474 5.943L14.594 13.168L18.407 8.209" />
-        <path d="m20 9-3 9" />
+        <path d="M20 9L17.316 17.051" />
         <path d="M5.594 8.209L9.406 13.169L11.526 5.943" />
-        <path d="M7 18 4 9" />
+        <path d="M6.684 17.051L4 9" />
         <circle cx="12" cy="4" r="2" />
         <circle cx="20" cy="7" r="2" />
         <circle cx="4" cy="7" r="2" />

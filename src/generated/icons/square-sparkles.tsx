@@ -19,7 +19,7 @@ export function SquareSparklesIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M11 15H7" />
-        <path d="M15.503 1.999H16.497L17.372 6.627L22.001 7.503V8.497L17.373 9.372L16 16.63L14.628 9.373L7.37 8L14.627 6.628Z" />
+        <path d="M17.372 6.627L21.997 7.502V8.498L17.373 9.372L16.498 13.997H15.502L14.628 9.373L10.003 8.498V7.502L14.627 6.628L15.502 2.003H16.498Z" />
         <path d="M21 13V21H3V3H11" />
         <path d="M9 13v4" />
       </svg>

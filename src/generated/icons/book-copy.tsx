@@ -18,9 +18,9 @@ export function BookCopyIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M5 7H3V20" />
+        <path d="M5 7H3V19" />
         <path d="M5.803 18H5A2 2 0 0 0 5 22H15V21" />
-        <path d="M9 15V2H21V17H11A2 2 0 0 1 11 13H21" />
+        <path d="M9 14V2H21V17H11A2 2 0 0 1 11 13H21" />
       </svg>
     );
   }

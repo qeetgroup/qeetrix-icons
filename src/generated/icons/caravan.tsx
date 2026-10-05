@@ -19,7 +19,7 @@ export function CaravanIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M18 19V9A4 4 0 0 0 14 5H6A4 4 0 0 0 2 9V19H6" />
-        <path d="M2 9H6V13H2" />
+        <path d="M2 10V9H6V13H2" />
         <path d="M22 17V19H10V9H14V19" />
         <circle cx="8" cy="19" r="2" />
       </svg>

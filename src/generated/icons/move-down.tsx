@@ -18,8 +18,8 @@ export function MoveDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M8 18L12 22L16 18" />
-        <path d="M12 2V22" />
+        <path d="M8 18L11.887 21.887H12.113L16 18" />
+        <path d="M12 2V21" />
       </svg>
     );
   }

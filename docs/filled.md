@@ -1,14 +1,16 @@
 # Filled drawings
 
 Lucide is outline-only. The filled variants are a Qeetrix addition: each one is derived from its
-Lucide outline by path operations, not drawn by hand, and then reviewed by eye. 794 icons have
-one; the list is [config/filled.ts](../config/filled.ts). Each listed icon gets a filled drawing in
-both shapes: this page describes the round one, and [sharp.md](sharp.md#sharp-filled-drawings) how
-the sharp one reuses it.
+Lucide outline by path operations, not drawn by hand, and then reviewed by eye. The icons that
+have one are listed per source category in [config/derived/](../config/derived/README.md), under
+`filled`. Each listed icon gets a filled drawing in both shapes: this page describes the round
+one, and [sharp.md](sharp.md#sharp-filled-drawings) how the sharp one reuses it. Where derivation
+cannot give a clean drawing, a reviewed [hand-drawn override](#overrides) replaces it.
 
 ```bash
-bun run derive:filled   # write icons/round-filled/ from config/filled.ts and the round outlines
-bun run check:filled    # fail if any filled drawing is missing, stale, or unlisted; writes nothing
+bun run derive:filled                    # write icons/round-filled/ from config/derived/ and the round outlines
+bun run check:filled                     # fail if any filled drawing is missing, stale, or unlisted; writes nothing
+bun run derive:filled --category files   # only one category: reads, writes, and removes nothing else
 ```
 
 `derive:filled` ([derive-filled.ts](../scripts/build/derive-filled.ts)) writes each listed icon to
@@ -52,15 +54,27 @@ one role in the filled drawing:
 |:--|:--|
 | `fill` | A solid body: the shape's interior plus its stroke |
 | `stroke` | Stays a line, joined to the silhouette |
-| `cut` | A detail inside a body, knocked out as a negative line of stroke width. A dot is cut whole |
+| `cut` | A detail inside a body, knocked out as a negative line of stroke width. A dot is cut whole; a line that ends on the body's edge runs on through it |
 | `gap` | Stays a line, with 1 unit of clearance cut on each side where it crosses a body |
 | `front` | A solid body in front of the others, with 1 unit of clearance cut around it |
 | `hole` | Knocked out entirely, interior and stroke |
 | `skip` | Left out |
 
 A dot is a shape the outline paints solid (Lucide draws small dots with `fill="currentColor"`, such
-as the hole in `tag`) or one so small that its stroke covers its interior. A `cut` removes a dot
-whole; any larger shape is cut as a ring of stroke width around its interior.
+as the hole in `tag`), or a closed shape so small that its stroke covers its interior. A `cut`
+removes a dot whole, so `h.01` dots become round holes (square in the sharp style). A larger closed
+shape is cut as a ring of stroke width around its interior, and an open line is always cut as a
+line, never with the chord that would close it: a short hook (the `1` in `calendar-1`, a clock
+hand, a smile) stays a hook rather than becoming a wedge.
+
+### Cuts that reach the edge
+
+A cut line that ends on its body's outline (a calendar's divider, a file's fold, a mail flap, a
+table's rules, a panel divider, a card's stripe) runs on through the edge along its own direction,
+just far enough to clear it. The parts it separates then come apart cleanly, with a gap of stroke
+width: a calendar is a header and a body, a file is a page and a separate dog-ear, a mail icon is
+a flap and a body, a grid is its cells. Without this a round cap would pinch the edge to a point
+and a square cap would leave a hairline, so the two shapes would not agree.
 
 ## Inference
 
@@ -74,13 +88,21 @@ Most recipes are empty and every role is inferred. `deriveFilled` in
    (an attached curve, such as a lock shackle or bag handle, whose chord should not be filled) or
    runs mostly between bodies (a connector, such as the lines of `share-2`).
 3. **`fill`**: it encloses area.
-4. **`gap`**: it is a line crossing a body.
-5. **`stroke`**: anything else.
+4. **`stroke`**: it is a line hanging off a body: a leg, cord, pole, stem, or handle. Its ends that
+   lie in a body all lie on that body's drawn line (not on a chord closing an open body, and not
+   deep inside it), and most of the line lies outside. A gap would notch the body around it.
+5. **`gap`**: it is any other line overlapping a body: one crossing it (the slash of an `-off`
+   icon, a trash lid) or ending deep inside it (a calendar's tab).
+6. **`stroke`**: anything else.
 
 Bodies are the `fill` and `front` elements found so far. `front`, `hole`, and `skip` are never
 inferred; only a recipe sets them.
 
 ## Composition
+
+A body drawn as an open path (the torso of `user`, a flag) is filled as if closed, and its stroke
+follows the closing edge too, so the body reaches the outline's painted extent there rather than
+stopping half a stroke short. Contours without an area (dots, straight lines) are never closed.
 
 The drawing is built in three passes:
 
@@ -88,8 +110,8 @@ The drawing is built in three passes:
 2. **Gaps and fronts.** For each `gap` or `front` element, a clearance (the element stroked at the
    stroke width plus 1 unit on each side) is subtracted. A `front` element also has its interior
    subtracted. Then the line (`gap`) or solid body (`front`) is added back on top.
-3. **Cuts and holes.** Each `cut` and `hole` is subtracted last, so a detail inside a front body,
-   such as the check on `copy-check`, stays cut.
+3. **Cuts and holes.** Each `cut` (with its [run-on](#cuts-that-reach-the-edge)) and `hole` is
+   subtracted last, so a detail inside a front body, such as the check on `copy-check`, stays cut.
 
 ### Precision
 
@@ -111,17 +133,22 @@ Boolean results are nested, non-crossing contours, which the even-odd rule fills
 
 ## Recipes
 
-[config/filled.ts](../config/filled.ts) maps icon names to recipes, grouped by source category. An
-empty recipe infers every role; `roles` overrides the role of an element by its 0-based index in
-the outline source.
+Each source category has a file, `config/derived/<category>.ts`, whose `filled` table maps icon
+names to recipes ([config/filled.ts](../config/filled.ts) merges them). An empty recipe infers
+every role; `roles` overrides the role of an element by its 0-based index in the outline source,
+with a comment saying why.
 
 ```ts
-export const filledRecipes: Readonly<Record<string, FilledRecipe>> = {
-  star: {},
-  // Element 0, the clip <rect>, is a solid body in front of the board, with a gap around it.
-  clipboard: { roles: { 0: "front" } },
-  // Element 0, the handle, stays attached; inference would make it a gap line through the lens.
-  search: { roles: { 0: "stroke" } },
+export const derivations: CategoryDerivations = {
+  filled: {
+    star: {},
+    // Element 0, the clip <rect>, is a solid body in front of the board, with a gap around it.
+    clipboard: { roles: { 0: "front" } },
+    // The open chevron beside the bodies stays a line; inference would close it into a wedge.
+    "between-horizontal-end": { roles: { 1: "stroke" } },
+  },
+  keepRound: {},
+  sharpFilledRoles: {},
 };
 ```
 
@@ -130,6 +157,25 @@ override is tied to the outline as Lucide drew it: when an upgrade redraws an ic
 recipe ([lucide.md](lucide.md#upgrading-lucide)). Sharpening keeps element order and count, so the
 same indices hold for the sharp outline, and the sharp filled drawing plays every element in the
 role the round one gave it.
+
+## Overrides
+
+When no recipe gives a clean drawing, a hand-drawn replacement takes its place:
+`config/overrides/round-filled/<category>/<name>.svg` (and `sharp-filled/` for the sharp shape)
+is copied to `icons/` byte for byte instead of being derived. An override must sit on the outline's
+geometry, use only `path`, `circle`, `ellipse`, `rect`, `line`, `polyline`, and `polygon` with the
+filled root `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">`,
+and replace a listed icon. A convenient way to draw one is to run `deriveFilled` on a corrected
+copy of the outline (for example with an open path split in two) and keep its output.
+
+Every override records the outline it was drawn against and that outline's SHA-256:
+
+```bash
+bun run stamp:override config/overrides/round-filled/home/plant-pot.svg
+```
+
+When a Lucide upgrade changes the outline, derivation fails for that override until someone
+reviews it against the new outline and stamps it again.
 
 ## What is listed
 
@@ -151,15 +197,16 @@ component accepts only `variant="outline"` ([api.md](api.md#one-component-per-co
 
 ## Adding a filled drawing
 
-1. Add the icon's name to [config/filled.ts](../config/filled.ts) under its category, with an empty
-   recipe.
-2. Run `bun run derive:filled`, then `bun run derive:sharp` for the sharp filled drawing.
+1. Add the icon's name to `filled` in `config/derived/<category>.ts`, with an empty recipe.
+2. Run `bun run derive:filled --category <category>`, then `bun run derive:sharp --category
+   <category>` for the sharp filled drawing.
 3. Run `bun run generate`, then `bun run playground`, and review the filled drawing beside the
    outline at 16, 24, and 48 px (the custom size reaches 48), in both shapes: bodies solid, details
    cut cleanly, crossing lines clear, nothing lost that the outline relies on.
 4. Only if inference chose a wrong role, add a `roles` override for that element and repeat from
-   step 2. If no recipe gives a clean result, leave the icon out.
-5. Commit the recipe, both filled SVGs, and the generated files together.
+   step 2. If no recipe gives a clean result, draw an [override](#overrides), or leave the icon
+   out.
+5. Commit the recipe, any override, both filled SVGs, and the generated files together.
 
 Adding a filled drawing is a minor release; removing one is major, because `variant="filled"` stops
 compiling for that icon ([api.md](api.md#versioning)). Changing the derivation code can change many

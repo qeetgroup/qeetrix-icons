@@ -18,7 +18,7 @@ export function TypeOutlineIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14 17H15A2 2 0 0 1 15 21H9A2 2 0 0 1 9 17H10V7H6V8A2 2 0 0 1 2 8V3H22V8A2 2 0 0 1 18 8V7H14Z" />
+        <path d="M15 17A2 2 0 0 1 15 21H9A2 2 0 0 1 9 17H10V7H6V8A2 2 0 0 1 2 8V3H22V8A2 2 0 0 1 18 8V7H14V17Z" />
       </svg>
     );
   }

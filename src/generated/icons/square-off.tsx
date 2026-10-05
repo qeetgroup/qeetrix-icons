@@ -20,7 +20,7 @@ export function SquareOffIcon(props: IconProps<"outline">) {
       >
         <path d="M19.812 21H3V4.176" />
         <path d="M21 15.3V3H8.7" />
-        <path d="M22 22 2 2" />
+        <path d="M21.581 21.581L2.419 2.419" />
       </svg>
     );
   }

@@ -18,7 +18,7 @@ export function HouseCogIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10.584 21H3V9.081L12 1.366L21 9.081V10.584" />
+        <path d="M10.584 21H3V9.081L11.271 1.991H12.729L21 9.081V10.584" />
         <path d="M14 12H9V21" />
         <path d="m14.305 19.53.923-.382" />
         <path d="m15.229 16.852-.924-.383" />

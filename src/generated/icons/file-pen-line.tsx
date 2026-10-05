@@ -18,7 +18,7 @@ export function FilePenLineIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14.001 13.997L12.766 18.233L17.002 16.998L21.378 12.626A1 1 0 0 0 18.374 9.622Z" />
+        <path d="M12.766 18.233L17.002 16.998L21.378 12.626A1 1 0 0 0 18.374 9.622L14.001 13.997Z" />
         <path d="M14 7.567V2" />
         <path d="M20 19.645V22H4V2H14.998L18.22 5.222" />
         <path d="M8 18h1" />

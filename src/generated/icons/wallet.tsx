@@ -19,7 +19,7 @@ export function WalletIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M19 7V3H5A2 2 0 0 0 5 7H21V12H18A2 2 0 0 0 18 16H22V12H21" />
-        <path d="M3 5V21H21V16" />
+        <path d="M3 6V21H21V16" />
       </svg>
     );
   }

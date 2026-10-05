@@ -19,7 +19,7 @@ export function HousesIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12.681 4.24L14.455 2.719L21 8.331V16.601" />
-        <path d="M16 12.331V21H2.91V12.331L9.455 6.719Z" />
+        <path d="M16 21H2.91V12.331L9.455 6.719L16 12.331Z" />
         <path d="M7.41 20.546V15.546H11.41V20.546" />
       </svg>
     );

@@ -15,7 +15,7 @@ export function FactoryIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M2 2L2 22L22 22L22 5.765L16 9.589L16 5.765L10 9.59L10 2L2 2ZM7 15L9.01 15L9.01 17L7 17L7 15ZM11 15L13.01 15L13.01 17L11 17L11 15ZM17.01 15L15 15L15 17L17.01 17L17.01 15Z"
+            d="M2 22L22 22L22 5.765L16 9.589L16 5.764L10 9.59L10 2L2 2L2 22ZM7 15L9.01 15L9.01 17L7 17L7 15ZM11 15L13.01 15L13.01 17L11 17L11 15ZM17.01 15L15 15L15 17L17.01 17L17.01 15Z"
             fillRule="evenodd"
           />
         </svg>
@@ -35,7 +35,7 @@ export function FactoryIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M12 16h.01" />
         <path d="M16 16h.01" />
-        <path d="M3 21H21V7.588L15 11.412V7.588L9 11.413V3H3Z" />
+        <path d="M21 21V7.588L15.186 11.294L15 11.192V7.588L9.186 11.295L9 11.193V3H3V21Z" />
         <path d="M8 16h.01" />
       </svg>
     );

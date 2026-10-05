@@ -18,11 +18,11 @@ export function BotOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13.67 8H20V14.33" />
+        <path d="M14.67 8H20V14.33" />
         <path d="M2 14h2" />
         <path d="M20 14h2" />
-        <path d="M22 22 2 2" />
-        <path d="M8 8H4V20H18.828" />
+        <path d="M21.581 21.581L2.419 2.419" />
+        <path d="M7 8H4V20H18.828L19.414 19.414" />
         <path d="M9 13v2" />
         <path d="M9.67 4H12v2.33" />
       </svg>

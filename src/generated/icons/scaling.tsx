@@ -21,7 +21,7 @@ export function ScalingIcon(props: IconProps<"outline">) {
         <path d="M12 3H3V21H21V12" />
         <path d="M14 15H9v-5" />
         <path d="M16 3h5v5" />
-        <path d="M21 3 9 15" />
+        <path d="M20.293 3.707L9.707 14.293" />
       </svg>
     );
   }

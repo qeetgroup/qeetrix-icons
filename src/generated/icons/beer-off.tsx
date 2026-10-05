@@ -18,12 +18,12 @@ export function BeerOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13 13v5" />
+        <path d="M13 14V18" />
         <path d="M17 11.47V8" />
         <path d="M17 11h1a3 3 0 0 1 2.745 4.211" />
-        <path d="m2 2 20 20" />
-        <path d="M5 8V22H17V17" />
-        <path d="M7.536 7.535C6.766 7.649 6.154 8 5.5 8a2.5 2.5 0 0 1-1.768-4.268" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M5 8V22H17V18" />
+        <path d="M6.519 7.796C6.172 7.904 5.842 8 5.5 8A2.5 2.5 0 0 1 3.732 3.732" />
         <path d="M8.727 3.204C9.306 2.767 9.885 2 11 2c1.56 0 2 1.5 3 1.5s1.72-.5 2.5-.5a1 1 0 1 1 0 5c-.78 0-1.5-.5-2.5-.5a3.149 3.149 0 0 0-.842.12" />
         <path d="M9 14.6V18" />
       </svg>

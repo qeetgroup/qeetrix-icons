@@ -18,10 +18,10 @@ export function RockingChairIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="m15 13 3.708 7.416" />
+        <path d="M15.447 13.894L18.261 19.522" />
         <path d="M3 19a15 15 0 0 0 18 0" />
-        <path d="M3 2L6.666 13H18" />
-        <path d="m9 13-3.708 7.416" />
+        <path d="M3.09 2.27L6.666 13H18" />
+        <path d="M8.553 13.894L5.739 19.522" />
       </svg>
     );
   }

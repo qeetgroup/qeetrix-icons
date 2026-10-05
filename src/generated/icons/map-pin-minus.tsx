@@ -18,7 +18,7 @@ export function MapPinMinusIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M18.977 14C19.6 12.701 20 11.343 20 10A8 8 0 0 0 4 10C4 14.993 9.539 20.193 11.399 21.799L12 22.251L12.601 21.799A32 32 0 0 0 13.425 21.061" />
+        <path d="M18.977 14C19.6 12.701 20 11.343 20 10A8 8 0 0 0 4 10C4 14.993 9.539 20.193 11.399 21.799L11.744 22.059H12.256L12.601 21.799A32 32 0 0 0 13.425 21.061" />
         <circle cx="12" cy="10" r="3" />
         <path d="M16 18h6" />
       </svg>

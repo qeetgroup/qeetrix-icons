@@ -18,9 +18,9 @@ export function LayerArrowDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 10v10" />
-        <path d="M22.005 10.649L16.333 13.228" />
-        <path d="M22.018 9.361L12.001 4.802L1.999 9.353L1.985 10.64L7.673 13.227" />
+        <path d="M12 10V19" />
+        <path d="M16.333 13.228L22.002 10.651V9.354L17 7.077" />
+        <path d="M17 7.077L12.001 4.802L1.998 9.354V10.646L7.673 13.227" />
         <path d="m9 17 3 3 3-3" />
       </svg>
     );

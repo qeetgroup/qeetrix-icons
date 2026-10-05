@@ -18,12 +18,12 @@ export function PackageXIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 22V12" />
+        <path d="M12 21V12" />
         <path d="m16.5 14.5 5 5" />
         <path d="m16.5 19.5 5-5" />
-        <path d="M21 10.5V6.841L12 1.699L3 6.841V17.158L11.999 22.3L13.13 21.656" />
-        <path d="M3.29 7 12 12l8.71-5" />
-        <path d="m7.5 4.27 8.997 5.148" />
+        <path d="M21 10.5V6.841L12.521 1.997H11.479L3 6.841V17.158L11.478 22.002L12.52 22.003L13.13 21.656" />
+        <path d="M4.157 7.498L12 12L19.843 7.498" />
+        <path d="M8.368 4.767L15.629 8.921" />
       </svg>
     );
   }

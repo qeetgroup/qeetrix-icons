@@ -20,8 +20,8 @@ export function SquareParkingOffIcon(props: IconProps<"outline">) {
       >
         <path d="M4.188 3H21V19.824" />
         <path d="M3 8.7V21H15.3" />
-        <path d="m2 2 20 20" />
-        <path d="M13 13a3 3 0 1 0 0-6H9v2" />
+        <path d="M2.419 2.419L21.581 21.581" />
+        <path d="M13 13A3 3 0 1 0 13 7H9V8" />
         <path d="M9 17v-2.3" />
       </svg>
     );

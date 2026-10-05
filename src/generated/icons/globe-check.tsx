@@ -19,7 +19,7 @@ export function GlobeCheckIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="m15 6 2 2 4-4" />
-        <path d="M2 12h20A10 10 0 1 1 12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 4-10" />
+        <path d="M2 12H22A10 10 0 1 1 12 2A14.5 14.5 0 0 0 11.89 21.884H12.11A14.5 14.5 0 0 0 16 12" />
       </svg>
     );
   }

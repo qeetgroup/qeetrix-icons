@@ -15,7 +15,7 @@ export function MonitorStopIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 2L1 2L1 18L11 18L11 20L7 20L7 22L17 22L17 20L13 20L13 18L23 18L23 2ZM16 6L8 6L8 14L16 14L16 6ZM10 12L10 8L14 8L14 12L10 12Z"
+            d="M1 2L23 2L23 18L13 18L13 20L17 20L17 22L7 22L7 20L11 20L11 18L1 18L1 2ZM16 6L8 6L8 14L16 14L16 6ZM10 12L10 8L14 8L14 12L10 12Z"
             fillRule="evenodd"
           />
         </svg>

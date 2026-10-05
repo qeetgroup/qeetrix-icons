@@ -18,7 +18,7 @@ export function ClipboardPasteIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 14h10" />
+        <path d="M11 14H20" />
         <path d="M16 4H20V7.344" />
         <path d="m17 18 4-4-4-4" />
         <path d="M8 4H4V22H19.242" />
