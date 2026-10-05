@@ -1,5 +1,135 @@
 # @qeetrix/icons
 
+## Unreleased — 2.0.0
+
+### Major Changes
+
+- **Qeetrix Icons 2.0: Lucide icons, in round and sharp, with derived filled variants, plus
+  brand logos.** 2.0 replaces the 1.x catalogue with the outline icons of
+  [Lucide](https://lucide.dev) 1.52.0, as React 19 components, plus a sharp style and filled
+  variants derived from those outlines, and adds the [theSVG](https://thesvg.org) brand logos. It
+  does not restore any part of the 1.x API.
+
+  **Icons**
+
+  - 1,863 outline icons from Lucide 1.52.0, the release pinned in `config/lucide.json`. The
+    artwork is Lucide's, unchanged; names and the 42 categories are Lucide's too. Deprecated
+    upstream icons (the three Swiss-franc icons) are left out. `bun run sync:lucide [version]`
+    re-syncs the pinned release or upgrades it ([docs/lucide.md](docs/lucide.md)).
+  - A sharp style for every icon: the same geometry with square caps, mitered joins (miter limit
+    4), and corner roundings squared off, acute tips included. Corners whose point would leave the
+    canvas or hit another stroke are cut flat, dots become squares, and figurative circles and
+    organic outlines stay round. `bun run derive:sharp` derives it from the round outlines
+    ([docs/sharp.md](docs/sharp.md)).
+  - Filled variants for 794 icons, in both shapes, listed in `config/filled.ts`.
+    `bun run derive:filled` derives each from its outline with Skia path operations
+    (`canvaskit-wasm` 0.42.0, a development dependency): bodies filled to the outline's painted
+    extent, details cut as negative lines, crossing lines cleared by a 1-unit gap. The sharp filled
+    drawing is derived from the sharp outline with the same roles. Every listed icon was reviewed
+    visually; open-line, text, chart, badge-clipped, busy, and empty-state icons stay outline-only
+    ([docs/filled.md](docs/filled.md)).
+  - Sources live in four folders, `icons/round-outline/` (Lucide), `icons/round-filled/`,
+    `icons/sharp-outline/`, and `icons/sharp-filled/` (derived), each by Lucide category.
+  - Lucide's rendering defaults: a 24 × 24 grid, stroke width 2, round caps and joins, 1 unit of
+    padding, and `currentColor`.
+
+  **Brand logos** ([docs/logos.md](docs/logos.md))
+
+  - 7,429 logos from theSVG (13,401 files), every collection: brands, auth badges, AWS, Azure,
+    Google Cloud, and Kubernetes architecture icons, community, and unlisted.
+    `bun run sync:brands [commit]` copies every file byte for byte to
+    `icons/brand-icons/<collection>/<slug>/<variant>.svg` from the commit pinned in
+    `config/brands.json`, which records each logo's metadata and license and each file's measured
+    background (`light`, `dark`, or `any`), because theSVG's own `light` and `dark` names are mostly
+    inverted.
+  - One component per logo, `<PascalCase slug>Logo` (`GithubLogo`; `Brand1passwordLogo` for slugs
+    starting with a digit), exported from the package root next to the icons. Each
+    renders its published file unmodified as an `<img>` with a lossless `data:image/svg+xml` URI:
+    no recolouring, no style or id clashes, no hooks. `LogoProps`: native `<img>` props except
+    `src`, `srcSet`, and `sizes`, plus `variant` (typed per logo), `height` (default 24), and
+    `width` (from the file's aspect ratio). Decorative by default; `alt` or `aria-label` names it.
+  - `logoManifest` in `@qeetrix/icons/manifest`: id, component name, title, collection, variants
+    with their backgrounds, default variant, brand colour, categories, aliases, license, website,
+    guidelines, and source.
+  - Every logo keeps its own license, including restrictive ones (non-commercial, no-derivatives
+    for all AWS icons, copyleft) and about 560 with no real license. Logos are trademarks of their
+    owners, for identification only. Three upstream files are broken as published and render that
+    way: `btk` default, `logitech-g` default, and `zenmux` default and mono.
+
+  **API**
+
+  - One component per icon, named `<PascalCase>Icon` after the Lucide name (`trash` → `TrashIcon`,
+    `clock-12` → `Clock12Icon`), exported from the root and from `@qeetrix/icons/icons/<name>`.
+  - `shape` is `"round"` (the default) or `"sharp"`; every icon has both, so it is never narrowed.
+    `variant` is `"outline"` (the default) or `"filled"`, typed per component to the drawings that
+    exist, the same in both shapes, so an unavailable variant is a type error. Neither prop reaches
+    the DOM.
+  - `IconProps`: native SVG props plus `size` (number or CSS length, default 24), `shape`, and
+    `variant`. Caller props are spread last, so `strokeWidth` and other presentation attributes
+    override the drawing's. Icons are decorative by default; `aria-label` or `aria-labelledby`
+    makes them `role="img"`. The root also exports the `IconShape`, `IconVariant`, and
+    `IconDirectionality` types.
+  - `@qeetrix/icons/manifest`: `iconManifest` (`schemaVersion` 1), one entry per icon with `id`,
+    `name`, `componentName`, `category` (the primary category and source folder), `categories`
+    (every Lucide category, primary first), `variants`, `shapes` (`["round", "sharp"]`),
+    `directionality`, `tags` (Lucide's keywords), and `aliases` (Lucide's former names, such as
+    `trash-2` for `trash`, which are not exported).
+  - RTL: 18 reading-direction icons, such as `undo`, `reply`, `send`, and `log-in`, are `mirror` in
+    the manifest; every other icon is `preserve`. There is no runtime mirroring.
+  - Entry points are the root, `./icons/*`, `./logos/*`, `./manifest`, and `./package.json`;
+    there is no shape or category subpath. The root also exports the `LogoProps`, `LogoComponent`,
+    and `LogoBackground` types. ESM-only, `sideEffects: false`, per-icon and per-logo tree shaking,
+    and React 19 as the only peer dependency. Dev servers that pre-bundle the whole root process
+    every logo; direct subpath imports avoid that.
+
+  **Tooling** (repository only, never published)
+
+  - Source validation (`check:icons`), generation (`generate`, `check:generated`), filled
+    derivation (`derive:filled`, `check:filled`), sharp derivation (`derive:sharp`, `check:sharp`),
+    the Lucide sync (`sync:lucide`), and the brand pipeline (`sync:brands`, `check:brands` with
+    `QXB-*` codes, `generate:logos`, `check:logos`). CI and the release gate run `check:icons`,
+    `check:filled`, `check:sharp`, and `check:generated`; `check:logos` runs in the test suite.
+    The build is plain `tsc`; `tsc-alias`, which did nothing, is gone.
+  - Validation checks the sharp stroke style (square caps, miter joins, and a `stroke-miterlimit`
+    equal to the configured 4, which round sources may not carry) and adds `QXI-STYLE-001` (every
+    drawing needs its counterpart in the other style) and `QXI-META-003` (an icon's metadata
+    categories must be configured ids, the first being its source folder).
+  - An internal visual QA playground (`bun run playground`) with an Icons page (Round/Sharp shape
+    switch, `?shape=sharp`; search over tags and aliases; category filter over every category an
+    icon is listed under) and a Logos page (collections, backgrounds, licenses).
+
+  **License**
+
+  - `LICENSE` keeps the MIT License for the package code and adds Lucide's license verbatim (ISC,
+    with the Feather MIT notice it includes) for the icon artwork, the derived drawings, and the
+    generated icon components. Per-logo licenses and notices are in `LICENSE` and
+    `licenses/third-party-logos.md`. `package.json` declares `SEE LICENSE IN LICENSE`.
+
+  **Removed**
+
+  - The entire 1.x icon catalogue: every icon component, and the 1.x source SVGs under
+    `icons/round-outline/` and `icons/round-solid/` (the `icons/sharp-outline/` and
+    `icons/sharp-solid/` folders were empty). 2.0 reuses the `round-outline` and `sharp-outline`
+    folder names for its own sources.
+  - The `@qeetrix/icons/icons/<category>/<name>` deep-import subpath.
+  - The `QeetrixIcon` and `QeetrixIconProps` types, the 1.x `variant` values
+    (`"outline" | "solid"`), and the white default colour. 2.0 reuses the names `IconVariant` and
+    `variant` for `"outline" | "filled"`, and `IconShape` and `shape` for `"round" | "sharp"`, which
+    in 1.x reserved `"sharp"` without any artwork.
+  - The 1.x generator and its `generate:check` script (2.0 has its own `generate` and
+    `check:generated`), and the example viewer app.
+  - Never released: an earlier 2.0 draft of 578 original Qeetrix outline drawings, its planned
+    598-concept catalogue (`config/catalogue.ts`), and its 20-category taxonomy. Lucide's artwork,
+    names, and categories replace all three.
+
+---
+
+Everything below is **historical** and describes the 1.x line only.
+
+Releases after 1.0.0 were not recorded in this file. By 1.0.4, the icon set described under 1.0.0 had
+been replaced by the catalogue that the 2.0 reset removes: 1,166 icon components with `variant` and
+`shape` props, white by default.
+
 ## 1.0.0
 
 ### Major Changes

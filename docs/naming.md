@@ -1,113 +1,79 @@
 # Naming
 
-An icon's filename becomes its public API. `icons/arrows/arrow-left.svg` promises
-`import { ArrowLeft } from "@qeetrix/icons"` for as long as the package exists, so renaming an icon
-is a breaking change. Get the name right before merging, not after.
+Icon names are Lucide's, verbatim. Lucide's
+[naming conventions](https://github.com/lucide-icons/lucide/blob/1.52.0/docs/contribute/icons/naming-conventions.md)
+decide them; this repository adds no naming rules of its own beyond what keeps a name a portable
+filename and a valid identifier.
 
-## The rule
+## From file name to component
 
-| | |
-|:--|:--|
-| **Source file** | `kebab-case.svg` — lowercase letters, digits, single hyphens |
-| **Component** | `PascalCase`, derived mechanically from the filename |
-| **Pattern** | `^[a-z0-9]+(?:-[a-z0-9]+)*$` |
+One name drives everything:
 
-```text
-arrow-left.svg     → ArrowLeft
-arrow-right.svg    → ArrowRight
-calendar-check.svg → CalendarCheck
-shield-check.svg   → ShieldCheck
-user-add.svg       → UserAdd
-x.svg              → X
-```
+| Lucide name | Source | Component | Direct import |
+|:--|:--|:--|:--|
+| `trash` | `icons/round-outline/files/trash.svg` | `TrashIcon` | `@qeetrix/icons/icons/trash` |
+| `clock-12` | `icons/round-outline/time/clock-12.svg` | `Clock12Icon` | `@qeetrix/icons/icons/clock-12` |
+| `type-outline` | `icons/round-outline/text/type-outline.svg` | `TypeOutlineIcon` | `@qeetrix/icons/icons/type-outline` |
+| `arrow-down-0-1` | `icons/round-outline/text/arrow-down-0-1.svg` | `ArrowDown01Icon` | `@qeetrix/icons/icons/arrow-down-0-1` |
+| `x` | `icons/round-outline/notifications/x.svg` | `XIcon` | `@qeetrix/icons/icons/x` |
 
-The mapping is deliberately dumb: split on hyphens, capitalise each part, join. There is no
-normalisation pass that rescues a malformed name, because two malformed names can normalise to the
-same identifier and silently shadow one another in the barrel.
+The component name is PascalCase of the name plus `Icon`, from the one converter,
+`componentNameFromFilename` in [validate-source-path.ts](../scripts/check/validate-source-path.ts),
+which rejects an invalid file name rather than producing a broken identifier. Generated components,
+root exports, direct-import subpaths, and the manifest all use it. The `Icon` suffix is always
+kept, so `MapIcon`, `ImageIcon`, and `FileIcon` never collide with platform globals such as `Map`,
+`Image`, and `File`. Brand logos end in `Logo` instead (`GithubLogo`), so an icon and a logo never
+share a name; their naming rule is in [logos.md](logos.md#names).
 
-## Rejected
+The source column shows the round outline; the same name is used in every source folder. The
+manifest `id` and `name` are the Lucide name, and the direct-import subpath is the same name with
+no category, shape, or variant.
 
-| Name | Why |
-|:--|:--|
-| `icon1.svg`, `icon-2.svg` | Not semantic. A number tells a consumer nothing. |
-| `arrow-final.svg`, `arrow-v2.svg`, `new-arrow.svg` | Revision state is what git is for. |
-| `userIcon.svg` | camelCase. Also redundant — everything here is an icon. |
-| `user_add.svg` | snake_case. Collides with `user-add.svg` on `UserAdd`. |
-| `Arrow-Left.svg` | Capitals in the source name. |
-| `arrow--left.svg`, `-arrow.svg`, `arrow-.svg` | Empty name segment. |
-| `arrow left.svg`, `arrow.left.svg` | Space or dot. |
-| `2fa-token.svg` | Leading digit — `2faToken` is not a legal JavaScript identifier. |
-| `index.svg` | Would overwrite the generated `src/icons/index.ts` barrel. |
-| `types.svg` | Collides with an existing module in `src/`. |
+## Shapes and variants share the name
 
-Every one of these is a build error, not a review note. See `toComponentName` in
-`scripts/generate.mjs`.
+A name identifies a concept, not a drawing. `icons/round-outline/account/star.svg`,
+`icons/round-filled/account/star.svg`, `icons/sharp-outline/account/star.svg`, and
+`icons/sharp-filled/account/star.svg` are four drawings of one concept. Together they generate one
+component, `StarIcon`, selected with `shape` (`"round"` by default, or `"sharp"`) and `variant`
+(`"outline"` by default, or `"filled"`). The source folder distinguishes the drawings; the file name
+never does. Every drawing of a name has the same category. A Lucide name that ends in `-outline`,
+such as `type-outline`, is a concept like any other, not a variant. See
+[api.md](api.md#one-component-per-concept).
 
-## Choosing a good name
+## What validation enforces
 
-**Name the thing, not the meaning.** `bell`, not `notifications`. `trash`, not `delete`. One glyph
-serves many meanings, and meanings shift per product — the shape does not. Put the meanings in
-`tags` instead, where they are searchable without being load-bearing.
+- Lowercase ASCII kebab-case, beginning with a letter, with a lowercase `.svg` extension.
+- No Windows device names (`con`, `prn`, `aux`, `nul`, `com1`-`com9`, `lpt1`-`lpt9`).
+- Unique names within each source folder, no case-insensitive file name collisions, and no two names
+  that become the same component. For example, `file-3d` and `file3d` would both become
+  `File3dIcon`.
 
-**Order words from general to specific.** `arrow-left`, `arrow-right`, `arrow-up` sort together and
-autocomplete together. `left-arrow` scatters them.
+Numeric parts and suffixes (`clock-12`, `arrow-down-0-1`), words such as `copy` or `alt`, and
+endings such as `-outline` are allowed, because Lucide uses them. Rule codes are in
+[validation.md](validation.md).
 
-**A plural means "doubled", not "many".** `chevrons-left` is two chevrons; `checks` is two ticks.
-Reserve the plural for that, and use it instead of stuttering (`check-check`) — a doubled glyph is not
-a `<base>-<modifier>` variant and should not look like one. `users`, `files` and `messages` are the
-exception that proves the rule: there the plural genuinely means *several of the thing*, and the
-glyph shows several.
+## Renamed icons and aliases
 
-**Use a consistent modifier vocabulary,** so a consumer can guess a name without looking it up:
+Lucide 1.x renamed some icons; `trash-2` is now `trash`. Former names are recorded as `aliases` in
+[config/lucide.json](../config/lucide.json) and in each manifest entry, for search and migration.
+The playground's search matches them. They are not exported: there is no `Trash2Icon` and no
+`@qeetrix/icons/icons/trash-2`. A future Lucide rename therefore removes an export here and needs
+a major release ([lucide.md](lucide.md#upgrading-lucide)).
 
-| Modifier | Means | Example |
-|:--|:--|:--|
-| `-check` | with a tick overlay | `shield-check` |
-| `-plus` / `-minus` | with an add/remove overlay | `user-plus` |
-| `-x` | with a dismiss overlay | `circle-x` |
-| `-off` | struck through / disabled | `eye-off` |
-| `-left` / `-right` / `-up` / `-down` | direction | `chevron-down` |
+Tags, Lucide's search keywords, are also in each manifest entry. Neither tags nor aliases ever
+become component names.
 
-**Prefer the shorter name when both read equally well.** `settings`, not `settings-gear`.
+## Categories are organization, not names
 
-**Never encode style, size or colour.** There is one visual style; `arrow-left-outline-24-dark`
-would all be noise.
+[config/categories.ts](../config/categories.ts) holds Lucide's 42 categories, in id order. It is
+generated by `bun run sync:lucide`. Lucide lists one or more categories per icon:
 
-## Aliases, not renames
+- The first is the icon's primary category: the `<category>` folder of all its sources, and the
+  manifest `category`.
+- All of them, primary first, are the manifest `categories`. Filter by these; the playground's
+  category filter does.
 
-When a name is wrong but already published, do not rename it. Add the better name as a new icon and
-keep the old one working, or record the alternative in `aliases` so search finds it:
-
-```json
-"search": { "tags": ["find", "lookup"], "aliases": ["magnifying-glass"], "mirror": true }
-```
-
-Aliases are search-only — they do not create a second export, so they cost nothing and cannot break
-a consumer.
-
-### Tags vs aliases
-
-The distinction is load-bearing, and the validator enforces it:
-
-| | Means | Shared? |
-|:--|:--|:--|
-| **tag** | "this icon is *related to* X" | Yes — `warning` describes several icons |
-| **alias** | "this icon *is also called* X" | **No** — two owners make the query ambiguous |
-
-So `warning` is a tag on both `alert-circle` and `alert-triangle`, but only `alert-triangle` claims it
-as an alias. Likewise `favourite` is a tag on `bookmark`, `heart` and `star`, and an alias of `star`
-alone.
-
-Never restate an alias as a tag, or the icon's own name as either: search already covers the name and
-the aliases, so the duplicate is pure maintenance.
-
-## Categories
-
-The category is the directory, and it never appears in the icon name — `icons/arrows/arrow-left.svg`
-is `ArrowLeft`, not `ArrowsArrowLeft`. Category is metadata for browsing; the export namespace is
-flat, so an icon name must be unique across the whole library.
-
-Moving an icon between categories is therefore **not** a breaking change: the component name does
-not move with it. The declared category list lives in `scripts/config/categories.json`, and a
-directory not on that list is an error rather than a new category — that way `navigaton/` fails
-loudly instead of quietly becoming real.
+Not every category is first for some icon, so some categories have no folder. A category
+never appears in a component name or import path: `TrashIcon`, never `FilesTrashIcon`. When Lucide
+changes an icon's first category, its source files move and its manifest metadata changes; no
+import changes.

@@ -1,0 +1,307 @@
+# SVG and source validation
+
+`check:icons` is the gate between source SVG and generation. It validates source organization,
+names, XML, a deliberately small SVG vocabulary, repository-wide identity, the outline-required
+and style-parity rules, and icon metadata. It does not draw, normalize, optimize, generate, or
+rewrite anything. Every source passes it: the Lucide outlines written by `sync:lucide`
+([lucide.md](lucide.md)), the round filled drawings written by `derive:filled`
+([filled.md](filled.md)), and the sharp drawings written by `derive:sharp` ([sharp.md](sharp.md)).
+
+## Run the gate
+
+```bash
+bun run check:icons
+```
+
+The command scans this repository's `icons/` directory, anchored to the script location rather
+than the caller's working directory. There is no alternate-root CLI flag. On success it prints
+`<n> production icons validated.` with exit status 0; an empty source root is valid. Any
+diagnostic is an error, printed to stderr with exit status 1. The count is SVG source files, not
+unique concepts; each of an icon's drawings, up to four, counts once.
+
+CI and the release quality gate run this command alongside lint, typecheck, Vitest, and build. The
+build compiles public TypeScript only; it does not run generation or replace this gate. Whether the
+derived drawings match their derivation is a separate check: `bun run check:filled`
+([filled.md](filled.md)) and `bun run check:sharp` ([sharp.md](sharp.md)).
+
+## Source organization and identity
+
+The file contract is `icons/<style>-<variant>/<category>/<name>.svg`:
+
+- Styles and variants come from [config/icon-system.ts](../config/icon-system.ts): `round` and
+  `sharp`, `outline` and `filled`. The source folder is the style and variant joined by a hyphen
+  (`sourceFolder` in [validate-source-path.ts](../scripts/check/validate-source-path.ts)), so there
+  are exactly four: `round-outline`, `round-filled`, `sharp-outline`, and `sharp-filled`. A style is
+  what the public `shape` prop selects.
+- Categories come only from [config/categories.ts](../config/categories.ts), Lucide's 42. They are
+  not public component namespaces. The validator does not maintain a second category list.
+- Filenames are lowercase ASCII kebab-case, beginning with a letter, with a lowercase `.svg`
+  extension: no whitespace, underscores, or capitals. Names are Lucide's ([naming.md](naming.md)),
+  so there are no suffix rules: `clock-12`, `book-copy`, and `type-outline` are valid. The sharp
+  filled drawing of `star` is `icons/sharp-filled/<category>/star.svg`, and all four drawings
+  belong to the one `StarIcon`; see [api.md](api.md#one-component-per-concept).
+- Windows device filenames (`con`, `prn`, `aux`, `nul`, `com1`-`com9`, `lpt1`-`lpt9`) fail so source
+  names remain portable. The initial letter requirement also ensures a valid JavaScript
+  identifier when converted to PascalCase plus `Icon`.
+- Within a style and variant, canonical names are unique across the whole catalogue, not per
+  category. Case-insensitive filename collisions and distinct names that become the same public
+  export also fail. For example, `file-3d` and `file3d` both become `File3dIcon`. The same name once
+  per style and variant is one concept, not a collision.
+- In each style, every concept needs an outline drawing; a filled drawing is an optional addition.
+  A filled source without the outline of the same style, such as
+  `icons/sharp-outline/<category>/<name>.svg` for a sharp filled drawing, fails (`QXI-VAR-001`).
+  Every drawing of a name must share one category (`QXI-DUP-004`); they are drawings of one concept
+  and generate one component. Differently named drawings cannot be automatically identified as
+  synonyms.
+- Styles mirror one another, with round as the reference. Once any sharp drawing exists, every
+  round drawing needs its sharp counterpart, name for name and variant for variant, and every sharp
+  drawing its round one (`QXI-STYLE-001`), so every component offers both shapes with the same
+  variants. A source set with round drawings only, such as most test fixtures, is valid.
+
+Path functions accept repository-relative forward-slash paths; the scanner builds these paths
+independently of host separators. Collision checks operate on strings, not filesystem casing
+behavior. Tests therefore cover conflicts even on filesystems that cannot store both spellings.
+
+No source folder or category directory is required. The file contract rejects root-level sources,
+legacy layouts, unknown source folders or categories, and nested sources outside the defined
+depth.
+
+## Structurally enforced
+
+### XML and root
+
+- Parse as XML, never HTML. Every parser warning, error, or fatal error rejects the input; malformed
+  XML is not silently repaired. Documents need one unprefixed `<svg>` root with the explicit SVG
+  namespace `xmlns="http://www.w3.org/2000/svg"`.
+- The root `viewBox` must numerically match the configured canonical viewBox. Equivalent numeric
+  spelling, comma separators, and whitespace are accepted without rewriting the source.
+- Root `width` and `height` are forbidden: the runtime and callers control rendered dimensions.
+  Geometry such as a `<rect>` may and usually must specify its own width and height.
+- Comments, whitespace, and an optional well-formed XML declaration are accepted; every filled
+  drawing starts with a comment naming its outline. DTDs, custom entities, other processing
+  instructions, CDATA, and non-whitespace text are unsupported.
+- Source files must be valid UTF-8. A 1 MiB (1,048,576-byte) per-file parsing limit bounds tooling
+  input, not drawing detail or visual complexity. Oversized files are rejected before reading
+  them into the parser; the pure SVG function also enforces the byte limit.
+
+### Elements and attributes
+
+Only `svg`, `g`, `path`, `circle`, `ellipse`, `rect`, `line`, `polyline`, and `polygon` are supported.
+`svg` may only be the root. Geometry must be inside that root or a `g`; primitives are not containers.
+
+All allowed elements may carry `fill`, `stroke`, `stroke-width`, `stroke-linecap`,
+`stroke-linejoin`, and `fill-rule`. Sharp sources may also carry `stroke-miterlimit`; in a round
+source it is rejected (`QXI-SVG-005`), because round joins never miter. A `g` carries only those
+presentation attributes. Additional attributes are allowed by element, not globally:
+
+| Element | Additional attributes |
+|:--|:--|
+| `svg` | `viewBox`, `xmlns` |
+| `path` | `d` |
+| `circle` | `cx`, `cy`, `r` |
+| `ellipse` | `cx`, `cy`, `rx`, `ry` |
+| `rect` | `x`, `y`, `width`, `height`, `rx`, `ry` |
+| `line` | `x1`, `y1`, `x2`, `y2` |
+| `polyline`, `polygon` | `points` |
+
+Everything outside these allowlists fails. In particular:
+
+- No scripts, styles, `foreignObject`, embedded HTML, images/raster data, media, animation, or `set`.
+- No `defs`, clipping, masks, filters, gradients, patterns, symbols, `use`, or nested SVGs. There is
+  no exception mechanism or ID-rewriting scheme.
+- No IDs, transforms, links/references (including local fragments, `href`, and `xlink:href`),
+  event handlers, arbitrary namespaces, CSS classes, inline styles, or `color` overrides.
+- No `role`, `aria-*`, `tabindex`, `focusable`, `title`, or `desc`. Source represents geometry;
+  meaningful accessible names, roles, decorative defaults, and focus belong to the runtime and
+  containing UI, as described in [accessibility.md](accessibility.md).
+
+The parser does not fetch resources or expand custom entities. Allowlists additionally prevent
+script execution, external content, CSS injection, global-ID collisions, and runtime semantics
+from being carried into generated components. This is a rejecting source gate, not a
+general-purpose SVG sanitizer or a service for arbitrary uploaded documents.
+
+### Paint and variants
+
+Every `fill` and `stroke` value must be configured `currentColor` or structural `none`. Hex colors,
+named colors, color functions, URLs, `inherit`, and CSS variables are rejected, including in
+descendant elements and after XML entity decoding.
+
+Outline roots explicitly declare `fill="none"`, `stroke="currentColor"`, and the configured
+stroke width, cap, and join, read directly from `design` in the shared config:
+
+- Round outlines: width 2, `round` caps and joins, Lucide's values.
+- Sharp outlines: width 2, `square` caps, `miter` joins, and `stroke-miterlimit` numerically equal
+  to `design.sharp.miterLimit`, 4.
+
+Explicit descendant stroke width, cap, join, and miter limit must agree; otherwise those
+properties inherit from the root. A descendant may set its own `fill`, which the
+paint rule limits to `currentColor` or `none`: Lucide draws small solid dots, such as the hole in
+`tag`, with `fill="currentColor"`.
+
+Filled roots declare `fill="currentColor"`. Descendants may use `currentColor` or `none`; any
+optional stroke remains subject to the same color and numeric rules. A filled drawing needs its
+outline (`QXI-VAR-001`), but validation does not check that it matches the derivation; that is
+`check:filled` and `check:sharp`. `fill-rule` accepts `nonzero` or `evenodd`; explicit cap/join
+values must be supported SVG values.
+
+### Numeric quality, not a geometry engine
+
+Numeric attributes must be finite unitless SVG numbers. Signs, fractions, and exponents are
+accepted; NaN, Infinity, overflow, units, hexadecimal numbers, and malformed coordinates fail.
+Radii, dimensions, stroke width, and miter limit must be positive where they apply; rectangle
+corner radii may be zero. Required primitive data must exist, and there must be at least one
+supported primitive. Point lists must contain enough finite coordinate pairs.
+
+Path checking is intentionally lexical: nonempty data, an initial moveto pair, known commands,
+finite numeric tokens, and numbers following commands that need parameters. It is **not** a full
+path parser: complete command arity, separator grammar, arc flags, path drawability, and geometry
+are not proved; visual review catches a path that is accepted but drawn wrong. There is no
+decimal-precision rule, bounds engine, path rewriting, or stroke expansion.
+
+## Diagnostics
+
+Each diagnostic has `code`, repository-relative `file`, `message`, and severity `error`. Results
+are sorted by file, code, and message using explicit lexical comparison, never machine locale or
+directory enumeration order. Filenames and embedded input values are escaped for terminal output.
+XML failure stops that file's structural checks rather than interpreting a recovered document.
+
+```text
+QXI-SVG-006 "icons/round-outline/files/example.svg"
+  Paint "#000" is not allowed; use currentColor or none.
+```
+
+| Rule | Purpose | Severity |
+|:--|:--|:--|
+| `QXI-XML-001` | Malformed XML/parser warning or input-size limit | Error |
+| `QXI-XML-002` | Unsupported non-geometric XML content | Error |
+| `QXI-SVG-001` | Root element and SVG namespace | Error |
+| `QXI-SVG-002` | Canonical viewBox | Error |
+| `QXI-SVG-003` | Root rendering dimensions | Error |
+| `QXI-SVG-004` | Element allowlist, namespace, and hierarchy | Error |
+| `QXI-SVG-005` | Context-aware attribute allowlist | Error |
+| `QXI-SVG-006` | Inherited-color paint contract | Error |
+| `QXI-SVG-007` | Variant presentation and enumerated values | Error |
+| `QXI-SVG-008` | Primitive data, numbers, points, and path tokens | Error |
+| `QXI-NAME-001` | Canonical, portable filenames | Error |
+| `QXI-PATH-001` | Source-root layout and path depth | Error |
+| `QXI-PATH-002` | Configured category | Error |
+| `QXI-PATH-003` | Configured source folder (style and variant) | Error |
+| `QXI-DUP-001` | Duplicate canonical name within a style and variant | Error |
+| `QXI-DUP-002` | Case-insensitive filename collision | Error |
+| `QXI-DUP-003` | Normalized component-name collision | Error |
+| `QXI-DUP-004` | Category disagreement between drawings of one name | Error |
+| `QXI-IO-001` | Unreadable/invalid UTF-8 input, invalid root, symlink, or unexpected file | Error |
+| `QXI-META-001` | Metadata names an icon with no source SVG | Error |
+| `QXI-META-002` | Metadata has an unsupported directionality | Error |
+| `QXI-META-003` | Metadata categories are empty or not configured ids, or the first is not the source folder | Error |
+| `QXI-VAR-001` | A non-outline drawing without the outline drawing of its style | Error |
+| `QXI-STYLE-001` | A drawing without its counterpart in the other style | Error |
+
+Generation adds `QXI-GEN-001` to `QXI-GEN-003`; see
+[generation.md](generation.md#pipeline-responsibilities). The full list is `DiagnosticCode` in
+[diagnostics.ts](../scripts/lib/diagnostics.ts).
+
+## Metadata
+
+The CLIs validate [config/icon-metadata.ts](../config/icon-metadata.ts), which combines Lucide's
+per-icon categories, tags, and aliases from [config/lucide.json](../config/lucide.json) with the RTL
+`mirror` list. Every field of an entry is optional. An entry for a name with no source fails
+(`QXI-META-001`), so a mirrored name left behind by a Lucide rename is reported rather than
+silently ignored. `directionality` must be `mirror` or `preserve` (`QXI-META-002`). `categories`,
+when present, must be a non-empty list of ids from [config/categories.ts](../config/categories.ts),
+and the first must be the folder the icon's sources live in (`QXI-META-003`), because the manifest's
+`category` is the first of its `categories`.
+
+## API and fixture isolation
+
+[validate-source-path.ts](../scripts/check/validate-source-path.ts) exposes `validateIconName` and
+`validateSourcePath`. [validate-svg.ts](../scripts/check/validate-svg.ts) exposes `validateSvg`.
+[validate-repository.ts](../scripts/check/validate-repository.ts) provides pure `validateSources`,
+the filesystem scanner `scanIconSources`, and `validateRepository`, which combines them.
+`validateSources` checks metadata through
+[validate-metadata.ts](../scripts/check/validate-metadata.ts). Library functions default to no
+metadata; the CLIs pass this repository's [config/icon-metadata.ts](../config/icon-metadata.ts).
+Generation reuses the same scanner and validator rather than re-implementing any rule; see
+[generation.md](generation.md). The small CLI only anchors the root, formats diagnostics, and sets
+the exit status. These are repository-internal APIs, not package exports.
+
+The scanner visits only `icons/`, skipping `icons/brand-icons/`, which belongs to the brand logo
+pipeline ([below](#brand-logos)). It rejects symlinks without following them, and accepts only SVG
+files plus the root `.gitkeep` placeholder. Filesystem or decoding failures are diagnostics, not
+silent skips. It does not search `tests/`, `dist/`, or the whole workspace for SVGs.
+
+[tests/validation.test.ts](../tests/validation.test.ts) constructs basic synthetic geometry in
+memory. Scanner tests use temporary repository roots and remove them after each test. Those
+temporary roots may contain `tests/fixtures/` to prove isolation. There are no checked-in SVG
+fixtures.
+
+The build includes only `src/`, and the package publishes only `dist/`. Config, validation code,
+the parser dependency, and fixtures do not become consumer runtime exports. Generation consumes
+validated production sources only; it never broadens discovery to test fixtures.
+
+## Brand logos
+
+The brand logos in `icons/brand-icons/` ([logos.md](logos.md)) have their own validator and
+command, because they are kept byte for byte as upstream publishes them and follow none of the
+icon rules above:
+
+```bash
+bun run check:brands
+```
+
+[validate-brands.ts](../scripts/check/validate-brands.ts) does not judge a logo's drawing. It
+checks that every file under `icons/brand-icons/` is listed in
+[config/brands.json](../config/brands.json) and the reverse, that the catalogue matches its schema
+and naming rules, that each file is a well-formed SVG with a size, and that none can run script or
+load anything from outside the file. Errors fail the command; the two warnings are notes about
+upstream defects that the logo keeps.
+
+| Rule | Purpose | Severity |
+|:--|:--|:--|
+| `QXB-IO-001` | A file or `config/brands.json` cannot be read | Error |
+| `QXB-XML-001` | Malformed XML, undecodable bytes, or a file over 4 MiB | Error |
+| `QXB-XML-002` | A DOCTYPE with external entities, parameter entities, or a non-W3C external DTD | Error |
+| `QXB-SVG-001` | The root is not `<svg>` in the SVG namespace | Error |
+| `QXB-SVG-002` | No usable `viewBox` and no numeric `width` and `height` | Error |
+| `QXB-SVG-003` | A `<script>` element | Error |
+| `QXB-SVG-004` | An `on*` event attribute, or an animation that sets one | Error |
+| `QXB-SVG-005` | A `<foreignObject>` element | Error |
+| `QXB-SVG-006` | A reference outside the file: `href`, `url()`, `@import`, or `xml-stylesheet` | Error |
+| `QXB-SVG-007` | The root has no namespace, so the file renders inline but not as an image | Warning |
+| `QXB-SVG-008` | The `viewBox` is unusable; `width` and `height` size the file instead | Warning |
+| `QXB-MAP-001` | A file that `config/brands.json` does not list | Error |
+| `QXB-MAP-002` | A listed file that does not exist | Error |
+| `QXB-MAP-003` | A listed path outside `icons/brand-icons/<collection>/<slug>/<variant>.svg` | Error |
+| `QXB-NAME-001` | A component name that is not a valid identifier or breaks the naming rule | Error |
+| `QXB-NAME-002` | Two logos with the same component name | Error |
+| `QXB-META-001` | `config/brands.json` does not match its schema | Error |
+| `QXB-META-002` | A file's recorded background or colours no longer match its content | Error |
+
+The Vitest suite checks the file listing against the catalogue on every run; `check:brands` also
+reads and validates every file's content.
+
+## Parser decision
+
+Reviewed on 2026-10-03: Bun 1.3.14 has no built-in `DOMParser`; an HTML parser would not enforce
+XML well-formedness. A hand-written regex XML parser would add fragile security-critical code.
+We use the maintained [@xmldom/xmldom](https://github.com/xmldom/xmldom) package, pinned to `0.9.12`
+as a development dependency: MIT, bundled TypeScript declarations, zero transitive dependencies,
+and [440,251 unpacked bytes](https://registry.npmjs.org/@xmldom/xmldom/0.9.12).
+
+The project's [security policy](https://github.com/xmldom/xmldom/security) documents supported
+versions and advisories. This version includes fixes for
+[malformed end tags](https://github.com/xmldom/xmldom/security/advisories/GHSA-6h8r-xr42-gp59),
+[attribute deduplication](https://github.com/xmldom/xmldom/security/advisories/GHSA-8344-3jmq-59r6),
+and [processing-instruction backtracking](https://github.com/xmldom/xmldom/security/advisories/GHSA-g53g-w8rj-fmg7).
+We use `onWarningStopParsing`, because the default parser can recover from malformed input.
+The smaller `saxes` alternative was considered but its upstream repository was archived in 2025.
+No SVGO or optimization dependency is used. The same parser reads Lucide's SVGs in the sync and
+outline sources in the filled derivation.
+
+## Not checked
+
+Structural success does not prove optical centering, perceived weight, recognizability, small-size
+legibility, curve quality, a clean filled form, or a clean sharp corner. Painted bounds and
+Lucide's 1-unit padding are not enforced; Lucide applies its own rules upstream
+([design.md](design.md)). Validation has no geometry engine or renderer. The derivations do use
+geometry, but only to build drawings; their quality is judged by eye ([visual-qa.md](visual-qa.md)).

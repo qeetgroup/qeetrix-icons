@@ -78,14 +78,23 @@ jobs:
 
       # Gate before shipping. Nothing below runs if the version is unchanged.
       - if: steps.version.outputs.release == 'true'
-        name: components match their source SVGs
-        run: bun run generate:check
-      - if: steps.version.outputs.release == 'true'
         run: bun run lint
       - if: steps.version.outputs.release == 'true'
         run: bun run typecheck
       - if: steps.version.outputs.release == 'true'
         run: bun run test
+      - if: steps.version.outputs.release == 'true'
+        run: bun run check:icons
+      - if: steps.version.outputs.release == 'true'
+        run: bun run check:filled
+      - if: steps.version.outputs.release == 'true'
+        run: bun run check:sharp
+      - if: steps.version.outputs.release == 'true'
+        run: bun run check:generated
+      - if: steps.version.outputs.release == 'true'
+        run: bun run check:brands
+      - if: steps.version.outputs.release == 'true'
+        run: bun run check:logos
       - if: steps.version.outputs.release == 'true'
         run: bun run build
 

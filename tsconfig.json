@@ -23,11 +23,8 @@
     "erasableSyntaxOnly": true,
     "noEmit": true,
     "types": ["node"],
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "tsBuildInfoFile": "./node_modules/.cache/qeetrix-icons/tsconfig.tsbuildinfo"
   },
-  "include": ["src", "tests", "vitest.config.ts"],
+  "include": ["config", "scripts", "src", "tests", "vitest.config.ts"],
   "exclude": ["dist"]
 }

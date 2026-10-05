@@ -6,43 +6,25 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before filing: search `@qeetrix/icons/metadata` (or the existing issues) for
-        the concept — it may already exist under a different name or alias.
+        Before filing: search the existing issues for the concept — it may already
+        have been requested under a different name.
 
   - type: input
     id: name
     attributes:
       label: Proposed name
-      description: kebab-case. See docs/naming.md — name the shape, not the meaning.
+      description: kebab-case. Name the shape, not the meaning.
       placeholder: calendar-check
     validations:
       required: true
 
-  - type: dropdown
+  - type: input
     id: category
     attributes:
-      label: Category
-      options:
-        - accessibility
-        - arrows
-        - communication
-        - design
-        - development
-        - editing
-        - files
-        - finance
-        - hardware
-        - interface
-        - maps
-        - media
-        - navigation
-        - security
-        - social
-        - status
-        - users
-        - utilities
+      label: Suggested category
+      description: Optional. The 2.0 categories have not been defined yet.
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: use-case

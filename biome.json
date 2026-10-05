@@ -49,28 +49,33 @@
     }
   },
   "files": {
-    "includes": ["**", "!icons", "!dist"]
+    "includes": [
+      "**",
+      "!icons",
+      "!dist",
+      "!config/brands.json",
+      "!src/generated/logos",
+      "!src/generated/logo-index.ts",
+      "!src/generated/logo-manifest.ts"
+    ]
   },
   "overrides": [
     {
-      "includes": ["src/icons/**"],
-      "formatter": {
-        "enabled": false
-      },
+      "includes": ["src/generated/**"],
       "assist": {
         "actions": {
           "source": {
             "organizeImports": "off"
           }
         }
-      },
+      }
+    },
+    {
+      "includes": ["src/generated/icons/**"],
       "linter": {
         "rules": {
           "a11y": {
             "noSvgWithoutTitle": "off"
-          },
-          "suspicious": {
-            "noShadowRestrictedNames": "off"
           }
         }
       }
