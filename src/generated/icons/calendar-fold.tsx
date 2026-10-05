@@ -34,7 +34,7 @@ export function CalendarFoldIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 2v3" />
-        <path d="M21 15V3H3V21H15V15ZM20.295 16.705L16.705 20.295" />
+        <path d="M21 15V3H3V21H15V15ZM21 15L21.002 15.998L15.998 21.002L15 21" />
         <path d="M3 9h18" />
         <path d="M8 2v3" />
       </svg>

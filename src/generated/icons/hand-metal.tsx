@@ -18,10 +18,10 @@ export function HandMetalIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M18 10.5V10A2 2 0 0 0 16 8A2 2 0 0 0 14 10V10.4" />
-        <path d="M14 10V9A2 2 0 1 0 10 9V10" />
-        <path d="M10 9.5V5A2 2 0 1 0 6 5V13" />
-        <path d="M7 15L5.24 13.24A2 2 0 0 0 2.41 16.06L6.01 19.66C7.5 21.14 9.2 22 12 22H14A8 8 0 0 0 22 14V7A2 2 0 1 0 18 7V10" />
+        <path d="M18 12.5V10a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1.4" />
+        <path d="M14 11V9a2 2 0 1 0-4 0v2" />
+        <path d="M10 10.5V5A2 2 0 1 0 6 5V13" />
+        <path d="m7 15-1.76-1.76a2 2 0 0 0-2.83 2.82l3.6 3.6C7.5 21.14 9.2 22 12 22h2a8 8 0 0 0 8-8V7a2 2 0 1 0-4 0v5" />
       </svg>
     );
   }

@@ -15,7 +15,7 @@ export function FolderMinusIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1 21L23 21L23 5L11.549 5L9.524 2L1 2L1 21ZM16 12L8 12L8 14L16 14L16 12Z"
+            d="M23 21L23 5L11.549 5L9.524 2L1 2L1 21L23 21ZM16 12L8 12L8 14L16 14L16 12Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function FolderMinusIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M9 13h6" />
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
       </svg>
     );
   }

@@ -18,7 +18,7 @@ export function FileCogIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14 8V2A2.4 2.4 0 0 1 15.704 2.706L19.292 6.294A2.4 2.4 0 0 1 20 8Z" />
+        <path d="M14 2A2.4 2.4 0 0 1 15.704 2.706L19.292 6.294A2.4 2.4 0 0 1 20 8H14Z" />
         <path d="M20 9V22H13.818" />
         <path d="m3.305 19.53.923-.382" />
         <path d="M4 10.592V2H13" />

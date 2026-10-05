@@ -15,7 +15,7 @@ export function FolderXIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 5L23 21L1 21L1 2L9.524 2L11.549 5L23 5ZM13.414 13L15.914 15.5L14.5 16.914L12 14.414L9.5 16.914L8.086 15.5L10.586 13L8.086 10.5L9.5 9.086L12 11.586L14.5 9.086L15.914 10.5L13.414 13Z"
+            d="M11.549 5L23 5L23 21L1 21L1 2L9.524 2L11.549 5ZM13.414 13L15.914 15.5L14.5 16.914L12 14.414L9.5 16.914L8.086 15.5L10.586 13L8.086 10.5L9.5 9.086L12 11.586L14.5 9.086L15.914 10.5L13.414 13Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FolderXIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
         <path d="m9.5 10.5 5 5" />
         <path d="m14.5 10.5-5 5" />
       </svg>

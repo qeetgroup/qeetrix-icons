@@ -21,7 +21,7 @@ export function DomeIcon(props: IconProps<"outline">) {
         <path d="M10 21v-3a2 2 0 014 0v3" />
         <path d="M12 2v2" />
         <path d="M18 12v9" />
-        <path d="M22 21H2V12H22Z" />
+        <path d="M2 21V12H22V21Z" />
         <path d="M4 12a8 8 0 0116 0" />
         <path d="M6 12v9" />
       </svg>

@@ -15,7 +15,7 @@ export function SquareRadicalIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M2 2L22 2L22 22L2 22L2 2ZM9.677 11L6 11L6 13L8.323 13L10.255 17.832L11.883 17.683L13.82 8L18 8L18 6L12.18 6L10.679 13.505L9.677 11Z"
+            d="M2 2L22 2L22 22L2 22L2 2ZM9.677 11L6 11L6 13L8.323 13L10.215 17.731L11.905 17.574L13.82 8L18 8L18 6L12.18 6L10.679 13.506L9.677 11Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function SquareRadicalIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M7 12H9L10.907 16.768L11.049 16.755L13 7H17" />
+        <path d="M7 12H9L10.866 16.666L11.071 16.647L13 7H17" />
         <rect height="18" width="18" x="3" y="3" />
       </svg>
     );

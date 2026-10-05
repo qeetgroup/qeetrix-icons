@@ -77,6 +77,8 @@ type Shape = {
   readonly solid: boolean;
   /** A circle's centre and radius, for painting small ones exactly. */
   readonly circle?: { readonly cx: number; readonly cy: number; readonly r: number };
+  /** The element's own caps, where it sets them (a sharp dot kept round). */
+  readonly linecap?: "butt" | "round" | "square";
 };
 
 function numberAttribute(element: Element, name: string): number {
@@ -155,7 +157,9 @@ export function outlineShapes(source: string): Shape[] {
                 r: numberAttribute(node, "r"),
               }
             : undefined;
-        shapes.push({ tag: node.tagName, d: shapePathData(node), solid, circle });
+        const cap = node.getAttribute("stroke-linecap");
+        const linecap = cap === "butt" || cap === "round" || cap === "square" ? cap : undefined;
+        shapes.push({ tag: node.tagName, d: shapePathData(node), solid, circle, linecap });
       }
     }
   }
@@ -586,6 +590,11 @@ export async function deriveFilled(
         throw new Error(`${outlinePath}: recipe role for element ${index} out of range.`);
       }
     }
+    // An element that sets its own caps is stroked with them.
+    const elementStroke = (shape: Shape, width: number) => ({
+      ...strokeOptions(width),
+      ...(shape.linecap ? { cap: caps[shape.linecap] } : {}),
+    });
     const items = shapes.map((shape, index) => {
       const fill = track(CK.Path.MakeFromSVGString(shape.d), `element ${index}`);
       // A circle narrower than the stroke (Lucide's r=.5 dots) paints a disc of radius r plus half
@@ -605,13 +614,14 @@ export async function deriveFilled(
             )
           : undefined;
       const stroke =
-        disc ?? track(fill.makeStroked(strokeOptions(strokeWidth)), `element ${index} stroke`);
+        disc ??
+        track(fill.makeStroked(elementStroke(shape, strokeWidth)), `element ${index} stroke`);
       // A body is thickened around its closed shape: filling joins an open path's ends with a
       // straight edge, and that edge needs the stroke too, or the body sits half a stroke short
       // there (the "feet" under user's torso). Sharp drawings close from the round outline's ends.
       const closed = track(closeContours(CK, fill, round?.ends[index]), `element ${index} closed`);
       const closedStroke = track(
-        closed.makeStroked(strokeOptions(strokeWidth)),
+        closed.makeStroked(elementStroke(shape, strokeWidth)),
         `element ${index} closed stroke`,
       );
       const solid = disc ?? combine(closed, closedStroke, "union", `element ${index}`);
@@ -707,7 +717,7 @@ export async function deriveFilled(
     };
     const clearanceOf = (item: (typeof items)[number], index: number) =>
       track(
-        item.fill.makeStroked(strokeOptions(strokeWidth + 2 * gapWidth)),
+        item.fill.makeStroked(elementStroke(shapes[index], strokeWidth + 2 * gapWidth)),
         `element ${index} gap`,
       );
     // 1. Bodies.

@@ -15,7 +15,7 @@ export function FilePlayIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13 9L13 1L3 1L3 23L21 23L21 9L13 9ZM15 7L15 1L15.412 1L21 6.588L21 7L15 7ZM9 19.206L16.502 14.866L17.998 14L9 8.795L9 19.206ZM14.004 14L11 12.263L11 15.738L14.004 14Z"
+            d="M13 9L13 1L3 1L3 23L21 23L21 9L13 9ZM15 7L15 1L15.412 1L21 6.588L21 7L15 7ZM9 8.795L9 19.206L17.998 14L9 8.795ZM11 15.738L14.004 14L11 12.263L11 15.738Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,9 +33,9 @@ export function FilePlayIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M14 2V8H20" />
-        <path d="M16.001 14L10 17.472V10.529Z" />
+        <path d="M10 17.472V10.529L16.001 14Z" />
       </svg>
     );
   }

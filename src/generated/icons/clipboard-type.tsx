@@ -15,7 +15,7 @@ export function ClipboardTypeIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M17 1L7 1L7 7L17 7L17 1ZM6 3L3 3L3 23L21 23L21 3L18 3L18 8L6 8L6 3ZM8 10L8 13L10 13L10 12L11 12L11 18L14 18L14 16L13 16L13 12L14 12L14 13L16 13L16 10L8 10Z"
+            d="M17 1L7 1L7 7L17 7L17 1ZM6 3L3 3L3 23L21 23L21 3L18 3L18 8L6 8L6 3ZM8 10L8 13L10 13L10 12L11 12L11 16L10 16L10 18L14 18L14 16L13 16L13 12L14 12L14 13L16 13L16 10L8 10Z"
             fillRule="evenodd"
           />
         </svg>
@@ -36,7 +36,7 @@ export function ClipboardTypeIcon(props: IconProps<"outline" | "filled">) {
         <rect height="4" width="8" x="8" y="2" />
         <path d="M16 4H20V22H4V4H8" />
         <path d="M9 12v-1h6v1" />
-        <path d="M12 17H13" />
+        <path d="M11 17h2" />
         <path d="M12 11v6" />
       </svg>
     );

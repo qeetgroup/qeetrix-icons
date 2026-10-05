@@ -22,7 +22,7 @@ export function MailSearchIcon(props: IconProps<"outline">) {
         <path d="M21.156 7.536L12 13.355L2.844 7.536" />
         <path d="M18 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
         <circle cx="18" cy="18" r="3" />
-        <path d="M21.581 21.581L20.5 20.5" />
+        <path d="M21.581 21.581L20.919 20.919" />
       </svg>
     );
   }

@@ -18,8 +18,8 @@ export function KeyIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2.419 20.581L11.6 11.4" />
-        <path d="M7.5 15.5L10.5 18.5L7 21.65L4.749 19.662" />
+        <path d="M2.419 20.581L11.181 11.819" />
+        <path d="M7.5 15.5L10.5 18.5L7.113 21.887H6.887L4 19" />
         <circle cx="15.5" cy="7.5" r="5.5" />
       </svg>
     );

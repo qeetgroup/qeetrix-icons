@@ -19,7 +19,7 @@ export function BeerOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M13 14V18" />
-        <path d="M17 10.47V8" />
+        <path d="M17 11.47V8" />
         <path d="M17 11h1a3 3 0 0 1 2.745 4.211" />
         <path d="M2.419 2.419L21.581 21.581" />
         <path d="M5 8V22H17V18" />

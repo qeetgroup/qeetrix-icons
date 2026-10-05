@@ -19,7 +19,7 @@ export function DatabaseSearchIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M21 11.693V6" />
-        <path d="M21.581 21.581L20.125 20.125" />
+        <path d="M21.581 21.581L20.544 20.544" />
         <path d="M3 12a9 3 0 0 0 8.697 2.998" />
         <path d="M3 6V19A9 3 0 0 0 12.28 21.999" />
         <circle cx="18" cy="18" r="3" />

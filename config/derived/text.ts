@@ -99,4 +99,17 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Letterforms whose sharp apex is cut flat at the round A's height, by element index. Lucide
+  // rounds these A apexes; brought to a point they would rise about 2.5 units above the letters
+  // beside them (case-upper's B). A's that Lucide draws with a plain corner (baseline, book-a,
+  // spell-check) stand alone and stay pointed.
+  tipHeight: {
+    "a-arrow-down": [2],
+    "a-arrow-up": [2],
+    "a-large-small": [0, 2],
+    "case-sensitive": [0],
+    "case-upper": [1],
+    letters: [3],
+    "text-initial": [3],
+  },
 };

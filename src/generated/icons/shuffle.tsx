@@ -18,8 +18,8 @@ export function ShuffleIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M18 14L21.64 18L18.38 21.582" />
-        <path d="M18.38 2.418L21.64 6L18 10" />
+        <path d="M18.419 14.419L21.887 17.887V18.113L18.419 21.581" />
+        <path d="M18.419 2.419L21.887 5.887V6.113L18.419 9.581" />
         <path d="M2 18H3.973A4 4 0 0 0 7.273 16.3L12.727 7.7A4 4 0 0 1 16.027 6H21" />
         <path d="M2 6h1.972a4 4 0 0 1 3.6 2.2" />
         <path d="M21 18H15.959A4 4 0 0 1 12.659 16.2L12.3 15.75" />

@@ -18,7 +18,7 @@ export function ShieldCogCornerIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10.236 21.69C6.776 20.198 4 17.693 4 13V5H5C7 5 9.5 3.8 11.24 2.28L12 2.051L12.76 2.28C14.51 3.81 17 5 19 5H20V10" />
+        <path d="M10.236 21.69C6.776 20.198 4 17.693 4 13V5H5C7 5 9.5 3.8 11.24 2.28L11.665 1.917H12.335L12.76 2.28C14.51 3.81 17 5 19 5H20V10" />
         <path d="M14.923 16.547 14 16.164" />
         <path d="m14.923 18.843-.923.383" />
         <path d="M16.547 14.923 16.164 14" />

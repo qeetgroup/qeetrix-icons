@@ -18,8 +18,8 @@ export function DrumIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2.419 2.419L10 10" />
-        <path d="M21.581 2.419L14 10" />
+        <path d="M2.419 2.419L9.581 9.581" />
+        <path d="M21.581 2.419L14.419 9.581" />
         <ellipse cx="12" cy="9" rx="10" ry="5" />
         <path d="M7 14.4V20.3" />
         <path d="M12 14v8" />

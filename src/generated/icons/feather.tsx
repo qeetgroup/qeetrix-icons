@@ -18,8 +18,8 @@ export function FeatherIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13.5 19H5V10.5L11.75 3.75A6 6 0 1 1 20.24 12.24Z" />
-        <path d="M16 8L2.419 21.581" />
+        <path d="M5 19V10.5L11.75 3.75A6 6 0 1 1 20.24 12.24L13.5 19Z" />
+        <path d="M15.581 8.419L2.419 21.581" />
         <path d="M16.488 15H10" />
       </svg>
     );

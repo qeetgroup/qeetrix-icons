@@ -15,7 +15,7 @@ export function MilestoneIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13 5L13 2L11 2L11 5L2 5L2 14L11 14L11 22L13 22L13 14L19.489 14L22.986 9.5L19.79 5.386L19.489 5L13 5Z"
+            d="M23 8.586L19.414 5L13 5L13 2L11 2L11 5L2 5L2 14L11 14L11 22L13 22L13 14L19.414 14L22.712 10.702L23 10.414L23 8.586Z"
             fillRule="evenodd"
           />
         </svg>
@@ -35,7 +35,7 @@ export function MilestoneIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M12 13v8" />
         <path d="M12 3v3" />
-        <path d="M19 6L21.72 9.5L19 13H3V6Z" />
+        <path d="M22.005 9.995L19 13H3V6H19L22.005 9.005Z" />
       </svg>
     );
   }

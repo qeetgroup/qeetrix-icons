@@ -15,7 +15,7 @@ export function PresentationIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M2 2L22 2L22 4L2 4L2 2ZM2 5L2 17L9.586 17L6.293 20.293L5.586 21L7 22.414L12 17.414L17 22.414L18.414 21L14.414 17L22 17L22 5L2 5Z"
+            d="M1 2L23 2L23 4L1 4L1 2ZM2 5L2 17L9.586 17L6.293 20.293L5.586 21L7 22.414L12 17.414L17 22.414L18.414 21L14.414 17L22 17L22 5L2 5Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,9 +33,9 @@ export function PresentationIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M3 3H21" />
+        <path d="M2 3h20" />
         <path d="M21 3V16H3V3" />
-        <path d="m7 21 5-5 5 5" />
+        <path d="M7 21L11.887 16.113H12.113L17 21" />
       </svg>
     );
   }

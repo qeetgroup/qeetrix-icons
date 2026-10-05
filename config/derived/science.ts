@@ -27,7 +27,8 @@ export const derivations: CategoryDerivations = {
     // The lower lobes and the little bridge between them are one organic curve: squared, the
     // bridge turns into a peak whose miter spikes up into the brain.
     "brain-cog": [9],
-    galaxy: [4], // The galaxy's round core.
+    // The round core (4), and the stars (1, 2): figurative dots, round in sharp.
+    galaxy: [1, 2, 4],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

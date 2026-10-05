@@ -18,10 +18,10 @@ export function DramaIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 11h.01" />
-        <path d="M14 6h.01" />
-        <path d="M18 6h.01" />
-        <path d="M6.5 13.1h.01" />
+        <path d="M10 11h.01" strokeLinecap="round" />
+        <path d="M14 6h.01" strokeLinecap="round" />
+        <path d="M18 6h.01" strokeLinecap="round" />
+        <path d="M6.5 13.1h.01" strokeLinecap="round" />
         <path d="M22 5C22 14 18 17 16 17C14 17 10 14 10 5C10 3 12 2 16 2C20 2 22 3 22 5Z" />
         <path d="M17.4 9.9c-.8.8-2 .8-2.8 0" />
         <path d="M10.1 7.1C9 7.2 7.7 7.7 6 8.6C2.5 10.6 1.3 12.5 2.3 14.2C6.8 22 11.8 22.6 13.5 21.6C14.229 21.195 15.025 20.067 15.3 18.27" />

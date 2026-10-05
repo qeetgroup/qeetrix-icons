@@ -33,7 +33,7 @@ export function FileTerminalIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M14 2V8H20" />
         <path d="m8 16 2-2-2-2" />
         <path d="M12 18h4" />

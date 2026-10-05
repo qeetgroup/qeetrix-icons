@@ -18,7 +18,7 @@ export function SandwichIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M3.147 10.594L12 3.428L20.813 10.562" />
+        <path d="M3.147 10.594L12 3.428L20.852 10.594" />
         <path d="M21 15H22V19H16.75" />
         <path d="M3 15H2V19H11" />
         <path d="M7.47 15.6L14.4 20.8L18.15 15.8" />

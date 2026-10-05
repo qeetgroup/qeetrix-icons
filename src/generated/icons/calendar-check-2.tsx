@@ -20,10 +20,10 @@ export function CalendarCheck2Icon(props: IconProps<"outline">) {
       >
         <path d="M 19 3 L 5 3" />
         <path d="M 21 13 L 21 5" />
-        <path d="M21 5V3H19" />
-        <path d="M3 19V21H5" />
+        <path d="M 21 5 A2 2 0 0 0 19 3" />
+        <path d="M 3 19 A2 2 0 0 0 5 21" />
         <path d="M 3 5 L 3 19" />
-        <path d="M5 3H3V5" />
+        <path d="M 5 3 A2 2 0 0 0 3 5" />
         <path d="M16 19L18 21L21.581 17.419" />
         <path d="M16 2v3" />
         <path d="M3 9h18" />

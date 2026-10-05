@@ -20,7 +20,7 @@ export function LollipopIcon(props: IconProps<"outline">) {
       >
         <circle cx="11" cy="11" r="8" />
         <path d="m21 21-4.3-4.3" />
-        <path d="M11 11A2 2 0 0 0 15 11A4 4 0 0 0 7 11A6 6 0 0 0 18.402 13.61" />
+        <path d="M11 11A2 2 0 0 0 15 11A4 4 0 0 0 7 11A6 6 0 0 0 18.265 13.877" />
       </svg>
     );
   }

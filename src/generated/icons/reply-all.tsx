@@ -20,7 +20,7 @@ export function ReplyAllIcon(props: IconProps<"outline">) {
       >
         <path d="m12 17-5-5 5-5" />
         <path d="M22 18V16A4 4 0 0 0 18 12H8" />
-        <path d="M7 17L2.37 12L7 7" />
+        <path d="M7 17L2.113 12.113V11.887L7 7" />
       </svg>
     );
   }

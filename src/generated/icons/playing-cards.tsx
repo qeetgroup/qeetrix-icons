@@ -15,7 +15,7 @@ export function PlayingCardsIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M22 1L6 1L6 4.796L1.034 7.055L1.005 9.657L6 20.648L6 23L22 23L22 1ZM18.404 12L14.204 5.702L13.345 6.698L12.446 7.74L9.594 11.998L14 18.606L18.404 12ZM3.02 8.349L6 6.994L6 15.814L3.009 9.235L3.02 8.349ZM14.004 9.007L12 12L14 15L16 12L14.004 9.007Z"
+            d="M22 1L6 1L6 4.796L2.146 6.549L0.991 9.629L6 20.648L6 23L22 23L22 1ZM14.009 5.407L9.594 11.998L9.965 12.554L14 18.606L18.404 12L14.009 5.407ZM3.728 8.027L6 6.993L6 15.815L3.155 9.555L3.728 8.027ZM12 12L14 15L16 12L14.005 9.007L12 12Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,8 +33,8 @@ export function PlayingCardsIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14.102 7.351L13.243 8.347L10.797 11.999L14 16.803L17.202 12Z" />
-        <path d="M7.18 20.827L2.007 9.446L2.027 7.702L6.09 5.854" />
+        <path d="M10.797 11.999L14 16.803L17.202 12L14.007 7.207Z" />
+        <path d="M7.18 20.827L2.073 9.592L2.937 7.288L6.09 5.854" />
         <rect height="20" width="14" x="7" y="2" />
       </svg>
     );

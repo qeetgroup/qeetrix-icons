@@ -15,7 +15,7 @@ export function MonitorPlayIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1 2L23 2L23 18L13 18L13 20L17 20L17 22L7 22L7 20L11 20L11 18L1 18L1 2ZM9 15.206L16.502 10.866L17.998 10L9 4.795L9 15.206ZM14.004 10L11 8.263L11 11.738L14.004 10Z"
+            d="M1 2L23 2L23 18L13 18L13 20L17 20L17 22L7 22L7 20L11 20L11 18L1 18L1 2ZM9 4.795L9 15.206L17.998 10L9 4.795ZM11 11.738L14.004 10L11 8.263L11 11.738Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MonitorPlayIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16.001 10L10 13.472V6.529Z" />
+        <path d="M10 13.472V6.529L16.001 10Z" />
         <path d="M12 17v4" />
         <path d="M8 21h8" />
         <rect height="14" width="20" x="2" y="3" />

@@ -24,8 +24,8 @@ export function UnfoldHorizontalIcon(props: IconProps<"outline">) {
         <path d="M12 8v2" />
         <path d="M12 14v2" />
         <path d="M12 20v2" />
-        <path d="M19 15L21.66 12L19 9" />
-        <path d="M5 9L2.34 12L5 15" />
+        <path d="M19 15L21.887 12.113V11.887L19 9" />
+        <path d="M5 9L2.113 11.887V12.113L5 15" />
       </svg>
     );
   }

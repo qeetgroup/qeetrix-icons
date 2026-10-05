@@ -21,7 +21,7 @@ export function DatabaseZapIcon(props: IconProps<"outline">) {
         <ellipse cx="12" cy="5" rx="9" ry="3" />
         <path d="M3 6V19A9 3 0 0 0 15 21.84" />
         <path d="M21 6V8" />
-        <path d="M21 12L18 17L21.426 17.325L19.177 21.658" />
+        <path d="M21 12L18 17H21.7L21.846 17.257L19.219 21.634" />
         <path d="M3 12A9 3 0 0 0 14.59 14.87" />
       </svg>
     );

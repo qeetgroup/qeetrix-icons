@@ -11,8 +11,9 @@ Each `<category>.ts` exports `derivations` with three tables:
 | Table | Effect |
 |:--|:--|
 | `filled` | Icons that get a filled drawing. `roles` overrides the inferred role of an outline element by its 0-based index (see [docs/filled.md](../../docs/filled.md)). |
-| `keepRound` | Outline elements the sharp style keeps round, by index (figurative circles, organic curves). See [docs/sharp.md](../../docs/sharp.md). |
+| `keepRound` | Outline elements the sharp style keeps round, by index: figurative circles, organic curves, and figurative dots (eyes, spots), which keep round caps. See [docs/sharp.md](../../docs/sharp.md#kept-round). |
 | `sharpFilledRoles` | Roles for the sharp filled drawing that differ from the round filled drawing's. |
+| `tipHeight` | Optional. Letterform elements whose sharp apex is cut flat at the round outline's height, so a sharp A stays level with the letters beside it. See [docs/sharp.md](../../docs/sharp.md#letter-heights). |
 
 When derivation cannot produce a clean drawing, a hand-drawn override replaces it:
 `config/overrides/<round-filled|sharp-outline|sharp-filled>/<category>/<name>.svg` is copied to the

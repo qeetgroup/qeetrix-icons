@@ -18,9 +18,9 @@ export function EarthIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21.54 15H17a2 2 0 0 0-2 2v4.54" />
-        <path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17" />
-        <path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05" />
+        <path d="M20.54 15H17A2 2 0 0 0 15 17V20.54" />
+        <path d="M7 4.34V5A3 3 0 0 0 10 8A2 2 0 0 1 12 10C12 11.1 12.9 12 14 12A2 2 0 0 0 16 10C16 8.9 16.9 8 18 8H20.17" />
+        <path d="M11 20.95V18A2 2 0 0 0 9 16A2 2 0 0 1 7 14V13A2 2 0 0 0 5 11H3.05" />
         <circle cx="12" cy="12" r="10" />
       </svg>
     );

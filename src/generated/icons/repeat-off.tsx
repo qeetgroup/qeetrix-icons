@@ -18,13 +18,13 @@ export function RepeatOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11.656 6L20.686 5.87L17.399 2.419" />
-        <path d="M17.898 17.898A4 4 0 0 1 17 18L3.323 17.866L7 14" />
+        <path d="M11.656 6H20.7L20.788 5.788L17.419 2.419" />
+        <path d="M17.898 17.898A4 4 0 0 1 17 18H3.3L3.212 17.788L7 14" />
         <path d="M2.419 2.419L21.581 21.581" />
         <path d="M21 13v1a4 4 0 0 1-.171 1.159" />
-        <path d="M19.586 7.414L17 10" />
+        <path d="M20.293 5.293L21 6L17 10" />
         <path d="M3 11V10A4 4 0 0 1 5.166 6.445" />
-        <path d="M6.581 21.581L4.414 19.414" />
+        <path d="M6.581 21.581L3 18L3.707 17.293" />
       </svg>
     );
   }

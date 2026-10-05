@@ -15,7 +15,7 @@ export function TvMinimalPlayIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 2L1 2L1 18L23 18L23 2ZM9 15.206L16.502 10.866L17.998 10L9 4.795L9 15.206ZM14.004 10L11 8.263L11 11.738L14.004 10ZM6 20L18 20L18 22L6 22L6 20Z"
+            d="M23 2L1 2L1 18L23 18L23 2ZM9 4.795L9 15.206L17.998 10L9 4.795ZM11 11.738L14.004 10L11 8.263L11 11.738ZM6 20L18 20L18 22L6 22L6 20Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function TvMinimalPlayIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16.001 10L10 13.472V6.529Z" />
+        <path d="M10 13.472V6.529L16.001 10Z" />
         <path d="M7 21h10" />
         <rect height="14" width="20" x="2" y="3" />
       </svg>

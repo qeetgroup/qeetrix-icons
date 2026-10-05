@@ -18,7 +18,7 @@ export function BlenderIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M6.354 14L4.785 22H19.215L17.646 14Z" />
+        <path d="M4.785 22H19.215L17.646 14H6.354Z" />
         <path d="M16.917 2.997L16 14" />
         <path d="M8.006 14L7.084 2.997" />
         <path d="M8.545 8.977A5 5 0 0 0 12 8A5 5 0 0 1 15.585 7.035" />

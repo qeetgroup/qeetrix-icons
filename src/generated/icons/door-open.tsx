@@ -21,7 +21,7 @@ export function DoorOpenIcon(props: IconProps<"outline">) {
         <path d="M10 21H2" />
         <path d="M10 3H5V21" />
         <path d="M14 12h.01" />
-        <path d="M19 21V3.301L10.272 2.142L10.22 21.888Z" />
+        <path d="M19 21V3.301L11.401 2.052L10 3.242V20.734L11.389 21.959Z" />
         <path d="M22 21h-3" />
       </svg>
     );

@@ -32,7 +32,16 @@ export const derivations: CategoryDerivations = {
     venus: { roles: { 0: "stroke" } },
   },
   // Outline elements the sharp style keeps round, by element index, each with its reason.
-  keepRound: {},
+  keepRound: {
+    // The spots: figurative dots, round in sharp (UI dots stay square).
+    virus: [0, 18],
+    // The spots: figurative dots, round in sharp (UI dots stay square).
+    "virus-off": [0, 1, 19],
+    // The spots: figurative dots, round in sharp (UI dots stay square).
+    germ: [1, 8],
+    // The spots: figurative dots, round in sharp (UI dots stay square).
+    "germ-off": [1, 11],
+  },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
 };

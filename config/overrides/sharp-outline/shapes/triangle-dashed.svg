@@ -1,6 +1,6 @@
 <!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/shapes/triangle-dashed.svg (sha256 7f4af3f11d9cb5a3a3717be8dfa391d4a58de1d247d905409095066298b76ddb). Edit this file, not icons/. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="M10.162 4.188L10.402 3.768L13.598 3.768L13.845 4.201"/>
+  <path d="M10.163 4.189L11.415 1.997L12.585 1.997L13.844 4.201"/>
   <path d="M14 21h2"/>
   <path d="m15.874 7.743 1 1.732"/>
   <path d="m18.849 12.952 1 1.732"/>

@@ -20,7 +20,7 @@ export function MonitorOffIcon(props: IconProps<"outline">) {
       >
         <path d="M12 17v4" />
         <path d="M16 17H2V3.703" />
-        <path d="M3.414 3.414L21.581 21.581" />
+        <path d="M2.419 2.419L21.581 21.581" />
         <path d="M8 21h8" />
         <path d="M8.656 3H22V15.562" />
       </svg>

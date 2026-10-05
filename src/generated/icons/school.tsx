@@ -20,7 +20,7 @@ export function SchoolIcon(props: IconProps<"outline">) {
       >
         <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
         <path d="M18 5.933V21" />
-        <path d="M4 6L12 2.123L20 6" />
+        <path d="M4 6L11.506 1.997H12.494L20 6" />
         <path d="M5.146 11.521L2 13.44V21H22V13.44L18.854 11.521" />
         <path d="M6 5.933V21" />
         <circle cx="12" cy="9" r="2" />

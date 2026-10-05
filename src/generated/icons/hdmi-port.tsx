@@ -15,7 +15,7 @@ export function HdmiPortIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M20 15L23 15L23 7L1 7L1 15L4 15L5.5 17L18.5 17L20 15ZM17 11L7 11L7 13L17 13L17 11Z"
+            d="M23 7L1 7L1 15L4 15L5.5 17L18.5 17L20 15L23 15L23 7ZM17 11L7 11L7 13L17 13L17 11Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function HdmiPortIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 8H2V14H4.5L6 16H18L19.5 14H22Z" />
+        <path d="M2 8V14H4.5L6 16H18L19.5 14H22V8Z" />
         <path d="M8 12h8" />
       </svg>
     );

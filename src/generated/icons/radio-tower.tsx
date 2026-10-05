@@ -18,13 +18,13 @@ export function RadioTowerIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4.9 16.1C1.147 12.347 1.006 6.278 4.476 2.35" />
+        <path d="M4.476 15.649C1.141 11.875 1.141 6.124 4.476 2.35" />
         <path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5" />
         <circle cx="12" cy="9" r="2" />
         <path d="M16.2 4.8c2 2 2.26 5.11.8 7.47" />
-        <path d="M19.507 2.331A9.96 9.96 0 0 1 19.1 16" />
+        <path d="M19.507 2.331A9.96 9.96 0 0 1 19.507 15.569" />
         <path d="M10.5 18H13.5" />
-        <path d="M8.104 21.713L12 11L15.896 21.713" />
+        <path d="M8.104 21.713L11.897 11.282H12.103L15.896 21.713" />
       </svg>
     );
   }

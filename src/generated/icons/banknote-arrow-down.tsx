@@ -19,7 +19,7 @@ export function BanknoteArrowDownIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 18H2V6H22V13" />
-        <path d="M16 19L19 21.66L21.583 19.369" />
+        <path d="M16.419 19.419L18.887 21.887H19.113L21.581 19.419" />
         <path d="M18 12h.01" />
         <path d="M19 16V21" />
         <path d="M6 12h.01" />

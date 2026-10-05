@@ -22,7 +22,7 @@ export function FaucetIcon(props: IconProps<"outline">) {
         <path d="M12 8v3" />
         <path d="m13.917 5.428 4.511-1.345a2 2 0 110 3.834l-4.51-1.345" />
         <path d="M18 17v-4.006" />
-        <path d="M22 12V18" />
+        <path d="M22 11v8" />
         <path d="M22 12H19A1 1 0 0 0 18 12.994H15.461A4 4 0 0 0 8.546 12.982L7 13A5 5 0 0 0 2 18V20H6V16.988L8.547 17.018A4 4 0 0 0 15.454 17.018L18 17A1 1 0 0 0 19 18H22" />
         <circle cx="12" cy="6" r="2" />
       </svg>

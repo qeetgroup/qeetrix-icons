@@ -18,7 +18,7 @@ export function ChessQueenIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 18H20V22H4Z" />
+        <path d="M20 18V22H4V18Z" />
         <path d="M12.474 5.943L14.594 13.168L18.407 8.209" />
         <path d="M20 9L17.316 17.051" />
         <path d="M5.594 8.209L9.406 13.169L11.526 5.943" />

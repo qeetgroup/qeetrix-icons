@@ -18,9 +18,9 @@ export function MagnetIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 15L15.293 18.293" />
-        <path d="M2.31 11.5L5.5 15.5L12.381 8.619A1 1 0 1 1 15.381 11.619L8.5 18.5L12.5 21.69L19.717 15.281A1 1 0 0 0 8.716 4.282Z" />
-        <path d="M5.707 8.707L9 12" />
+        <path d="m12 15 4 4" />
+        <path d="M5.5 15.5L12.381 8.619A1 1 0 1 1 15.381 11.619L8.5 18.5L12.005 22.005H12.995L19.717 15.281A1 1 0 0 0 8.716 4.282L1.995 11.005V11.995Z" />
+        <path d="m5 8 4 4" />
       </svg>
     );
   }

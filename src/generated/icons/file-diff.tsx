@@ -15,7 +15,7 @@ export function FileDiffIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M3 23L3 1L15.412 1L21 6.588L21 23L3 23ZM11 14L11 11L8 11L8 9L11 9L11 6L13 6L13 9L16 9L16 11L13 11L13 14L11 14ZM16 16L8 16L8 18L16 18L16 16Z"
+            d="M3 1L15.412 1L21 6.588L21 23L3 23L3 1ZM11 14L11 11L8 11L8 9L11 9L11 6L13 6L13 9L16 9L16 11L13 11L13 14L11 14ZM16 16L8 16L8 18L16 18L16 16Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FileDiffIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M9 10h6" />
         <path d="M12 13V7" />
         <path d="M9 17h6" />

@@ -20,7 +20,7 @@ export function FileCheckCornerIcon(props: IconProps<"outline">) {
       >
         <path d="M10.5 22H4V2H15L20 7V14" />
         <path d="M14 2V8H20" />
-        <path d="M14 20L16 21.66L20 18" />
+        <path d="M14 20L15.887 21.887H16.113L20 18" />
       </svg>
     );
   }

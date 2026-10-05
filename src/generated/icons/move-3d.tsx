@@ -20,8 +20,8 @@ export function Move3dIcon(props: IconProps<"outline">) {
       >
         <path d="M5 4V19H20" />
         <path d="M5.707 18.293L11 13" />
-        <path d="M2.419 5.581L5 3L8 6" />
-        <path d="M18 16L21 19L18.419 21.581" />
+        <path d="M2.419 5.581L5 3L7.581 5.581" />
+        <path d="M18.419 16.419L21 19L18.419 21.581" />
       </svg>
     );
   }

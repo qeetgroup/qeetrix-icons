@@ -15,7 +15,7 @@ export function SaveIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M6 9L6 2L2 2L2 22L6 22L6 12L18 12L18 22L22 22L22 7.586L16.707 2.293L16.414 2L8 2L8 7L16 7L16 9L6 9ZM16 22L8 22L8 14L16 14L16 22Z"
+            d="M6 9L6 2L2 2L2 22L6 22L6 12L18 12L18 22L22 22L22 7.586L16.414 2L8 2L8 7L16 7L16 9L6 9ZM8 14L8 22L16 22L16 14L8 14Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function SaveIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16 3L21 8V21H3V3Z" />
+        <path d="M21 8V21H3V3H16Z" />
         <path d="M17 21V13H7V21" />
         <path d="M7 3V8H15" />
       </svg>

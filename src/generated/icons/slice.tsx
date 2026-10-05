@@ -18,7 +18,7 @@ export function SliceIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 16.586V20H2.08L2.085 19.915L18.37 3.63A1 1 0 1 1 21.37 6.63L11 17L8 14" />
+        <path d="M11 16.586V20H2.28L2.198 19.802L18.37 3.63A1 1 0 1 1 21.37 6.63L11 17L8 14" />
       </svg>
     );
   }

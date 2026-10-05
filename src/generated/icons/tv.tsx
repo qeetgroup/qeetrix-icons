@@ -33,7 +33,7 @@ export function TvIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16.581 2.419L12 7L7.419 2.419" />
+        <path d="M16.581 2.419L12.113 6.887H11.887L7.419 2.419" />
         <rect height="15" width="20" x="2" y="7" />
       </svg>
     );

@@ -19,7 +19,7 @@ export function UtensilsCrossedIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M15.581 2.419L11.6 6.4L17.6 12.4L21.581 8.419" />
-        <path d="M15 15L3.3 3.3A4.2 4.2 0 0 0 3.3 9.3L11.907 17.907L13.4 16.6ZM15 15L21.581 21.581" />
+        <path d="M15 15L3.3 3.3A4.2 4.2 0 0 0 3.3 9.3L12 18ZM15.419 15.419L21.581 21.581" />
         <path d="M2.419 21.486L8.5 15.5" />
         <path d="m19 5-7 7" />
       </svg>

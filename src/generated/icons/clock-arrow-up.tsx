@@ -20,7 +20,7 @@ export function ClockArrowUpIcon(props: IconProps<"outline">) {
       >
         <path d="M12 6v6l1.56.78" />
         <path d="M13.227 21.925a10 10 0 1 1 8.767-9.588" />
-        <path d="M14 18L18 14L21.581 17.581" />
+        <path d="M14.419 17.581L18 14L21.581 17.581" />
         <path d="M18 22V15" />
       </svg>
     );

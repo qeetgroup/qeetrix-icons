@@ -14,7 +14,7 @@ export function RectangleGogglesIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path d="M23 5L23 19L14.501 19L12 15.67L9.499 19L1 19L1 5L23 5Z" fillRule="evenodd" />
+          <path d="M23 19L14.501 19L12 15.67L9.499 19L1 19L1 5L23 5L23 19Z" fillRule="evenodd" />
         </svg>
       );
     }
@@ -30,7 +30,7 @@ export function RectangleGogglesIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 6V18H15.001L12 14.005L8.999 18H2V6Z" />
+        <path d="M22 18H15.001L12 14.005L8.999 18H2V6H22Z" />
       </svg>
     );
   }

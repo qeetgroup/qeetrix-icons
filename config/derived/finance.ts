@@ -29,7 +29,8 @@ export const derivations: CategoryDerivations = {
     // already keeps; squared, it leaves a jog. Same hand as social's `hand-heart`, kept round there too.
     "hand-coins": [0],
     // The pig's tail is an organic curl like the body's curves; squared, it turns into a pipe elbow.
-    "piggy-bank": [2],
+    // The eye: figurative dots, round in sharp (UI dots stay square).
+    "piggy-bank": [1, 2],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

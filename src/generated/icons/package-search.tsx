@@ -19,8 +19,8 @@ export function PackageSearchIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 21V12" />
-        <path d="M20.27 18.27L21.581 19.581" />
-        <path d="M21 10.498V6.841L12 2.139L3 6.841V17.158L12 21.9L13.98 21.171" />
+        <path d="M20.689 18.689L21.581 19.581" />
+        <path d="M21 10.498V6.841L12.521 1.997H11.479L3 6.841V17.158L11.479 22.002L12.521 22.003L13.98 21.171" />
         <path d="M4.157 7.498L12 12L19.843 7.498" />
         <path d="M8.368 4.767L15.629 8.921" />
         <circle cx="18.5" cy="16.5" r="2.5" />

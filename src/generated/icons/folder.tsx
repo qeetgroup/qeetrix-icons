@@ -14,7 +14,7 @@ export function FolderIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path d="M23 21L1 21L1 2L9.524 2L11.549 5L23 5L23 21Z" fillRule="evenodd" />
+          <path d="M23 5L23 21L1 21L1 2L9.524 2L11.549 5L23 5Z" fillRule="evenodd" />
         </svg>
       );
     }
@@ -30,7 +30,7 @@ export function FolderIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
       </svg>
     );
   }

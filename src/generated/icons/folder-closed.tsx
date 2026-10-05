@@ -15,7 +15,7 @@ export function FolderClosedIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1 21L23 21L23 11L1 11L1 21ZM1 9L1 2L9.524 2L11.549 5L23 5L23 9L1 9Z"
+            d="M23 9L23 5L11.549 5L9.524 2L1 2L1 9L23 9ZM23 11L1 11L1 21L23 21L23 11Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FolderClosedIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
         <path d="M2 10h20" />
       </svg>
     );

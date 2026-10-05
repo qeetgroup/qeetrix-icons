@@ -18,7 +18,7 @@ export function PenOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 10L3.488 16.518L2.139 20.968L3.032 21.861L7.475 20.512L14 13.982" />
+        <path d="M10 10L3.488 16.518L2.121 21.025L2.975 21.878L7.475 20.512L14 13.982" />
         <path d="m12.829 7.172 4.359-4.346a1 1 0 1 1 3.986 3.986l-4.353 4.353" />
         <path d="M2.419 2.419L21.581 21.581" />
       </svg>

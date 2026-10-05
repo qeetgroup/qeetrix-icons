@@ -20,7 +20,7 @@ export function BugOffIcon(props: IconProps<"outline">) {
       >
         <path d="M12 19V13" />
         <path d="M12.656 7H14a4 4 0 0 1 4 4v1.344" />
-        <path d="M14.12 3.88L15.581 2.419" />
+        <path d="M14.539 3.461L15.581 2.419" />
         <path d="M16.534 17.93A6 6 0 0 1 6 14V11A4 4 0 0 1 6.978 8.379" />
         <path d="M2.419 2.419L21.581 21.581" />
         <path d="M21 5A4 4 0 0 1 18.419 8.735" />
@@ -28,8 +28,8 @@ export function BugOffIcon(props: IconProps<"outline">) {
         <path d="M3 21A4 4 0 0 1 5.827 17.171" />
         <path d="M3 5A4 4 0 0 0 5.581 8.735" />
         <path d="M6 13H2" />
-        <path d="M8.419 2.419L9.173 3.173" />
-        <path d="M10.473 3.418A3 3 0 0 1 15 6V7.13" />
+        <path d="M8.419 2.419L9.461 3.461" />
+        <path d="M9.712 4.06A3 3 0 0 1 15 6v1.13" />
       </svg>
     );
   }

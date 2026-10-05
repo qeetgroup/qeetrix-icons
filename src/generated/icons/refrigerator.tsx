@@ -15,7 +15,7 @@ export function RefrigeratorIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M4 6Q4 5.046 4.351 4.16Q4.732 3.197 5.464 2.464Q6.197 1.732 7.16 1.351Q8.046 1 9 1L15 1Q15.954 1 16.84 1.351Q17.803 1.732 18.536 2.464Q19.268 3.197 19.649 4.16Q20 5.046 20 6L20 9L16 9L16 6L14 6L14 9L4 9L4 6ZM14 11L4 11L4 23L20 23L20 11L16 11L16 14L14 14L14 11Z"
+            d="M9 1L15 1Q15.954 1 16.84 1.351Q17.803 1.732 18.536 2.464Q19.268 3.197 19.649 4.16Q20 5.046 20 6L20 9L16 9L16 6L14 6L14 9L4 9L4 6Q4 5.046 4.351 4.16Q4.732 3.197 5.464 2.464Q6.197 1.732 7.16 1.351Q8.046 1 9 1ZM14 11L4 11L4 23L20 23L20 11L16 11L16 14L14 14L14 11Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function RefrigeratorIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M5 6A4 4 0 0 1 9 2H15A4 4 0 0 1 19 6V22H5Z" />
+        <path d="M9 2H15A4 4 0 0 1 19 6V22H5V6A4 4 0 0 1 9 2Z" />
         <path d="M5 10h14" />
         <path d="M15 7v6" />
       </svg>

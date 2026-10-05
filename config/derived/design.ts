@@ -46,6 +46,8 @@ export const derivations: CategoryDerivations = {
   // Outline elements the sharp style keeps round, by element index, each with its reason.
   keepRound: {
     view: [2], // The eye's pupil.
+    // The spray: figurative dots, round in sharp (UI dots stay square).
+    "spray-can": [0, 1, 2, 3, 4, 5],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

@@ -15,7 +15,7 @@ export function CarTaxiFrontIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M9 1L15 1L15 3L9 3L9 1ZM21.414 9L21.707 8.707L22.414 8L21 6.586L19.36 8.226L17.647 4L6.323 4L4.635 8.221L3 6.586L1.586 8L2.586 9L2 9L2 19L4 19L4 21L6 21L6 19L18 19L18 21L20 21L20 19L22 19L22 9L21.414 9ZM17.516 9L6.477 9L7.677 6L16.299 6L17.516 9ZM8.01 13L6 13L6 15L8.01 15L8.01 13ZM16 13L18.01 13L18.01 15L16 15L16 13Z"
+            d="M9 1L15 1L15 3L9 3L9 1ZM21.414 9L21.707 8.707L22.414 8L21 6.586L19.36 8.226L17.647 4L6.323 4L4.635 8.22L3 6.586L1.586 8L2.586 9L2 9L2 19L4 19L4 21L6 21L6 19L18 19L18 21L20 21L20 19L22 19L22 9L21.414 9ZM17.516 9L16.299 6L7.677 6L6.477 9L17.516 9ZM8.01 13L6 13L6 15L8.01 15L8.01 13ZM16 13L18.01 13L18.01 15L16 15L16 13Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function CarTaxiFrontIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 2h4" />
-        <path d="M21 8L19 10L16.973 5H7L5 10L3 8" />
+        <path d="M21 8L19.141 9.859L18.925 9.815L16.973 5H7L5.074 9.814L4.859 9.859L3 8" />
         <path d="M7 14h.01" />
         <path d="M17 14h.01" />
         <rect height="8" width="18" x="3" y="10" />

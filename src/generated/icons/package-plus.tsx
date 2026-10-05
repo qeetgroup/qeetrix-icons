@@ -21,7 +21,7 @@ export function PackagePlusIcon(props: IconProps<"outline">) {
         <path d="M12 21V12" />
         <path d="M16 17h6" />
         <path d="M19 14v6" />
-        <path d="M21 10.535V6.841L12 2.139L3 6.841V17.158L12 21.89L14.675 20.775" />
+        <path d="M21 10.535V6.841L12.521 1.997H11.479L3 6.841V17.158L11.479 22.002L12.521 22.003L14.675 20.775" />
         <path d="M4.157 7.498L12 12L19.843 7.498" />
         <path d="M8.368 4.767L15.629 8.921" />
       </svg>

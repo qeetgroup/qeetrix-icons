@@ -19,7 +19,7 @@ export function ChartAreaIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M3 3V21H21" />
-        <path d="M7 11L9.5 8.5L13.5 12.5L19 7V17H7Z" />
+        <path d="M9.5 8.5L13.5 12.5L19 7V17H7V11Z" />
       </svg>
     );
   }

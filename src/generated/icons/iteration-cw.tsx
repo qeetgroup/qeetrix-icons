@@ -19,7 +19,7 @@ export function IterationCwIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M4 10A8 8 0 1 1 12 18H5" />
-        <path d="M7.581 21.581L4 18L8 14" />
+        <path d="M7.581 21.581L4 18L7.581 14.419" />
       </svg>
     );
   }

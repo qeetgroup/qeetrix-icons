@@ -33,7 +33,7 @@ export function FileChartLineIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M14 2V8H20" />
         <path d="m16 13-3.5 3.5-2-2L8 17" />
       </svg>

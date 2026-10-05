@@ -18,8 +18,8 @@ export function StethoscopeIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 3V4" />
-        <path d="M5 3V4" />
+        <path d="M11 2v2" />
+        <path d="M5 2v2" />
         <path d="M5 3H2V9A6 6 0 0 0 14 9V3H11" />
         <path d="M8 15a6 6 0 0 0 12 0v-3" />
         <circle cx="20" cy="10" r="2" />

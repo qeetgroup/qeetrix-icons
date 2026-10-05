@@ -18,7 +18,7 @@ export function ZodiacLibraIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M3 16H9.857L10.735 15.935L9.895 15.62A6 6 0 1 1 14.107 15.62L13.262 15.935L14.145 16H21" />
+        <path d="M3 16H10.908L9.895 15.62A6 6 0 1 1 14.107 15.62L13.087 16H21" />
         <path d="M3 20h18" />
       </svg>
     );

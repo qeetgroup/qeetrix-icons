@@ -34,7 +34,7 @@ export function ArmchairIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M19 9V4H5V9" />
-        <path d="M3 18H21V11A2 2 0 0 0 17 11V13H7V11A2 2 0 0 0 3 11Z" />
+        <path d="M21 18V11A2 2 0 0 0 17 11V13H7V11A2 2 0 0 0 3 11V18Z" />
         <path d="M5 18v2" />
         <path d="M19 18v2" />
       </svg>

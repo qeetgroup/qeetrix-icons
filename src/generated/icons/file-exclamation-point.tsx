@@ -15,7 +15,7 @@ export function FileExclamationPointIcon(props: IconProps<"outline" | "filled">)
           {...resolveIconProps(props)}
         >
           <path
-            d="M3 1L3 23L21 23L21 6.588L15.412 1L3 1ZM13 8L13 14L11 14L11 8L13 8ZM11 16L13.01 16L13.01 18L11 18L11 16Z"
+            d="M15.412 1L3 1L3 23L21 23L21 6.588L15.412 1ZM13 8L13 14L11 14L11 8L13 8ZM11 16L13.01 16L13.01 18L11 18L11 16Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FileExclamationPointIcon(props: IconProps<"outline" | "filled">)
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M12 9v4" />
         <path d="M12 17h.01" />
       </svg>

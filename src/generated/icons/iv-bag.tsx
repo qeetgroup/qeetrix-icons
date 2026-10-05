@@ -20,7 +20,7 @@ export function IvBagIcon(props: IconProps<"outline">) {
       >
         <path d="M12 18V22H20" />
         <path d="M6.694 11.45C7.247 11.762 7.923 12 9 12C12 12 12 10 15 10C16.077 10 16.753 10.238 17.306 10.55" />
-        <path d="M10 3L11 2H13L14 3H18V18H6V3Z" />
+        <path d="M13 2L14 3H18V18H6V3H10L11 2Z" />
       </svg>
     );
   }

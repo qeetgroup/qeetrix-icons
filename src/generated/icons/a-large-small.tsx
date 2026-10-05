@@ -18,9 +18,9 @@ export function ALargeSmallIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 16L17.774 7.985H19.226L21.723 15.199" />
+        <path d="M15.277 15.199L17.774 7.985H19.226L21.723 15.199" />
         <path d="M16.697 14H20.303" />
-        <path d="M2.313 15.25L6.501 5.203L11 16" />
+        <path d="M2.313 15.25L6.167 6.002H6.834L10.687 15.25" />
         <path d="M4.304 13H8.696" />
       </svg>
     );

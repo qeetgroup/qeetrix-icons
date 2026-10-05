@@ -15,7 +15,7 @@ export function GamepadDirectionalIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M8 1L16 1L16 6.414L12 10.414L8 6.414L8 1ZM1 16L6.414 16L10.414 12L6.414 8L1 8L1 16ZM17.293 15.707L13.586 12L17.586 8L23 8L23 16L17.586 16L17.293 15.707ZM12 13.586L16 17.586L16 23L8 23L8 17.586L12 13.586Z"
+            d="M16 1L16 6.414L12 10.414L8 6.414L8 1L16 1ZM1 8L1 16L6.414 16L10.414 12L6.414 8L1 8ZM13.586 12L17.586 8L23 8L23 16L17.586 16L13.586 12ZM16 17.586L16 23L8 23L8 17.586L12 13.586L16 17.586Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,10 +33,10 @@ export function GamepadDirectionalIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 15L15 18V22H9V18Z" />
-        <path d="M18 15L15 12L18 9H22V15Z" />
-        <path d="M6 15H2V9H6L9 12Z" />
-        <path d="M9 2H15V6L12 9L9 6Z" />
+        <path d="M15 18V22H9V18L12 15Z" />
+        <path d="M15 12L18 9H22V15H18Z" />
+        <path d="M2 15V9H6L9 12L6 15Z" />
+        <path d="M15 2V6L12 9L9 6V2Z" />
       </svg>
     );
   }

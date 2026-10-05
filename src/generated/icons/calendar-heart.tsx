@@ -19,7 +19,7 @@ export function CalendarHeartIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12.127 21H3V3H21V10.125" />
-        <path d="M14.62 17.8A2.25 2.25 0 1 1 18 14.836A2.25 2.25 0 1 1 21.38 17.802L18 21.478Z" />
+        <path d="M21.38 17.802L18 21.478L14.62 17.8A2.25 2.25 0 1 1 18 14.836A2.25 2.25 0 1 1 21.38 17.802Z" />
         <path d="M16 2v3" />
         <path d="M3 9h18" />
         <path d="M8 2v3" />

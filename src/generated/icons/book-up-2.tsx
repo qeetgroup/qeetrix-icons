@@ -22,7 +22,7 @@ export function BookUp2Icon(props: IconProps<"outline">) {
         <path d="M18 2H20V22H6.5A1 1 0 0 1 6.5 17H20" />
         <path d="M4 18.5V2H6.5" />
         <path d="m9 10 3-3 3 3" />
-        <path d="M9 5L12 2.34L15 5" />
+        <path d="M9 5L11.887 2.113H12.113L15 5" />
       </svg>
     );
   }

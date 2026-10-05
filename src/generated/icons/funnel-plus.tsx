@@ -18,7 +18,7 @@ export function FunnelPlusIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13.354 3H2.028L2.009 4.394L10 13.231V20.618L12.748 21.992L14 21.978V13.231L15.735 11.311" />
+        <path d="M13.354 3H2.868L2.17 4.572L10 13.231V20.618L12.479 21.858L14 20.918V13.231L15.735 11.311" />
         <path d="M16 6h6" />
         <path d="M19 3v6" />
       </svg>

@@ -1,5 +1,5 @@
 <!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/social/message-square-heart.svg (sha256 c2b4d7b9617f6d44bfe2c496bdbe582fe4940482b9c774e3ab0520215ede5396). Edit this file, not icons/. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="M22 19H6L3.188 21.812L2 21.32V3H22Z"/>
+  <path d="M6 19L3.174 21.826L2 21.34V3H22V19Z"/>
   <path d="M7.5 9.5C7.5 10.187 7.765 10.883 8.197 11.344L12 15.469L15.802 11.344A2.77 2.77 0 0 0 16.5 9.5A2.5 2.5 0 0 0 12 8A2.5 2.5 0 0 0 7.5 9.5Z"/>
 </svg>

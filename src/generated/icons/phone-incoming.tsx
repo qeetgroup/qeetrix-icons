@@ -34,7 +34,7 @@ export function PhoneIncomingIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 2v6h6" />
-        <path d="M21.581 2.419L16.707 7.293" />
+        <path d="M21.581 2.419L17.126 6.874" />
         <path d="M13.832 16.568L14.559 16.902L16.011 15H22V22H20A18 18 0 0 1 2 4V2H9V8L7.078 9.441L7.44 10.184A14 14 0 0 0 13.832 16.568Z" />
       </svg>
     );

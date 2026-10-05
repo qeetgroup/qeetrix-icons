@@ -20,7 +20,7 @@ export function FileBadgeIcon(props: IconProps<"outline">) {
       >
         <path d="M13 22H20V7L15 2H4V7.3" />
         <path d="M14 2V8H20" />
-        <path d="M7.946 17.446L9.143 21.973L8.347 21.98L6.001 20.899L3.638 21.987L2.855 21.991L4.056 17.446" />
+        <path d="M7.946 17.446L8.907 21.083L8.02 21.829L6.001 20.899L3.983 21.828L3.095 21.082L4.056 17.446" />
         <circle cx="6" cy="14" r="3" />
       </svg>
     );

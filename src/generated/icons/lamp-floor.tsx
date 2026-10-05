@@ -15,7 +15,7 @@ export function LampFloorIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M4.047 10L11 10L11 21L8 21L8 23L16 23L16 21L13 21L13 10L19.955 10L16.353 1L7.647 1L4.047 10Z"
+            d="M4.596 8.629L7.647 1L16.353 1L19.955 10L13 10L13 21L16 21L16 23L8 23L8 21L11 21L11 10L4.047 10L4.596 8.629Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function LampFloorIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 10v12" />
-        <path d="M18.478 9H5.524L8.324 2H15.676Z" />
+        <path d="M5.524 9L8.324 2H15.676L18.478 9Z" />
         <path d="M9 22h6" />
       </svg>
     );

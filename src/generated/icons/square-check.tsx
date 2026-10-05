@@ -15,7 +15,7 @@ export function SquareCheckIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M2 2L22 2L22 22L2 22L2 2ZM16.707 9.707L10.5 15.914L6.586 12L8 10.586L10.5 13.086L16 7.586L17.414 9L16.707 9.707Z"
+            d="M2 2L22 2L22 22L2 22L2 2ZM10.5 15.914L16.707 9.707L17.414 9L16 7.586L10.5 13.086L8 10.586L6.586 12L10.5 15.914Z"
             fillRule="evenodd"
           />
         </svg>

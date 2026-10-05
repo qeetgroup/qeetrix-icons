@@ -23,7 +23,7 @@ export function CartonOffIcon(props: IconProps<"outline">) {
         <path d="M13.902 8.245 16 6h-4.343" />
         <path d="M19 13.343V9.21L16 6V2H8.434" />
         <path d="M2.419 2.419L21.581 21.581" />
-        <path d="M6.351 7.765L5.683 8.479" />
+        <path d="M6.351 7.765L5 9.21V10" />
       </svg>
     );
   }

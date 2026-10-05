@@ -15,7 +15,7 @@ export function HardDriveIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1.16 11.443L5.388 3L18.612 3L22.84 11.443L23 12.124L23 21L1 21L1 12.124L1.134 11.557L1.16 11.443ZM21.946 13.013L2.054 13.013L2.054 11.013L21.946 11.013L21.946 13.013ZM5 15L7.01 15L7.01 17L5 17L5 15ZM9 15L11.01 15L11.01 17L9 17L9 15Z"
+            d="M22.624 11.013L1.376 11.013L5.388 3L18.612 3L22.624 11.013ZM1 21L1 13.013L23 13.013L23 21L1 21ZM5 15L7.01 15L7.01 17L5 17L5 15ZM9 15L11.01 15L11.01 17L9 17L9 15Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function HardDriveIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 16h.01" />
-        <path d="M2.107 11.786L2 12.24V20H22V12.24L21.893 11.786L17.994 4H6.006Z" />
+        <path d="M2 20H22V12.24L21.893 11.786L17.994 4H6.006L2.107 11.786L2 12.24Z" />
         <path d="M20.946 12.013H3.054" />
         <path d="M6 16h.01" />
       </svg>

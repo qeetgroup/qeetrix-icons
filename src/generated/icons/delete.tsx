@@ -15,7 +15,7 @@ export function DeleteIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M8.842 4L23 4L23 20L8.842 20L1.016 12.899L1.016 11.099L8.556 4.259L8.842 4ZM16.414 12L19.414 15L18 16.414L15 13.414L12 16.414L10.586 15L13.586 12L10.586 9L12 7.586L15 10.586L18 7.586L19.414 9L18.707 9.707L16.414 12Z"
+            d="M1.001 11.113L1.001 12.885L1.329 13.183L8.842 20L23 20L23 4L8.842 4L1.001 11.113ZM16.414 12L19.414 15L18 16.414L15 13.414L12 16.414L10.586 15L13.586 12L10.586 9L12 7.586L15 10.586L18 7.586L19.414 9L18.707 9.707L16.414 12Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function DeleteIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M9.228 5L2.016 11.542V12.456L9.228 19H22V5Z" />
+        <path d="M2.001 12.442L9.228 19H22V5H9.228L2.001 11.556Z" />
         <path d="m12 9 6 6" />
         <path d="m18 9-6 6" />
       </svg>

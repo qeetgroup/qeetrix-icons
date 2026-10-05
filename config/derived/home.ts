@@ -45,7 +45,10 @@ export const derivations: CategoryDerivations = {
     "washing-machine": {},
   },
   // Outline elements the sharp style keeps round, by element index, each with its reason.
-  keepRound: {},
+  keepRound: {
+    // The water drops: figurative dots, round in sharp (UI dots stay square).
+    "shower-head": [3, 4, 5, 6, 7, 8, 9],
+  },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
 };

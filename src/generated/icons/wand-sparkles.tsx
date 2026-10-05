@@ -18,8 +18,8 @@ export function WandSparklesIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21.64 3.64L19.501 2.28L2.32 19.509L4.123 21.983L5.009 21.991L21.88 4.5Z" />
-        <path d="M14.707 7.707L16.293 9.293" />
+        <path d="M19.005 1.995L1.995 19.005V19.995L4.005 22.005H4.995L22.005 4.995V4.005L19.995 1.995Z" />
+        <path d="m14 7 3 3" />
         <path d="M5 6v4" />
         <path d="M19 14v4" />
         <path d="M10 2v2" />

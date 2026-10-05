@@ -19,8 +19,8 @@ export function CastIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M2 8V4H22V20H14" />
-        <path d="M2.115 12.013A9 9 0 0 1 10 20" />
-        <path d="M2.198 16.041A5 5 0 0 1 6 20" />
+        <path d="M2.115 12.013A9 9 0 0 1 9.987 19.885" />
+        <path d="M2.198 16.041A5 5 0 0 1 5.959 19.802" />
         <line x1="2" x2="2.01" y1="20" y2="20" />
       </svg>
     );

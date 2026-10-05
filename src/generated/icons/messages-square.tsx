@@ -18,8 +18,8 @@ export function MessagesSquareIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16 12H6L2 16V2H16Z" />
-        <path d="M20 9H22V23L18 19H8V16" />
+        <path d="M6 12L2 16V2H16V12Z" />
+        <path d="M20 9H22V21.34L20.826 21.826L18 19H8V16" />
       </svg>
     );
   }

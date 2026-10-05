@@ -18,7 +18,7 @@ export function FunnelXIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.531 3H2.028L2.009 4.394L10 13.231V20.618L12.748 21.992L14 21.978V13.232L14.944 12.186" />
+        <path d="M12.531 3H2.868L2.17 4.572L10 13.231V20.618L12.479 21.858L14 20.918V13.232L14.944 12.186" />
         <path d="m16.5 3.5 5 5" />
         <path d="m21.5 3.5-5 5" />
       </svg>

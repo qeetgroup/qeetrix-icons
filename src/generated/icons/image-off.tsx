@@ -18,12 +18,12 @@ export function ImageOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <line x1="4.541" x2="19.459" y1="4.541" y2="19.459" />
+        <line x1="2.419" x2="21.581" y1="2.419" y2="21.581" />
         <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83" />
         <line x1="13.5" x2="6.707" y1="13.5" y2="20.293" />
-        <line x1="18" x2="20.293" y1="12" y2="14.293" />
-        <path d="M3 5.174V21H18.839" />
-        <path d="M21 14V3H9" />
+        <path d="M18 12L21 15V14" />
+        <path d="M3 4.174V21H19.839" />
+        <path d="M20.293 14.293L21 15V3H9" />
       </svg>
     );
   }

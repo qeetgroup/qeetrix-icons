@@ -19,14 +19,14 @@ export function GermIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M11.174 2.347L11.925 3.848" />
-        <path d="M13 15h.01" />
+        <path d="M13 15h.01" strokeLinecap="round" />
         <path d="m16 21-1-2.472" />
         <path d="M18.798 2.364L18 3.804" />
         <path d="M2.347 18.827L4.746 17.627" />
         <path d="M21.585 15.642L20.284 14.522" />
         <path d="M21.636 5.202L20.196 6" />
         <path d="M3 10L4.293 11.293" />
-        <path d="M9 16h.01" />
+        <path d="M9 16h.01" strokeLinecap="round" />
         <path d="M9 20v2" />
         <path d="M9.33 7.035C8.82 8.513 7.544 9.965 6.24 10.829A5 5 0 0 0 9 20A12.1 12.1 0 0 0 20.902 10.084A6 6 0 0 0 9.33 7.035Z" />
         <circle cx="15" cy="9" r="2" />

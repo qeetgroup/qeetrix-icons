@@ -20,10 +20,10 @@ export function AlarmClockOffIcon(props: IconProps<"outline">) {
       >
         <path d="M6.139 7.552A8 8 0 0 0 17.448 18.861" />
         <path d="M19.9 14.25a8 8 0 0 0-9.15-9.15" />
-        <path d="M21.581 5.581L19 3" />
+        <path d="M21.581 5.581L19.419 3.419" />
         <path d="M6.26 18.67 4 21" />
         <path d="M2.419 2.419L21.581 21.581" />
-        <path d="M4 4L2.419 5.581" />
+        <path d="M3.581 4.419L2.419 5.581" />
       </svg>
     );
   }

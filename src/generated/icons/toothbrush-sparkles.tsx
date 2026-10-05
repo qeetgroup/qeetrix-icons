@@ -19,7 +19,7 @@ export function ToothbrushSparklesIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 3H8" />
-        <path d="M15.293 10.707L21.293 4.707" />
+        <path d="M15.005 10.995L21.581 4.419" />
         <path d="M15 11a8 8 0 01-.429.4" />
         <path d="M2.419 21.581L9 15C10.857 13.143 12.714 13.01 14.571 11.4L12.586 9.414A2 2 0 0 1 14 6A2 2 0 0 1 16 4A2 2 0 0 1 19.262 2.448L21.414 4.586" />
         <path d="M20 15v4" />

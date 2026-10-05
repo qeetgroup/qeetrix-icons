@@ -33,7 +33,7 @@ export function FileSpreadsheetIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M14 2V8H20" />
         <path d="M8 13h2" />
         <path d="M14 13h2" />

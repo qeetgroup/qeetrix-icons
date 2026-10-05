@@ -22,7 +22,7 @@ export function BotMessageSquareIcon(props: IconProps<"outline">) {
         <path d="M15 11v2" />
         <path d="M2 12h2" />
         <path d="M20 12h2" />
-        <path d="M20 18H8L4.085 21.915L4 21.92V6H20Z" />
+        <path d="M8 18L4.198 21.802L4 21.72V6H20V18Z" />
         <path d="M9 11v2" />
       </svg>
     );

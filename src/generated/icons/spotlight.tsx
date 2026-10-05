@@ -21,7 +21,7 @@ export function SpotlightIcon(props: IconProps<"outline">) {
         <path d="M15.295 19.562L15.93 21.757" />
         <path d="m17 16 3.758 2.098" />
         <path d="M19 12.5L21.846 11.938" />
-        <path d="M5.006 4.94L2.007 11.004L2.015 13.467L11.387 18.36L15.387 10.361Z" />
+        <path d="M3.097 14.032L11.387 18.36L15.387 10.361L5.006 4.94L2.069 10.878Z" />
         <path d="M8 9V2" />
       </svg>
     );

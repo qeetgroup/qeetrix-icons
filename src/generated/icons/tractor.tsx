@@ -18,10 +18,10 @@ export function TractorIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10.997 11.082L21 11.9L21.872 12.137L21 18H20" />
+        <path d="M10.997 11.082L21.804 11.966L21.938 12.137L21 18H20" />
         <path d="M16 18H12" />
         <path d="M18 5H17V10.573" />
-        <path d="M4 4H12L13 11.246" />
+        <path d="M3 4H12L13 11.246" />
         <path d="M4 10V4" />
         <path d="M7 15h.01" />
         <path d="M8 9.1V4" />

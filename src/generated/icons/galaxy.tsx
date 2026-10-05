@@ -19,8 +19,8 @@ export function GalaxyIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16.561 14.133A5.041 6.52 28.25 0 0 7.997 8.891A5.041 6.52 28.25 0 0 16.005 15.108A11.884 7.288 -60.76 0 1 4.029 7.001" />
-        <path d="M17 21h.01" />
-        <path d="M7 3h.01" />
+        <path d="M17 21h.01" strokeLinecap="round" />
+        <path d="M7 3h.01" strokeLinecap="round" />
         <path d="M8.751 7.925A11.885 7.288 -60.756 0 1 19.974 16.998" />
         <circle cx="12" cy="12" fill="currentColor" r="1" />
       </svg>

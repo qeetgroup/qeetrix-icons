@@ -20,7 +20,7 @@ export function FileVideoCameraIcon(props: IconProps<"outline">) {
       >
         <path d="M4 12V2H15L20 7V22H18" />
         <path d="M14 2V8H20" />
-        <path d="M10.866 17.342L14 15.528V21.992L13.169 21.991L10.866 20.658" />
+        <path d="M10.866 17.342L12.927 16.149L14 16.768V21.232L12.927 21.851L10.866 20.658" />
         <rect height="6" width="7" x="3" y="16" />
       </svg>
     );

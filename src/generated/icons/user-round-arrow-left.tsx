@@ -18,9 +18,9 @@ export function UserRoundArrowLeftIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M19 16L16.707 18.293" />
+        <path d="M19 16L16 19L16.707 19.707" />
         <path d="M2 21a8 8 0 0 1 12.664-6.5" />
-        <path d="M22 19H16L18.581 21.581" />
+        <path d="M22 19H16.3L16.212 19.212L18.581 21.581" />
         <circle cx="10" cy="8" r="5" />
       </svg>
     );

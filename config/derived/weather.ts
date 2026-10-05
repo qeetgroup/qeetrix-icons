@@ -36,6 +36,10 @@ export const derivations: CategoryDerivations = {
   // Outline elements the sharp style keeps round, by element index, each with its reason.
   keepRound: {
     cloudy: [1], // The back cloud's small lobe, an organic curve; squared, it collapsed into a bare bar.
+    // The snowflakes: figurative dots, round in sharp (UI dots stay square).
+    "cloud-snow": [1, 2, 3, 4, 5, 6],
+    // The hailstones: figurative dots, round in sharp (UI dots stay square).
+    "cloud-hail": [3, 4, 6],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

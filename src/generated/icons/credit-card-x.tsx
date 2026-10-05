@@ -18,8 +18,8 @@ export function CreditCardXIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.5 19H2V5H22V8.5" />
-        <path d="M2 10H21" />
+        <path d="M12.5 19H2V5H22V10.5" />
+        <path d="M2 10h20" />
         <path d="M6 14h2" />
         <path d="m16.5 14.5 5 5" />
         <path d="m21.5 14.5-5 5" />

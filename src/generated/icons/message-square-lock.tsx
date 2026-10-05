@@ -18,7 +18,7 @@ export function MessageSquareLockIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 8.5V3H2V23L6 19H10" />
+        <path d="M22 8.5V3H2V21.34L3.174 21.826L6 19H10" />
         <path d="M20 15v-2a2 2 0 0 0-4 0v2" />
         <rect height="5" width="8" x="14" y="15" />
       </svg>

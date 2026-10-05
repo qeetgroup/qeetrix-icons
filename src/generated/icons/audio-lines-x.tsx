@@ -20,7 +20,7 @@ export function AudioLinesXIcon(props: IconProps<"outline">) {
       >
         <path d="M10 3v18" />
         <path d="M14 8v6.35" />
-        <path d="M17 17L21.581 21.581" />
+        <path d="M17.419 17.419L21.581 21.581" />
         <path d="M18 5v8.1" />
         <path d="M2 10v3" />
         <path d="M22 10v3" />

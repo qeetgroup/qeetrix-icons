@@ -34,8 +34,8 @@ export function PlantPotIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M14 7.536V6A4 4 0 0 1 18 2H20V4A4 4 0 0 1 16 8A4 4 0 0 0 12 12A5 5 0 0 1 4 8A5 5 0 0 1 12 12C12 14 13 15 13 17" />
-        <path d="M17.71 17.957L16.485 22H7.52L6.291 17.957" />
-        <path d="M7 17H17" />
+        <path d="M18 17L16.485 22H7.52L6 17" />
+        <path d="M5 17h14" />
       </svg>
     );
   }

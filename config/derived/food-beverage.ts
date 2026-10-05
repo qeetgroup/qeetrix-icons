@@ -81,6 +81,8 @@ export const derivations: CategoryDerivations = {
     "nut-off": [0, 3, 4], // As nut.
     popsicle: [0], // The ice's rounded end; Lucide's corner roundings differ, so squared, one corner kinks.
     soup: [3, 4, 5], // The steam wisps; squared, they turn into zigzags.
+    // The candle flames: figurative dots, round in sharp (UI dots stay square).
+    cake: [6, 7, 8],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

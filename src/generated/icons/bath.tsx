@@ -22,7 +22,7 @@ export function BathIcon(props: IconProps<"outline">) {
         <path d="M17 19v2" />
         <path d="M2 12h20" />
         <path d="M7 19v2" />
-        <path d="M9 5L6.646 2.646L4.076 3.625L4 5V19H20V12" />
+        <path d="M9 5L6.646 2.646L4 3.654V19H20V12" />
       </svg>
     );
   }

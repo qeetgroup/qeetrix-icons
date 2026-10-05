@@ -34,7 +34,7 @@ export function StampIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-6 0c0 2 1 2 1 3.5V13" />
-        <path d="M20 13H4V18H20Z" />
+        <path d="M4 13V18H20V13Z" />
         <path d="M5 22h14" />
       </svg>
     );

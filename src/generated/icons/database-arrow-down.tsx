@@ -18,7 +18,7 @@ export function DatabaseArrowDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16 19L19 21.66L21.583 19.369" />
+        <path d="M16.419 19.419L18.887 21.887H19.113L21.581 19.419" />
         <path d="M19 16V21" />
         <path d="M21 12.536V6" />
         <path d="M3 12A9 3 0 0 0 15.182 14.806" />

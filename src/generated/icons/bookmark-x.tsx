@@ -15,7 +15,7 @@ export function BookmarkXIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M20 3.012L19.754 22.989L12 18.856L4.246 22.989L3.988 2L20.012 2L20 3.012ZM12 11.414L9.5 13.914L8.086 12.5L10.586 10L8.086 7.5L9.5 6.086L12 8.586L14.5 6.086L15.914 7.5L13.414 10L15.914 12.5L14.5 13.914L12 11.414Z"
+            d="M18.33 22.492L12 18.875L5.17 22.778L4 22.099L4 2L20 2L20 22.099L18.83 22.778L18.33 22.492ZM12 11.414L9.5 13.914L8.086 12.5L10.586 10L8.086 7.5L9.5 6.086L12 8.586L14.5 6.086L15.914 7.5L13.414 10L15.914 12.5L14.5 13.914L12 11.414Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function BookmarkXIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="m14.5 7.5-5 5" />
-        <path d="M19 3L18.774 21.334L12 17.723L5.226 21.334L5 3Z" />
+        <path d="M18.826 21.624L12 17.723L5.174 21.624L5 21.523V3H19V21.523Z" />
         <path d="m9.5 7.5 5 5" />
       </svg>
     );

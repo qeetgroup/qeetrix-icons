@@ -18,7 +18,7 @@ export function FolderOpenDotIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M6 14L8 10H21.986L21.996 12.285L20.003 20H2V3H8.975L11.025 6H20V10" />
+        <path d="M6 14L8 10H19.926L21.921 12.575L20.003 20H2V3H8.975L11.025 6H20V10" />
         <rect height="2" width="2" x="13" y="14" />
       </svg>
     );

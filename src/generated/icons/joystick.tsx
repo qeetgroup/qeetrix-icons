@@ -33,7 +33,7 @@ export function JoystickIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21 15H3V21H21Z" />
+        <path d="M3 15V21H21V15Z" />
         <path d="M6 15v-2" />
         <path d="M12 15V9" />
         <circle cx="12" cy="6" r="3" />

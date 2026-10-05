@@ -23,7 +23,7 @@ export function NotebookPenIcon(props: IconProps<"outline">) {
         <path d="M2 10h4" />
         <path d="M2 14h4" />
         <path d="M2 18h4" />
-        <path d="M21.378 5.626A1 1 0 1 0 18.374 2.622L13.001 7.997L11.766 12.233L16.002 10.998Z" />
+        <path d="M18.374 2.622L13.001 7.997L11.766 12.233L16.002 10.998L21.378 5.626A1 1 0 1 0 18.374 2.622Z" />
       </svg>
     );
   }

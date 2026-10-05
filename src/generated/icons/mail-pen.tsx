@@ -18,7 +18,7 @@ export function MailPenIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 17.997L13.838 21.983L14.591 21.992L18.001 20.998L21.377 17.626A1 1 0 1 0 18.373 14.622Z" />
+        <path d="M14.975 21.88L18.001 20.998L21.377 17.626A1 1 0 1 0 18.373 14.622L15 17.997L14.118 21.023Z" />
         <path d="M22 10.38V4H2V20H10.25" />
         <path d="M21.157 7.537L12.005 13.367L2.844 7.537" />
       </svg>

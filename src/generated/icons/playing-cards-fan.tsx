@@ -18,9 +18,9 @@ export function PlayingCardsFanIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M13.442 5.812L21.965 9.485L21.993 11.239L17.371 21.966L15.617 21.994L8.979 19.134L8.366 17.595Z" />
+        <path d="M21.922 11.405L17.79 20.992L15.451 21.923L8.979 19.134L8.366 17.595L13.442 5.812L20.991 9.066Z" />
         <path d="M18 6.777V2H8V15.261" />
-        <path d="M7.031 4.635L2.131 5.879L4.22 19.327L8.729 18.493" />
+        <path d="M7.017 4.571L3.715 5.183L2.049 7.607L4.22 19.327L8.729 18.493" />
       </svg>
     );
   }

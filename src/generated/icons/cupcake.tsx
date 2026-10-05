@@ -19,10 +19,10 @@ export function CupcakeIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 22v-9" />
-        <path d="M14 4H18.096L17.996 7.125A4 4 0 0 1 21 11V13" />
+        <path d="M14 4h1a3 3 0 013 3l-.004.125A4 4 0 0121 11v2" />
         <path d="M15.664 21.014L16.836 13.986" />
-        <path d="M21.996 14.213L18.66 22H5.34L2.004 14.213V13H21.996Z" />
-        <path d="M3 13V11A4 4 0 0 1 6.003 7.125L5.928 4H10" />
+        <path d="M18.66 22H5.34L2.122 14.489L3.104 13H20.896L21.878 14.489Z" />
+        <path d="M3 13v-2a4 4 0 013.003-3.875L6 7a3 3 0 013-3h1" />
         <path d="M8.336 21.014L7.164 13.986" />
         <circle cx="12" cy="4" r="2" />
       </svg>

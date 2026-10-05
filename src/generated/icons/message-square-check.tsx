@@ -15,7 +15,7 @@ export function MessageSquareCheckIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M6.414 20L23 20L23 2L1 2L1 25.414L6.414 20ZM11 11.586L9 9.586L7.586 11L11 14.414L16.414 9L15 7.586L11 11.586Z"
+            d="M6.414 20L3.395 23.019L1 22.028L1 2L23 2L23 20L6.414 20ZM11 11.586L9 9.586L7.586 11L11 14.414L16.414 9L15 7.586L11 11.586Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MessageSquareCheckIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 19H6L2 23V3H22Z" />
+        <path d="M6 19L3.16 21.84L2 21.36V3H22V19Z" />
         <path d="m9 11 2 2 4-4" />
       </svg>
     );

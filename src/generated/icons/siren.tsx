@@ -34,7 +34,7 @@ export function SirenIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M7 18v-6a5 5 0 1 1 10 0v6" />
-        <path d="M5 22H19V18H5Z" />
+        <path d="M19 22V18H5V22Z" />
         <path d="M21 12h1" />
         <path d="M18.5 4.5 18 5" />
         <path d="M2 12h1" />

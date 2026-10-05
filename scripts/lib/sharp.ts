@@ -2661,20 +2661,18 @@ function sharpenElement(
 }
 
 /**
- * A Lucide dot (a path drawn by its caps alone, such as `M9 9h.01`) that is kept round: written as
- * a tiny circle on the dot, which a stroke paints round whatever the root's caps. Undefined for any
- * other element.
+ * A Lucide dot (a path drawn by its caps alone, such as `M9 9h.01`) that is kept round: the same
+ * path with `stroke-linecap="round"`, so its caps paint it round under the sharp root's square
+ * caps. (A tiny stroked circle would look the same in theory, but renderers stroke a circle much
+ * smaller than the stroke width unreliably and leave it faint.) Undefined for any other element.
  */
 function roundDot(piece: Piece): string | undefined {
   if (piece.tag !== "path" || piece.runs.length !== 1) return undefined;
   const { segs } = piece.runs[0];
   const total = segs.reduce((sum, segment) => sum + segmentLength(segment), 0);
   if (total >= 0.1) return undefined;
-  const from = segs[0].from;
-  const to = (segs.at(-1) as Drawn).to;
-  const [cx, cy] = [(from[0] + to[0]) / 2, (from[1] + to[1]) / 2];
-  const extra = piece.attributes.filter(([key]) => key !== "d");
-  return `  <circle cx="${coordinate(cx)}" cy="${coordinate(cy)}" r="0.01"${extra.map(([key, v]) => ` ${key}="${v}"`).join("")}/>`;
+  const kept = piece.attributes.filter(([key]) => key !== "stroke-linecap");
+  return `  <path${kept.map(([key, v]) => ` ${key}="${v}"`).join("")} stroke-linecap="round"/>`;
 }
 
 /** Whether a source is already drawn in the sharp style (its root carries the sharp caps). */

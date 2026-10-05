@@ -21,7 +21,7 @@ export function FileBoxIcon(props: IconProps<"outline">) {
         <path d="M14 2V8H20" />
         <path d="M14.692 22H20V7L15 2H4V7.804" />
         <path d="M3.129 14.254L7 16.5L10.872 14.254" />
-        <path d="M2 13.591V19.412L7 21.882L12 19.412V13.591L7.075 10.731L6.113 11.207Z" />
+        <path d="M2 19.412L6.464 22.001H7.536L12 19.412V13.591L7.005 10.69L2 13.591Z" />
         <path d="M7 16.5V21" />
       </svg>
     );

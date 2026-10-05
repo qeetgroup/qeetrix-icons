@@ -15,7 +15,7 @@ export function SkipForwardIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M5.044 2.528L18.001 10.302L17.999 13.699L5.044 21.472L2 19.749L2 4.251L4.536 2.815L5.044 2.528ZM22 21L22 3L20 3L20 21L22 21Z"
+            d="M2 19.749L2 4.251L5.044 2.528L18.001 10.302L17.999 13.699L5.044 21.472L2.507 20.036L2 19.749ZM22 21L22 3L20 3L20 21L22 21Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function SkipForwardIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M21 4v16" />
-        <path d="M5.029 3.685L3 4.834V19.166L5.029 20.315L16.999 13.133L17.001 10.868Z" />
+        <path d="M3 19.166L5.029 20.315L16.999 13.133L17.001 10.868L5.029 3.685L3 4.834Z" />
       </svg>
     );
   }

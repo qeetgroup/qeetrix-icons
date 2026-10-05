@@ -19,7 +19,7 @@ export function WarehouseIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M18 21V9H6V21" />
-        <path d="M22 21H2V6.763L12.001 2.114L22 6.764Z" />
+        <path d="M2 21V6.763L11.536 1.996L12.466 1.997L22 6.764V21Z" />
         <path d="M6 13h12" />
         <path d="M6 17h12" />
       </svg>

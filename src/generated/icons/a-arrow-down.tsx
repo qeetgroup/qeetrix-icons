@@ -18,9 +18,9 @@ export function AArrowDownIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14 12L18 16L21.581 12.419" />
+        <path d="M14.419 12.419L18 16L21.581 12.419" />
         <path d="M18 15V7" />
-        <path d="M2.313 15.25L6.501 5.203L11 16" />
+        <path d="M2.313 15.25L6.167 6.002H6.834L10.687 15.25" />
         <path d="M4.304 13H8.696" />
       </svg>
     );

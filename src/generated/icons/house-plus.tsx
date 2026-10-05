@@ -18,7 +18,7 @@ export function HousePlusIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.35 21H3V9.079L12 2.264L21 9.079V12.35" />
+        <path d="M12.35 21H3V9.079L11.256 2.002H12.744L21 9.079V12.35" />
         <path d="M14.5 12H9V21" />
         <path d="M15 18h6" />
         <path d="M18 15v6" />

@@ -18,12 +18,12 @@ export function UnplugIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M19 5L21.581 2.419" />
-        <path d="M2.419 21.581L5 19" />
-        <path d="M8.006 21.61L12 18L6 12L2.39 15.999Z" />
+        <path d="M19.419 4.581L21.581 2.419" />
+        <path d="M2.419 21.581L4.581 19.419" />
+        <path d="M12 18L6 12L2.113 15.887V16.113L7.887 21.887H8.113Z" />
         <path d="M7.5 13.5 10 11" />
         <path d="M10.5 16.5 13 14" />
-        <path d="M12 6L18 12L21.61 8.001L15.994 2.39Z" />
+        <path d="M12 6L18 12L21.887 8.113V7.887L16.113 2.113H15.887Z" />
       </svg>
     );
   }

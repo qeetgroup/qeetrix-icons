@@ -18,10 +18,10 @@ export function ZodiacScorpioIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 19V5.5A1 1 0 0 1 15 5.5V19H21.92L21.915 18.915L19 16" />
-        <path d="M20.586 20.414L19.419 21.581" />
+        <path d="M10 19V5.5A1 1 0 0 1 15 5.5V19H21.7L21.788 18.788L19 16" />
+        <path d="M21.293 18.293L21.887 18.887V19.113L19.419 21.581" />
         <path d="M5 19V5.5a1 1 0 0 1 5 0" />
-        <path d="M5 5.5V3H2.5" />
+        <path d="M5 5.5A2.5 2.5 0 0 0 2.5 3" />
       </svg>
     );
   }

@@ -15,7 +15,7 @@ export function FileTypeIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13 9L13 1L3 1L3 23L21 23L21 9L13 9ZM15 7L15 1L15.412 1L21 6.588L21 7L15 7ZM8 11L8 14L10 14L10 13L11 13L11 19L14 19L14 17L13 17L13 13L14 13L14 14L16 14L16 11L8 11Z"
+            d="M13 9L13 1L3 1L3 23L21 23L21 9L13 9ZM15 7L15 1L15.412 1L21 6.588L21 7L15 7ZM8 11L8 14L10 14L10 13L11 13L11 17L10 17L10 19L14 19L14 17L13 17L13 13L14 13L14 14L16 14L16 11L8 11Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,9 +33,9 @@ export function FileTypeIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M14 2V8H20" />
-        <path d="M12 18H13" />
+        <path d="M11 18h2" />
         <path d="M12 12v6" />
         <path d="M9 13V12H15V13" />
       </svg>

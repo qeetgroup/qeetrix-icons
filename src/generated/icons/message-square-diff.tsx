@@ -15,7 +15,7 @@ export function MessageSquareDiffIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M6.414 20L23 20L23 2L1 2L1 25.414L6.414 20ZM13 8L13 6L11 6L11 8L9 8L9 10L11 10L11 12L13 12L13 10L15 10L15 8L13 8ZM15 14L9 14L9 16L15 16L15 14Z"
+            d="M3.409 23.005L6.414 20L23 20L23 2L1 2L1 22.008L3.409 23.005ZM13 8L13 6L11 6L11 8L9 8L9 10L11 10L11 12L13 12L13 10L15 10L15 8L13 8ZM15 14L9 14L9 16L15 16L15 14Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MessageSquareDiffIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 19H6L2 23V3H22Z" />
+        <path d="M6 19L3.174 21.826L2 21.34V3H22V19Z" />
         <path d="M10 15h4" />
         <path d="M10 9h4" />
         <path d="M12 7v4" />

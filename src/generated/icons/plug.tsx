@@ -35,7 +35,7 @@ export function PlugIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M12 22v-5" />
         <path d="M15 8V2" />
-        <path d="M18 8V13A4 4 0 0 1 14 17H10A4 4 0 0 1 6 13V8Z" />
+        <path d="M18 13A4 4 0 0 1 14 17H10A4 4 0 0 1 6 13V8H18Z" />
         <path d="M9 8V2" />
       </svg>
     );

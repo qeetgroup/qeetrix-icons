@@ -14,7 +14,7 @@ export function SquaresUniteIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path d="M1 17L1 1L17 1L17 7L23 7L23 23L7 23L7 17L1 17Z" fillRule="evenodd" />
+          <path d="M1 1L17 1L17 7L23 7L23 23L7 23L7 17L1 17L1 1Z" fillRule="evenodd" />
         </svg>
       );
     }
@@ -30,7 +30,7 @@ export function SquaresUniteIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 16V2H16V8H22V22H8V16Z" />
+        <path d="M2 2H16V8H22V22H8V16H2Z" />
       </svg>
     );
   }

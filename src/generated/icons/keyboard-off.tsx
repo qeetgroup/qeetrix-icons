@@ -18,7 +18,7 @@ export function KeyboardOffIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M20 4H22V6" />
+        <path d="M 20 4 A2 2 0 0 1 22 6" />
         <path d="M 22 6 L 22 16.41" />
         <path d="M7 16H15" />
         <path d="M 9.69 4 L 20 4" />

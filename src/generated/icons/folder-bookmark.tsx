@@ -15,7 +15,7 @@ export function FolderBookmarkIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1 21L23 21L23 5L19 5L19 16.361L15 13.143L11 16.361L11 4.186L9.524 2L1 2L1 21ZM17 5L13 5L13 12.185L15 10.577L17 12.185L17 5Z"
+            d="M23 21L23 5L19 5L19 16.361L15 13.143L11 16.361L11 4.186L9.524 2L1 2L1 21L23 21ZM13 5L13 12.185L15 10.577L17 12.185L17 5L13 5Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function FolderBookmarkIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 6V14.273L15 11.86L18 14.273V6" />
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
       </svg>
     );
   }

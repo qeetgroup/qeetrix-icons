@@ -34,7 +34,7 @@ export function VoteIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="m9 12 2 2 4-4" />
-        <path d="M5 5H19V19H5Z" />
+        <path d="M19 5V19H5V5Z" />
         <path d="M22 19H2" />
       </svg>
     );

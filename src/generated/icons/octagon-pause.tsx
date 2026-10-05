@@ -15,7 +15,7 @@ export function OctagonPauseIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1 7.446L1 16.554L7.446 23L16.554 23L23 16.554L23 7.446L16.554 1L7.446 1L1 7.446ZM9 16L9 8L11 8L11 16L9 16ZM13 8L13 16L15 16L15 8L13 8Z"
+            d="M1.293 7.153L7.446 1L16.554 1L23 7.446L23 16.554L16.554 23L7.446 23L1 16.554L1 7.446L1.293 7.153ZM9 16L9 8L11 8L11 16L9 16ZM13 8L13 16L15 16L15 8L13 8Z"
             fillRule="evenodd"
           />
         </svg>
@@ -35,7 +35,7 @@ export function OctagonPauseIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M10 15V9" />
         <path d="M14 15V9" />
-        <path d="M2 16.14V7.86L7.86 2H16.14L22 7.86V16.14L16.14 22H7.86Z" />
+        <path d="M2 7.86L7.86 2H16.14L22 7.86V16.14L16.14 22H7.86L2 16.14Z" />
       </svg>
     );
   }

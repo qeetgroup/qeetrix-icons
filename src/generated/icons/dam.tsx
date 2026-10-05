@@ -24,7 +24,7 @@ export function DamIcon(props: IconProps<"outline">) {
         <path d="M2 14h4" />
         <path d="M2 18h4" />
         <path d="M2 6h4" />
-        <path d="M6 3V21H12V20L10 4V3Z" />
+        <path d="M6 21H12.125L9.875 3H6Z" />
       </svg>
     );
   }

@@ -19,11 +19,11 @@ export function ServerOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M7 2H22V10H15" />
-        <path d="M10 10L2 2V10Z" />
+        <path d="M9.661 9.661L2.339 2.339L2 2.48V10H9.52Z" />
         <path d="M22 17V14H19" />
-        <path d="M2 14V22H20.5L21.5 21.5L22 22L14 14Z" />
+        <path d="M13 14H2V22H20.586L21.086 21.5" />
         <path d="M6 18h.01" />
-        <path d="M2.707 2.707L21.293 21.293" />
+        <path d="M3.061 3.061L21.293 21.293" />
       </svg>
     );
   }

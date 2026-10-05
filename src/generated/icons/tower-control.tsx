@@ -24,7 +24,7 @@ export function TowerControlIcon(props: IconProps<"outline">) {
         <path d="M9.141 6.99L9.859 12.01" />
         <path d="M14.859 6.99L14.141 12.01" />
         <path d="M12 6V2" />
-        <path d="M12 2H11" />
+        <path d="M13 2h-2" />
       </svg>
     );
   }

@@ -15,7 +15,7 @@ export function CookingPotIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M9.59 5.572L13.334 4.636L12.782 3.243L9.158 3.832L9.59 5.572ZM15.291 4.146L20.728 2.787L21.213 4.728L3.272 9.213L2.787 7.272L7.65 6.057L6.692 2.206L14.048 1.011L15.291 4.146ZM23 11L1 11L1 13L23 13L23 11ZM3 23L3 14L21 14L21 23L3 23Z"
+            d="M9.59 5.572L13.47 4.602L13.365 4.183L11.623 3.134L9.137 3.749L9.59 5.572ZM15.41 4.117L20.728 2.787L21.213 4.728L3.272 9.213L2.787 7.272L7.65 6.057L6.713 2.289L11.945 0.994L15.105 2.895L15.41 4.117ZM23 11L1 11L1 13L23 13L23 11ZM3 23L3 14L21 14L21 23L3 23Z"
             fillRule="evenodd"
           />
         </svg>
@@ -36,7 +36,7 @@ export function CookingPotIcon(props: IconProps<"outline" | "filled">) {
         <path d="M2 12h20" />
         <path d="M20 12V22H4V12" />
         <path d="m4 8 16-4" />
-        <path d="M8.86 6.78L7.925 3.019L13.415 2.127L14.312 4.39" />
+        <path d="M8.86 6.78L7.925 3.019L11.784 2.064L14.235 3.539L14.68 5.32" />
       </svg>
     );
   }

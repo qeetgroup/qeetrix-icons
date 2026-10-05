@@ -15,7 +15,7 @@ export function MessageSquareReplyIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 20L6.414 20L1 25.414L1 2L23 2L23 20ZM9.414 10L11.414 8L10 6.586L5.586 11L10 15.414L11.414 14L9.414 12L16 12L16 15L18 15L18 10L9.414 10Z"
+            d="M6.414 20L3.409 23.005L1 22.008L1 2L23 2L23 20L6.414 20ZM9.414 10L11.414 8L10 6.586L5.586 11L10 15.414L11.414 14L9.414 12L16 12L16 15L18 15L18 10L9.414 10Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MessageSquareReplyIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 19H6L2 23V3H22Z" />
+        <path d="M6 19L3.174 21.826L2 21.34V3H22V19Z" />
         <path d="m10 8-3 3 3 3" />
         <path d="M17 14V11H8" />
       </svg>

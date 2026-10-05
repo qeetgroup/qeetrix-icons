@@ -22,7 +22,7 @@ export function EngineIcon(props: IconProps<"outline">) {
         <path d="M13 3v4" />
         <path d="M2 10v6" />
         <path d="M2 13h4" />
-        <path d="M6 18H10L11.5 20H16L18.499 15H22V9H17L15.5 7H10.5L9 9H6Z" />
+        <path d="M10 18L11.5 20H16L18.499 15H22V9H17L15.5 7H10.5L9 9H6V18Z" />
       </svg>
     );
   }

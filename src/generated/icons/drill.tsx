@@ -18,7 +18,7 @@ export function DrillIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 18V22H2V18Z" />
+        <path d="M11 22H2V18H11Z" />
         <path d="M12 10H2V2H14V9A1 1 0 0 1 13 10L12.001 14H9" />
         <path d="M14 4H18V8H14" />
         <path d="M18 6h4" />

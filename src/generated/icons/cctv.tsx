@@ -18,8 +18,8 @@ export function CctvIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M17.748 12.066L21.489 12.315L18.5 19.001L15.992 15.493" />
-        <path d="M18 9.5L14 17.5L2.02 11.504L2.011 8.995L4.983 2.985Z" />
+        <path d="M17.75 12H21.699L21.865 12.268L18.5 19.001L15.992 15.493" />
+        <path d="M14 17.5L3.146 12.068L2.073 8.87L4.983 2.985L18 9.5Z" />
         <path d="M2 19H7.014L9 15" />
         <path d="M2 21v-4" />
         <path d="M7 9h.01" />

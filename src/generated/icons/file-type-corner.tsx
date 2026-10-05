@@ -21,7 +21,7 @@ export function FileTypeCornerIcon(props: IconProps<"outline">) {
         <path d="M12 22H20V7L15 2H4V10" />
         <path d="M14 2V8H20" />
         <path d="M3 16V14H11V16" />
-        <path d="M7 22H8" />
+        <path d="M6 22h2" />
         <path d="M7 14v8" />
       </svg>
     );

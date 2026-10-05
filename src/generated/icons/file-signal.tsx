@@ -33,7 +33,7 @@ export function FileSignalIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M14 2V8H20" />
         <path d="M8 15h.01" />
         <path d="M11.5 13.5a2.5 2.5 0 0 1 0 3" />

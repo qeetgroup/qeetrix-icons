@@ -18,7 +18,7 @@ export function MedalIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M6.722 14.127L2.187 6.005L5.002 2H19.002L21.817 6.017L17.278 14.127" />
+        <path d="M6.709 14.135L2.057 6.098L2.069 5.898L5.002 2H19.002L21.925 5.91L21.937 6.11L17.291 14.135" />
         <path d="M10.486 11.143L5.634 3.057" />
         <path d="M13.514 11.143L18.366 3.057" />
         <path d="M9 7H15" />

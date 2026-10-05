@@ -18,7 +18,7 @@ export function CreditCardCheckIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.5 19H2V5H22V10" />
+        <path d="M12.5 19H2V5H22V11" />
         <path d="M2 10h20" />
         <path d="M6 14h2" />
         <path d="M16 17L18 19L21.581 15.419" />

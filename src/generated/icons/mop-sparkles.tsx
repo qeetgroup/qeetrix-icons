@@ -18,10 +18,10 @@ export function MopSparklesIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M8.562 21.633A3 3 0 0 1 7 19" />
+        <path d="M7.888 21.131A3 3 0 0 1 7 19" />
         <path d="M10 22c2.761 0 5-1.79 5-4-4.42 0-4.08-5-8.5-5a4.501 4.501 0 000 9z" />
         <path d="M10 3H8" />
-        <path d="M12.5 11.5L21.581 2.419" />
+        <path d="M12.919 11.081L21.581 2.419" />
         <path d="M20 13v4" />
         <path d="M22 15h-4" />
         <path d="M4 5v4" />

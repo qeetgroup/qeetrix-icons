@@ -18,7 +18,7 @@ export function BlindsIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 3H21" />
+        <path d="M3 3h18" />
         <path d="M20 7H8" />
         <path d="M20 11H8" />
         <path d="M10 19h10" />

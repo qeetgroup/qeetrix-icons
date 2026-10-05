@@ -15,7 +15,7 @@ export function SquareArrowUpRightIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M22 2L2 2L2 22L22 22L22 2ZM14 11.414L14 16L16 16L16 8L8 8L8 10L12.586 10L7.586 15L9 16.414L14 11.414Z"
+            d="M22 2L2 2L2 22L22 22L22 2ZM12.586 10L7.586 15L9 16.414L14 11.414L14 16L16 16L16 8L8 8L8 10L12.586 10Z"
             fillRule="evenodd"
           />
         </svg>

@@ -15,7 +15,7 @@ export function SignpostIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13 5L13 2L11 2L11 5L4.511 5L1.49 8.886L1.014 9.5L4.511 14L11 14L11 22L13 22L13 14L19.489 14L22.986 9.5L19.489 5L13 5Z"
+            d="M23 8.586L19.414 5L13 5L13 2L11 2L11 5L4.586 5L1 8.586L1 10.414L4.586 14L11 14L11 22L13 22L13 14L19.414 14L23 10.414L23 8.586Z"
             fillRule="evenodd"
           />
         </svg>
@@ -35,7 +35,7 @@ export function SignpostIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M12 13v8" />
         <path d="M12 3v3" />
-        <path d="M2.28 9.5L5 6H19L21.72 9.5L19 13H5Z" />
+        <path d="M5 6H19L22.005 9.005V9.995L19 13H5L1.995 9.995V9.005Z" />
       </svg>
     );
   }

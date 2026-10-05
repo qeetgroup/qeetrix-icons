@@ -15,7 +15,7 @@ export function ArrowBigLeftIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M12.806 22.988L1.569 12.001L12.806 1.011L12.976 8L21 8L21 16L12.976 16L12.862 20.691L12.806 22.988Z"
+            d="M13 2.612L13 8L21 8L21 16L13 16L13 21.388L11.567 21.982L1.585 12.001L11.567 2.018L13 2.612Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function ArrowBigLeftIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11.862 20.667L12 15H20V9H12L11.862 3.333L2.999 12.001Z" />
+        <path d="M12 15H20V9H12V3.28L11.802 3.198L2.999 12.001L11.802 20.802L12 20.72Z" />
       </svg>
     );
   }

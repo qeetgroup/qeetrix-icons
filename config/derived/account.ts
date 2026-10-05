@@ -88,6 +88,8 @@ export const derivations: CategoryDerivations = {
     "square-user": [2],
     // The figures' shoulders, round like `user`'s; squared, they turn into brackets.
     "user-group": [0, 1, 2],
+    // The chocolate chips and crumbs: figurative dots, round in sharp (UI dots stay square).
+    cookie: [0, 2, 3, 4, 5, 6, 7, 8],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

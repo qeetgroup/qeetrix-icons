@@ -22,7 +22,7 @@ export function LanguagesIcon(props: IconProps<"outline">) {
         <path d="M4 14L10 8L11.445 5.832" />
         <path d="M2 5h12" />
         <path d="M7 2h1" />
-        <path d="M21.653 21.307L17 12L12.173 21.653" />
+        <path d="M21.653 21.307L17 12L12.347 21.307" />
         <path d="M15 18H19" />
       </svg>
     );

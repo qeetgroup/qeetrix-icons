@@ -15,7 +15,7 @@ export function LibraryBigIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M16.346 22.538L21.09 20.79L22.023 20.447L15.154 1.462L12 2.624L12 2L8 2L8 22L12 22L12 10.527L16.346 22.538ZM6 22L6 2L2 2L2 22L6 22Z"
+            d="M12 2L12 2.624L15.154 1.462L22.023 20.447L16.346 22.538L16.004 21.592L12 10.527L12 22L8 22L8 2L12 2ZM6 2L6 22L2 22L2 2L6 2Z"
             fillRule="evenodd"
           />
         </svg>
@@ -35,7 +35,7 @@ export function LibraryBigIcon(props: IconProps<"outline" | "filled">) {
       >
         <rect height="18" width="8" x="3" y="3" />
         <path d="M7 3v18" />
-        <path d="M20.744 19.852L16.944 21.252L10.96 4.713L11.327 3.937L14.556 2.748Z" />
+        <path d="M16.944 21.252L11.028 4.901L11.046 4.532L11.327 3.937L14.556 2.748L20.744 19.852Z" />
       </svg>
     );
   }

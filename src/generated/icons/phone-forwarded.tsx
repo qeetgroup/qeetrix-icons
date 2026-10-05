@@ -19,7 +19,7 @@ export function PhoneForwardedIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M14 6H21" />
-        <path d="M18.38 2.418L21.64 6L18 10" />
+        <path d="M18.419 2.419L21.887 5.887V6.113L18.419 9.581" />
         <path d="M13.832 16.568L14.559 16.902L16.011 15H22V22H20A18 18 0 0 1 2 4V2H9V8L7.078 9.441L7.44 10.184A14 14 0 0 0 13.832 16.568Z" />
       </svg>
     );

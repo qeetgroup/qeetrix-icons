@@ -22,7 +22,7 @@ export function ClipboardPenLineIcon(props: IconProps<"outline">) {
         <path d="M8 4H4V22H20V19.5" />
         <path d="M16 4H19.153" />
         <path d="M8 18h1" />
-        <path d="M21.378 12.626A1 1 0 0 0 18.374 9.622L14.001 13.997L12.766 18.233L17.002 16.998Z" />
+        <path d="M18.374 9.622L14.001 13.997L12.766 18.233L17.002 16.998L21.378 12.626A1 1 0 0 0 18.374 9.622Z" />
       </svg>
     );
   }

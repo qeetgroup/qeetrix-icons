@@ -19,7 +19,7 @@ export function SavePenIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M13.33 13H7V21" />
-        <path d="M14 17.997L12.838 21.983L13.591 21.992L17.001 20.998L21.377 16.626A1 1 0 1 0 18.373 13.622Z" />
+        <path d="M13.975 21.88L17.001 20.998L21.377 16.626A1 1 0 1 0 18.373 13.622L14 17.997L13.118 21.023Z" />
         <path d="M7 3V8H15" />
         <path d="M9 21H3V3H16L21 8V9.1" />
       </svg>

@@ -20,8 +20,8 @@ export function FileXCornerIcon(props: IconProps<"outline">) {
       >
         <path d="M11 22H4V2H15L20 7V13" />
         <path d="M14 2V8H20" />
-        <path d="M15 17L19.581 21.581" />
-        <path d="M20 17L15.419 21.581" />
+        <path d="M15.419 17.419L19.581 21.581" />
+        <path d="M19.581 17.419L15.419 21.581" />
       </svg>
     );
   }

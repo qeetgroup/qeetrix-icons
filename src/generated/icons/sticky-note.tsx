@@ -15,7 +15,7 @@ export function StickyNoteIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M14 2L14 10L22 10L22 22L2 22L2 2L14 2ZM16 2L16 8L22 8L22 7.586L21.707 7.293L16.414 2L16 2Z"
+            d="M14 2L14 10L22 10L22 22L2 22L2 2L14 2ZM16 2L16 8L22 8L22 7.586L16.414 2L16 2Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function StickyNoteIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21 8L16 3H3V21H21Z" />
+        <path d="M16 3H3V21H21V8Z" />
         <path d="M15 3V9H21" />
       </svg>
     );

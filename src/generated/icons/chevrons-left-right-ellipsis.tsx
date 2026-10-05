@@ -20,8 +20,8 @@ export function ChevronsLeftRightEllipsisIcon(props: IconProps<"outline">) {
       >
         <path d="M12 12h.01" />
         <path d="M16 12h.01" />
-        <path d="M17 7L21.63 12L17 17" />
-        <path d="M7 7L2.37 12L7 17" />
+        <path d="M17 7L21.887 11.887V12.113L17 17" />
+        <path d="M7 7L2.113 11.887V12.113L7 17" />
         <path d="M8 12h.01" />
       </svg>
     );

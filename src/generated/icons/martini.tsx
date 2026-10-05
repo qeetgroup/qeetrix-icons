@@ -15,7 +15,7 @@ export function MartiniIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1.007 2.157L11 12.407L11 21L6 21L6 23L18 23L18 21L13 21L13 12.407L22.994 2.159L1.007 2.157Z"
+            d="M2.018 3.433L11 12.414L11 21L6 21L6 23L18 23L18 21L13 21L13 12.414L21.982 3.433L21.388 2L2.612 2L2.018 3.433Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MartiniIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12 12L3.379 3.157L20.622 3.159Z" />
+        <path d="M12 12L3.198 3.198L3.28 3H20.72L20.802 3.198Z" />
         <path d="M12 12v10" />
         <path d="M7 22h10" />
       </svg>

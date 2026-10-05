@@ -20,8 +20,8 @@ export function FileCodeCornerIcon(props: IconProps<"outline">) {
       >
         <path d="M4 12.15V2H15L20 7V22H14.65" />
         <path d="M14 2V8H20" />
-        <path d="M5 16L2.34 19L4.631 21.583" />
-        <path d="M9.419 21.581L12 19L9 16" />
+        <path d="M4.581 16.419L2.113 18.887V19.113L4.581 21.581" />
+        <path d="M9.419 21.581L12 19L9.419 16.419" />
       </svg>
     );
   }

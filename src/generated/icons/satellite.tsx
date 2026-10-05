@@ -22,7 +22,7 @@ export function SatelliteIcon(props: IconProps<"outline">) {
         <path d="M16.5 7.5 19 5" />
         <path d="M17.5 10.5L21.5 14.5L17.5 18.5L13.5 14.5" />
         <path d="M9 21a6 6 0 0 0-6-6" />
-        <path d="M8.5 11.5L12.5 15.5L18.5 9.5L14.5 5.5Z" />
+        <path d="M12.5 15.5L18.5 9.5L14.5 5.5L8.5 11.5Z" />
       </svg>
     );
   }

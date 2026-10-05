@@ -15,7 +15,7 @@ export function Package2Icon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13 8.013L20.947 8.013L20.947 10.013L3.054 10.013L3.054 8.013L11 8.013L11 2L5.382 2L2.161 8.443L2 9.123L2 22L22 22L22 9.123L21.841 8.445L18.907 2.554L18.631 2L13 2L13 8.013Z"
+            d="M13 8.013L21.626 8.013L18.631 2L13 2L13 8.013ZM22 10.013L2 10.013L2 22L22 22L22 10.013ZM11 2L11 8.013L2.375 8.013L5.382 2L11 2Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function Package2Icon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 3v6" />
-        <path d="M18.012 3L20.894 8.787L21 9.239V21H3V9.239L3.107 8.786L6 3Z" />
+        <path d="M20.894 8.787L21 9.239V21H3V9.239L3.107 8.786L6 3H18.012Z" />
         <path d="M4.054 9.013H19.947" />
       </svg>
     );

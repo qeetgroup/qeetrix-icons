@@ -18,7 +18,7 @@ export function TextWrapIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16 16L13 19L15.581 21.581" />
+        <path d="M15.581 16.419L13 19L15.581 21.581" />
         <path d="M3 12H17.5A1 1 0 0 1 17.5 19H14" />
         <path d="M3 19h6" />
         <path d="M3 5h18" />

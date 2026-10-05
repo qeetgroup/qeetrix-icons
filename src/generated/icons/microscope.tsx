@@ -22,7 +22,7 @@ export function MicroscopeIcon(props: IconProps<"outline">) {
         <path d="M3 22h18" />
         <path d="M14 22a7 7 0 1 0 0-14h-1" />
         <path d="M9 14h2" />
-        <path d="M7 12V6H13V12Z" />
+        <path d="M7 6H13V12H7Z" />
         <path d="M12 6V2H8V6" />
       </svg>
     );

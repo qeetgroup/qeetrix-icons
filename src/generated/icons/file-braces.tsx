@@ -33,7 +33,7 @@ export function FileBracesIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M14 2V8H20" />
         <path d="M10 12H9V14A1 1 0 0 1 8 15A1 1 0 0 1 9 16V18H10" />
         <path d="M14 18H15V16A1 1 0 0 1 16 15A1 1 0 0 1 15 14V12H14" />

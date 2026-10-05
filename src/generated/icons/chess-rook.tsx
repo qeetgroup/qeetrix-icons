@@ -18,7 +18,7 @@ export function ChessRookIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M5 18H19V22H5Z" />
+        <path d="M19 18V22H5V18Z" />
         <path d="M10 2v2" />
         <path d="M14 2v2" />
         <path d="M16.89 17.006L16.11 9.994" />

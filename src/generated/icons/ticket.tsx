@@ -33,7 +33,7 @@ export function TicketIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 9A3 3 0 0 1 2 15V19H22V15A3 3 0 0 1 22 9V5H2Z" />
+        <path d="M2 15V19H22V15A3 3 0 0 1 22 9V5H2V9A3 3 0 0 1 2 15Z" />
         <path d="M13 5v2" />
         <path d="M13 17v2" />
         <path d="M13 11v2" />

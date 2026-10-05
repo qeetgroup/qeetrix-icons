@@ -19,8 +19,8 @@ export function CalendarX2Icon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 2v3" />
-        <path d="M17 16L21.581 20.581" />
-        <path d="M17 21L21.581 16.419" />
+        <path d="M17.419 16.419L21.581 20.581" />
+        <path d="M17.419 20.581L21.581 16.419" />
         <path d="M21 12V3H3V21H13" />
         <path d="M3 9h18" />
         <path d="M8 2v3" />

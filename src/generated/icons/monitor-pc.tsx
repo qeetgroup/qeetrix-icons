@@ -18,8 +18,8 @@ export function MonitorPcIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M9 15H2V5H10" />
-        <path d="M9 19H5" />
+        <path d="M10 15H2V5H10" />
+        <path d="M10 19H5" />
         <path d="M14 11h8" />
         <path d="M14 7h8" />
         <path d="M18 17h.01" />

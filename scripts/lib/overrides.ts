@@ -37,7 +37,7 @@ export function overrideHeader(outline: string, hash: string): string {
 /** Replaces (or adds) the header with the outline's current hash. */
 export function stampOverride(source: string, outline: string, hash: string): string {
   // Drop an old override header and the "Derived from …" comment of a copied derived drawing.
-  const body = source.replace(headerPattern, "").replace(/^<!-- Derived from [^]*?-->\n/, "");
+  const body = source.replace(headerPattern, "").replace(/^<!-- Derived from [\s\S]*?-->\n/, "");
   return overrideHeader(outline, hash) + body;
 }
 

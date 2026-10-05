@@ -18,7 +18,7 @@ export function StarHalfIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11.479 18.337L5.638 21.244L6.696 14.21L2.02 9.659L2.022 8.952L8.723 7.973L11.501 2.344" />
+        <path d="M11.479 18.337L5.656 21.399L5.485 21.274L6.696 14.21L2.134 9.77L2.418 8.895L8.723 7.973L11.671 2H12" />
       </svg>
     );
   }

@@ -15,7 +15,7 @@ export function MapIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M10 19.619L10 3.236L8 3.236L8 19.619L2 22.62L2 5.383L8.292 2.236L9.708 2.236L14 4.382L14 20.764L16 20.764L16 4.382L22 1.381L22 18.618L15.708 21.765L14.292 21.765L10 19.619Z"
+            d="M22 1.381L22 18.618L16 21.619L16 4.382L22 1.381ZM8 2.382L8 19.619L2 22.62L2 5.383L8 2.382ZM10 2.382L14 4.382L14 21.619L10 19.619L10 2.382Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MapIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 6L21 2.999V18L15.472 20.765H14.528L9 18.001L3 21.002V6.001L8.528 3.236H9.472Z" />
+        <path d="M21 2.999V18L15.472 20.765H14.528L9 18.001L3 21.002V6.001L8.528 3.236H9.472L15 6Z" />
         <path d="M15 5.764V19.764" />
         <path d="M9 4.236V18.236" />
       </svg>

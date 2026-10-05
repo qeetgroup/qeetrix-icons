@@ -19,7 +19,7 @@ export function RotateCcwSquareIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M20 9V5H13" />
-        <path d="M14.581 2.419L12 5L15 8" />
+        <path d="M14.581 2.419L12 5L14.581 7.581" />
         <path d="M20 13V20H4V5H8" />
       </svg>
     );

@@ -137,15 +137,15 @@ describe("sharp outline sources", () => {
     expect(sharpenOne('<path d="M12 17h.01"/>')).toBe('  <path d="M12 17h.01"/>');
   });
 
-  it("draw a dot kept round as a tiny circle, which paints round under square caps", () => {
+  it("draw a dot kept round with round caps, which paint it round under the square root", () => {
     const face = syntheticSvg(
       {},
       '<circle cx="12" cy="12" r="10"/><path d="M9 9h.01"/><path d="M15 9h.01"/>',
     );
     expect(elements(sharpenOutline(face, "face", [1, 2]))).toEqual([
       '  <circle cx="12" cy="12" r="10"/>',
-      '  <circle cx="9.005" cy="9" r="0.01"/>',
-      '  <circle cx="15.005" cy="9" r="0.01"/>',
+      '  <path d="M9 9h.01" stroke-linecap="round"/>',
+      '  <path d="M15 9h.01" stroke-linecap="round"/>',
     ]);
     expect(elements(sharpenOutline(face, "face"))[1]).toBe('  <path d="M9 9h.01"/>');
   });
@@ -219,10 +219,10 @@ describe("sharp path data", () => {
     // An A's apex, which would otherwise tower over the letters beside it.
     const letter = syntheticSvg({}, '<path d="m2 16 4.039-9.69a.5.5 0 0 1 .923 0L11 16"/>');
     expect(elements(sharpenOutline(letter, "letter", [], [0]))[0]).toBe(
-      '  <path d="M2 16L6.167 6.002H6.834L11 16"/>',
+      '  <path d="M2.313 15.25L6.167 6.002H6.834L10.687 15.25"/>',
     );
     expect(elements(sharpenOutline(letter, "letter"))[0]).toBe(
-      '  <path d="M2 16L6.501 5.203L11 16"/>',
+      '  <path d="M2.313 15.25L6.501 5.203L10.687 15.25"/>',
     );
   });
 
@@ -344,13 +344,14 @@ describe("the repository's outlines", () => {
   });
 
   it("keep mirror twins symmetric", () => {
-    // An A's feet and an arrowhead's arms end at the same height.
+    // An A's feet and an arrowhead's arms end at the same height; the A's apex, listed in
+    // config/derived tipHeight, is cut flat at the round A's height and centred.
     const [arrow, , letter] = sharpIcon("a-arrow-down").map(pathData);
     expect(arrow).toBe("M14.419 12.419L18 16L21.581 12.419");
-    expect(letter).toBe("M2.313 15.25L6.501 5.203L10.687 15.25");
-    // triangle-alert, which starts mid-edge, gets identical bottom corners.
+    expect(letter).toBe("M2.313 15.25L6.167 6.002H6.834L10.687 15.25");
+    // triangle-alert, which starts mid-edge, gets identical bottom corners and a narrow apex flat.
     const triangle = pathData(sharpIcon("triangle-alert")[0]);
-    expect(triangle).toBe("M10.392 3.751L2.134 18.204L3.756 21H20.224L21.846 18.204L13.588 3.751Z");
+    expect(triangle).toBe("M11.395 1.997L2.134 18.204L3.756 21H20.224L21.846 18.204L12.585 1.997Z");
     // The scale's pans are cut alike on both sides.
     const pan = pathData(sharpIcon("scale")[1]);
     expect(pan).toContain("L21.951 15.869L21.887 16.082");

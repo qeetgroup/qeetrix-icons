@@ -18,12 +18,12 @@ export function CableIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16 19V14H22V19Z" />
+        <path d="M16 14H22V19H16Z" />
         <path d="M17 21v-2" />
         <path d="M19 14V6.5a1 1 0 0 0-7 0v11a1 1 0 0 1-7 0V10" />
         <path d="M21 21v-2" />
         <path d="M3 5V3" />
-        <path d="M2 10V5H8V10Z" />
+        <path d="M2 5H8V10H2Z" />
         <path d="M7 5V3" />
       </svg>
     );

@@ -26,14 +26,21 @@ export const derivations: CategoryDerivations = {
     bone: [0],
     // The snout and the neck's curve, organic like the rest of the rabbit; squared, the head turns
     // into a box.
-    rabbit: [2],
+    // The eye: figurative dots, round in sharp (UI dots stay square).
+    rabbit: [1, 2],
     // The snout's round tip, organic as rabbit's and squirrel's; squared, it facets into a
     // chamfered point.
-    rat: [3],
+    // The eye: figurative dots, round in sharp (UI dots stay square).
+    rat: [2, 3],
     // The snout and the paw's curve, as rabbit's; squared, the head turns into a box.
-    squirrel: [1],
+    // The eye: figurative dots, round in sharp (UI dots stay square).
+    squirrel: [1, 2],
     // The worm's body is one organic curve; squared, its inner turns kink into corners.
     worm: [2],
+    // The eye: figurative dots, round in sharp (UI dots stay square).
+    bird: [0],
+    // The eye: figurative dots, round in sharp (UI dots stay square).
+    shrimp: [3],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

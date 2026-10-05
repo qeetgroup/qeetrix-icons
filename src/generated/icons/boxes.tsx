@@ -18,7 +18,7 @@ export function BoxesIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2 13.502V18.998L6.446 21.666H7.554L12 19V13.5L7 10.5Z" />
+        <path d="M2 18.998L6.446 21.666H7.554L12 19V13.5L7 10.5L2 13.502Z" />
         <path d="M7 16.5L3.117 14.165" />
         <path d="m7 16.5 5-3" />
         <path d="M7 16.5V20.67" />
@@ -26,7 +26,7 @@ export function BoxesIcon(props: IconProps<"outline">) {
         <path d="m17 16.5-5-3" />
         <path d="M17 16.5L20.883 14.165" />
         <path d="M17 16.5V20.67" />
-        <path d="M7 5.002V10.5L12 13.5L17 10.5V5.002L12 2.162Z" />
+        <path d="M7 10.5L12 13.5L17 10.5V5.002L12.103 2.064H11.897L7 5.002Z" />
         <path d="M12 8L8.117 5.665" />
         <path d="M12 8L15.883 5.665" />
         <path d="M12 13.5V8" />

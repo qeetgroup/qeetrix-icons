@@ -15,7 +15,7 @@ export function MessageSquareXIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 20L6.414 20L1 25.414L1 2L23 2L23 20ZM12 12.414L9.5 14.914L8.086 13.5L10.586 11L8.086 8.5L9.5 7.086L12 9.586L14.5 7.086L15.914 8.5L13.414 11L15.914 13.5L14.5 14.914L12 12.414Z"
+            d="M6.414 20L3.409 23.005L1 22.008L1 2L23 2L23 20L6.414 20ZM12 12.414L9.5 14.914L8.086 13.5L10.586 11L8.086 8.5L9.5 7.086L12 9.586L14.5 7.086L15.914 8.5L13.414 11L15.914 13.5L14.5 14.914L12 12.414Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MessageSquareXIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 19H6L2 23V3H22Z" />
+        <path d="M6 19L3.174 21.826L2 21.34V3H22V19Z" />
         <path d="m14.5 8.5-5 5" />
         <path d="m9.5 8.5 5 5" />
       </svg>

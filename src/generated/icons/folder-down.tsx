@@ -15,7 +15,7 @@ export function FolderDownIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 5L23 21L1 21L1 2L9.524 2L11.549 5L23 5ZM11 13.586L9 11.586L7.586 13L12 17.414L16.414 13L15 11.586L13 13.586L13 9L11 9L11 13.586Z"
+            d="M11.549 5L23 5L23 21L1 21L1 2L9.524 2L11.549 5ZM11 13.586L9 11.586L7.586 13L12 17.414L16.414 13L15 11.586L13 13.586L13 9L11 9L11 13.586Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FolderDownIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
         <path d="M12 10V15" />
         <path d="m15 13-3 3-3-3" />
       </svg>

@@ -19,7 +19,7 @@ export function GlobeIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <circle cx="12" cy="12" r="10" />
-        <path d="M11.986 2.014A14.5 14.5 0 0 0 11.986 21.986H12.014A14.5 14.5 0 0 0 12.014 2.014Z" />
+        <path d="M11.89 2.116A14.5 14.5 0 0 0 11.89 21.884H12.11A14.5 14.5 0 0 0 12.11 2.116Z" />
         <path d="M3 12H21" />
       </svg>
     );

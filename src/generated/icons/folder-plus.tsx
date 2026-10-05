@@ -15,7 +15,7 @@ export function FolderPlusIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 21L1 21L1 2L9.524 2L11.549 5L23 5L23 21ZM13 14L13 17L11 17L11 14L8 14L8 12L11 12L11 9L13 9L13 12L16 12L16 14L13 14Z"
+            d="M23 5L23 21L1 21L1 2L9.524 2L11.549 5L23 5ZM13 14L13 17L11 17L11 14L8 14L8 12L11 12L11 9L13 9L13 12L16 12L16 14L13 14Z"
             fillRule="evenodd"
           />
         </svg>
@@ -35,7 +35,7 @@ export function FolderPlusIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M12 10v6" />
         <path d="M9 13h6" />
-        <path d="M22 20V6H11.018L8.993 3H2V20Z" />
+        <path d="M22 6H11.018L8.993 3H2V20H22Z" />
       </svg>
     );
   }

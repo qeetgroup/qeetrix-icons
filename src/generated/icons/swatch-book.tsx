@@ -15,7 +15,7 @@ export function SwatchBookIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M12 2L12 5.586L15 2.586L21.739 9.324L19.075 12L22 12L22 22L7 22Q6.046 22 5.16 21.649Q4.197 21.268 3.464 20.536Q2.732 19.803 2.351 18.84Q2 17.954 2 17L2 2L12 2ZM18.913 9.328L12 16.273L12 8.414L15 5.414L18.913 9.328ZM20 20L11.112 20L17.084 14L20 14L20 20ZM6 16L8.01 16L8.01 18L6 18L6 16Z"
+            d="M2 2L2 17Q2 17.954 2.351 18.84Q2.732 19.803 3.464 20.536Q4.197 21.268 5.16 21.649Q6.046 22 7 22L22 22L22 12L19.075 12L21.739 9.324L15 2.586L12 5.586L12 2L2 2ZM18.913 9.328L12 16.273L12 8.414L15 5.414L18.913 9.328ZM20 20L11.112 20L17.084 14L20 14L20 20ZM6 16L8.01 16L8.01 18L6 18L6 16Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function SwatchBookIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 17A4 4 0 0 1 3 17V3H11Z" />
+        <path d="M3 17V3H11V17A4 4 0 0 1 3 17Z" />
         <path d="M17.7 13H21V21H8" />
         <path d="M 7 17h.01" />
         <path d="M11.707 7.293L15 4L20.326 9.326L9.9 19.8" />

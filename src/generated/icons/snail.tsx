@@ -18,7 +18,7 @@ export function SnailIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2.598 15.61A6 6 0 0 0 14 13A4 4 0 1 0 6 13A2 2 0 0 0 10 13" />
+        <path d="M2.492 15.379A6 6 0 0 0 14 13A4 4 0 1 0 6 13A2 2 0 0 0 10 13" />
         <circle cx="10" cy="13" r="8" />
         <path d="M2 21H14C18.4 21 22 17.4 22 13V7A2 2 0 1 0 18 7V12" />
         <path d="M18 3 19.1 5.2" />

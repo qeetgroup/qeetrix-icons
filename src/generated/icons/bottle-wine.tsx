@@ -15,7 +15,7 @@ export function BottleWineIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M15 1L9 1L9 5Q9 5.811 8.743 6.581Q8.487 7.351 8 8L7.4 8.8Q6.718 9.709 6.359 10.786Q6 11.864 6 13L6 23L18 23L18 19L11 19L11 12L17 12L17 14L13 14L13 17L18 17L18 13Q18 11.864 17.641 10.786Q17.282 9.709 16.6 8.8L16 8Q15.513 7.351 15.257 6.581Q15 5.811 15 5L15 1Z"
+            d="M15 5L15 1L9 1L9 5Q9 5.811 8.743 6.581Q8.487 7.351 8 8L7.4 8.8Q6.718 9.709 6.359 10.786Q6 11.864 6 13L6 23L18 23L18 19L11 19L11 12L17.929 12Q17.84 11.384 17.641 10.786Q17.282 9.709 16.6 8.8L16 8Q15.513 7.351 15.257 6.581Q15 5.811 15 5ZM18 15L16 15L16 14L13 14L13 17L18 17L18 15Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,8 +33,8 @@ export function BottleWineIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M10 2H14V5A6 6 0 0 0 15.2 8.6L15.8 9.4A6 6 0 0 1 17 13V22H7V13A6 6 0 0 1 8.2 9.4L8.8 8.6A6 6 0 0 0 10 5Z" />
-        <path d="M16 13H12V18H17" />
+        <path d="M14 2V5A6 6 0 0 0 15.2 8.6L15.8 9.4A6 6 0 0 1 17 13V22H7V13A6 6 0 0 1 8.2 9.4L8.8 8.6A6 6 0 0 0 10 5V2Z" />
+        <path d="M17 14V13H12V18H17" />
       </svg>
     );
   }

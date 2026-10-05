@@ -24,7 +24,7 @@ export function UserRoundCogIcon(props: IconProps<"outline">) {
         <path d="m16.852 20.772-.383.924" />
         <path d="m19.148 15.228.383-.923" />
         <path d="m19.53 21.696-.382-.924" />
-        <path d="M2 21A8 8 0 0 1 9.623 13.01" />
+        <path d="M2 21A8 8 0 0 1 9.473 13.018" />
         <path d="m20.772 16.852.924-.383" />
         <path d="m20.772 19.148.924.383" />
         <circle cx="10" cy="8" r="5" />

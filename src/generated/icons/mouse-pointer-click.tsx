@@ -22,7 +22,7 @@ export function MousePointerClickIcon(props: IconProps<"outline">) {
         <path d="M5.1 8L2.235 7.21" />
         <path d="m6 12-1.9 2" />
         <path d="M7.21 2.235L8 5.1" />
-        <path d="M8.585 8.585L21.027 13.675L20.97 14.401L15.669 15.67L14.402 20.972L13.676 21.029Z" />
+        <path d="M21.027 13.675L20.97 14.401L15.669 15.67L14.402 20.972L13.676 21.029L8.585 8.585Z" />
       </svg>
     );
   }

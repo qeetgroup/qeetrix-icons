@@ -24,7 +24,7 @@ export function ScanBoxIcon(props: IconProps<"outline">) {
         <path d="M3 7V3H7" />
         <path d="M7 21H3V17" />
         <path d="M8.129 9.754L12 12L15.872 9.754" />
-        <path d="M7 9.091V14.912L12 17.812L17 14.912V9.091L12.075 6.231L11.113 6.707Z" />
+        <path d="M7 14.912L12 17.812L17 14.912V9.091L12.005 6.19L7 9.091Z" />
       </svg>
     );
   }

@@ -18,8 +18,8 @@ export function SectionIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M16 5A4 3 0 0 0 8 5C8 9 16 8 16 12A4 3 0 0 1 11.036 14.912" />
-        <path d="M8 19A4 3 0 0 0 16 19C16 15 8 16 8 12A4 3 0 0 1 12.964 9.088" />
+        <path d="M16 5A4 3 0 0 0 8 5C8 9 16 8 16 12A4 3 0 0 1 11.299 14.954" />
+        <path d="M8 19A4 3 0 0 0 16 19C16 15 8 16 8 12A4 3 0 0 1 12.701 9.046" />
       </svg>
     );
   }

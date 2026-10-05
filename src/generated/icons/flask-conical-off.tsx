@@ -21,7 +21,7 @@ export function FlaskConicalOffIcon(props: IconProps<"outline">) {
         <path d="M10 2v2.343" />
         <path d="M14 2v6.343" />
         <path d="M2.419 2.419L21.581 21.581" />
-        <path d="M20 21V22L2.687 21.964L8.995 10.356" />
+        <path d="M20 21V22H2.827L2.723 21.825L8.992 10.354" />
         <path d="M7.453 15H14" />
         <path d="M8.5 2h7" />
       </svg>

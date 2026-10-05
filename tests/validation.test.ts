@@ -445,6 +445,19 @@ describe("SVG structure and paint", () => {
     expect(validateSvg(syntheticSvg(), outlineFile, "outline")).toEqual([]);
   });
 
+  it("lets a sharp dot kept round cap itself round, and nothing else", () => {
+    const sharpFile = "icons/sharp-outline/arrows/fixture.svg";
+    const sharp = (content: string) =>
+      validateSvg(syntheticSvg(sharpAttributes, content), sharpFile, "outline", "sharp");
+    expect(sharp('<path d="M9 9h.01" stroke-linecap="round"/>')).toEqual([]);
+    expect(sharp('<path d="M9 9h.01" stroke-linecap="butt"/>')).toEqual([
+      expect.objectContaining({ code: "QXI-SVG-007" }),
+    ]);
+    expect(sharp('<path d="M9 9h4" stroke-linecap="round"/>')).toEqual([
+      expect.objectContaining({ code: "QXI-SVG-007" }),
+    ]);
+  });
+
   it.each([
     '<circle cx="12" cy="12" r="4"/>',
     '<ellipse cx="12" cy="12" rx="4" ry="3"/>',

@@ -15,7 +15,7 @@ export function PyramidIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1.183 15.133L10.952 1.002L13.048 1.002L22.987 15.369L22.993 17.201L11.999 22.996L1.003 17.18L1.007 15.389L1.183 15.133ZM13 22L13 2L11 2L11 22L13 22Z"
+            d="M11 1.002L11 22.885L1.466 17.44L1.001 15.397L10.952 1.002L11 1.002ZM13 1.002L13 22.885L22.539 17.437L23.004 15.394L13.048 1.002L13 1.002Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function PyramidIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2.006 15.702L11.476 2.002H12.524L21.988 15.683L21.991 16.599L12 21.865L2.004 16.578Z" />
+        <path d="M11.476 2.002H12.524L21.931 15.601L21.661 16.787L12.521 22.007H11.479L2.344 16.79L2.074 15.604Z" />
         <path d="M12 3V21" />
       </svg>
     );

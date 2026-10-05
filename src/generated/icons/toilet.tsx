@@ -18,8 +18,8 @@ export function ToiletIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M7 12H21V13A5 5 0 0 1 16 18H14.5L17 22H4.5L6.47 18.848" />
-        <path d="M6.053 17.605A5 5 0 0 1 3 13V2H15V12" />
+        <path d="M7 12H21V13A5 5 0 0 1 16 18H14.72L14.617 18.187L17 22H4.5L7 18" />
+        <path d="M8 18A5 5 0 0 1 3 13V2H15V12" />
       </svg>
     );
   }

@@ -18,9 +18,9 @@ export function Repeat1Icon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M17.419 2.419L21 6L17 10" />
+        <path d="M17.419 2.419L21 6L17.419 9.581" />
         <path d="M3 11V10A4 4 0 0 1 7 6H20" />
-        <path d="M6.581 21.581L3 18L7 14" />
+        <path d="M6.581 21.581L3 18L6.581 14.419" />
         <path d="M21 13V14A4 4 0 0 1 17 18H4" />
         <path d="M11 10h1v4" />
       </svg>

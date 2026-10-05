@@ -18,12 +18,12 @@ export function SprayCanIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M3 3h.01" />
-        <path d="M7 5h.01" />
-        <path d="M11 7h.01" />
-        <path d="M3 7h.01" />
-        <path d="M7 9h.01" />
-        <path d="M3 11h.01" />
+        <path d="M3 3h.01" strokeLinecap="round" />
+        <path d="M7 5h.01" strokeLinecap="round" />
+        <path d="M11 7h.01" strokeLinecap="round" />
+        <path d="M3 7h.01" strokeLinecap="round" />
+        <path d="M7 9h.01" strokeLinecap="round" />
+        <path d="M3 11h.01" strokeLinecap="round" />
         <rect height="4" width="4" x="15" y="5" />
         <path d="M19 9L21 11V22H13V11L15 9" />
         <path d="M13.97 13.757L20.03 12.243" />

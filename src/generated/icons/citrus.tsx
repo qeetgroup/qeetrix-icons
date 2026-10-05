@@ -18,9 +18,9 @@ export function CitrusIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21.861 18.493L21.62 19.27A12 12 0 0 1 4.73 2.38L5.524 2.135Z" />
-        <path d="M18.883 16.301A8 8 0 0 1 7.707 5.106" />
-        <path d="M13.293 10.707L9.207 14.793" />
+        <path d="M21.66 17.67a1.08 1.08 0 0 1-.04 1.6A12 12 0 0 1 4.73 2.38a1.1 1.1 0 0 1 1.61-.04z" />
+        <path d="M19.65 15.66A8 8 0 0 1 7.707 5.106" />
+        <path d="M14 10L9.207 14.793" />
         <path d="M14 16.85V10H7.15" />
       </svg>
     );

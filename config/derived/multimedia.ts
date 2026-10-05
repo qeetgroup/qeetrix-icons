@@ -59,6 +59,8 @@ export const derivations: CategoryDerivations = {
   keepRound: {
     ad: [2], // The D's bowl (as in hd): squared, "AD" reads as "A0".
     "audio-waveform": [0], // A continuous wave: squared, its end hooks turn into steps.
+    // The masks' eyes: figurative dots, round in sharp (UI dots stay square).
+    drama: [0, 1, 2, 3],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

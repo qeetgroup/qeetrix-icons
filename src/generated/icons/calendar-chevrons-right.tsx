@@ -20,7 +20,7 @@ export function CalendarChevronsRightIcon(props: IconProps<"outline">) {
       >
         <path d="m13 21 3-3-3-3" />
         <path d="M16 2v3" />
-        <path d="M19 21L21.66 18L19 15" />
+        <path d="M19 21L21.887 18.113V17.887L19 15" />
         <path d="M21 11.5V3H3V21H9" />
         <path d="M3 9h18" />
         <path d="M8 2v3" />

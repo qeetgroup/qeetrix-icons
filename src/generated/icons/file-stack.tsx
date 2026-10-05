@@ -20,7 +20,7 @@ export function FileStackIcon(props: IconProps<"outline">) {
       >
         <path d="M11 21V22H3V12H4" />
         <path d="M16 16V17H8V7H9" />
-        <path d="M21 5.172L17.828 2H13V12H21Z" />
+        <path d="M17.828 2H13V12H21V5.172Z" />
       </svg>
     );
   }

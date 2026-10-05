@@ -15,7 +15,7 @@ export function FlagTriangleRightIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M5 22L5 1.074L7.242 1.008L22.224 8.5L7.818 15.709L6.992 22.128L5 22Z"
+            d="M5 22L5 2.367L7.219 0.996L22.224 8.5L7.342 15.947L7 16.118L7 22L5 22Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function FlagTriangleRightIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M6 22V2.045L7.02 2.015L19.989 8.5L6.894 15.053" />
+        <path d="M6 22V2.925L7.27 2.14L19.989 8.5L6.894 15.053" />
       </svg>
     );
   }

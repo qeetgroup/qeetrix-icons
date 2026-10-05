@@ -33,7 +33,7 @@ export function ChessKingIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 18H20V22H4Z" />
+        <path d="M20 18V22H4V18Z" />
         <path d="M5.993 17.293L5.7 17C4.35 15.682 3 14.09 3 12A5 5 0 0 1 7.95 7C9.534 7 10.65 7.455 12 8.818C13.35 7.455 14.466 7 16.05 7A5 5 0 0 1 21 12C21 14.082 19.641 15.673 18.3 17L18.007 17.293" />
         <path d="M10 4h4" />
         <path d="M12 2V7.818" />

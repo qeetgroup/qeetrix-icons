@@ -20,8 +20,8 @@ export function BroomSparklesIcon(props: IconProps<"outline">) {
       >
         <path d="M11 2v2" />
         <path d="M12 3h-2" />
-        <path d="M13.5 10.5L21.581 2.419" />
-        <path d="M15.509 12.51L11.491 8.49L2.019 14.008L2.016 15.016L8.985 21.985L9.993 21.982Z" />
+        <path d="M13.919 10.081L21.581 2.419" />
+        <path d="M11.491 8.49L2.21 13.897L2.059 15.059L8.942 21.942L10.104 21.791L15.509 12.51Z" />
         <path d="M20 15v4" />
         <path d="M22 17h-4" />
         <path d="M4 4v4" />

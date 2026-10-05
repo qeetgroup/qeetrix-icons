@@ -26,9 +26,10 @@ workspace uses it.
 | `bun run test` | Vitest |
 | `bun run test:watch` | Same, watching |
 | `bun run sync:lucide [version]` | Replace `icons/round-outline/` with a Lucide release, then derive and generate ([lucide.md](lucide.md)) |
-| `bun run derive:filled` | Write `icons/round-filled/` from `config/filled.ts` and the round outlines ([filled.md](filled.md)) |
+| `bun run derive:filled [--category <id>]` | Write `icons/round-filled/` from `config/derived/` and the round outlines ([filled.md](filled.md)) |
 | `bun run check:filled` | Fail if any round filled drawing is missing, stale, or unlisted |
-| `bun run derive:sharp` | Write `icons/sharp-outline/` and `icons/sharp-filled/` from the round outlines ([sharp.md](sharp.md)) |
+| `bun run derive:sharp [--category <id>]` | Write `icons/sharp-outline/` and `icons/sharp-filled/` from the round outlines ([sharp.md](sharp.md)) |
+| `bun run stamp:override <file>` | Record the outline an override was drawn against, and its hash ([filled.md](filled.md#overrides)) |
 | `bun run check:sharp` | Fail if any sharp drawing is missing, stale, or not derived from an outline or recipe |
 | `bun run sync:brands [commit]` | Replace `icons/brand-icons/` and `config/brands.json` with a theSVG commit ([logos.md](logos.md)) |
 | `bun run check:brands` | Validate `config/brands.json` and every logo file (`QXB-*` codes) |
@@ -66,12 +67,15 @@ in [architecture.md](architecture.md).
 
 ## Common changes
 
-- **Add or fix a filled drawing.** Edit [config/filled.ts](../config/filled.ts), run
-  `bun run derive:filled`, `bun run derive:sharp`, and `bun run generate`, and review it in both
-  shapes in the playground ([filled.md](filled.md#adding-a-filled-drawing)).
-- **Change the sharp style.** Edit the rules or `keepRound` in
-  [scripts/lib/sharp.ts](../scripts/lib/sharp.ts), run `bun run derive:sharp` and
-  `bun run generate`, and review every changed drawing ([sharp.md](sharp.md)).
+- **Add or fix a filled drawing.** Edit its category's file in
+  [config/derived/](../config/derived/README.md), run `bun run derive:filled --category <id>`,
+  `bun run derive:sharp --category <id>`, and `bun run generate`, and review it in both shapes in
+  the playground ([filled.md](filled.md#adding-a-filled-drawing)). Only if roles cannot get it
+  right, draw an override and stamp it ([filled.md](filled.md#overrides)).
+- **Change the sharp style.** Edit the rules in [scripts/lib/sharp.ts](../scripts/lib/sharp.ts), or
+  `keepRound` or `tipHeight` in `config/derived/<category>.ts`, run `bun run derive:sharp` and
+  `bun run generate`, and review every changed drawing and every override in a changed category
+  ([sharp.md](sharp.md#changing-the-sharp-style)).
 - **Change an RTL decision.** Edit the `mirrored` list in
   [config/icon-metadata.ts](../config/icon-metadata.ts) and run `bun run generate`
   ([rtl.md](rtl.md)).
@@ -118,8 +122,8 @@ publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
   `config/lucide.json`, `config/categories.ts`, `icons/brand-icons/`, or `config/brands.json`; the
   next sync would undo them. Restating Lucide's rules in
   [config/icon-system.ts](../config/icon-system.ts) is fine; inventing per-icon geometry is not.
-  Derivations follow general rules, and their few per-icon exceptions (filled `roles`, sharp
-  `keepRound`) each say why.
+  Derivations follow general rules, and their per-icon exceptions (filled `roles`, sharp
+  `keepRound` and `tipHeight`, hand-drawn overrides) each say why.
 - **Tool-written files are never edited by hand.** That covers `icons/`, `src/generated/`, and
   `icon-manifest.json`. Their writers must be deterministic: no timestamps, and sort with an
   explicit codepoint comparator rather than `localeCompare`, so a file's bytes never depend on the

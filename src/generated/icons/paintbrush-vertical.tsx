@@ -35,7 +35,7 @@ export function PaintbrushVerticalIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M10 2v2" />
         <path d="M14 2v4" />
-        <path d="M18 2V12H6V2Z" />
+        <path d="M18 12H6V2H18Z" />
         <path d="M6 12H5V16H10V19.9A2 2 0 1 0 14 19.9V16H19V12H18" />
       </svg>
     );

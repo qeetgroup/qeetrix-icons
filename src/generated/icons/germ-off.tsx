@@ -19,7 +19,7 @@ export function GermOffIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M11.174 2.347L11.925 3.848" />
-        <path d="M13 15h.01" />
+        <path d="M13 15h.01" strokeLinecap="round" />
         <path d="M13.424 7.768a2 2 0 112.808 2.808" />
         <path d="m16 21-1-2.472" />
         <path d="M16.212 17.619A12 12 0 0 1 9 20A5 5 0 0 1 6.241 10.829A8.8 8.8 0 0 0 7.933 9.337" />
@@ -29,7 +29,7 @@ export function GermOffIcon(props: IconProps<"outline">) {
         <path d="M21.585 15.642L19.526 13.87A12 12 0 0 0 20.902 10.084A6 6 0 0 0 10.589 4.933" />
         <path d="M21.636 5.202L20.196 6" />
         <path d="M3 10L4.293 11.293" />
-        <path d="M9 16h.01" />
+        <path d="M9 16h.01" strokeLinecap="round" />
         <path d="M9 20v2" />
       </svg>
     );

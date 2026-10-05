@@ -24,7 +24,7 @@ export function BrainCircuitIcon(props: IconProps<"outline">) {
         <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
         <path d="M6 18A4 4 0 0 1 4.956 17.862" />
         <path d="M12 13h4" />
-        <path d="M12 18H20V21" />
+        <path d="M12 17V18H20V21" />
         <path d="M12 8h8" />
         <path d="M16 8V3H18" />
         <rect height="1" width="1" x="15.5" y="12.5" />

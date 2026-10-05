@@ -19,7 +19,7 @@ export function FolderHeartIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10.638 20H2V3H8.983L11.008 6H22V11.417" />
-        <path d="M14.62 18.8A2.25 2.25 0 1 1 18 15.836A2.25 2.25 0 1 1 21.38 18.802L18 21.678Z" />
+        <path d="M21.38 18.802L18.433 22.007H17.567L14.62 18.8A2.25 2.25 0 1 1 18 15.836A2.25 2.25 0 1 1 21.38 18.802Z" />
       </svg>
     );
   }

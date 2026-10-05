@@ -20,7 +20,7 @@ export function DatabaseArrowUpIcon(props: IconProps<"outline">) {
       >
         <path d="M19 22V17" />
         <path d="M21 12.536V6" />
-        <path d="M21.581 18.581L19 16L16 19" />
+        <path d="M21.581 18.581L19 16L16.419 18.581" />
         <path d="M3 12A9 3 0 0 0 14.457 14.886" />
         <path d="M3 6V19A9 3 0 0 0 13.318 21.968" />
         <ellipse cx="12" cy="5" rx="9" ry="3" />

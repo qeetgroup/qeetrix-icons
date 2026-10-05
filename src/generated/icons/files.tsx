@@ -19,7 +19,7 @@ export function FilesIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M14 2H9V17H21V9" />
-        <path d="M16.706 2.706A2.4 2.4 0 0 0 15 2V8H21A2.4 2.4 0 0 0 20.294 6.294Z" />
+        <path d="M15 2V8H21A2.4 2.4 0 0 0 20.294 6.294L16.706 2.706A2.4 2.4 0 0 0 15 2Z" />
         <path d="M5 7H3V22H14.155" />
       </svg>
     );

@@ -15,7 +15,7 @@ export function RoadIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M11 2L11 6L13 6L13 2L18.264 2L22.995 18.556L22.964 22L13 22L13 16L11 16L11 22L1.037 22L1.006 18.556L5.736 2L11 2ZM13 13L13 8L11 8L11 13L13 13Z"
+            d="M11 2L11 6L13 6L13 2L18.264 2L22.873 18.129L23.009 18.608L20.451 22L13 22L13 16L11 16L11 22L3.55 22L0.992 18.608L5.736 2L11 2ZM13 13L13 8L11 8L11 13L13 13Z"
             fillRule="evenodd"
           />
         </svg>
@@ -36,7 +36,7 @@ export function RoadIcon(props: IconProps<"outline" | "filled">) {
         <path d="M12 17v4" />
         <path d="M12 5V3" />
         <path d="M12 9v3" />
-        <path d="M2.028 21H21.973L21.994 18.692L17.51 3H6.49L2.007 18.692Z" />
+        <path d="M21.911 18.404L17.51 3H6.49L2.09 18.404L4.048 21H19.953Z" />
       </svg>
     );
   }

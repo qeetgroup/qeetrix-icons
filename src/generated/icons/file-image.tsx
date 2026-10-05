@@ -18,7 +18,7 @@ export function FileImageIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M4 22V2H14.998L20 7.002V22Z" />
+        <path d="M4 2H14.998L20 7.002V22H4Z" />
         <path d="M14 2V8H20" />
         <circle cx="10" cy="12" r="2" />
         <path d="M19.293 16.293L17 14L9.707 21.293" />

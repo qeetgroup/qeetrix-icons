@@ -15,7 +15,7 @@ export function InboxIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1 11.764L5.388 3L18.612 3L23 11.764L23 21L1 21L1 11.764ZM16.535 13L22 13L22 11L15.465 11L13.465 14L10.535 14L8.535 11L2 11L2 13L7.465 13L9.465 16L14.535 16L16.535 13Z"
+            d="M1.382 11L5.388 3L18.612 3L22.618 11L15.465 11L13.465 14L10.535 14L8.535 11L1.382 11ZM1 13L1 21L23 21L23 13L16.535 13L14.535 16L9.465 16L7.465 13L1 13Z"
             fillRule="evenodd"
           />
         </svg>

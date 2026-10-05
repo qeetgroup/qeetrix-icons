@@ -18,7 +18,7 @@ export function ImagePlayIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 13.234L21.986 17.424V18.576L16.286 21.994L15 21.986Z" />
+        <path d="M22.003 18.566L16.526 21.85L15 20.986V15.014L16.526 14.15L22.003 17.434Z" />
         <path d="M21 12.17V3H3V21H11" />
         <path d="M6.707 20.293L11 16" />
         <circle cx="9" cy="9" r="2" />

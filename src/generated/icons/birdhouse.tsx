@@ -20,7 +20,7 @@ export function BirdhouseIcon(props: IconProps<"outline">) {
       >
         <path d="M12 18v4" />
         <path d="M17.168 17.014L18.788 7.518" />
-        <path d="M3 8L12 2.198L21 8" />
+        <path d="M3 8L11.366 1.993H12.634L21 8" />
         <path d="M4 18h16" />
         <path d="M6.832 17.014L5.212 7.518" />
         <circle cx="12" cy="10" r="2" />

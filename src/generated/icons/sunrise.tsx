@@ -24,7 +24,7 @@ export function SunriseIcon(props: IconProps<"outline">) {
         <path d="M20 18h2" />
         <path d="m19.07 10.93-1.41 1.41" />
         <path d="M22 22H2" />
-        <path d="M8 6L12 2.36L16 6" />
+        <path d="M8 6L11.887 2.113H12.113L16 6" />
         <path d="M16 18a4 4 0 0 0-8 0" />
       </svg>
     );
