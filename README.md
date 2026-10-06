@@ -4,8 +4,8 @@
 
 **The icon and brand logo library for Qeet Group products.**
 
-1,863 Lucide icons in **round** and **sharp** shapes, **775 filled** variants, and **7,429 brand
-logos**, as tree-shakeable, fully typed React 19 components, all from one import.
+1,863 Lucide icons in **round** and **sharp** shapes, **775 filled** variants, **7,429 brand
+logos** and the first-party **Qeet logo and wordmark**, as tree-shakeable, fully typed React 19 components, all from one import.
 
 [![npm](https://img.shields.io/npm/v/@qeetrix/icons?style=flat-square&color=111111&label=npm)](https://www.npmjs.com/package/@qeetrix/icons)
 [![CI](https://img.shields.io/github/actions/workflow/status/qeetgroup/qeetrix-icons/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qeetgroup/qeetrix-icons/actions/workflows/ci.yml)
@@ -84,8 +84,8 @@ neither provides:
 | 🎨 **Icons** | 1,863 from Lucide 1.52.0, in Lucide's 42 categories, with Lucide's names and tags |
 | 🔷 **Shapes** | `round` (Lucide's drawing, the default) and `sharp`, for every icon |
 | 🌓 **Variants** | `outline` for every icon; `filled` for 775, in both shapes |
-| 🏷️ **Brand logos** | 7,429 from theSVG 3.3.12: brands, community, auth badges, AWS, Azure, Google Cloud, Kubernetes |
-| 🗂️ **Logo files** | 13,401 variants (default, mono, wordmark, light, dark, colour, …), embedded unmodified |
+| 🏷️ **Brand logos** | 7,429 from theSVG 3.3.12 (brands, community, auth badges, AWS, Azure, Google Cloud, Kubernetes), plus the first-party Qeet logo and wordmark |
+| 🗂️ **Logo files** | 13,407 variants (default, mono, wordmark, light, dark, colour, …), embedded unmodified |
 | 📐 **Grid** | 24 × 24, 2-unit stroke, 1-unit padding, `currentColor` |
 | ⚛️ **Runtime** | React 19 peer dependency only; no runtime dependencies; no hooks |
 | 📦 **Module format** | ESM with TypeScript declarations; every module free of side effects |
@@ -220,7 +220,7 @@ import { GithubLogo, SlackLogo, StripeLogo } from "@qeetrix/icons";
 ```
 
 Each logo renders its **published SVG file, unmodified**, as an `<img>`. Nothing in the artwork is
-converted or recoloured; a test proves all 13,401 files are embedded byte for byte. Because each
+converted or recoloured; a test proves all 13,405 files are embedded byte for byte. Because each
 logo is its own image, logos never clash with each other's styles or ids, and they work in Server
 Components.
 
@@ -234,6 +234,55 @@ Components.
 Other native `<img>` props (`className`, `style`, `loading`, `decoding`, …) pass through. Logos
 keep their brand colours by design, so CSS cannot recolour them.
 
+### 🟠 The Qeet logo and wordmark
+
+Qeet's own marks sit in the catalogue beside the third-party logos, each with a file for light
+surfaces (`default`) and one for dark surfaces (`dark`):
+
+| Component | What it is | `default` (light surfaces) | `dark` (dark surfaces) |
+|:--|:--|:--|:--|
+| `QeetLogo` | the Qeet "q" mark | graphite bowl, orange descender | white bowl, orange descender |
+| `QeetWordmarkLogo` | **Qeet.** in a tile | graphite tile, white letters | white tile, graphite letters |
+
+The wordmark also comes without the tile, as two more files: `plain` (graphite letters, for light
+surfaces) and `plain-dark` (white letters, for dark surfaces), cropped to the letters themselves.
+
+```tsx
+import { QeetLogo, QeetWordmarkLogo } from "@qeetrix/icons";
+
+<QeetLogo aria-label="Qeet" />                                      // on light surfaces
+<QeetLogo variant="dark" aria-label="Qeet" />                       // on dark surfaces
+<QeetWordmarkLogo height={28} aria-label="Qeet" />                  // tile, on light surfaces
+<QeetWordmarkLogo variant="dark" height={28} aria-label="Qeet" />   // tile, on dark surfaces
+<QeetWordmarkLogo variant="plain" height={24} aria-label="Qeet" />  // no tile, on light surfaces
+<QeetWordmarkLogo variant="plain-dark" height={24} aria-label="Qeet" />
+```
+
+The wordmark is **Qeet.** set in Qeet Display Bold (Cal Sans UI Geo Bold, SIL OFL 1.1), kerned by
+eye pair by pair, with the full stop in Qeet orange, and converted to outlines, so it renders the
+same without the font. The tile is square-cornered and centred on the capitals. The stop is the
+same orange in all four files. Use the tile where the mark must stand out on a busy or coloured
+surface; use the plain letters in headers, footers and anywhere the surface is already calm.
+
+An image cannot see your app's theme, so pick the file the same way your theme is picked. With a
+class-based theme (`.dark` on `<html>`, as Qeetrix UI does), render both and let CSS show one:
+
+```tsx
+<QeetLogo className="inline-block dark:hidden" aria-label="Qeet" />
+<QeetLogo variant="dark" className="hidden dark:inline-block" aria-label="Qeet" />
+```
+
+The same pattern works for `QeetWordmarkLogo`. The Qeetrix UI playground's **Brand** page
+(`#/brand`) shows both in light and dark, at every size, and inside real app layouts.
+
+If your theme follows the operating system instead, use `prefers-color-scheme` in your CSS the
+same way. Prefer the class approach whenever the app has its own theme toggle, or the logo and
+the page will disagree.
+
+Both are first-party (`firstParty: true` in `config/brands.json`, licence class `first-party`):
+their files in `icons/brand-icons/brands/qeet/` and `qeet-wordmark/` are kept across
+`bun run sync:brands`, which replaces everything else in that folder. The Qeet name and mark are trademarks of Qeet Group.
+
 ### 🗂️ Names and collections
 
 A logo's name is its slug in PascalCase plus `Logo`: `GithubLogo`, `GoogleCloudLogo`. Slugs that
@@ -242,7 +291,7 @@ logos in `Logo`, so the two families never collide.
 
 | Collection | Logos |
 |:--|--:|
-| 🏢 Brands | 4,691 |
+| 🏢 Brands | 4,693 |
 | 🔐 Auth badges | 860 |
 | ☁️ AWS architecture | 739 |
 | ☁️ Azure architecture | 626 |

@@ -5748,6 +5748,8 @@ export { QatarAirwaysLogo } from "./logos/qatar-airways.js";
 export { QatarEnergyLogo } from "./logos/qatar-energy.js";
 export { QbittorrentLogo } from "./logos/qbittorrent.js";
 export { QdrantLogo } from "./logos/qdrant.js";
+export { QeetLogo } from "./logos/qeet.js";
+export { QeetWordmarkLogo } from "./logos/qeet-wordmark.js";
 export { QemuLogo } from "./logos/qemu.js";
 export { QgisLogo } from "./logos/qgis.js";
 export { QiLogo } from "./logos/qi.js";

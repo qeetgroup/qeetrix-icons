@@ -29,6 +29,7 @@ export type BrandBackground = "light" | "dark" | "any";
 
 /** A rough licence family, from most to least permissive. `licenseRaw` stays authoritative. */
 export type BrandLicenseClass =
+  | "first-party"
   | "public-domain"
   | "permissive"
   | "attribution"
@@ -40,6 +41,7 @@ export type BrandLicenseClass =
 
 export const brandBackgrounds: readonly BrandBackground[] = ["light", "dark", "any"];
 export const brandLicenseClasses: readonly BrandLicenseClass[] = [
+  "first-party",
   "public-domain",
   "permissive",
   "attribution",
@@ -84,6 +86,12 @@ export type BrandLogoData = {
   readonly guidelines: string | null;
   /** theSVG page for listed logos; the upstream folder at the pinned commit for unlisted ones. */
   readonly source: string;
+  /**
+   * Qeet's own artwork rather than an upstream logo (licence class `first-party`). `sync:brands`
+   * replaces everything else in `icons/brand-icons/` and `config/brands.json`, but carries these
+   * entries and their files across a re-sync unchanged.
+   */
+  readonly firstParty?: true;
 };
 
 export type BrandCollection = {
@@ -1812,6 +1820,54 @@ export function brandsData(release: BrandRelease, fetched: string): BrandsData {
     commit: release.commit,
     packageVersion: release.packageVersion,
     fetched,
+    collections: [...counts.keys()]
+      .sort(compareCollections)
+      .map((id) => ({ id, label: brandCollectionLabel(id), count: counts.get(id) ?? 0 })),
+    logos,
+  };
+}
+
+/** The first-party entries of a `config/brands.json`, by slug. */
+export function firstPartyBrandLogos(data: unknown): Record<string, BrandLogoData> {
+  const logos = data && typeof data === "object" ? (data as { logos?: unknown }).logos : undefined;
+  if (!logos || typeof logos !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(logos as Record<string, BrandLogoData>).filter(
+      ([, logo]) => logo?.firstParty === true,
+    ),
+  );
+}
+
+/**
+ * Adds first-party logos to freshly synced data and recounts the collections. An upstream logo
+ * with the same slug or component name is an error, not an overwrite: the first-party file would
+ * otherwise silently replace (or be replaced by) a third party's artwork.
+ */
+export function withFirstPartyLogos(
+  data: BrandsData,
+  firstParty: Readonly<Record<string, BrandLogoData>>,
+): BrandsData {
+  const logos: Record<string, BrandLogoData> = { ...data.logos };
+  const componentNames = new Map(
+    Object.entries(data.logos).map(([slug, logo]) => [logo.componentName, slug]),
+  );
+  for (const [slug, logo] of Object.entries(firstParty)) {
+    if (slug in data.logos)
+      throw new Error(`First-party logo ${slug} clashes with upstream ${slug}.`);
+    const clash = componentNames.get(logo.componentName);
+    if (clash) {
+      throw new Error(
+        `First-party logo ${slug} and upstream ${clash} share ${logo.componentName}.`,
+      );
+    }
+    logos[slug] = { ...logo, firstParty: true };
+  }
+  const counts = new Map<string, number>();
+  for (const logo of Object.values(logos)) {
+    counts.set(logo.collection, (counts.get(logo.collection) ?? 0) + 1);
+  }
+  return {
+    ...data,
     collections: [...counts.keys()]
       .sort(compareCollections)
       .map((id) => ({ id, label: brandCollectionLabel(id), count: counts.get(id) ?? 0 })),

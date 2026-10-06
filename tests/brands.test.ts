@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
@@ -14,10 +14,12 @@ import {
   brandsData,
   brandVariantName,
   classifyBrandSvg,
+  firstPartyBrandLogos,
   normalizeBrandLicense,
   readArchiveInfo,
   readBrandRelease,
   renderBrandsJson,
+  withFirstPartyLogos,
 } from "../scripts/lib/brands.js";
 import { writeFixture } from "./helpers.js";
 
@@ -474,6 +476,96 @@ describe("readArchiveInfo", () => {
     expect(readArchiveInfo(archive)).toEqual({ commit, date: "2026-10-04" });
   });
 });
+
+describe("first-party logos", () => {
+  const upstream = (slug: string, collection = "brands") => ({
+    title: slug,
+    collection,
+    componentName: brandComponentName(slug),
+    defaultVariant: "default",
+    variants: {
+      default: {
+        file: `icons/brand-icons/${collection}/${slug}/default.svg`,
+        background: "light" as const,
+        colors: ["#000000"],
+        upstreamKeys: ["default"],
+      },
+    },
+    hex: null,
+    categories: [],
+    aliases: [],
+    license: "MIT",
+    licenseRaw: "MIT",
+    licenseClass: "permissive" as const,
+    website: null,
+    guidelines: null,
+    source: `https://thesvg.org/icon/${slug}`,
+  });
+  const synced = {
+    source: "https://github.com/glincker/thesvg",
+    commit: "abc",
+    packageVersion: "1.0.0",
+    fetched: "2026-01-01",
+    collections: [{ id: "brands", label: "Brands", count: 1 }],
+    logos: { github: upstream("github") },
+  };
+  const qeet = {
+    ...upstream("qeet"),
+    license: "LicenseRef-Qeet",
+    licenseRaw: "Proprietary.",
+    licenseClass: "first-party" as const,
+    firstParty: true as const,
+  };
+
+  it("picks only the entries marked firstParty", () => {
+    expect(
+      Object.keys(firstPartyBrandLogos({ logos: { github: upstream("github"), qeet } })),
+    ).toEqual(["qeet"]);
+    expect(firstPartyBrandLogos(undefined)).toEqual({});
+  });
+
+  it("carries first-party logos across a re-sync and recounts their collection", () => {
+    const merged = withFirstPartyLogos(synced, { qeet });
+    expect(Object.keys(merged.logos).sort()).toEqual(["github", "qeet"]);
+    expect(merged.logos.qeet?.firstParty).toBe(true);
+    expect(merged.collections).toEqual([{ id: "brands", label: "Brands", count: 2 }]);
+  });
+
+  it("refuses a first-party slug or component name that upstream also uses", () => {
+    expect(() => withFirstPartyLogos(synced, { github: { ...qeet } })).toThrow(/clashes/);
+    expect(() =>
+      withFirstPartyLogos(synced, { "git-hub": { ...qeet, componentName: "GithubLogo" } }),
+    ).toThrow(/share GithubLogo/);
+  });
+
+  it("is recorded for the Qeet logo, with a light and a dark file", () => {
+    const repository = JSON.parse(
+      readFileSync(join(PKG, "config/brands.json"), "utf8"),
+    ) as BrandsConfigFile;
+    const entry = repository.logos.qeet;
+    expect(entry).toMatchObject({
+      componentName: "QeetLogo",
+      firstParty: true,
+      licenseClass: "first-party",
+      defaultVariant: "default",
+    });
+    expect(entry?.variants.default?.background).toBe("light");
+    expect(entry?.variants.dark?.background).toBe("dark");
+  });
+});
+
+type BrandsConfigFile = {
+  logos: Record<
+    string,
+    {
+      componentName: string;
+      firstParty?: boolean;
+      licenseClass: string;
+      defaultVariant: string;
+      variants: Record<string, { background: string }>;
+    }
+  >;
+};
 
 describe("repository brand logos", () => {
   // Lists ~13,400 files without reading them; `bun run check:brands` validates their content.

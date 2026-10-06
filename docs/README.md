@@ -2,7 +2,7 @@
 
 Qeetrix Icons 2.0 ships the 1,863 outline icons of Lucide 1.52.0, in Lucide's 42 categories, as
 React 19 components with a manifest. Every icon also has a sharp style, and 794 have filled
-variants, all derived from the Lucide outlines. The package also ships 7,429 theSVG brand logos,
+variants, all derived from the Lucide outlines. The package also ships 7,429 theSVG brand logos and the first-party Qeet logo and wordmark,
 each rendered exactly as published and under its own license. Validation, generation, the public
 API, and the visual QA playground are complete; 2.0 is not yet released.
 

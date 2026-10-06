@@ -600,6 +600,7 @@ describe("playground logo browsing", () => {
 
   it("labels every licence class and flags the ones that need review", () => {
     expect(licenseClasses.map(({ label }) => label)).toEqual([
+      "First-party",
       "Public domain",
       "Permissive",
       "Attribution",

@@ -187,6 +187,7 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
       website: nullable(entry.website),
       guidelines: nullable(entry.guidelines),
       source: nullable(entry.source),
+      ...(entry.firstParty === true ? { firstParty: true } : {}),
     });
   }
 

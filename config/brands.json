@@ -1,7 +1,7 @@
 {
   "collections": [
     {
-      "count": 4691,
+      "count": 4693,
       "id": "brands",
       "label": "Brands"
     },
@@ -164180,6 +164180,78 @@
         }
       },
       "website": "https://qdrant.tech/"
+    },
+    "qeet": {
+      "aliases": ["qeet-group"],
+      "categories": ["Brand"],
+      "collection": "brands",
+      "componentName": "QeetLogo",
+      "defaultVariant": "default",
+      "firstParty": true,
+      "guidelines": null,
+      "hex": "F26D0E",
+      "license": "LicenseRef-Qeet",
+      "licenseClass": "first-party",
+      "licenseRaw": "Proprietary. © Qeet Group. The Qeet name and mark are trademarks of Qeet Group.",
+      "source": "https://qeet.in",
+      "title": "Qeet",
+      "variants": {
+        "dark": {
+          "background": "dark",
+          "colors": ["#d85301", "#f26d0e", "#fcfcfc"],
+          "file": "icons/brand-icons/brands/qeet/dark.svg",
+          "upstreamKeys": []
+        },
+        "default": {
+          "background": "light",
+          "colors": ["#0a0a0a", "#d85301", "#f26d0e"],
+          "file": "icons/brand-icons/brands/qeet/default.svg",
+          "upstreamKeys": []
+        }
+      },
+      "website": "https://qeet.in"
+    },
+    "qeet-wordmark": {
+      "aliases": ["qeet-group"],
+      "categories": ["Brand"],
+      "collection": "brands",
+      "componentName": "QeetWordmarkLogo",
+      "defaultVariant": "default",
+      "firstParty": true,
+      "guidelines": null,
+      "hex": "F26D0E",
+      "license": "LicenseRef-Qeet",
+      "licenseClass": "first-party",
+      "licenseRaw": "Proprietary. © Qeet Group. The Qeet name and mark are trademarks of Qeet Group.",
+      "source": "https://qeet.in",
+      "title": "Qeet wordmark",
+      "variants": {
+        "dark": {
+          "background": "any",
+          "colors": ["#0a0a0a", "#f26d0e", "#ffffff"],
+          "file": "icons/brand-icons/brands/qeet-wordmark/dark.svg",
+          "upstreamKeys": []
+        },
+        "default": {
+          "background": "any",
+          "colors": ["#0a0a0a", "#f26d0e", "#ffffff"],
+          "file": "icons/brand-icons/brands/qeet-wordmark/default.svg",
+          "upstreamKeys": []
+        },
+        "plain": {
+          "background": "any",
+          "colors": ["#0a0a0a", "#f26d0e"],
+          "file": "icons/brand-icons/brands/qeet-wordmark/plain.svg",
+          "upstreamKeys": []
+        },
+        "plain-dark": {
+          "background": "any",
+          "colors": ["#f26d0e", "#ffffff"],
+          "file": "icons/brand-icons/brands/qeet-wordmark/plain-dark.svg",
+          "upstreamKeys": []
+        }
+      },
+      "website": "https://qeet.in"
     },
     "qemu": {
       "aliases": [],

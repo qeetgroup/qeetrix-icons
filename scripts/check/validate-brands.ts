@@ -351,6 +351,12 @@ export function validateBrandsData(value: unknown): {
     if (!isStringList(logo.categories) || !isStringList(logo.aliases)) {
       meta(`${at}.categories and aliases must be arrays of strings.`);
     }
+    if (logo.firstParty !== undefined && logo.firstParty !== true) {
+      meta(`${at}.firstParty must be true when present.`);
+    }
+    if ((logo.firstParty === true) !== (logo.licenseClass === "first-party")) {
+      meta(`${at}: firstParty and licenseClass "first-party" go together.`);
+    }
     if (!brandLicenseClasses.includes(logo.licenseClass as never)) {
       meta(`${at}.licenseClass must be one of ${brandLicenseClasses.join(", ")}.`);
     }
