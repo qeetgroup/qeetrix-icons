@@ -1,6 +1,6 @@
 {
   "name": "@qeetrix/icons",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "private": false,
   "description": "Qeetrix Icons — Lucide icons in round and sharp shapes with derived filled variants, plus theSVG brand logos, as tree-shakeable React components.",
   "license": "SEE LICENSE IN LICENSE",
