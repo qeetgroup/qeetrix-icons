@@ -222,6 +222,25 @@ describe.each([
     expect(attributes({ strokeWidth: 2 })).toMatchObject({ "stroke-width": "2" });
   });
 
+  it("treats a prop passed as undefined as not passed, keeping the authored attributes", () => {
+    // `strokeWidth={undefined}` used to erase stroke-width="2", so SVG drew a 1-unit stroke
+    // (lighter at the default 2 than at 1.75); `fill={undefined}` turned outlines solid black.
+    expect(
+      attributes({ strokeWidth: undefined, fill: undefined, stroke: undefined } as IconProps),
+    ).toEqual(attributes());
+    expect(attributes({ width: undefined, height: undefined, size: 20 })).toMatchObject({
+      width: "20",
+      height: "20",
+    });
+  });
+
+  it.runIf(variant === "outline")("draws heavier as strokeWidth grows, through the default", () => {
+    const widths = [1.5, 1.75, undefined, 2.25].map((strokeWidth) =>
+      Number(attributes({ strokeWidth })["stroke-width"]),
+    );
+    expect(widths).toEqual([1.5, 1.75, 2, 2.25]);
+  });
+
   it("passes the ref to the selected svg element as a React 19 prop", () => {
     const ref = createRef<SVGSVGElement>();
     const element = FixtureStarIcon({ ref, shape, variant });

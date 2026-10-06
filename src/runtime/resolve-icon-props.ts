@@ -19,6 +19,10 @@ const hasText = (value: string | undefined) => value !== undefined && value.trim
  * - Unnamed icons are decorative: `aria-hidden="true"`, `focusable="false"`, and no role.
  * - A non-empty `aria-label` or `aria-labelledby` exposes the icon as `role="img"` instead.
  * - Explicit `width`, `height`, `focusable`, `aria-hidden`, or `role` always wins.
+ * - A prop passed as `undefined` counts as not passed. The generated `<svg>` spreads these props
+ *   after its authored `strokeWidth="2"`, `fill`, `stroke`, and the rest, so a key holding
+ *   `undefined` (`strokeWidth={maybe}`) would erase that attribute and SVG would fall back to its
+ *   initial value: a stroke 1 unit wide, a black fill, or no stroke at all.
  */
 export function resolveIconProps({
   size = defaultIconSize,
@@ -27,8 +31,13 @@ export function resolveIconProps({
   ...props
 }: IconProps): SVGProps<SVGSVGElement> {
   const named = hasText(props["aria-label"]) || hasText(props["aria-labelledby"]);
+  const passed: Record<string, unknown> = {};
+  for (const key in props) {
+    const value = props[key as keyof typeof props];
+    if (value !== undefined) passed[key] = value;
+  }
   return {
-    ...props,
+    ...passed,
     width: props.width ?? size,
     height: props.height ?? size,
     focusable: props.focusable ?? false,

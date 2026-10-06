@@ -102,7 +102,9 @@ import type { IconProps, IconShape } from "@qeetrix/icons";
 | Any other SVG attribute or event handler | Passed through unchanged |
 
 Caller props are spread last onto the root `<svg>`, so any presentation attribute, such as
-`strokeWidth`, `strokeLinecap`, or `fill`, overrides the drawing's own root value. The recommended
+`strokeWidth`, `strokeLinecap`, or `fill`, overrides the drawing's own root value. A prop passed as
+`undefined` counts as not passed, so `strokeWidth={props.strokeWidth}` keeps the default `2` when
+the caller gives none, rather than erasing it (which would draw a 1-unit stroke). The recommended
 sizes, 14, 16, 20, 24, and 32, are guidance rather than a type: `18`, `28`, and `"1em"` are all
 valid. There are deliberately no animation, rotation, badge, tooltip, background, or duotone props.
 Accessibility rules are in [accessibility.md](accessibility.md).
