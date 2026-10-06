@@ -66,7 +66,9 @@
     the DOM.
   - `IconProps`: native SVG props plus `size` (number or CSS length, default 24), `shape`, and
     `variant`. Caller props are spread last, so `strokeWidth` and other presentation attributes
-    override the drawing's. Icons are decorative by default; `aria-label` or `aria-labelledby`
+    override the drawing's; a prop passed as `undefined` counts as not passed, so
+    `strokeWidth={undefined}` keeps the default 2 instead of erasing it to SVG's 1. Icons are
+    decorative by default; `aria-label` or `aria-labelledby`
     makes them `role="img"`. The root also exports the `IconShape`, `IconVariant`, and
     `IconDirectionality` types.
   - `@qeetrix/icons/manifest`: `iconManifest` (`schemaVersion` 1), one entry per icon with `id`,

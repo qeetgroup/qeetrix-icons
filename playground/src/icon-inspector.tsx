@@ -1,7 +1,9 @@
 import {
   type CSSProperties,
+  createContext,
   type KeyboardEvent,
   type ReactNode,
+  useContext,
   useEffect,
   useId,
   useRef,
@@ -29,6 +31,18 @@ const smallSizes: readonly number[] = design.recommendedSizes.slice(0, 2);
 const categoryLabels = new Map<string, string>(categories.map(({ id, label }) => [id, label]));
 /** The showcase preview. Detail only: review sizes are the actual renderings below it. */
 const heroSize = 120;
+
+/**
+ * The grid's stroke width, so every outline preview in the inspector draws the way the grid
+ * does. Views that compare fixed widths (StrokeComparison) pass `strokeWidth` themselves.
+ */
+const PreviewStroke = createContext<number>(design.strokeWidth);
+
+/** The stroke an outline preview draws with; filled drawings have none. */
+function usePreviewStroke(variant: IconVariant): number | undefined {
+  const stroke = useContext(PreviewStroke);
+  return variant === "outline" ? stroke : undefined;
+}
 
 const tabs = [
   { id: "overview", label: "Overview" },
@@ -76,9 +90,15 @@ function Glyph({
   mirrored?: boolean;
   strokeWidth?: number;
 }) {
+  const preview = usePreviewStroke(variant);
   return (
     <span className={mirrored ? "glyph mirrored" : "glyph"}>
-      <icon.Component shape={shape} variant={variant} size={size} strokeWidth={strokeWidth} />
+      <icon.Component
+        shape={shape}
+        variant={variant}
+        size={size}
+        strokeWidth={strokeWidth ?? preview}
+      />
     </span>
   );
 }
@@ -133,6 +153,8 @@ export function IconInspector({
   const tabRefs = useRef(new Map<InspectorTab, HTMLButtonElement>());
   const svgSource = useRef<HTMLSpanElement>(null);
   const snippets = importSnippets(icon, shape, variant, usage);
+  // The inspector provides PreviewStroke below, so it cannot read it here.
+  const stroke = variant === "outline" ? (usage.strokeWidth ?? design.strokeWidth) : undefined;
   const svgMarkup = () => formatSvgMarkup(svgSource.current?.innerHTML ?? "");
 
   // ← and → step through the visible icons when focus is not in a control that uses arrows.
@@ -180,275 +202,286 @@ export function IconInspector({
   );
 
   return (
-    <article className="inspector" aria-labelledby={`${id}-title`}>
-      <span ref={svgSource} hidden>
-        <icon.Component
-          shape={shape}
-          variant={variant}
-          size={usage.size}
-          strokeWidth={
-            variant === architecture.defaultVariant && usage.strokeWidth !== design.strokeWidth
-              ? usage.strokeWidth
-              : undefined
-          }
-          color={usage.color}
-        />
-      </span>
-      <header className="inspector-head">
-        <div className="inspector-title-row">
-          <span className="inspector-thumb" aria-hidden="true">
-            <icon.Component shape={shape} variant={variant} size={20} />
+    <PreviewStroke.Provider value={usage.strokeWidth ?? design.strokeWidth}>
+      <article className="inspector" aria-labelledby={`${id}-title`}>
+        <span ref={svgSource} hidden>
+          <icon.Component
+            shape={shape}
+            variant={variant}
+            size={usage.size}
+            strokeWidth={stroke}
+            color={usage.color}
+          />
+        </span>
+        <header className="inspector-head">
+          <div className="inspector-title-row">
+            <span className="inspector-thumb" aria-hidden="true">
+              <icon.Component shape={shape} variant={variant} size={20} strokeWidth={stroke} />
+            </span>
+            <div className="inspector-title">
+              <h2 id={`${id}-title`} tabIndex={-1} data-autofocus>
+                {icon.name}
+              </h2>
+              <p>
+                <code>{icon.componentName}</code>
+              </p>
+            </div>
+            <div className="inspector-nav">
+              {position && (
+                <>
+                  <button
+                    type="button"
+                    className="icon-button"
+                    aria-label="Previous icon"
+                    title="Previous icon (←)"
+                    disabled={position.index === 0}
+                    onClick={() => onStep(-1)}
+                  >
+                    <UiIcon name="chevron-left" size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    className="icon-button"
+                    aria-label="Next icon"
+                    title="Next icon (→)"
+                    disabled={position.index >= position.total - 1}
+                    onClick={() => onStep(1)}
+                  >
+                    <UiIcon name="chevron-right" size={16} />
+                  </button>
+                </>
+              )}
+              <CloseButton label="Close inspector" onClick={onClose} />
+            </div>
+          </div>
+          <div className="inspector-actions">
+            <CopyButton
+              variant="primary"
+              text={snippets.usage}
+              label={`Copy ${snippets.usage}`}
+              toast="JSX copied"
+            >
+              Copy JSX
+            </CopyButton>
+            <CopyButton
+              text={snippets.root}
+              label={`Copy ${snippets.root}`}
+              toast="Import copied"
+              variant="button"
+            >
+              Import
+            </CopyButton>
+            <CopyButton
+              text={svgMarkup}
+              label="Copy the rendered SVG markup"
+              toast="SVG copied"
+              variant="button"
+            >
+              SVG
+            </CopyButton>
+          </div>
+        </header>
+
+        <section className="hero" aria-label="Preview">
+          <div className="hero-stage" dir={direction}>
+            <Glyph
+              icon={icon}
+              shape={shape}
+              variant={variant}
+              size={heroSize}
+              mirrored={mirrored}
+            />
+          </div>
+          <div className="hero-bar">
+            <Segmented<IconShape>
+              label="Shape"
+              size="sm"
+              value={shape}
+              options={shapeOptions()}
+              onChange={onShape}
+            />
+            <Segmented<IconVariant>
+              label="Variant"
+              size="sm"
+              value={variant}
+              options={architecture.variants.map((option) => ({
+                value: option,
+                label: option === "outline" ? "Outline" : "Filled",
+                disabled: !icon.variants.includes(option),
+                title: icon.variants.includes(option)
+                  ? undefined
+                  : "No filled drawing for this icon",
+              }))}
+              onChange={onVariant}
+            />
+          </div>
+          {mirrored && <span className="hero-badge">RTL preview</span>}
+          <span className="hero-caption">
+            {heroSize}px{stroke === undefined ? "" : ` · stroke ${stroke}`}
           </span>
-          <div className="inspector-title">
-            <h2 id={`${id}-title`} tabIndex={-1} data-autofocus>
-              {icon.name}
-            </h2>
-            <p>
-              <code>{icon.componentName}</code>
-            </p>
-          </div>
-          <div className="inspector-nav">
-            {position && (
-              <>
-                <button
-                  type="button"
-                  className="icon-button"
-                  aria-label="Previous icon"
-                  title="Previous icon (←)"
-                  disabled={position.index === 0}
-                  onClick={() => onStep(-1)}
-                >
-                  <UiIcon name="chevron-left" size={16} />
-                </button>
-                <button
-                  type="button"
-                  className="icon-button"
-                  aria-label="Next icon"
-                  title="Next icon (→)"
-                  disabled={position.index >= position.total - 1}
-                  onClick={() => onStep(1)}
-                >
-                  <UiIcon name="chevron-right" size={16} />
-                </button>
-              </>
-            )}
-            <CloseButton label="Close inspector" onClick={onClose} />
-          </div>
+        </section>
+
+        <div role="tablist" aria-label="Inspector sections" className="tabs" onKeyDown={onTabKey}>
+          {tabs.map(({ id: tabId, label }) => (
+            <button
+              key={tabId}
+              ref={(element) => {
+                if (element) tabRefs.current.set(tabId, element);
+                else tabRefs.current.delete(tabId);
+              }}
+              type="button"
+              role="tab"
+              id={`${id}-tab-${tabId}`}
+              aria-selected={tab === tabId}
+              aria-controls={`${id}-panel-${tabId}`}
+              tabIndex={tab === tabId ? 0 : -1}
+              onClick={() => setTab(tabId)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
-        <div className="inspector-actions">
-          <CopyButton
-            variant="primary"
-            text={snippets.usage}
-            label={`Copy ${snippets.usage}`}
-            toast="JSX copied"
-          >
-            Copy JSX
-          </CopyButton>
-          <CopyButton
-            text={snippets.root}
-            label={`Copy ${snippets.root}`}
-            toast="Import copied"
-            variant="button"
-          >
-            Import
-          </CopyButton>
-          <CopyButton
-            text={svgMarkup}
-            label="Copy the rendered SVG markup"
-            toast="SVG copied"
-            variant="button"
-          >
-            SVG
-          </CopyButton>
-        </div>
-      </header>
 
-      <section className="hero" aria-label="Preview">
-        <div className="hero-stage" dir={direction}>
-          <Glyph icon={icon} shape={shape} variant={variant} size={heroSize} mirrored={mirrored} />
-        </div>
-        <div className="hero-bar">
-          <Segmented<IconShape>
-            label="Shape"
-            size="sm"
-            value={shape}
-            options={shapeOptions()}
-            onChange={onShape}
-          />
-          <Segmented<IconVariant>
-            label="Variant"
-            size="sm"
-            value={variant}
-            options={architecture.variants.map((option) => ({
-              value: option,
-              label: option === "outline" ? "Outline" : "Filled",
-              disabled: !icon.variants.includes(option),
-              title: icon.variants.includes(option) ? undefined : "No filled drawing for this icon",
-            }))}
-            onChange={onVariant}
-          />
-        </div>
-        {mirrored && <span className="hero-badge">RTL preview</span>}
-        <span className="hero-caption">{heroSize}px</span>
-      </section>
-
-      <div role="tablist" aria-label="Inspector sections" className="tabs" onKeyDown={onTabKey}>
-        {tabs.map(({ id: tabId, label }) => (
-          <button
-            key={tabId}
-            ref={(element) => {
-              if (element) tabRefs.current.set(tabId, element);
-              else tabRefs.current.delete(tabId);
-            }}
-            type="button"
-            role="tab"
-            id={`${id}-tab-${tabId}`}
-            aria-selected={tab === tabId}
-            aria-controls={`${id}-panel-${tabId}`}
-            tabIndex={tab === tabId ? 0 : -1}
-            onClick={() => setTab(tabId)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {panel(
-        "overview",
-        <>
-          <Section title="Shapes and variants" note="Every drawing of this concept, at 32px.">
-            <fieldset className="matrix">
-              <legend className="visually-hidden">Shapes and variants</legend>
-              <span />
-              {architecture.variants.map((option) => (
-                <span key={option} className="matrix-label">
-                  {option}
-                </span>
-              ))}
-              {architecture.styles.map((style) => (
-                <MatrixRow
-                  key={style}
-                  icon={icon}
-                  shape={style}
-                  current={{ shape, variant }}
-                  onPick={(next) => {
-                    onShape(next.shape);
-                    onVariant(next.variant);
-                  }}
-                />
-              ))}
-            </fieldset>
-          </Section>
-          <Section
-            title="Real size"
-            note="Actual source rendering. 14 and 16px matter most."
-            aside={<SizeControl size={size} onSize={onSize} />}
-          >
-            <div className="size-strip">
-              {design.recommendedSizes.map((recommended) => (
-                <figure
-                  key={recommended}
-                  className={smallSizes.includes(recommended) ? "critical" : undefined}
-                >
-                  <div className="size-art">
-                    <Glyph icon={icon} shape={shape} variant={variant} size={recommended} />
-                  </div>
-                  <figcaption>{recommended}</figcaption>
-                </figure>
-              ))}
-              <figure className="custom">
-                <div className="size-art">
-                  <Glyph icon={icon} shape={shape} variant={variant} size={size} />
-                </div>
-                <figcaption>{size} custom</figcaption>
-              </figure>
-            </div>
-          </Section>
-          <Section
-            title="Pixel view"
-            note="Rasterized at 1× device pixels, magnified 8×, so merged strokes show on any display."
-          >
-            <div className="pixel-strip">
-              {smallSizes.map((small) => (
-                <PixelPreview
-                  key={small}
-                  icon={icon}
-                  shape={shape}
-                  variant={variant}
-                  size={small}
-                />
-              ))}
-            </div>
-          </Section>
-          <Metadata icon={icon} />
-        </>,
-      )}
-
-      {panel(
-        "construction",
-        <>
-          <Construction icon={icon} shape={shape} variant={variant} />
-          {icon.variants.includes("outline") && <StrokeComparison icon={icon} shape={shape} />}
-          <DesignValues shape={shape} />
-        </>,
-      )}
-
-      {panel(
-        "context",
-        <>
-          <Surfaces icon={icon} shape={shape} variant={variant} />
-          <Contexts
-            icon={icon}
-            shape={shape}
-            variant={variant}
-            direction={direction}
-            mirrored={mirrored}
-          />
-          <Typography icon={icon} shape={shape} variant={variant} />
-          <DirectionPreview
-            icon={icon}
-            shape={shape}
-            variant={variant}
-            direction={direction}
-            onDirection={onDirection}
-          />
-        </>,
-      )}
-
-      {panel(
-        "code",
-        <>
-          <Section title="Import" note="Public entry points only; generated paths are not API.">
-            <Snippet label="Package root" code={snippets.root} toast="Import copied" />
-            <Snippet label="Direct import" code={snippets.direct} toast="Import copied" />
-          </Section>
-          <Section title="Usage" note="With the shape, variant, size, stroke, and colour on show.">
-            <Snippet label="JSX" code={snippets.usage} toast="JSX copied" />
-            <Snippet label="Rendered SVG" code={svgMarkup} toast="SVG copied" multiline />
-          </Section>
-          <Accessibility icon={icon} />
-        </>,
-      )}
-
-      {panel(
-        "review",
-        <Section title="Review checklist" note="Local to this page. Nothing is saved or scored.">
-          <div className="checklist">
-            {checklistFor(icon).map((group) => (
-              <fieldset key={group.title}>
-                <legend>{group.title}</legend>
-                {group.items.map((item) => (
-                  <label key={item}>
-                    <input type="checkbox" />
-                    <span>{item}</span>
-                  </label>
+        {panel(
+          "overview",
+          <>
+            <Section title="Shapes and variants" note="Every drawing of this concept, at 32px.">
+              <fieldset className="matrix">
+                <legend className="visually-hidden">Shapes and variants</legend>
+                <span />
+                {architecture.variants.map((option) => (
+                  <span key={option} className="matrix-label">
+                    {option}
+                  </span>
+                ))}
+                {architecture.styles.map((style) => (
+                  <MatrixRow
+                    key={style}
+                    icon={icon}
+                    shape={style}
+                    current={{ shape, variant }}
+                    onPick={(next) => {
+                      onShape(next.shape);
+                      onVariant(next.variant);
+                    }}
+                  />
                 ))}
               </fieldset>
-            ))}
-          </div>
-        </Section>,
-      )}
-    </article>
+            </Section>
+            <Section
+              title="Real size"
+              note="Actual source rendering. 14 and 16px matter most."
+              aside={<SizeControl size={size} onSize={onSize} />}
+            >
+              <div className="size-strip">
+                {design.recommendedSizes.map((recommended) => (
+                  <figure
+                    key={recommended}
+                    className={smallSizes.includes(recommended) ? "critical" : undefined}
+                  >
+                    <div className="size-art">
+                      <Glyph icon={icon} shape={shape} variant={variant} size={recommended} />
+                    </div>
+                    <figcaption>{recommended}</figcaption>
+                  </figure>
+                ))}
+                <figure className="custom">
+                  <div className="size-art">
+                    <Glyph icon={icon} shape={shape} variant={variant} size={size} />
+                  </div>
+                  <figcaption>{size} custom</figcaption>
+                </figure>
+              </div>
+            </Section>
+            <Section
+              title="Pixel view"
+              note="Rasterized at 1× device pixels, magnified 8×, so merged strokes show on any display."
+            >
+              <div className="pixel-strip">
+                {smallSizes.map((small) => (
+                  <PixelPreview
+                    key={small}
+                    icon={icon}
+                    shape={shape}
+                    variant={variant}
+                    size={small}
+                  />
+                ))}
+              </div>
+            </Section>
+            <Metadata icon={icon} />
+          </>,
+        )}
+
+        {panel(
+          "construction",
+          <>
+            <Construction icon={icon} shape={shape} variant={variant} />
+            {icon.variants.includes("outline") && <StrokeComparison icon={icon} shape={shape} />}
+            <DesignValues shape={shape} />
+          </>,
+        )}
+
+        {panel(
+          "context",
+          <>
+            <Surfaces icon={icon} shape={shape} variant={variant} />
+            <Contexts
+              icon={icon}
+              shape={shape}
+              variant={variant}
+              direction={direction}
+              mirrored={mirrored}
+            />
+            <Typography icon={icon} shape={shape} variant={variant} />
+            <DirectionPreview
+              icon={icon}
+              shape={shape}
+              variant={variant}
+              direction={direction}
+              onDirection={onDirection}
+            />
+          </>,
+        )}
+
+        {panel(
+          "code",
+          <>
+            <Section title="Import" note="Public entry points only; generated paths are not API.">
+              <Snippet label="Package root" code={snippets.root} toast="Import copied" />
+              <Snippet label="Direct import" code={snippets.direct} toast="Import copied" />
+            </Section>
+            <Section
+              title="Usage"
+              note="With the shape, variant, size, stroke, and colour on show."
+            >
+              <Snippet label="JSX" code={snippets.usage} toast="JSX copied" />
+              <Snippet label="Rendered SVG" code={svgMarkup} toast="SVG copied" multiline />
+            </Section>
+            <Accessibility icon={icon} />
+          </>,
+        )}
+
+        {panel(
+          "review",
+          <Section title="Review checklist" note="Local to this page. Nothing is saved or scored.">
+            <div className="checklist">
+              {checklistFor(icon).map((group) => (
+                <fieldset key={group.title}>
+                  <legend>{group.title}</legend>
+                  {group.items.map((item) => (
+                    <label key={item}>
+                      <input type="checkbox" />
+                      <span>{item}</span>
+                    </label>
+                  ))}
+                </fieldset>
+              ))}
+            </div>
+          </Section>,
+        )}
+      </article>
+    </PreviewStroke.Provider>
   );
 }
 
@@ -640,6 +673,7 @@ function PixelPreview({
 }) {
   const source = useRef<HTMLSpanElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const stroke = usePreviewStroke(variant);
   useEffect(() => {
     const svg = source.current?.querySelector("svg");
     const context = canvas.current?.getContext("2d");
@@ -656,7 +690,7 @@ function PixelPreview({
   return (
     <figure className="pixel">
       <span ref={source} hidden>
-        <icon.Component shape={shape} variant={variant} size={size} />
+        <icon.Component shape={shape} variant={variant} size={size} strokeWidth={stroke} />
       </span>
       <div className="pixel-canvas" style={{ width: size * 8, height: size * 8 }}>
         <canvas
@@ -683,6 +717,7 @@ function Construction({
   variant: IconVariant;
 }) {
   const [guides, setGuides] = useState({ grid: true, axes: true, safeArea: true });
+  const stroke = usePreviewStroke(variant);
   const { width, height } = architecture.grid;
   const inset = design.safeAreaInset;
   const scale = 12;
@@ -710,7 +745,12 @@ function Construction({
       </div>
       <div className="construction-frame">
         <div className="construction" style={{ width: width * scale, height: height * scale }}>
-          <icon.Component shape={shape} variant={variant} size={width * scale} />
+          <icon.Component
+            shape={shape}
+            variant={variant}
+            size={width * scale}
+            strokeWidth={stroke}
+          />
           <svg
             className="guides"
             viewBox={architecture.viewBox}
@@ -750,7 +790,7 @@ function Construction({
 
 /**
  * The outline drawing at each comparison stroke width, as a caller's `strokeWidth` prop draws it.
- * The source and every other view keep the authored width.
+ * Fixed widths, the source's included, whatever the grid's stroke: every other view follows it.
  */
 function StrokeComparison({ icon, shape }: { icon: CatalogueIcon; shape: IconShape }) {
   return (
@@ -772,7 +812,7 @@ function StrokeComparison({ icon, shape }: { icon: CatalogueIcon; shape: IconSha
                   shape={shape}
                   variant="outline"
                   size={strokeSize}
-                  strokeWidth={candidate === design.strokeWidth ? undefined : candidate}
+                  strokeWidth={candidate}
                 />
               ))}
             </div>
