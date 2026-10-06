@@ -24,6 +24,12 @@ export type LicenseTone = "safe" | "caution" | "warning";
 /** Licence classes as `config/brands.json` records them, from least to most restrictive. */
 export const licenseClasses = [
   {
+    id: "first-party",
+    label: "First-party",
+    tone: "safe",
+    summary: "Qeet's own artwork. The Qeet name and mark are trademarks of Qeet Group.",
+  },
+  {
     id: "public-domain",
     label: "Public domain",
     tone: "safe",

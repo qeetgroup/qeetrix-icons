@@ -16,9 +16,11 @@ import {
   brandsData,
   brandsDataPath,
   brandsRoot,
+  firstPartyBrandLogos,
   readArchiveInfo,
   readBrandRelease,
   renderBrandsJson,
+  withFirstPartyLogos,
 } from "../lib/brands.js";
 import { compareText } from "../lib/diagnostics.js";
 
@@ -30,6 +32,11 @@ import { compareText } from "../lib/diagnostics.js";
  * Every file is written byte-for-byte to icons/brand-icons/<collection>/<slug>/<variant>.svg, from
  * all collections and with every licence; each logo's licence is recorded in config/brands.json.
  * `fetched` is the commit's date (read from the tarball), so re-syncing a commit is reproducible.
+ *
+ * First-party logos — entries marked `firstParty: true`, Qeet's own artwork — are not upstream's:
+ * they and their files are read before the folder is cleared and written back afterwards, so a
+ * re-sync never deletes them. A first-party slug or component name that upstream also uses is an
+ * error (see withFirstPartyLogos).
  *
  * What happens to upstream's loose ends (decided in readBrandRelease, scripts/lib/brands.ts):
  * - Files in a logo's folder that the manifest does not reference (such as `mono-lobe.svg`, or a
@@ -108,7 +115,18 @@ try {
   if (!top || extra.length > 0) throw new Error("Expected one top-level folder in the archive.");
 
   const release = readBrandRelease(join(extractDirectory, top), commit);
-  const data = brandsData(release, info.date);
+  // First-party logos (Qeet's own artwork) are not upstream's to replace: read them, and their
+  // files, before the folder is cleared, and put both back after the upstream logos are written.
+  const previous = existsSync(dataPath) ? JSON.parse(readFileSync(dataPath, "utf8")) : undefined;
+  const firstParty = firstPartyBrandLogos(previous);
+  const firstPartyFiles = new Map(
+    Object.values(firstParty).flatMap((logo) =>
+      Object.values(logo.variants).map(
+        (variant) => [variant.file, readFileSync(join(repositoryRoot, variant.file))] as const,
+      ),
+    ),
+  );
+  const data = withFirstPartyLogos(brandsData(release, info.date), firstParty);
 
   const root = join(repositoryRoot, brandsRoot);
   mkdirSync(root, { recursive: true });
@@ -133,9 +151,21 @@ try {
       });
     }
   }
-  writeFileSync(dataPath, renderBrandsJson(data));
-  // config/brands.json is several MiB, past Biome's 1 MiB default, so raise the limit for it.
-  run("bunx", ["biome", "format", "--write", "--files-max-size=67108864", brandsDataPath]);
+  for (const [file, bytes] of firstPartyFiles) {
+    mkdirSync(dirname(join(repositoryRoot, file)), { recursive: true });
+    writeFileSync(join(repositoryRoot, file), bytes);
+  }
+  // biome.json ignores config/brands.json (it is generated, and several MiB), so formatting it by
+  // path processes nothing. Format the text through stdin under a name Biome does not ignore.
+  const formatted = spawnSync(
+    "bunx",
+    ["biome", "format", "--files-max-size=67108864", "--stdin-file-path=brands-format.json"],
+    { cwd: repositoryRoot, input: renderBrandsJson(data), encoding: "utf8", maxBuffer: 1 << 30 },
+  );
+  if (formatted.status !== 0) {
+    throw new Error(`biome format failed for ${brandsDataPath}: ${formatted.stderr}`);
+  }
+  writeFileSync(dataPath, formatted.stdout);
 
   const totalBytes = written.reduce((sum, entry) => sum + entry.bytes, 0);
   console.log(

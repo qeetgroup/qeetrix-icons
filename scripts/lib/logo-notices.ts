@@ -9,6 +9,7 @@ export const logoNoticesPath = "licenses/third-party-logos.md";
 export const apacheLicensePath = "licenses/Apache-2.0.txt";
 
 const classLabels: Readonly<Record<BrandLicenseClass, string>> = {
+  "first-party": "First-party",
   "public-domain": "Public domain",
   permissive: "Permissive",
   attribution: "Attribution",
@@ -20,6 +21,8 @@ const classLabels: Readonly<Record<BrandLicenseClass, string>> = {
 };
 
 const classNotes: Readonly<Record<BrandLicenseClass, string>> = {
+  "first-party":
+    "Qeet Group's own artwork, not from theSVG. The Qeet name and mark are trademarks of Qeet Group.",
   "public-domain": "CC0, Unlicense, or public domain: no conditions.",
   permissive: "MIT, BSD, ISC, or Apache 2.0: keep the notice; Apache 2.0's text is below.",
   attribution: "CC BY: credit the logo (title, source, and license) where you use it.",
@@ -53,7 +56,10 @@ function licenseText(logo: BrandLogoData): string {
  * Generated from `config/brands.json`, so a re-sync keeps it exact.
  */
 export function renderLogoNotices(repositoryRoot: string, data: BrandsData): string {
-  const logos = Object.entries(data.logos).sort(([left], [right]) => compareText(left, right));
+  // First-party logos are Qeet's own artwork, not third-party: they are not listed here.
+  const logos = Object.entries(data.logos)
+    .filter(([, logo]) => logo.firstParty !== true)
+    .sort(([left], [right]) => compareText(left, right));
   const byClass = new Map<BrandLicenseClass, [string, BrandLogoData][]>();
   for (const entry of logos) {
     const group = byClass.get(entry[1].licenseClass) ?? [];

@@ -1,7 +1,8 @@
 # Brand logos
 
 Besides its icons, the package ships 7,429 brand logos from [theSVG](https://thesvg.org)
-([glincker/thesvg](https://github.com/glincker/thesvg)), as React components. Logos are not icons:
+([glincker/thesvg](https://github.com/glincker/thesvg)), plus Qeet's own logo and wordmark (`QeetLogo`,
+`QeetWordmarkLogo`; see [First-party logos](#first-party-logos)), as React components. Logos are not icons:
 each is rendered exactly as its brand or upstream published it, with its own colours, proportions,
 and license. Icons end in `Icon` and logos in `Logo`, so the two never collide.
 
@@ -21,11 +22,11 @@ not be used commercially, modified, or used at all without permission.
 [config/brands.json](../config/brands.json) pins one theSVG commit (`commit`; npm release
 `packageVersion` 3.3.12) and records every logo and file. The files themselves are in
 `icons/brand-icons/<collection>/<slug>/<variant>.svg`, byte for byte as upstream publishes them:
-13,401 files for 7,429 logos.
+13,401 files for 7,429 logos, and 6 first-party files for the Qeet logo and wordmark.
 
 | Collection | Logos |
 |:--|--:|
-| `brands` | 4,691 |
+| `brands` | 4,693 (4,691 from theSVG, plus the Qeet logo and wordmark) |
 | `auth-badges` | 860 |
 | `aws` | 739 |
 | `azure` | 626 |
@@ -87,7 +88,7 @@ Each logo renders its published file **unmodified** as an `<img>`, through the s
 [render-logo.ts](../src/runtime/render-logo.ts). The file is embedded as a lossless,
 percent-encoded `data:image/svg+xml` URI: only bytes a URI or a quoted string cannot carry are
 escaped, which adds about 1.5% in size, and percent-decoding gives back the exact bytes. A test
-checks that for all 13,401 files. Because a logo is an image, its ids and styles cannot clash with
+checks that for all 13,405 files. Because a logo is an image, its ids and styles cannot clash with
 the page or with other logos, and it needs no hooks, so it renders in React Server Components.
 
 ### Names
@@ -150,6 +151,27 @@ the background it is actually drawn for:
 
 Choose variants by `background`, not by name. `check:brands` fails if a file's recorded
 background or colours no longer match its content.
+
+## First-party logos
+
+`QeetLogo` (the "q" mark) and `QeetWordmarkLogo` (**Qeet.** in a tile) are Qeet Group's own
+artwork, not theSVG logos. Their files are in `icons/brand-icons/brands/qeet/` and
+`icons/brand-icons/brands/qeet-wordmark/`: `default.svg` is drawn for light surfaces and
+`dark.svg` for dark ones. The wordmark also has `plain.svg` and `plain-dark.svg`, the same letters
+without the tile, for light and dark surfaces. Their entries in `config/brands.json` are marked `"firstParty": true`
+with the licence class `first-party`. Three things follow from that flag:
+
+- `bun run sync:brands` replaces everything else in `icons/brand-icons/` and `config/brands.json`
+  with the pinned theSVG release, but reads first-party entries and their files first and writes
+  them back afterwards. An upstream logo with the same slug or component name stops the sync
+  (`withFirstPartyLogos` in `scripts/lib/brands.ts`) instead of silently replacing either.
+- The generated module's header says it is first-party artwork rather than crediting theSVG.
+- It is not listed in [third-party-logos.md](../licenses/third-party-logos.md), because it is not
+  third-party. The Qeet name and mark are trademarks of Qeet Group.
+
+To add another first-party logo, put its files in `icons/brand-icons/<collection>/<slug>/`, add
+an entry with `"firstParty": true` and `"licenseClass": "first-party"` (the validator requires the
+two together), and run `bun run generate:logos`.
 
 ## Licensing and trademarks
 
