@@ -83,10 +83,10 @@ export function CommandPalette({
         id: "page-logos",
         group: "Pages",
         title: "Logos",
-        subtitle: logoIndex ? `${formatCount(logoIndex.logos.length)} brand logos` : "Brand logos",
+        subtitle: logoIndex ? `${formatCount(logoIndex.logos.length)} Qeet logos` : "Qeet logos",
         hint: page === "logos" ? "Current" : undefined,
         art: <UiIcon name="badge-check" size={16} />,
-        keywords: ["brands", "thesvg", "trademarks"],
+        keywords: ["brands", "qeet", "trademarks"],
         run: () => onPage("logos"),
       },
       ...(["light", "dark", "system"] as const).map(

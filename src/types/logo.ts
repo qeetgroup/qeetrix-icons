@@ -1,7 +1,7 @@
 import type { ComponentPropsWithRef, ReactElement } from "react";
 
 /**
- * Props accepted by brand logo components such as `GithubLogo`.
+ * Props accepted by logo components such as `QeetLogo`.
  *
  * A logo renders its published SVG file, unmodified, as an `<img>`. Native `<img>` props pass
  * through (`className`, `style`, `loading`, `decoding`, `draggable`, `title`, `ref`, …) except
@@ -27,7 +27,7 @@ export type LogoProps<V extends string = string> = Omit<
   width?: number | string;
 };
 
-/** A brand logo component. `V` is the union of the variants it has. */
+/** A logo component. `V` is the union of the variants it has. */
 export type LogoComponent<V extends string = string> = (props: LogoProps<V>) => ReactElement;
 
 /** Which background a variant is drawn for. `"any"` works on both. */

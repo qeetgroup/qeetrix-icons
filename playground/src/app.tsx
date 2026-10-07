@@ -338,14 +338,11 @@ function VersionStamp() {
   const parts = [
     meta.packageVersion && `v${meta.packageVersion}`,
     meta.lucideVersion && `Lucide ${meta.lucideVersion}`,
-    meta.logos?.version && `theSVG ${meta.logos.version}`,
   ].filter(Boolean);
   if (parts.length === 0) return null;
   const detail = [
     meta.packageVersion && `@qeetrix/icons ${meta.packageVersion}`,
     meta.lucideVersion && `Lucide ${meta.lucideVersion}`,
-    meta.logos?.version &&
-      `theSVG ${meta.logos.version}${meta.logos.commit ? ` (${meta.logos.commit})` : ""}`,
   ]
     .filter(Boolean)
     .join("\n");

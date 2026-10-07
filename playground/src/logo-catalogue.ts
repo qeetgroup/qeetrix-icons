@@ -1,8 +1,8 @@
 import { rankBy } from "./search.js";
 
 /**
- * The playground's logo data model. `config/brands.json` (6.5 MB) is far too large to bundle, so
- * the Vite config reads it at build time and hands the browser a compact index through the
+ * The playground's logo data model. The browser never bundles `config/brands.json`: the Vite
+ * config reads it at build time and hands the browser a compact index through the
  * `virtual:qeetrix-logos` module, encoded by `encodeLogoIndex` and decoded by `decodeLogoIndex`.
  * Logo artwork never travels in the index: each card lazy-loads its generated component. Pure and
  * browser-free (no Node APIs), because the Vite config imports it too; every field of the source
@@ -166,7 +166,7 @@ export const emptyLogoIndex: LogoIndex = {
   logos: [],
 };
 
-/* Encoding. Tuples, not objects: half the bytes of the keyed form for 7,400 logos. */
+/* Encoding. Tuples, not objects: half the bytes of the keyed form. */
 
 type EncodedVariant = [name: string, background: "l" | "d" | "a", colors: string[]];
 type EncodedLogo = [

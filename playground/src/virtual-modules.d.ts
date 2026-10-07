@@ -5,9 +5,6 @@ declare module "virtual:qeetrix-meta" {
     readonly packageVersion: string | null;
     readonly lucideVersion: string | null;
     readonly logos: {
-      readonly source: string | null;
-      readonly version: string | null;
-      readonly commit: string | null;
       readonly count: number;
     } | null;
   };

@@ -14,8 +14,8 @@ judgment here:
   reported upstream to Lucide, not fixed here.
 
 The developer playground is the tool for all three. It inspects artwork; it never edits or scores
-it. Brand logos are embedded exactly as published and are not redrawn here; after a logo sync,
-review what was added, removed, or relicensed ([logos.md](logos.md)).
+it. The Qeet logos are embedded exactly as drawn and are not redrawn here; after a logo change,
+review each file on the background it is drawn for ([logos.md](logos.md)).
 
 ## Automated validation vs visual QA
 
@@ -44,7 +44,7 @@ bun run playground:build  # production build; CI runs it to prove the playground
 The playground lives in [playground/](../playground/) and is repository tooling, never part of the
 published package. It is local: no network, no CDN fonts, no analytics. It reads the generated
 manifests and components, the shared config, and small build-time summaries of the Lucide and
-theSVG catalogues, so nothing in it is a second catalogue to maintain. It never writes to
+logo catalogues, so nothing in it is a second catalogue to maintain. It never writes to
 `icons/`, `src/generated/`, or `icon-manifest.json`. Its state, such as the selected icon, shape,
 and variant (`?icon=star&shape=sharp&variant=filled`), is shareable in the URL, and invalid values
 fall back to defaults.
@@ -83,10 +83,9 @@ optical centering often differs, and the guides are a reference, not a correctne
 
 ### Logos
 
-The Logos page browses the brand logos ([logos.md](logos.md)) by collection, with search, shows them
-on a light, dark, or transparent background, and shows each logo's files with the background each is
-drawn for and its license, flagging licenses that restrict use. Logos are rendered exactly as
-published; there is nothing to review in their drawing, only whether they are the right ones to use.
+The Logos page shows the Qeet logos ([logos.md](logos.md)) on a light, dark, or transparent
+background, and shows each logo's files with the background each is drawn for. Logos are rendered
+exactly as drawn; review that each file reads well on the surface it is meant for.
 
 ### Typography
 

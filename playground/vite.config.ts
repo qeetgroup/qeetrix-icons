@@ -33,7 +33,7 @@ const field = (value: unknown, key: string): string | null => {
 /**
  * Small build-time data modules, so the browser never bundles the large config files:
  *
- * - `virtual:qeetrix-meta`: version stamps only (package, Lucide, theSVG source and commit).
+ * - `virtual:qeetrix-meta`: version stamps (package, Lucide) and the logo count.
  * - `virtual:qeetrix-logos`: the compact logo index from `config/brands.json`, loaded lazily by
  *   the Logos page and the command palette. Empty when the file is absent.
  *
@@ -56,9 +56,6 @@ function playgroundData(): Plugin {
           lucideVersion: field(readJson(files.lucide), "version"),
           logos: brands
             ? {
-                source: field(brands, "source"),
-                version: field(brands, "packageVersion"),
-                commit: field(brands, "commit"),
                 count: Object.keys((brands as { logos?: Record<string, unknown> }).logos ?? {})
                   .length,
               }
