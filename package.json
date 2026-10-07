@@ -31,8 +31,7 @@
   },
   "sideEffects": false,
   "files": [
-    "dist",
-    "licenses"
+    "dist"
   ],
   "exports": {
     ".": {
@@ -66,7 +65,6 @@
     "check:sharp": "bun scripts/build/derive-sharp.ts --check",
     "stamp:override": "bun scripts/build/stamp-override.ts",
     "sync:lucide": "bun scripts/sync/sync-lucide.ts",
-    "sync:brands": "bun scripts/sync/sync-brands.ts",
     "check:brands": "bun scripts/check/check-brands.ts",
     "generate:logos": "bun scripts/build/generate-logos.ts",
     "check:logos": "bun scripts/build/generate-logos.ts --check",

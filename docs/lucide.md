@@ -116,7 +116,8 @@ own code, followed by Lucide's license verbatim, including the Feather list and 
 The Lucide terms apply to the outline SVGs in `icons/round-outline/`, the drawings derived from them
 in `icons/round-filled/`, `icons/sharp-outline/`, and `icons/sharp-filled/`, and the components
 generated from all of them, in `src/generated/` and the published `dist/`. Because the package
-also ships brand logos under many licenses ([logos.md](logos.md#licensing-and-trademarks)),
-`package.json` declares `"license": "SEE LICENSE IN LICENSE"`. `LICENSE` must stay at the
+combines its own MIT License, Lucide's license, and the proprietary Qeet logos
+([logos.md](logos.md#licensing-and-trademarks)), `package.json` declares
+`"license": "SEE LICENSE IN LICENSE"`. `LICENSE` must stay at the
 repository root: npm packs it with the package whatever `files` lists, which is how the notice
 reaches consumers.

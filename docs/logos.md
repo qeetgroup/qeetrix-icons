@@ -1,58 +1,46 @@
-# Brand logos
+# Qeet logos
 
-Besides its icons, the package ships 7,429 brand logos from [theSVG](https://thesvg.org)
-([glincker/thesvg](https://github.com/glincker/thesvg)), plus Qeet's own logo and wordmark (`QeetLogo`,
-`QeetWordmarkLogo`; see [First-party logos](#first-party-logos)), as React components. Logos are not icons:
-each is rendered exactly as its brand or upstream published it, with its own colours, proportions,
-and license. Icons end in `Icon` and logos in `Logo`, so the two never collide.
+Besides its icons, the package ships Qeet Group's own logos as React components: `QeetLogo`, the
+"q" mark, and `QeetWordmarkLogo`, **Qeet.** in a tile. Logos are not icons: each is rendered
+exactly as drawn, with its own colours and proportions. Icons end in `Icon` and logos in `Logo`,
+so the two never collide.
 
 ```tsx
-import { GithubLogo } from "@qeetrix/icons";
+import { QeetLogo, QeetWordmarkLogo } from "@qeetrix/icons";
 import { logoManifest } from "@qeetrix/icons/manifest";
 
-<GithubLogo />                          // the default file, 24px tall
-<GithubLogo variant="wordmark" height={32} alt="GitHub" />
+<QeetLogo />                                      // the default file, 24px tall
+<QeetLogo variant="dark" height={32} alt="Qeet" />
+<QeetWordmarkLogo variant="plain" />
 ```
 
-Before using any logo, read [Licensing and trademarks](#licensing-and-trademarks): some logos may
-not be used commercially, modified, or used at all without permission.
+Third-party brand logos (GitHub, Google, Slack, …) are not part of the package. An app that needs
+one uses [theSVG](https://thesvg.org) directly, for example `@thesvg/react`, importing one logo at
+a time.
 
-## Sources and sync
+## Files
 
-[config/brands.json](../config/brands.json) pins one theSVG commit (`commit`; npm release
-`packageVersion` 3.3.12) and records every logo and file. The files themselves are in
-`icons/brand-icons/<collection>/<slug>/<variant>.svg`, byte for byte as upstream publishes them:
-13,401 files for 7,429 logos, and 6 first-party files for the Qeet logo and wordmark.
+Each logo's files are in `icons/brand-icons/<slug>/<variant>.svg`, and
+[config/brands.json](../config/brands.json) records every logo and file:
 
-| Collection | Logos |
-|:--|--:|
-| `brands` | 4,693 (4,691 from theSVG, plus the Qeet logo and wordmark) |
-| `auth-badges` | 860 |
-| `aws` | 739 |
-| `azure` | 626 |
-| `community` | 259 |
-| `gcp` | 214 |
-| `k8s` | 38 |
-| `unlisted` | 2 |
+| Logo | Folder | Variants |
+|:--|:--|:--|
+| `QeetLogo` | `icons/brand-icons/qeet/` | `default` (for light surfaces), `dark` (for dark surfaces) |
+| `QeetWordmarkLogo` | `icons/brand-icons/qeet-wordmark/` | `default` and `dark` (in a tile), `plain` and `plain-dark` (the same letters without the tile) |
 
 ```bash
-bun run sync:brands            # re-sync the pinned commit
-bun run sync:brands <commit>   # move to another commit
 bun run check:brands           # validate config/brands.json and every logo file
 bun run generate:logos         # write the logo components and catalogue
 bun run check:logos            # prove they match; writes nothing
 ```
 
-`sync:brands` ([sync-brands.ts](../scripts/sync/sync-brands.ts), with
-[scripts/lib/brands.ts](../scripts/lib/brands.ts)) downloads the commit's tarball from GitHub
-(`--archive <file>` reads a downloaded one instead), replaces `icons/brand-icons/`, and rewrites
-`config/brands.json`. It prints how many logos and files it wrote, how theSVG's `light`/`dark`
-names compare with the measured backgrounds, anything skipped, and what changed since the previous
-commit. Like `sync:lucide`, it then runs `check:brands` and `generate:logos`, so the repository is
-consistent when it finishes. How it handles
-upstream's loose ends (unreferenced files kept as variants, unlisted folders kept under
-`unlisted`, listed files missing upstream) is described in the script's header comment. Never edit
-`icons/brand-icons/` or `config/brands.json` by hand.
+Every entry in `config/brands.json` is marked `"firstParty": true` with the licence class
+`first-party`; the validator rejects any logo without them, so only Qeet's own artwork can ship.
+
+To add a logo, put its files in `icons/brand-icons/<slug>/`, add an entry with
+`"firstParty": true` and `"licenseClass": "first-party"`, and run `bun run generate:logos`.
+`check:brands` fails if a recorded background or colour list does not match the file, and prints
+the measured values to copy into the entry.
 
 ## Catalogue
 
@@ -61,20 +49,19 @@ upstream's loose ends (unreferenced files kept as variants, unlisted folders kep
 
 | Field | Meaning |
 |:--|:--|
-| `id` | The slug, such as `github`; also the direct-import subpath |
-| `componentName` | The export, such as `GithubLogo` |
-| `title` | Display name, such as `GitHub` |
-| `collection` | One of the collections above |
+| `id` | The slug, such as `qeet` |
+| `componentName` | The export, such as `QeetLogo` |
+| `title` | Display name, such as `Qeet` |
+| `collection` | `brands` |
 | `variants` | Every file: `{ name, background }` |
 | `defaultVariant` | The variant rendered without a `variant` prop |
 | `hex` | Primary brand colour, six hex digits without `#`, or `null` |
-| `categories`, `aliases` | Upstream's categories and alternative names, for search |
-| `license` | SPDX identifier where one applies, otherwise upstream's license text |
-| `website`, `guidelines`, `source` | Brand website, brand guidelines, and the theSVG page, or `null` |
+| `categories`, `aliases` | Categories and alternative names, for search |
+| `license` | `LicenseRef-Qeet` |
+| `website`, `guidelines`, `source` | Brand website, brand guidelines, and where the artwork comes from, or `null` |
 
-`config/brands.json` holds the same data plus, per file, its path, measured colours, and upstream
-keys, and per logo a coarse `licenseClass` and the raw license text. It is repository data, not a
-package export.
+`config/brands.json` holds the same data plus, per file, its path and measured colours, and per
+logo the licence class and the raw licence text. It is repository data, not a package export.
 
 ## Components
 
@@ -84,29 +71,27 @@ package export.
 paths in `logoGeneratedPaths`; the icon generator never touches them and the logo generator owns
 nothing else ([generation.md](generation.md#determinism-and-safety)).
 
-Each logo renders its published file **unmodified** as an `<img>`, through the shared runtime
+Each logo renders its file **unmodified** as an `<img>`, through the shared runtime
 [render-logo.ts](../src/runtime/render-logo.ts). The file is embedded as a lossless,
 percent-encoded `data:image/svg+xml` URI: only bytes a URI or a quoted string cannot carry are
-escaped, which adds about 1.5% in size, and percent-decoding gives back the exact bytes. A test
-checks that for all 13,405 files. Because a logo is an image, its ids and styles cannot clash with
-the page or with other logos, and it needs no hooks, so it renders in React Server Components.
+escaped, which adds about 2% in size, and percent-decoding gives back the exact bytes. A test
+checks that for every file.
+
+Rendering an image rather than inline SVG is deliberate:
+
+- **Ids cannot clash.** The "q" mark cuts its bowl with a `<mask id>`. Inline, two marks on one
+  page (a header and a footer, or a light and a dark copy with one hidden) would repeat that id,
+  and a hidden copy can take the visible one's mask with it. Each image is its own document.
+- **The page cannot recolour it.** An image does not inherit the page's `color` or `fill`, so the
+  Qeet orange stays exact. Pick the variant drawn for your background instead.
+- **It needs no hooks,** so it renders in React Server Components.
 
 ### Names
 
-The component name is PascalCase of the slug's parts plus `Logo`:
-
-| Slug | Component |
-|:--|:--|
-| `github` | `GithubLogo` |
-| `arch-linux` | `ArchLinuxLogo` |
-| `archlinux` | `ArchlinuxLogo` |
-| `1password` | `Brand1passwordLogo` |
-
-Every logo is exported from the package root, `@qeetrix/icons`, next to the icons; there is no
-separate logo entry point.
-
-Slugs starting with a digit get a `Brand` prefix, so the name is a valid identifier. Slugs with
-and without a hyphen are different upstream logos and stay distinct.
+The component name is PascalCase of the slug's parts plus `Logo`: `qeet` → `QeetLogo`,
+`qeet-wordmark` → `QeetWordmarkLogo`. A slug starting with a digit gets a `Brand` prefix, so the
+name is a valid identifier. Logos are exported from the package root, `@qeetrix/icons`, next to
+the icons; there is no separate logo entry point.
 
 ### Props
 
@@ -128,20 +113,9 @@ Logos are decorative by default: `alt=""` and `aria-hidden="true"`. Pixel number
 wins. A length that cannot be scaled, such as a percentage, leaves the other dimension to CSS. The
 root also exports `LogoComponent` (the type of any logo component) and `LogoBackground`.
 
-Logos cannot be recoloured with CSS `color` or `fill`: an image does not inherit the page's
-styles, so a file drawn with `currentColor` paints black. This is deliberate; it keeps every logo
-exactly as published. Pick the variant drawn for your background instead.
+## Backgrounds
 
-## Variants and backgrounds
-
-Variant names are theSVG's keys in kebab-case: `default`, `mono`, `wordmark`, `light`, `dark`,
-`color`, `wordmark-light`, `wordmark-dark`, `mono-lobe`, `line`, a few one-offs, and the AWS
-architecture sizes `16`, `32`, and `64`. A logo has between one and several of them; `variants` in
-the manifest, and the component's type, list exactly what exists.
-
-theSVG's `light` and `dark` names mostly mean the opposite of what they suggest, and are
-inconsistent between logos. The sync therefore measures each file's painted colours and records
-the background it is actually drawn for:
+Each file records the background it is drawn for, measured from its painted colours:
 
 | `background` | Meaning |
 |:--|:--|
@@ -149,92 +123,21 @@ the background it is actually drawn for:
 | `dark` | Light artwork, for dark backgrounds |
 | `any` | Colourful, mid-tone, or mixed artwork that works on both |
 
-Choose variants by `background`, not by name. `check:brands` fails if a file's recorded
-background or colours no longer match its content.
-
-## First-party logos
-
-`QeetLogo` (the "q" mark) and `QeetWordmarkLogo` (**Qeet.** in a tile) are Qeet Group's own
-artwork, not theSVG logos. Their files are in `icons/brand-icons/brands/qeet/` and
-`icons/brand-icons/brands/qeet-wordmark/`: `default.svg` is drawn for light surfaces and
-`dark.svg` for dark ones. The wordmark also has `plain.svg` and `plain-dark.svg`, the same letters
-without the tile, for light and dark surfaces. Their entries in `config/brands.json` are marked `"firstParty": true`
-with the licence class `first-party`. Three things follow from that flag:
-
-- `bun run sync:brands` replaces everything else in `icons/brand-icons/` and `config/brands.json`
-  with the pinned theSVG release, but reads first-party entries and their files first and writes
-  them back afterwards. An upstream logo with the same slug or component name stops the sync
-  (`withFirstPartyLogos` in `scripts/lib/brands.ts`) instead of silently replacing either.
-- The generated module's header says it is first-party artwork rather than crediting theSVG.
-- It is not listed in [third-party-logos.md](../licenses/third-party-logos.md), because it is not
-  third-party. The Qeet name and mark are trademarks of Qeet Group.
-
-To add another first-party logo, put its files in `icons/brand-icons/<collection>/<slug>/`, add
-an entry with `"firstParty": true` and `"licenseClass": "first-party"` (the validator requires the
-two together), and run `bun run generate:logos`.
+`QeetLogo`'s `default` file is `light` and its `dark` file is `dark`. The wordmark's files all
+measure as `any`, because their orange mixes with dark or light letters; use `default` or `plain`
+on light surfaces and `dark` or `plain-dark` on dark ones.
 
 ## Licensing and trademarks
 
-Every logo keeps its own license, recorded in `logoManifest[].license` and named in each
-generated module's header. All of theSVG's logos are included, whatever their license:
-
-| License | Logos |
-|:--|--:|
-| CC0-1.0 | 4,263 |
-| MIT | 1,334 |
-| CC-BY-ND-2.0 (the AWS architecture icons) | 739 |
-| Apache-2.0 | 369 |
-| CC-BY, CC-BY-SA, CC-BY-NC, GPL, AGPL, LGPL, MPL, BSD, and others | about 160 |
-| No real license: "brand-use", "Trademark", "Fair Use", "Proprietary", "Unknown", … | about 560 |
-
-Some of these restrict how a logo may be used:
-
-- **Non-commercial** (CC-BY-NC): not for commercial products.
-- **No derivatives** (CC-BY-ND, including every AWS icon): use unmodified only.
-- **Copyleft and share-alike** (GPL, AGPL, LGPL, MPL, CC-BY-SA): obligations can extend to your
-  work.
-- **No license**: no permission is granted at all beyond what trademark law and fair use allow.
-
-Check `license` before you ship a logo, and filter on it in tooling, for example to allow only
-`CC0-1.0`, `MIT`, and `Apache-2.0`. Logos are trademarks of their owners, included for
-identification only; a license on the artwork grants no trademark rights, and brand guidelines,
-linked in `guidelines` where known, still apply. Per-logo licenses and the required notices are
-collected in [licenses/third-party-logos.md](../licenses/third-party-logos.md) and [LICENSE](../LICENSE);
-`package.json` declares `"license": "SEE LICENSE IN LICENSE"`.
-
-## Known upstream defects
-
-Files are embedded as published, defects included, so these render as they do in a browser:
-
-- `btk`, `default`: the root has no SVG namespace, so as an image it is broken.
-- `logitech-g`, `default`: the `viewBox` has zero size, so it renders nothing.
-- `zenmux`, `default` and `mono`: the artwork lies outside the `viewBox`, so it renders blank.
-
-`check:brands` reports the first two as warnings (`QXB-SVG-007`, `QXB-SVG-008`), and
-`generate:logos` prints a warning for each; the third is only visible by eye. Fixes belong upstream;
-the next sync picks them up.
-
-## Performance
-
-All logo modules together are roughly 40 MB of JavaScript, almost all of it data URIs.
-
-- **Production builds** include only the logos you import: every module is free of side effects
-  (`sideEffects: false`), the barrel is static re-exports, and the catalogue is a pure
-  `JSON.parse` that bundlers drop when unused.
-- **Node** (server rendering, test runners) loads every icon and logo module the first time
-  anything is imported from `@qeetrix/icons`: about 9,300 modules and roughly 40 MB of logo
-  data. Measured on a development laptop, a cold first import took about 20 s and 360 MB of
-  memory, against about 1.8 s and 124 MB for the icons alone. It is paid once per process.
-- **Development servers** that pre-bundle a dependency's whole root, such as Vite's
-  `optimizeDeps` and Next.js in development, process every logo too, so the first dev start
-  after installing or upgrading is slower; later starts reuse their cache.
+The logos are Qeet Group's own artwork (`LicenseRef-Qeet`, proprietary), named in each generated
+module's header. The Qeet name and mark are trademarks of Qeet Group.
 
 ## Validation
 
 `bun run check:brands` ([validate-brands.ts](../scripts/check/validate-brands.ts)) does not judge
-the drawings; it checks that `config/brands.json` and the files agree and that every file is safe
-to embed. See [validation.md](validation.md#brand-logos) for the `QXB-*` codes. The icon validator
-skips `icons/brand-icons/`.
+the drawings; it checks that `config/brands.json` and the files agree, that every logo is
+first-party, and that every file is safe to embed. See [validation.md](validation.md#qeet-logos)
+for the `QXB-*` codes. The icon validator skips `icons/brand-icons/`.
 
-The playground has a Logos page for browsing logos by collection, on light or dark backgrounds,
-with each logo's license ([visual-qa.md](visual-qa.md)).
+The playground has a Logos page that shows both logos on light and dark backgrounds
+([visual-qa.md](visual-qa.md)).

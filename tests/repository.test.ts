@@ -301,8 +301,8 @@ describe("package manifest", () => {
     expect((manifest as { sideEffects?: unknown }).sideEffects).toBe(false);
   });
 
-  it("publishes only dist and the licence texts", () => {
-    expect(manifest.files).toEqual(["dist", "licenses"]);
+  it("publishes only dist", () => {
+    expect(manifest.files).toEqual(["dist"]);
   });
 
   it("keeps config, validators, and fixtures outside the production build", () => {

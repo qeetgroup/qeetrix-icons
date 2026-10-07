@@ -10,9 +10,7 @@ const warnings = result.diagnostics.filter((entry) => entry.severity === "warnin
 
 if (warnings.length > 0) {
   console.warn(formatBrandDiagnostics(warnings));
-  console.warn(
-    `${warnings.length} warning(s); upstream files stay byte-for-byte, so these are notes.`,
-  );
+  console.warn(`${warnings.length} warning(s); logo files stay byte-for-byte, so these are notes.`);
 }
 if (errors.length > 0) {
   console.error(formatBrandDiagnostics(errors));

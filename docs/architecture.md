@@ -7,7 +7,7 @@ validated ([validation.md](validation.md)) and generated into components, a root
 manifest ([generation.md](generation.md)). The public contract is [api.md](api.md): one component
 per icon concept, with a `shape` prop for the style and a `variant` prop typed to its drawings.
 
-A second, independent pipeline turns one pinned theSVG commit into brand logo components
+A second, independent pipeline turns Qeet's own logo files into logo components
 ([logos.md](logos.md)). It shares the package entries and `src/generated/`, but no source, config,
 validator, or generator code with the icons. The technology is Bun, strict TypeScript, React 19, and
 ESM, with Biome and Vitest.
@@ -25,15 +25,13 @@ Lucide release (GitHub tag)
         -> playground              human visual review (repository only)
         -> Qeetrix UI / Qeet products
 
-theSVG commit (GitHub)
-        -> bun run sync:brands     icons/brand-icons/, config/brands.json
+Qeet logo files (edited by hand: icons/brand-icons/, config/brands.json)
         -> bun run check:brands    validate the catalogue and every logo file
         -> bun run generate:logos  logo modules, logo barrel, logo manifest
         -> bun run build           (the same dist/)
 ```
 
-`sync:lucide` runs `derive:filled`, `derive:sharp`, and `generate` itself; `sync:brands` does not
-regenerate. `generate` repeats the validation and aborts on any error without writing.
+`sync:lucide` runs `derive:filled`, `derive:sharp`, and `generate` itself. `generate` repeats the validation and aborts on any error without writing.
 `check:filled`, `check:sharp`, and `check:generated` prove that the committed derived drawings and
 generated icon files match their sources; CI and the release gate run them with `check:icons`.
 `check:logos` proves the same for the logos and runs inside the Vitest suite.
@@ -56,8 +54,8 @@ embedded byte for byte and rendered as an image.
 | `config/overrides/` | Hand-drawn replacements for derived drawings, each stamped with its outline's SHA-256 ([filled.md](filled.md#overrides)) |
 | [config/icon-metadata.ts](../config/icon-metadata.ts) | Per-icon metadata: Lucide's data plus the RTL `mirror` list ([rtl.md](rtl.md)) |
 | [config/icon-system.ts](../config/icon-system.ts) | Internal design contract: architecture and the `design` values ([design.md](design.md)) |
-| `icons/brand-icons/` | theSVG's logo files, byte for byte, written by `sync:brands`: `<collection>/<slug>/<variant>.svg` |
-| [config/brands.json](../config/brands.json) | Pinned theSVG commit, collections, and every logo's metadata, license, and files with measured backgrounds |
+| `icons/brand-icons/` | The Qeet logo files, byte for byte as drawn: `<slug>/<variant>.svg` |
+| [config/brands.json](../config/brands.json) | Every logo's metadata, license, and files with measured backgrounds |
 | [src/types/icon.ts](../src/types/icon.ts) | Stable variant and directionality vocabulary |
 | [src/types/icon-props.ts](../src/types/icon-props.ts) | Public `IconProps` |
 | [src/types/icon-manifest.ts](../src/types/icon-manifest.ts) | Public icon manifest schema types |
@@ -68,10 +66,10 @@ embedded byte for byte and rendered as an image.
 | [src/index.ts](../src/index.ts) | Hand-written package index: re-exports the icon and logo barrels and the public types |
 | [src/manifest.ts](../src/manifest.ts) | Hand-written `@qeetrix/icons/manifest` entry: re-exports `iconManifest` and `logoManifest` |
 | `icon-manifest.json` | Generated manifest for repository tooling; not published |
-| `scripts/sync/` | The `sync:lucide` and `sync:brands` CLIs |
-| `scripts/check/` | Icon validation (`check:icons`, `check:generated`) and brand validation (`check:brands`) |
+| `scripts/sync/` | The `sync:lucide` CLI |
+| `scripts/check/` | Icon validation (`check:icons`, `check:generated`) and logo validation (`check:brands`) |
 | `scripts/build/` | The `generate`, `derive:filled` (and `check:filled`), `derive:sharp` (and `check:sharp`), and `generate:logos` (and `check:logos`) CLIs |
-| `scripts/lib/` | Lucide and theSVG reading, filled and sharp derivation, diagnostics, SVG-to-React conversion, logo embedding, rendering, planning, and safe output |
+| `scripts/lib/` | Lucide reading, logo SVG analysis, filled and sharp derivation, diagnostics, SVG-to-React conversion, logo embedding, rendering, planning, and safe output |
 | `playground/` | Internal Vite + React visual QA tool; reads generated output, never published |
 | `docs/` | Design, naming, accessibility, RTL, pipeline, and release contracts |
 | [tests/repository.test.ts](../tests/repository.test.ts) | Config consistency, sources against the manifest, and the package boundary |
@@ -79,7 +77,7 @@ embedded byte for byte and rendered as an image.
 | [tests/lucide.test.ts](../tests/lucide.test.ts) | Lucide SVG normalization, release reading, and the committed Lucide data |
 | [tests/filled.test.ts](../tests/filled.test.ts) | Filled derivation: roles, inference, cuts, gaps, precision, and determinism |
 | [tests/sharp.test.ts](../tests/sharp.test.ts) | Sharpening: stroke style, corners, tips, chamfers, kept curves, and idempotence |
-| [tests/brands.test.ts](../tests/brands.test.ts) | theSVG reading, naming, licenses, measured backgrounds, brand validation, and the committed file listing |
+| [tests/brands.test.ts](../tests/brands.test.ts) | Naming, measured backgrounds, logo validation, and the committed file listing |
 | [tests/logos.test.ts](../tests/logos.test.ts) | Lossless data URIs, intrinsic sizes, logo rendering, byte identity of every embedded file, and `check:logos` |
 | [tests/generation.test.ts](../tests/generation.test.ts) | Conversion, determinism, Biome/TypeScript output checks, and output safety |
 | [tests/runtime.test.ts](../tests/runtime.test.ts) | Rendering, props, refs, and accessibility of generated components |
@@ -99,12 +97,12 @@ keep it equal to the config value.
 | Kind | Location | Author |
 |:--|:--|:--|
 | SYNCED | `icons/round-outline/`, `config/lucide.json`, `config/categories.ts` | `sync:lucide`, from Lucide; never edited by hand |
-| SYNCED | `icons/brand-icons/`, `config/brands.json` | `sync:brands`, from theSVG; never edited by hand |
 | DERIVED | `icons/round-filled/` | `derive:filled`, from the round outlines, `config/derived/`, and `config/overrides/round-filled/`; never edited by hand |
 | DERIVED | `icons/sharp-outline/`, `icons/sharp-filled/` | `derive:sharp`, from the round outlines, `config/derived/`, the rules in `scripts/lib/sharp.ts`, and `config/overrides/sharp-*/`; never edited by hand |
 | GENERATED | `src/generated/` (apart from the logo paths), `icon-manifest.json` | `generate`; never edited by hand |
 | GENERATED | `src/generated/logos/`, `src/generated/logo-index.ts`, `src/generated/logo-manifest.ts` | `generate:logos` (`logoGeneratedPaths`); never edited by hand |
 | AUTHORED CONFIG | `config/derived/`, `config/overrides/`, `config/icon-metadata.ts`, `config/icon-system.ts` | People |
+| AUTHORED ARTWORK | `icons/brand-icons/`, `config/brands.json` | People: the Qeet logos, checked by `check:brands` |
 | RUNTIME | `src/runtime/` | People: behavior shared by generated components, nothing else |
 | PUBLIC ENTRIES | `src/index.ts`, `src/manifest.ts`, `src/types/` | People |
 | TOOLING | `scripts/` | People; never published |
@@ -120,11 +118,11 @@ machine-dependent values. Generated name ordering uses explicit codepoint compar
 ordering follows the order in `config/categories.ts`. `check:filled`, `check:sharp`,
 `check:generated`, and `check:logos` detect drift without relying on Git.
 
-React 19 is the only peer dependency, and there are no runtime dependencies; Lucide's and theSVG's
-artwork is copied in by the syncs, not installed. The icon runtime helper imports React only for
+React 19 is the only peer dependency, and there are no runtime dependencies; Lucide's artwork is
+copied in by the sync, not installed. The icon runtime helper imports React only for
 types; the logo runtime uses `createElement`. Development dependencies, each with one purpose:
 
-- `@xmldom/xmldom`: the XML parser behind validation, the syncs, and both derivations
+- `@xmldom/xmldom`: the XML parser behind validation, the Lucide sync, and both derivations
   ([validation.md](validation.md#parser-decision)).
 - `canvaskit-wasm`, pinned to `0.42.0`: Skia path operations for the filled drawings, in both shapes
   ([filled.md](filled.md)).

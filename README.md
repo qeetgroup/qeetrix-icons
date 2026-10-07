@@ -2,17 +2,16 @@
 
 # 🎨 Qeetrix Icons
 
-**The icon and brand logo library for Qeet Group products.**
+**The icon and logo library for Qeet Group products.**
 
-1,863 Lucide icons in **round** and **sharp** shapes, **775 filled** variants, **7,429 brand
-logos** and the first-party **Qeet logo and wordmark**, as tree-shakeable, fully typed React 19 components, all from one import.
+1,863 Lucide icons in **round** and **sharp** shapes, **775 filled** variants, and the **Qeet logo
+and wordmark**, as tree-shakeable, fully typed React 19 components, all from one import.
 
 [![npm](https://img.shields.io/npm/v/@qeetrix/icons?style=flat-square&color=111111&label=npm)](https://www.npmjs.com/package/@qeetrix/icons)
 [![CI](https://img.shields.io/github/actions/workflow/status/qeetgroup/qeetrix-icons/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qeetgroup/qeetrix-icons/actions/workflows/ci.yml)
 ![Icons](https://img.shields.io/badge/icons-1%2C863-111111?style=flat-square)
 ![Filled](https://img.shields.io/badge/filled-775-111111?style=flat-square)
 ![Shapes](https://img.shields.io/badge/shapes-round%20%C2%B7%20sharp-111111?style=flat-square)
-![Logos](https://img.shields.io/badge/brand%20logos-7%2C429-111111?style=flat-square)
 ![React](https://img.shields.io/badge/React-19-149ECA?style=flat-square&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Tree-shakeable](https://img.shields.io/badge/tree--shakeable-yes-2E7D32?style=flat-square)
@@ -20,13 +19,13 @@ logos** and the first-party **Qeet logo and wordmark**, as tree-shakeable, fully
 </div>
 
 ```tsx
-import { TrashIcon, StarIcon, GithubLogo } from "@qeetrix/icons";
+import { TrashIcon, StarIcon, QeetLogo } from "@qeetrix/icons";
 
 <TrashIcon />                                  // round outline
 <StarIcon variant="filled" />                  // round filled
 <TrashIcon shape="sharp" />                    // sharp outline
 <StarIcon shape="sharp" variant="filled" />    // sharp filled
-<GithubLogo height={32} aria-label="GitHub" /> // brand logo, exactly as published
+<QeetLogo height={32} aria-label="Qeet" />     // Qeet logo, exactly as drawn
 ```
 
 > [!IMPORTANT]
@@ -43,7 +42,7 @@ import { TrashIcon, StarIcon, GithubLogo } from "@qeetrix/icons";
 - [📦 Installation](#-installation)
 - [🚀 Quick start](#-quick-start)
 - [🎨 Icons](#-icons)
-- [🏷️ Brand logos](#️-brand-logos)
+- [🟠 Qeet logos](#-qeet-logos)
 - [🔎 Catalogue and search](#-catalogue-and-search)
 - [🔁 Coming from lucide-react](#-coming-from-lucide-react)
 - [📐 Design rules](#-design-rules)
@@ -58,10 +57,10 @@ import { TrashIcon, StarIcon, GithubLogo } from "@qeetrix/icons";
 
 ## ✨ Why Qeetrix Icons
 
-[Lucide](https://lucide.dev) is a superb outline icon set, and [theSVG](https://thesvg.org)
-collects thousands of brand logos. Qeetrix Icons turns them into one consistent, typed library for
-every Qeet product (Qeet ID, Qeet Pay, Qeet Logs, Qeet Notify, Qeet People, Qeet AI) and adds what
-neither provides:
+[Lucide](https://lucide.dev) is a superb outline icon set. Qeetrix Icons turns it into one
+consistent, typed library for every Qeet product (Qeet ID, Qeet Pay, Qeet Logs, Qeet Notify, Qeet
+People, Qeet AI), ships Qeet's own logo and wordmark beside it, and adds what Lucide doesn't
+provide:
 
 - 🌓 **Filled variants.** Lucide is outline-only. 775 icons gain a filled drawing for selected,
   active, and favourite states, derived from the outline with Skia path operations and reviewed
@@ -70,10 +69,10 @@ neither provides:
   mitered joins, and squared corners, behind a single `shape` prop.
 - 🧩 **One API for everything.** Icons and logos share naming, sizing, accessibility defaults, and
   typing. A `variant` the icon or logo doesn't have is a compile-time error.
-- 🛡️ **Logos you can trust.** Every logo is embedded byte for byte as published, validated for
-  safety, labelled with the background it is drawn for, and carries its own license metadata.
-- 🔎 **Searchable catalogues.** Tags, categories, Lucide's former names, RTL behaviour, logo
-  collections, colours, and licenses, published as data for docs sites and pickers.
+- 🛡️ **Logos exactly as drawn.** The Qeet logo and wordmark are embedded byte for byte, validated
+  for safety, and labelled with the background each file is drawn for.
+- 🔎 **Searchable catalogues.** Tags, categories, Lucide's former names, RTL behaviour, and logo
+  files and colours, published as data for docs sites and pickers.
 - 🌲 **Zero runtime cost you didn't ask for.** No runtime dependencies, no hooks, no side
   effects: bundlers keep only the icons and logos you import.
 
@@ -84,13 +83,13 @@ neither provides:
 | 🎨 **Icons** | 1,863 from Lucide 1.52.0, in Lucide's 42 categories, with Lucide's names and tags |
 | 🔷 **Shapes** | `round` (Lucide's drawing, the default) and `sharp`, for every icon |
 | 🌓 **Variants** | `outline` for every icon; `filled` for 775, in both shapes |
-| 🏷️ **Brand logos** | 7,429 from theSVG 3.3.12 (brands, community, auth badges, AWS, Azure, Google Cloud, Kubernetes), plus the first-party Qeet logo and wordmark |
-| 🗂️ **Logo files** | 13,407 variants (default, mono, wordmark, light, dark, colour, …), embedded unmodified |
+| 🟠 **Logos** | The Qeet logo and wordmark, Qeet Group's own artwork |
+| 🗂️ **Logo files** | 6 (light and dark, and the wordmark with and without its tile), embedded unmodified |
 | 📐 **Grid** | 24 × 24, 2-unit stroke, 1-unit padding, `currentColor` |
 | ⚛️ **Runtime** | React 19 peer dependency only; no runtime dependencies; no hooks |
 | 📦 **Module format** | ESM with TypeScript declarations; every module free of side effects |
 | ↔️ **RTL** | 18 reading-direction concepts flagged `mirror` in the catalogue |
-| ✅ **Tests** | 638 tests in 11 suites, including a packed-tarball consumer test |
+| ✅ **Tests** | 649 tests in 12 suites, including a packed-tarball consumer test |
 
 ## 📦 Installation
 
@@ -208,44 +207,7 @@ function ToolbarButton({ icon: Icon, label }: { icon: ComponentType<IconProps<"o
   Physical arrows and chevrons never mirror. The library never flips an icon itself; your RTL
   layer decides. See [docs/rtl.md](docs/rtl.md).
 
-## 🏷️ Brand logos
-
-```tsx
-import { GithubLogo, SlackLogo, StripeLogo } from "@qeetrix/icons";
-
-<GithubLogo />                                   // the default file, 24 px tall
-<GithubLogo variant="wordmark" height={32} />     // any file the logo has
-<SlackLogo height="2em" aria-label="Slack" />     // CSS lengths work too
-<StripeLogo variant="mono" loading="lazy" />      // native <img> props pass through
-```
-
-Each logo renders its **published SVG file, unmodified**, as an `<img>`. Nothing in the artwork is
-converted or recoloured; a test proves all 13,405 files are embedded byte for byte. Because each
-logo is its own image, logos never clash with each other's styles or ids, and they work in Server
-Components.
-
-| Prop | Type | Default | |
-|:--|:--|:--|:--|
-| `variant` | per logo | the logo's default | `"default"`, `"mono"`, `"wordmark"`, `"light"`, `"dark"`, … Typed to the files that exist. |
-| `height` | `number \| string` | `24` | Width follows the logo's own aspect ratio. |
-| `width` | `number \| string` | from `height` | Give only `width` to derive `height` instead. |
-| `alt` / `aria-label` | `string` | | Names the logo; otherwise it is decorative. |
-
-Other native `<img>` props (`className`, `style`, `loading`, `decoding`, …) pass through. Logos
-keep their brand colours by design, so CSS cannot recolour them.
-
-### 🟠 The Qeet logo and wordmark
-
-Qeet's own marks sit in the catalogue beside the third-party logos, each with a file for light
-surfaces (`default`) and one for dark surfaces (`dark`):
-
-| Component | What it is | `default` (light surfaces) | `dark` (dark surfaces) |
-|:--|:--|:--|:--|
-| `QeetLogo` | the Qeet "q" mark | graphite bowl, orange descender | white bowl, orange descender |
-| `QeetWordmarkLogo` | **Qeet.** in a tile | graphite tile, white letters | white tile, graphite letters |
-
-The wordmark also comes without the tile, as two more files: `plain` (graphite letters, for light
-surfaces) and `plain-dark` (white letters, for dark surfaces), cropped to the letters themselves.
+## 🟠 Qeet logos
 
 ```tsx
 import { QeetLogo, QeetWordmarkLogo } from "@qeetrix/icons";
@@ -257,6 +219,31 @@ import { QeetLogo, QeetWordmarkLogo } from "@qeetrix/icons";
 <QeetWordmarkLogo variant="plain" height={24} aria-label="Qeet" />  // no tile, on light surfaces
 <QeetWordmarkLogo variant="plain-dark" height={24} aria-label="Qeet" />
 ```
+
+Each logo renders its **SVG file, unmodified**, as an `<img>`. Nothing in the artwork is converted
+or recoloured; a test proves every file is embedded byte for byte. Because each logo is its own
+image, its ids and styles never clash with the page or with another logo, and it works in Server
+Components.
+
+Each logo has a file for light surfaces (`default`) and one for dark surfaces (`dark`):
+
+| Component | What it is | `default` (light surfaces) | `dark` (dark surfaces) |
+|:--|:--|:--|:--|
+| `QeetLogo` | the Qeet "q" mark | graphite bowl, orange descender | white bowl, orange descender |
+| `QeetWordmarkLogo` | **Qeet.** in a tile | graphite tile, white letters | white tile, graphite letters |
+
+The wordmark also comes without the tile, as two more files: `plain` (graphite letters, for light
+surfaces) and `plain-dark` (white letters, for dark surfaces), cropped to the letters themselves.
+
+| Prop | Type | Default | |
+|:--|:--|:--|:--|
+| `variant` | per logo | `"default"` | `"default"`, `"dark"`, and for the wordmark `"plain"` and `"plain-dark"`. Typed to the files that exist. |
+| `height` | `number \| string` | `24` | Width follows the logo's own aspect ratio. |
+| `width` | `number \| string` | from `height` | Give only `width` to derive `height` instead. |
+| `alt` / `aria-label` | `string` | | Names the logo; otherwise it is decorative. |
+
+Other native `<img>` props (`className`, `style`, `loading`, `decoding`, …) pass through. Logos
+keep their colours by design, so CSS cannot recolour them.
 
 The wordmark is **Qeet.** set in Qeet Display Bold (Cal Sans UI Geo Bold, SIL OFL 1.1), kerned by
 eye pair by pair, with the full stop in Qeet orange, and converted to outlines, so it renders the
@@ -279,37 +266,15 @@ If your theme follows the operating system instead, use `prefers-color-scheme` i
 same way. Prefer the class approach whenever the app has its own theme toggle, or the logo and
 the page will disagree.
 
-Both are first-party (`firstParty: true` in `config/brands.json`, licence class `first-party`):
-their files in `icons/brand-icons/brands/qeet/` and `qeet-wordmark/` are kept across
-`bun run sync:brands`, which replaces everything else in that folder. The Qeet name and mark are trademarks of Qeet Group.
+Both are first-party (`firstParty: true` in `config/brands.json`, licence class `first-party`), and
+the validator accepts no other kind. A logo's name is its slug in PascalCase plus `Logo`
+(`qeet-wordmark` → `QeetWordmarkLogo`); icons always end in `Icon` and logos in `Logo`, so the two
+families never collide. The Qeet name and mark are trademarks of Qeet Group.
 
-### 🗂️ Names and collections
-
-A logo's name is its slug in PascalCase plus `Logo`: `GithubLogo`, `GoogleCloudLogo`. Slugs that
-start with a digit get a `Brand` prefix (`Brand1passwordLogo`). Icons always end in `Icon` and
-logos in `Logo`, so the two families never collide.
-
-| Collection | Logos |
-|:--|--:|
-| 🏢 Brands | 4,693 |
-| 🔐 Auth badges | 860 |
-| ☁️ AWS architecture | 739 |
-| ☁️ Azure architecture | 626 |
-| 👥 Community | 259 |
-| ☁️ Google Cloud architecture | 214 |
-| ☸️ Kubernetes architecture | 38 |
-| 🗃️ Unlisted | 2 |
-
-theSVG's own `light` and `dark` labels are inverted for most logos, so the catalogue records the
-background each file is actually drawn for (`light`, `dark`, or `any`), measured from its colours.
-
-> [!WARNING]
-> **Every logo keeps its own license, and some restrict use.** Most are public domain (CC0) or
-> permissive (MIT, Apache 2.0), but some are no-derivatives (all AWS icons), non-commercial,
-> copyleft (GPL and similar), or have no copyright license at all. Logos are trademarks of their
-> owners and are provided for identification only. Check a logo's license before shipping it:
-> see [licenses/third-party-logos.md](licenses/third-party-logos.md) and
-> [docs/logos.md](docs/logos.md#licensing-and-trademarks).
+> [!NOTE]
+> **Third-party brand logos are not included.** Earlier versions shipped 7,429 logos from theSVG.
+> For a GitHub, Google, or Slack logo, use [theSVG](https://thesvg.org) directly, for example
+> `@thesvg/react`, one logo per import.
 
 ## 🔎 Catalogue and search
 
@@ -329,11 +294,8 @@ const filledAccount = iconManifest.icons.filter(
   ({ categories, variants }) => categories.includes("account") && variants.includes("filled"),
 );
 
-// Public-domain brand logos with a wordmark
-const wordmarks = logoManifest.logos.filter(
-  ({ license, collection, variants }) =>
-    license === "CC0-1.0" && collection === "brands" && variants.some(({ name }) => name === "wordmark"),
-);
+// The Qeet mark's files, with the background each is drawn for
+const qeetFiles = logoManifest.logos.find(({ id }) => id === "qeet")?.variants;
 ```
 
 | Icon entry | Logo entry |
@@ -355,7 +317,7 @@ The artwork is Lucide's, so most screens move over with an import change:
 | `<Star className="text-amber-500" />` | `<StarIcon className="text-amber-500" />` (same `currentColor`) |
 | Outline only | Add `variant="filled"` where a filled drawing exists |
 | Round only | Add `shape="sharp"` for the sharp style |
-| Logos not included | `GithubLogo`, `SlackLogo`, … from the same package |
+| No logos | `QeetLogo` and `QeetWordmarkLogo` from the same package |
 
 Names follow Lucide 1.52.0, so a few older lucide-react names differ (`Trash2` is `TrashIcon`
 here); the catalogue's `aliases` field maps them. `absoluteStrokeWidth` is not supported.
@@ -394,9 +356,8 @@ bun run playground
   variant switches, size, stroke, and colour controls, and an inspector with every shape and
   variant, real-size previews, construction grid, light/dark surfaces, RTL preview, and copyable
   JSX.
-- 🏷️ **Logos:** collections, license and variant filters, a light/dark/transparent background
-  switch, cards at each logo's true aspect ratio, and an inspector with every file on the
-  background it's drawn for, license warnings, and brand links.
+- 🟠 **Logos:** both Qeet logos on a light/dark/transparent background switch, at their true
+  aspect ratio, with an inspector showing every file on the background it's drawn for.
 - ⌨️ **Everywhere:** a ⌘K command palette across icons and logos, shareable URLs, keyboard
   navigation, and light and dark themes.
 
@@ -407,18 +368,17 @@ bun run playground
   bundle real consumers to prove it.
 - 📥 **One import, everything included.** Importing `@qeetrix/icons` gives you all icons and logos.
   In Node (server rendering, test runners) the first import therefore loads every module:
-  measured cold on a development laptop, about 20 s and 360 MB with the logos, against about
-  1.8 s for icons alone. It is paid once per process.
+  measured cold on a development laptop, about 1.6 s. It is paid once per process.
 - 🔥 **Dev servers** that pre-bundle a dependency's root, such as Vite and Next.js, process the whole
   package on the first start after installing or upgrading, then reuse their cache.
 - 🪶 **Per-icon imports** are available when you need the leanest possible module graph:
   `import { TrashIcon } from "@qeetrix/icons/icons/trash"`.
-- 📦 **Package:** about 10.7 MB packed and 50.7 MB unpacked, almost all of it logo data. Only
-  compiled code and licenses ship; no source SVGs.
+- 📦 **Package:** about 0.7 MB packed and 5.5 MB unpacked. Only compiled code ships; no source
+  SVGs.
 
 ## 🏗️ How it is built
 
-Every source file is written by a tool from a pinned upstream release, and everything generated
+Every icon source file is written by a tool from a pinned Lucide release, and everything generated
 is committed, validated in CI, and reproducible.
 
 ```mermaid
@@ -429,8 +389,7 @@ flowchart LR
   SO -->|derive:sharp| SF["icons/sharp-filled"]
   C["config/derived · config/overrides"] -.-> RF & SO & SF
   RO & RF & SO & SF -->|check:icons · generate| GI["src/generated/icons"]
-  T["theSVG 3.3.12"] -->|sync:brands| B["icons/brand-icons"]
-  B -->|check:brands · generate:logos| GL["src/generated/logos"]
+  B["icons/brand-icons (Qeet logos)"] -->|check:brands · generate:logos| GL["src/generated/logos"]
   GI --> P["@qeetrix/icons"]
   GL --> P
 ```
@@ -446,9 +405,8 @@ flowchart LR
 - ✍️ **Overrides:** 78 hand-drawn replacements in `config/overrides/` cover the few drawings rules
   cannot get right. Each is stamped with the SHA-256 of the outline it was drawn against, so a
   Lucide upgrade flags it for review instead of silently drifting.
-- 🏷️ **Logos** are copied byte for byte from a pinned theSVG commit, validated (no scripts, event
-  handlers, or external references), and embedded as lossless `data:` URIs. See
-  [docs/logos.md](docs/logos.md).
+- 🟠 **Logos** are Qeet's own SVG files, validated (no scripts, event handlers, or external
+  references) and embedded as lossless `data:` URIs. See [docs/logos.md](docs/logos.md).
 
 ### 🗃️ Repository layout
 
@@ -462,8 +420,7 @@ icons/
   round-filled/       Derived filled drawings
   sharp-outline/      Derived sharp outlines
   sharp-filled/       Derived sharp filled drawings
-  brand-icons/        theSVG logo files, byte for byte
-licenses/             Per-logo licenses and the Apache 2.0 text (shipped in the package)
+  brand-icons/        The Qeet logo and wordmark files
 scripts/              Sync, derivation, validation, and generation tools
 src/
   index.ts            The package entry: every icon and logo
@@ -507,17 +464,18 @@ bun run lint && bun run typecheck && bun run test
 | 🎯 One category | `derive:filled --category <id>`, `derive:sharp --category <id>` |
 | ✍️ Overrides | `stamp:override <file>` |
 | 🔍 Icon checks | `check:icons`, `check:filled`, `check:sharp`, `check:generated` |
-| 🏷️ Logos | `sync:brands [commit]`, `generate:logos` |
+| 🟠 Logos | `generate:logos` |
 | 🔍 Logo checks | `check:brands`, `check:logos` |
 | 🧪 Playground | `playground`, `playground:build` |
 
 Ground rules:
 
-- 🚫 **Never hand-edit tool-written files**: `icons/`, `config/lucide.json`, `config/brands.json`,
-  `config/categories.ts`, `src/generated/`, `icon-manifest.json`, or `licenses/third-party-logos.md`.
-  Change the inputs and rerun the tool.
-- 🔄 **`sync:lucide` and `sync:brands` leave the repository consistent**: they re-derive and
-  regenerate everything downstream.
+- 🚫 **Never hand-edit tool-written files**: the derived and Lucide folders in `icons/`,
+  `config/lucide.json`, `config/categories.ts`, `src/generated/`, or `icon-manifest.json`. Change
+  the inputs and rerun the tool. The Qeet logo files and `config/brands.json` are edited by hand,
+  then checked with `check:brands`.
+- 🔄 **`sync:lucide` leaves the repository consistent**: it re-derives and regenerates everything
+  downstream.
 - ⬆️ **A missing or flawed outline belongs upstream** in Lucide; a filled or sharp result is changed
   through its category's file in [config/derived/](config/derived/README.md), an override, or the
   sharp rules.
@@ -532,7 +490,7 @@ Ground rules:
 | 📐 [Design](docs/design.md) | Grid, stroke, padding, and how filled and sharp drawings are formed |
 | 🌓 [Filled drawings](docs/filled.md) | Roles, inference, recipes, overrides, and how to add a filled icon |
 | 🔷 [Sharp style](docs/sharp.md) | Sharpening rules, fitting, kept-round elements, letter heights |
-| 🏷️ [Brand logos](docs/logos.md) | Sync, catalogue, components, licensing, and performance |
+| 🟠 [Qeet logos](docs/logos.md) | Files, catalogue, components, and backgrounds |
 | 🪶 [Lucide](docs/lucide.md) | What comes from Lucide, syncing, and upgrading |
 | 🔤 [Naming](docs/naming.md) · ♿ [Accessibility](docs/accessibility.md) · ↔️ [RTL](docs/rtl.md) | Conventions |
 | 🏗️ [Architecture](docs/architecture.md) · ⚙️ [Generation](docs/generation.md) · 🧾 [Validation](docs/validation.md) | How the pipeline works |
@@ -556,17 +514,13 @@ The full index is [docs/README.md](docs/README.md).
 - 🎨 **Icons:** the artwork, the derived filled and sharp drawings, and the generated icon components
   are based on [Lucide](https://lucide.dev), ISC © Lucide Icons and Contributors. Some Lucide icons
   derive from Feather, MIT © Cole Bemis.
-- 🏷️ **Brand logos:** each logo keeps its own license (public domain, permissive, attribution,
-  share-alike, no-derivatives, non-commercial, copyleft, or none), listed in
-  [licenses/third-party-logos.md](licenses/third-party-logos.md). theSVG's own code is MIT ©
-  thesvg.org. Logos are trademarks of their owners, shown for identification only.
+- 🟠 **Qeet logos:** proprietary artwork © Qeet Group (`LicenseRef-Qeet`). The Qeet name and mark
+  are trademarks of Qeet Group.
 
 `package.json` declares `"license": "SEE LICENSE IN LICENSE"`; the full notices are in
 [LICENSE](LICENSE).
 
 ### 🙏 Acknowledgements
 
-Built on [Lucide](https://lucide.dev) and [Feather](https://feathericons.com) for the icons,
-[theSVG](https://thesvg.org), [Simple Icons](https://simpleicons.org),
-[svgl](https://svgl.app), and [Lobe Icons](https://github.com/lobehub/lobe-icons) for the logos,
-and [Skia](https://skia.org)'s CanvasKit for the filled and sharp geometry.
+Built on [Lucide](https://lucide.dev) and [Feather](https://feathericons.com) for the icons, and
+[Skia](https://skia.org)'s CanvasKit for the filled and sharp geometry.

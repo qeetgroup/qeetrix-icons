@@ -3,9 +3,9 @@
 > [!NOTE]
 > The outline icons are Lucide's, synced from one pinned release ([lucide.md](lucide.md)). Do not
 > add, draw, or edit outline SVGs here: a missing or flawed icon belongs upstream in Lucide, and
-> arrives here with the next upgrade. The same goes for brand logos, which come byte for byte from
-> theSVG ([logos.md](logos.md)). Contributions here are filled drawings ([filled.md](filled.md)),
-> RTL decisions ([rtl.md](rtl.md)), tooling, and documentation.
+> arrives here with the next upgrade. Contributions here are filled drawings ([filled.md](filled.md)),
+> RTL decisions ([rtl.md](rtl.md)), the Qeet logos ([logos.md](logos.md)), tooling, and
+> documentation. Third-party brand logos are not accepted; apps use theSVG directly.
 
 ## Setup
 
@@ -31,7 +31,6 @@ workspace uses it.
 | `bun run derive:sharp [--category <id>]` | Write `icons/sharp-outline/` and `icons/sharp-filled/` from the round outlines ([sharp.md](sharp.md)) |
 | `bun run stamp:override <file>` | Record the outline an override was drawn against, and its hash ([filled.md](filled.md#overrides)) |
 | `bun run check:sharp` | Fail if any sharp drawing is missing, stale, or not derived from an outline or recipe |
-| `bun run sync:brands [commit]` | Replace `icons/brand-icons/` and `config/brands.json` with a theSVG commit ([logos.md](logos.md)) |
 | `bun run check:brands` | Validate `config/brands.json` and every logo file (`QXB-*` codes) |
 | `bun run generate:logos` | Write the logo modules, logo barrel, and logo manifest |
 | `bun run check:logos` | Fail if any generated logo file is stale, missing, or extra |
@@ -49,8 +48,8 @@ workspace uses it.
 | `icons/round-outline/` | Lucide's outline SVGs. Written by `sync:lucide`; never edited by hand. |
 | `icons/round-filled/` | Derived filled SVGs. Written by `derive:filled`; never edited by hand. |
 | `icons/sharp-outline/`, `icons/sharp-filled/` | Derived sharp SVGs. Written by `derive:sharp`; never edited by hand. |
-| `icons/brand-icons/` | theSVG's logo files, byte for byte. Written by `sync:brands`; never edited by hand. |
-| `config/` | Lucide data and categories and the theSVG catalogue (synced), the filled list, metadata, and the icon-system contract. Not published. |
+| `icons/brand-icons/` | The Qeet logo files, as drawn; edited by hand and checked by `check:brands` ([logos.md](logos.md)). |
+| `config/` | Lucide data and categories (synced), the Qeet logo catalogue, the filled list, metadata, and the icon-system contract. Not published. |
 | `scripts/` | Repository-only sync, derivation, validation, and generation tooling. |
 | [src/types/](../src/types/) | Public icon and logo props, variant, shape, directionality, and manifest types. |
 | [src/runtime/](../src/runtime/) | The shared `resolveIconProps` and `renderLogo` helpers; hand-written, published runtime only. |
@@ -58,7 +57,7 @@ workspace uses it.
 | [src/index.ts](../src/index.ts), [src/manifest.ts](../src/manifest.ts) | Hand-written package entries; see [api.md](api.md). |
 | `docs/` | Design, naming, accessibility, RTL, pipeline, and release contracts. |
 | [playground/](../playground/) | Internal visual QA tool. Reads generated output; never published. |
-| `tests/` | Config, Lucide and theSVG sync, filled and sharp derivation, validation, generation, logos, runtime, package, and playground checks; temporary fixtures only. |
+| `tests/` | Config, Lucide sync, filled and sharp derivation, validation, generation, logos, runtime, package, and playground checks; temporary fixtures only. |
 | `dist/` | Build output, and the only thing published. Gitignored. |
 
 Read [design.md](design.md) and [naming.md](naming.md) first. Accessibility and RTL expectations are
@@ -80,9 +79,9 @@ in [architecture.md](architecture.md).
   [config/icon-metadata.ts](../config/icon-metadata.ts) and run `bun run generate`
   ([rtl.md](rtl.md)).
 - **Upgrade Lucide.** Follow [lucide.md](lucide.md#upgrading-lucide).
-- **Update the brand logos.** Run `bun run sync:brands <commit>`; it validates the new files and
-  regenerates the logo components itself. Review added, removed, and relicensed logos in the diff of
-  `config/brands.json`; a removed logo is a major release ([logos.md](logos.md)).
+- **Change a Qeet logo.** Edit its files in `icons/brand-icons/<slug>/` and its entry in
+  `config/brands.json`, then run `bun run check:brands` and `bun run generate:logos`. A removed logo
+  or variant is a major release ([logos.md](logos.md#files)).
 
 Commit the inputs together with what they produce: the config, the SVGs, and the generated files.
 Public names and variant support are semver API; read [api.md](api.md#versioning) before any change
@@ -119,8 +118,7 @@ publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
 - **Keep the public surface small.** Internal config is never a root export. Recommended sizes
   must not restrict the `size` prop.
 - **Upstream artwork stays verbatim.** No hand edits to `icons/round-outline/`,
-  `config/lucide.json`, `config/categories.ts`, `icons/brand-icons/`, or `config/brands.json`; the
-  next sync would undo them. Restating Lucide's rules in
+  `config/lucide.json`, or `config/categories.ts`; the next sync would undo them. Restating Lucide's rules in
   [config/icon-system.ts](../config/icon-system.ts) is fine; inventing per-icon geometry is not.
   Derivations follow general rules, and their per-icon exceptions (filled `roles`, sharp
   `keepRound` and `tipHeight`, hand-drawn overrides) each say why.
@@ -139,5 +137,5 @@ publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
 
 Before opening a PR, run installation, typechecking, linting, the Vitest suite, `check:icons`,
 `check:filled`, `check:sharp`, `check:generated`, and the build, plus `check:brands` after any
-logo sync. Do not commit, push, publish, or
+logo change. Do not commit, push, publish, or
 change Git history unless that is the task.

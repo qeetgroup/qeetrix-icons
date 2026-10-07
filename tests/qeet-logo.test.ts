@@ -9,7 +9,7 @@ import { logoManifest } from "../src/manifest.js";
 
 const PKG = join(import.meta.dirname, "..");
 const file = (variant: string, slug = "qeet") =>
-  readFileSync(join(PKG, `icons/brand-icons/brands/${slug}/${variant}.svg`));
+  readFileSync(join(PKG, `icons/brand-icons/${slug}/${variant}.svg`));
 /** The `src` attribute, HTML-unescaped the way the other logo tests read it. */
 const src = (markup: string) =>
   (/ src="([^"]*)"/.exec(markup)?.[1] ?? "")

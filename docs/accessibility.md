@@ -7,7 +7,7 @@ This is the contract for generated React icon components. The defaults are recor
 [generation.md](generation.md#runtime-decision). There are no generated titles. Every drawing
 selected by `shape` and `variant` gets identical accessibility handling.
 
-Brand logos follow the same principles as images: decorative by default (`alt=""` and
+The Qeet logos follow the same principles as images: decorative by default (`alt=""` and
 `aria-hidden="true"`), named by a non-empty `alt` or `aria-label`. See
 [logos.md](logos.md#props).
 
