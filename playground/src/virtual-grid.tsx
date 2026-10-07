@@ -21,8 +21,8 @@ import {
 } from "./grid-layout.js";
 
 /**
- * A windowed grid scrolled by the page: only rows near the viewport are in the DOM, so 7,400 logo
- * cards or 1,900 icon tiles stay as cheap as a hundred. Implements the WAI-ARIA grid pattern with a
+ * A windowed grid scrolled by the page: only rows near the viewport are in the DOM, so 1,900 icon
+ * tiles stay as cheap as a hundred. Implements the WAI-ARIA grid pattern with a
  * roving tab stop: one Tab stop for the whole grid, arrow keys, Home/End (Ctrl for the ends of the
  * list), and Page Up/Down. The active item's row is always rendered, so focus is never lost to
  * virtualization. A single delayed tooltip follows hover and keyboard focus.

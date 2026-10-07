@@ -228,8 +228,8 @@ Generation reuses the same scanner and validator rather than re-implementing any
 [generation.md](generation.md). The small CLI only anchors the root, formats diagnostics, and sets
 the exit status. These are repository-internal APIs, not package exports.
 
-The scanner visits only `icons/`, skipping `icons/brand-icons/`, which belongs to the brand logo
-pipeline ([below](#brand-logos)). It rejects symlinks without following them, and accepts only SVG
+The scanner visits only `icons/`, skipping `icons/brand-icons/`, which belongs to the logo
+pipeline ([below](#qeet-logos)). It rejects symlinks without following them, and accepts only SVG
 files plus the root `.gitkeep` placeholder. Filesystem or decoding failures are diagnostics, not
 silent skips. It does not search `tests/`, `dist/`, or the whole workspace for SVGs.
 
@@ -242,11 +242,10 @@ The build includes only `src/`, and the package publishes only `dist/`. Config, 
 the parser dependency, and fixtures do not become consumer runtime exports. Generation consumes
 validated production sources only; it never broadens discovery to test fixtures.
 
-## Brand logos
+## Qeet logos
 
-The brand logos in `icons/brand-icons/` ([logos.md](logos.md)) have their own validator and
-command, because they are kept byte for byte as upstream publishes them and follow none of the
-icon rules above:
+The Qeet logos in `icons/brand-icons/` ([logos.md](logos.md)) have their own validator and
+command, because they are kept byte for byte as drawn and follow none of the icon rules above:
 
 ```bash
 bun run check:brands
@@ -255,9 +254,9 @@ bun run check:brands
 [validate-brands.ts](../scripts/check/validate-brands.ts) does not judge a logo's drawing. It
 checks that every file under `icons/brand-icons/` is listed in
 [config/brands.json](../config/brands.json) and the reverse, that the catalogue matches its schema
-and naming rules, that each file is a well-formed SVG with a size, and that none can run script or
-load anything from outside the file. Errors fail the command; the two warnings are notes about
-upstream defects that the logo keeps.
+and naming rules, that every logo is first-party, that each file is a well-formed SVG with a size,
+and that none can run script or load anything from outside the file. Errors fail the command; the
+two warnings are notes about defects a file keeps, since files are embedded as drawn.
 
 | Rule | Purpose | Severity |
 |:--|:--|:--|
@@ -274,10 +273,10 @@ upstream defects that the logo keeps.
 | `QXB-SVG-008` | The `viewBox` is unusable; `width` and `height` size the file instead | Warning |
 | `QXB-MAP-001` | A file that `config/brands.json` does not list | Error |
 | `QXB-MAP-002` | A listed file that does not exist | Error |
-| `QXB-MAP-003` | A listed path outside `icons/brand-icons/<collection>/<slug>/<variant>.svg` | Error |
+| `QXB-MAP-003` | A listed path outside `icons/brand-icons/<slug>/<variant>.svg` | Error |
 | `QXB-NAME-001` | A component name that is not a valid identifier or breaks the naming rule | Error |
 | `QXB-NAME-002` | Two logos with the same component name | Error |
-| `QXB-META-001` | `config/brands.json` does not match its schema | Error |
+| `QXB-META-001` | `config/brands.json` does not match its schema, or lists a logo that is not first-party | Error |
 | `QXB-META-002` | A file's recorded background or colours no longer match its content | Error |
 
 The Vitest suite checks the file listing against the catalogue on every run; `check:brands` also

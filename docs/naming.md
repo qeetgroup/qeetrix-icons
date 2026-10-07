@@ -22,7 +22,7 @@ The component name is PascalCase of the name plus `Icon`, from the one converter
 which rejects an invalid file name rather than producing a broken identifier. Generated components,
 root exports, direct-import subpaths, and the manifest all use it. The `Icon` suffix is always
 kept, so `MapIcon`, `ImageIcon`, and `FileIcon` never collide with platform globals such as `Map`,
-`Image`, and `File`. Brand logos end in `Logo` instead (`GithubLogo`), so an icon and a logo never
+`Image`, and `File`. Logos end in `Logo` instead (`QeetLogo`), so an icon and a logo never
 share a name; their naming rule is in [logos.md](logos.md#names).
 
 The source column shows the round outline; the same name is used in every source folder. The

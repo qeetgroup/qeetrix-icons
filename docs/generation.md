@@ -1,8 +1,8 @@
 # Generation
 
 One command turns validated source SVG into every published icon file: one React 19 component per
-icon concept, the icon export barrel, and the icon manifest. Brand logos have their own generator,
-`generate:logos` ([below](#brand-logos)). The icon sources are the
+icon concept, the icon export barrel, and the icon manifest. The Qeet logos have their own generator,
+`generate:logos` ([below](#qeet-logos)). The icon sources are the
 Lucide outlines ([lucide.md](lucide.md)) and the drawings derived from them, round filled
 ([filled.md](filled.md)) and sharp ([sharp.md](sharp.md)); generation treats them all alike. The
 consumer contract is in [api.md](api.md).
@@ -280,7 +280,7 @@ resolved at runtime and source SVG may not contain `<title>`. Formatting and eve
 still apply, and `.gitattributes` marks the generated files so GitHub collapses their diffs. The
 SVG sources in `icons/` are outside Biome.
 
-## Brand logos
+## Qeet logos
 
 `bun run generate:logos` ([generate-logos.ts](../scripts/build/generate-logos.ts), with
 `scripts/lib/logo-*.ts`) is a separate generator that shares no code with the icon pipeline. It
@@ -300,14 +300,14 @@ memory and fails on any stale, missing, or extra logo file; it runs inside the V
 
 Nothing is converted. Each logo module embeds its files byte for byte as `data:image/svg+xml` URIs,
 records each file's intrinsic size for the aspect ratio, and renders through the shared
-[render-logo.ts](../src/runtime/render-logo.ts) runtime. Its header names the source files, the
-upstream commit, and the logo's license. Output is deterministic and ordered by slug. Like
+[render-logo.ts](../src/runtime/render-logo.ts) runtime. Its header names the source files, marks
+the artwork as first-party, and gives the logo's license. Output is deterministic and ordered by slug. Like
 `config/brands.json`, it is excluded from Biome's checks. See [logos.md](logos.md#components).
 
 ## Package boundary
 
 The generators, validators, plans, metadata config, and filesystem helpers live in `scripts/` and
-`config/` and never enter `dist/`. The package exports only the root, `./icons/*`, `./logos/*`,
+`config/` and never enter `dist/`. The package exports only the root, `./icons/*`,
 `./manifest`, and `./package.json`; the runtime helpers and the generated barrels compile into
 `dist/` but cannot be imported directly. See [api.md](api.md#entry-points).
 

@@ -2,8 +2,8 @@
 
 Qeetrix Icons 2.0 ships the 1,863 outline icons of Lucide 1.52.0, in Lucide's 42 categories, as
 React 19 components with a manifest. Every icon also has a sharp style, and 794 have filled
-variants, all derived from the Lucide outlines. The package also ships 7,429 theSVG brand logos and the first-party Qeet logo and wordmark,
-each rendered exactly as published and under its own license. Validation, generation, the public
+variants, all derived from the Lucide outlines. The package also ships the Qeet logo and wordmark,
+each rendered exactly as drawn. Validation, generation, the public
 API, and the visual QA playground are complete; 2.0 is not yet released.
 
 | Document | Purpose |
@@ -12,13 +12,13 @@ API, and the visual QA playground are complete; 2.0 is not yet released.
 | [lucide.md](lucide.md) | What comes from Lucide, the sync, the upgrade procedure, and licensing |
 | [filled.md](filled.md) | How filled drawings are derived: roles, inference, composition, recipes, and adding one |
 | [sharp.md](sharp.md) | How the sharp style is derived: stroke style, sharpening rules, kept curves, and sharp filled drawings |
-| [logos.md](logos.md) | Brand logos: sources and sync, catalogue, components, backgrounds, licensing and trademarks, defects, performance |
+| [logos.md](logos.md) | Qeet logos: files, catalogue, components, backgrounds, licensing and trademarks |
 | [naming.md](naming.md) | Lucide names, component names, direct imports, aliases, and categories |
 | [api.md](api.md) | Public imports, `IconProps`, logos and `LogoProps`, the manifests, entry points, tree shaking, and semver |
 | [accessibility.md](accessibility.md) | Decorative defaults, named controls, and meaningful standalone icons |
 | [rtl.md](rtl.md) | Semantic directionality and which icons mirror |
 | [architecture.md](architecture.md) | Pipeline, file ownership, and dependencies |
-| [validation.md](validation.md) | Source rules, diagnostics, metadata checks, brand logo checks, and the parser decision |
+| [validation.md](validation.md) | Source rules, diagnostics, metadata checks, logo checks, and the parser decision |
 | [generation.md](generation.md) | Icon generation, the logo generator, generated files, runtime decision, and output safety |
 | [visual-qa.md](visual-qa.md) | The playground, the review workflow, and the per-icon checklist |
 | [contributing.md](contributing.md) | Bun setup, commands, common changes, conventions, and CI |
@@ -31,4 +31,4 @@ Lucide), [icon-metadata.ts](../config/icon-metadata.ts) (manifest metadata and R
 [derived/](../config/derived/README.md) (per category: the filled list and roles, `keepRound`, and
 `tipHeight`), [overrides/](../config/derived/README.md) (hand-drawn replacements), and
 [brands.json](../config/brands.json)
-(synced from theSVG).
+(the Qeet logos, edited by hand).

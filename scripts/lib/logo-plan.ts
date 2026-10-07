@@ -1,9 +1,7 @@
 import { existsSync, lstatSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import type { LogoBackground } from "../../src/types/logo.js";
-import type { BrandsData } from "./brands.js";
 import {
-  type LogoUpstream,
   logoBarrelPath,
   logoBarrelSource,
   logoManifestPath,
@@ -13,16 +11,14 @@ import {
   type PlannedLogo,
   type PlannedLogoVariant,
 } from "./logo-module.js";
-import { logoNoticesPath, renderLogoNotices } from "./logo-notices.js";
 import { LogoSourceError, readSvgIntrinsicSize, svgDataUri } from "./logo-source.js";
 
-/** The brand catalogue written by `sync:brands`, relative to the repository root. */
+/** The logo catalogue, relative to the repository root. */
 export const brandsConfigPath = "config/brands.json";
 /** Every logo source lives under this directory. */
 export const brandSourceDirectory = "icons/brand-icons";
 
 export type LogoPlan = {
-  readonly upstream: LogoUpstream;
   readonly logos: readonly PlannedLogo[];
   /** Repository-relative path to contents, every file the generator owns. */
   readonly files: ReadonlyMap<string, string>;
@@ -65,17 +61,15 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
   const configFile = join(repositoryRoot, brandsConfigPath);
   if (!existsSync(configFile)) {
     return {
-      upstream: { source: "", commit: "", packageVersion: "" },
       logos: [],
       files: new Map(),
-      diagnostics: [`${brandsConfigPath}: missing. Run \`bun run sync:brands\` first.`],
+      diagnostics: [`${brandsConfigPath}: missing.`],
       warnings,
     };
   }
   const config: unknown = JSON.parse(readFileSync(configFile, "utf8"));
   if (!isRecord(config) || !isRecord(config.logos)) {
     return {
-      upstream: { source: "", commit: "", packageVersion: "" },
       logos: [],
       files: new Map(),
       diagnostics: [`${brandsConfigPath}: expected an object with a "logos" object.`],
@@ -83,14 +77,6 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
     };
   }
   const str = (value: unknown) => (typeof value === "string" ? value : "");
-  const upstream: LogoUpstream = {
-    source: str(config.source),
-    commit: str(config.commit),
-    packageVersion: str(config.packageVersion),
-  };
-  if (!upstream.source || !upstream.commit) {
-    diagnostics.push(`${brandsConfigPath}: "source" and "commit" are required.`);
-  }
 
   const logos: PlannedLogo[] = [];
   const componentOwners = new Map<string, string>();
@@ -187,18 +173,16 @@ export function planLogoGeneration(repositoryRoot: string): LogoPlan {
       website: nullable(entry.website),
       guidelines: nullable(entry.guidelines),
       source: nullable(entry.source),
-      ...(entry.firstParty === true ? { firstParty: true } : {}),
     });
   }
 
   const files = new Map<string, string>();
   if (diagnostics.length === 0) {
     for (const logo of logos) {
-      files.set(logoModulePath(logo.id), logoModuleSource(logo, upstream));
+      files.set(logoModulePath(logo.id), logoModuleSource(logo));
     }
-    files.set(logoBarrelPath, logoBarrelSource(logos, upstream));
-    files.set(logoManifestPath, logoManifestSource(logos, upstream));
-    files.set(logoNoticesPath, renderLogoNotices(repositoryRoot, config as unknown as BrandsData));
+    files.set(logoBarrelPath, logoBarrelSource(logos));
+    files.set(logoManifestPath, logoManifestSource(logos));
   }
-  return { upstream, logos, files, diagnostics, warnings };
+  return { logos, files, diagnostics, warnings };
 }

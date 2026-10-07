@@ -1,8 +1,8 @@
 import { moduleId } from "./catalogue.js";
 
 /**
- * One lazy loader per generated logo module. Its own chunk, imported on first use: the table of
- * 7,400 loaders is itself sizeable, so the icon page never pays for it.
+ * One lazy loader per generated logo module. Its own chunk, imported on first use, so the icon
+ * page never pays for it.
  */
 export const logoLoaders: ReadonlyMap<string, () => Promise<Readonly<Record<string, unknown>>>> =
   new Map(

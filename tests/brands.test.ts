@@ -1,27 +1,12 @@
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { gzipSync } from "node:zlib";
-import { afterAll, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   validateBrandSvg,
   validateBrandsData,
   validateBrandsRepository,
 } from "../scripts/check/validate-brands.js";
-import {
-  brandComponentName,
-  brandSlug,
-  brandsData,
-  brandVariantName,
-  classifyBrandSvg,
-  firstPartyBrandLogos,
-  normalizeBrandLicense,
-  readArchiveInfo,
-  readBrandRelease,
-  renderBrandsJson,
-  withFirstPartyLogos,
-} from "../scripts/lib/brands.js";
-import { writeFixture } from "./helpers.js";
+import { brandComponentName, classifyBrandSvg } from "../scripts/lib/brands.js";
 
 const PKG = join(import.meta.dirname, "..");
 const svg = (content: string, attributes = 'viewBox="0 0 24 24"') =>
@@ -29,42 +14,6 @@ const svg = (content: string, attributes = 'viewBox="0 0 24 24"') =>
 const square = (attributes = "") => `<path d="M0 0h24v24H0z" ${attributes}/>`;
 const codes = (source: string) =>
   validateBrandSvg(source, "fixture.svg").map((entry) => entry.code);
-
-describe("brandVariantName", () => {
-  it("maps upstream keys and file stems to kebab-case", () => {
-    expect(
-      [
-        "default",
-        "mono",
-        "wordmarkDark",
-        "wordmark-dark",
-        "wordmarkLight",
-        "monoLobe",
-        "lockupDark",
-        "wordmarkMono",
-        "16",
-        "SVGLogo",
-        "dark_mode",
-      ].map(brandVariantName),
-    ).toEqual([
-      "default",
-      "mono",
-      "wordmark-dark",
-      "wordmark-dark",
-      "wordmark-light",
-      "mono-lobe",
-      "lockup-dark",
-      "wordmark-mono",
-      "16",
-      "svg-logo",
-      "dark-mode",
-    ]);
-  });
-
-  it("rejects keys with nothing to name", () => {
-    expect(() => brandVariantName("--")).toThrow("Cannot derive a variant name");
-  });
-});
 
 describe("brandComponentName", () => {
   it("is PascalCase of the slug plus Logo", () => {
@@ -81,39 +30,6 @@ describe("brandComponentName", () => {
     expect(brandComponentName("arch-linux")).toBe("ArchLinuxLogo");
     expect(brandComponentName("archlinux")).toBe("ArchlinuxLogo");
     expect(brandComponentName("hugging-face")).not.toBe(brandComponentName("huggingface"));
-  });
-
-  it("normalizes upstream slugs to kebab-case first", () => {
-    const slug = brandSlug("gcp-cloud-optimization-ai---fleet-routing-api");
-    expect(slug).toBe("gcp-cloud-optimization-ai-fleet-routing-api");
-    expect(brandComponentName(slug)).toBe("GcpCloudOptimizationAiFleetRoutingApiLogo");
-    expect(brandSlug("Café")).toBe("cafe");
-  });
-});
-
-describe("normalizeBrandLicense", () => {
-  it("maps upstream text to SPDX where it fits and keeps the raw text", () => {
-    expect(normalizeBrandLicense("GPL-3.0")).toEqual({
-      license: "GPL-3.0-only",
-      licenseRaw: "GPL-3.0",
-      licenseClass: "copyleft",
-    });
-    expect(normalizeBrandLicense("CC0-1.0").licenseClass).toBe("public-domain");
-    expect(normalizeBrandLicense("Apache-2.0").licenseClass).toBe("permissive");
-    expect(normalizeBrandLicense("CC-BY-4.0").licenseClass).toBe("attribution");
-    expect(normalizeBrandLicense("CC-BY-SA-3.0").licenseClass).toBe("share-alike");
-    expect(normalizeBrandLicense("CC-BY-ND-2.0").licenseClass).toBe("no-derivatives");
-    expect(normalizeBrandLicense("CC-BY-NC-SA-4.0").licenseClass).toBe("non-commercial");
-    expect(normalizeBrandLicense("brand-use")).toEqual({
-      license: "brand-use",
-      licenseRaw: "brand-use",
-      licenseClass: "no-licence",
-    });
-    expect(normalizeBrandLicense(null)).toEqual({
-      license: "NOASSERTION",
-      licenseRaw: null,
-      licenseClass: "no-licence",
-    });
   });
 });
 
@@ -304,240 +220,59 @@ describe("validateBrandSvg", () => {
   });
 });
 
-describe("readBrandRelease and brandsData", () => {
-  const root = mkdtempSync(join(tmpdir(), "qeetrix-brands-test-"));
-  afterAll(() => rmSync(root, { recursive: true, force: true }));
-  const black = svg(square('fill="#000"'));
-  const white = svg(square('fill="#fff"'));
-  const blue = svg(square('fill="#1877F2"'));
-  const release = (files: Record<string, string>) => {
-    const directory = mkdtempSync(join(root, "release-"));
-    for (const [file, contents] of Object.entries(files)) writeFixture(directory, file, contents);
-    return directory;
-  };
-  const manifest = [
-    {
-      slug: "acme",
-      title: "Acme",
-      aliases: ["acme inc"],
-      hex: "fff",
-      categories: ["Software"],
-      variants: {
-        default: "/icons/acme/color.svg",
-        color: "/icons/acme/color.svg",
-        mono: "/icons/acme/white.svg",
-        wordmarkDark: "/icons/acme/wordmark-dark.svg",
-        wordmarkLight: "/icons/acme/wordmark-light.svg",
-      },
-      license: "GPL-3.0",
-      url: "https://acme.test",
-      collection: "brands",
-    },
-    {
-      slug: "1up",
-      title: "1UP",
-      aliases: [],
-      hex: "000000",
-      categories: [],
-      variants: { default: "/icons/1up/default.svg" },
-      license: "CC0-1.0",
-      collection: "community",
-    },
-  ];
-  const base = {
-    "src/data/icons.json": JSON.stringify(manifest),
-    "packages/thesvg/package.json": '{ "version": "9.9.9" }',
-    "public/icons/acme/color.svg": blue,
-    "public/icons/acme/default.svg": blue,
-    "public/icons/acme/white.svg": white,
-    "public/icons/acme/wordmark-dark.svg": black,
-    "public/icons/acme/wordmarkLight.svg": white,
-    "public/icons/acme/monoLobe.svg": black,
-    "public/icons/1up/default.svg": black,
-    "public/icons/one-up-copy/default.svg": black,
-    "public/icons/stray/default.svg": white,
-  };
-  const commit = "c75313597b8bb14982e433ddae1b705813c66c7c";
+describe("validateBrandsData", () => {
+  const variant = (slug: string, name = "default") => ({
+    file: `icons/brand-icons/${slug}/${name}.svg`,
+    background: "light",
+    colors: ["#000000"],
+  });
+  const logo = (slug: string) => ({
+    title: slug,
+    collection: "brands",
+    componentName: brandComponentName(slug),
+    defaultVariant: "default",
+    variants: { default: variant(slug) },
+    hex: null,
+    categories: [],
+    aliases: [],
+    license: "LicenseRef-Qeet",
+    licenseRaw: "Proprietary.",
+    licenseClass: "first-party",
+    firstParty: true,
+    website: null,
+    guidelines: null,
+    source: "https://qeet.in",
+  });
+  const data = (logos: Record<string, ReturnType<typeof logo>>) => ({
+    collections: [{ id: "brands", label: "Brands", count: Object.keys(logos).length }],
+    logos,
+  });
+  const codes = (value: unknown) =>
+    validateBrandsData(value).diagnostics.map((entry) => entry.code);
 
-  it("keeps every file, names variants from keys or stems, and records loose ends", () => {
-    const result = readBrandRelease(release(base), commit);
-    expect(result.packageVersion).toBe("9.9.9");
-    expect(result.logos.map((logo) => logo.slug)).toEqual(["1up", "acme", "stray"]);
-    const acme = result.logos.find((logo) => logo.slug === "acme");
-    expect(acme?.defaultVariant).toBe("color");
-    expect(
-      acme?.variants.map(({ name, upstreamFile, upstreamKeys }) => [
-        name,
-        upstreamFile,
-        upstreamKeys,
-      ]),
-    ).toEqual([
-      ["color", "public/icons/acme/color.svg", ["color", "default"]],
-      ["default", "public/icons/acme/default.svg", []],
-      ["mono", "public/icons/acme/white.svg", ["mono"]],
-      ["mono-lobe", "public/icons/acme/monoLobe.svg", []],
-      ["wordmark-dark", "public/icons/acme/wordmark-dark.svg", ["wordmarkDark"]],
-      ["wordmark-light", "public/icons/acme/wordmarkLight.svg", []],
-    ]);
-    expect(acme?.variants.find((variant) => variant.name === "mono")?.bytes.toString()).toBe(white);
-    const stray = result.logos.find((logo) => logo.slug === "stray");
-    expect(stray).toMatchObject({ listed: false, collection: "unlisted", licenseRaw: null });
-    expect(result.skipped).toEqual([
-      {
-        item: "acme wordmarkLight",
-        reason:
-          "listed upstream as /icons/acme/wordmark-light.svg, but the release has no such file; " +
-          "the folder's unlisted public/icons/acme/wordmarkLight.svg is kept as variant wordmark-light",
-      },
-      {
-        item: "public/icons/one-up-copy",
-        reason: "not in upstream's manifest and byte-identical to 1up",
-      },
-    ]);
+  it("accepts first-party logos with no upstream pin", () => {
+    expect(codes(data({ qeet: logo("qeet") }))).toEqual([]);
   });
 
-  it("keeps an unlisted folder that differs from its look-alike", () => {
-    const result = readBrandRelease(
-      release({ ...base, "public/icons/one-up-copy/default.svg": white }),
-      commit,
+  it("rejects a logo that is not first-party", () => {
+    const { firstParty: _, ...thirdParty } = logo("github");
+    const result = validateBrandsData(
+      data({ github: { ...thirdParty, licenseClass: "permissive" } as never }),
     );
-    expect(result.logos.map((logo) => logo.slug)).toContain("one-up-copy");
-  });
-
-  it("refuses two files that would share a variant name", () => {
-    const directory = release({
-      ...base,
-      "public/icons/stray/wordmarkDark.svg": black,
-      "public/icons/stray/wordmark-dark.svg": white,
-    });
-    expect(() => readBrandRelease(directory, commit)).toThrow(
-      'both map to variant "wordmark-dark"',
+    expect(result.diagnostics.map((entry) => entry.message)).toContain(
+      "logos.github.firstParty must be true: only first-party logos ship.",
     );
-  });
-
-  it("builds sorted, schema-valid data with licences, names and measured backgrounds", () => {
-    const data = brandsData(readBrandRelease(release(base), commit), "2026-10-04");
-    expect(data.collections).toEqual([
-      { id: "brands", label: "Brands", count: 1 },
-      { id: "community", label: "Community", count: 1 },
-      { id: "unlisted", label: "Unlisted", count: 1 },
-    ]);
-    const acme = data.logos.acme;
-    expect(acme).toMatchObject({
-      componentName: "AcmeLogo",
-      hex: "FFFFFF",
-      license: "GPL-3.0-only",
-      licenseRaw: "GPL-3.0",
-      licenseClass: "copyleft",
-      website: "https://acme.test",
-      source: "https://thesvg.org/icon/acme",
-    });
-    expect(acme?.variants.mono).toEqual({
-      file: "icons/brand-icons/brands/acme/mono.svg",
-      background: "dark",
-      colors: ["#ffffff"],
-      upstreamKeys: ["mono"],
-    });
-    expect(data.logos["1up"]?.componentName).toBe("Brand1upLogo");
-    expect(data.logos.stray?.license).toBe("NOASSERTION");
-    expect(validateBrandsData(JSON.parse(renderBrandsJson(data))).diagnostics).toEqual([]);
-    const rendered = JSON.parse(renderBrandsJson(data));
-    expect(Object.keys(rendered)).toEqual([...Object.keys(rendered)].sort());
-    expect(Object.keys(rendered.logos.acme)).toEqual([...Object.keys(rendered.logos.acme)].sort());
   });
 
   it("reports duplicate component names and misplaced files", () => {
-    const data = JSON.parse(
-      renderBrandsJson(brandsData(readBrandRelease(release(base), commit), "2026-10-04")),
-    );
-    data.logos.stray.componentName = "AcmeLogo";
-    data.logos.acme.variants.mono.file = "icons/brand-icons/brands/acme/white.svg";
-    expect(validateBrandsData(data).diagnostics.map((entry) => entry.code)).toEqual([
-      "QXB-MAP-003",
-      "QXB-NAME-001",
-      "QXB-NAME-002",
-    ]);
-  });
-});
-
-describe("readArchiveInfo", () => {
-  it("reads the commit and commit date from a git-archive tarball header", () => {
-    const commit = "c75313597b8bb14982e433ddae1b705813c66c7c";
-    const mtime = Date.UTC(2026, 9, 4, 20, 34, 47) / 1000;
-    const record = `52 comment=${commit}\n`;
-    const header = Buffer.alloc(512);
-    header.write("pax_global_header", 0, "latin1");
-    header.write(`${record.length.toString(8).padStart(11, "0")}\0`, 124, "latin1");
-    header.write(`${mtime.toString(8).padStart(11, "0")}\0`, 136, "latin1");
-    header.write("g", 156, "latin1");
-    const body = Buffer.alloc(512);
-    body.write(record, 0, "utf8");
-    const archive = gzipSync(Buffer.concat([header, body, Buffer.alloc(1024)]));
-    expect(readArchiveInfo(archive)).toEqual({ commit, date: "2026-10-04" });
+    const value = data({ qeet: logo("qeet"), stray: logo("stray") });
+    value.logos.stray.componentName = "QeetLogo";
+    value.logos.qeet.variants.default.file = "icons/brand-icons/qeet/other.svg";
+    expect(codes(value)).toEqual(["QXB-MAP-003", "QXB-NAME-001", "QXB-NAME-002"]);
   });
 });
 
 describe("first-party logos", () => {
-  const upstream = (slug: string, collection = "brands") => ({
-    title: slug,
-    collection,
-    componentName: brandComponentName(slug),
-    defaultVariant: "default",
-    variants: {
-      default: {
-        file: `icons/brand-icons/${collection}/${slug}/default.svg`,
-        background: "light" as const,
-        colors: ["#000000"],
-        upstreamKeys: ["default"],
-      },
-    },
-    hex: null,
-    categories: [],
-    aliases: [],
-    license: "MIT",
-    licenseRaw: "MIT",
-    licenseClass: "permissive" as const,
-    website: null,
-    guidelines: null,
-    source: `https://thesvg.org/icon/${slug}`,
-  });
-  const synced = {
-    source: "https://github.com/glincker/thesvg",
-    commit: "abc",
-    packageVersion: "1.0.0",
-    fetched: "2026-01-01",
-    collections: [{ id: "brands", label: "Brands", count: 1 }],
-    logos: { github: upstream("github") },
-  };
-  const qeet = {
-    ...upstream("qeet"),
-    license: "LicenseRef-Qeet",
-    licenseRaw: "Proprietary.",
-    licenseClass: "first-party" as const,
-    firstParty: true as const,
-  };
-
-  it("picks only the entries marked firstParty", () => {
-    expect(
-      Object.keys(firstPartyBrandLogos({ logos: { github: upstream("github"), qeet } })),
-    ).toEqual(["qeet"]);
-    expect(firstPartyBrandLogos(undefined)).toEqual({});
-  });
-
-  it("carries first-party logos across a re-sync and recounts their collection", () => {
-    const merged = withFirstPartyLogos(synced, { qeet });
-    expect(Object.keys(merged.logos).sort()).toEqual(["github", "qeet"]);
-    expect(merged.logos.qeet?.firstParty).toBe(true);
-    expect(merged.collections).toEqual([{ id: "brands", label: "Brands", count: 2 }]);
-  });
-
-  it("refuses a first-party slug or component name that upstream also uses", () => {
-    expect(() => withFirstPartyLogos(synced, { github: { ...qeet } })).toThrow(/clashes/);
-    expect(() =>
-      withFirstPartyLogos(synced, { "git-hub": { ...qeet, componentName: "GithubLogo" } }),
-    ).toThrow(/share GithubLogo/);
-  });
-
   it("is recorded for the Qeet logo, with a light and a dark file", () => {
     const repository = JSON.parse(
       readFileSync(join(PKG, "config/brands.json"), "utf8"),
@@ -568,7 +303,7 @@ type BrandsConfigFile = {
 };
 
 describe("repository brand logos", () => {
-  // Lists ~13,400 files without reading them; `bun run check:brands` validates their content.
+  // Lists the files without reading them; `bun run check:brands` validates their content.
   it("lists exactly the files in icons/brand-icons/, in the documented layout", () => {
     const result = validateBrandsRepository(PKG, { content: false });
     expect(result.diagnostics).toEqual([]);

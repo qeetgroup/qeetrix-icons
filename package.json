@@ -1,8 +1,8 @@
 {
   "name": "@qeetrix/icons",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "private": false,
-  "description": "Qeetrix Icons — Lucide icons in round and sharp shapes with derived filled variants, plus theSVG brand logos, as tree-shakeable React components.",
+  "description": "Qeetrix Icons — Lucide icons in round and sharp shapes with derived filled variants, plus the Qeet logo and wordmark, as tree-shakeable React components.",
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
@@ -19,9 +19,7 @@
     "qeetrix",
     "design-system",
     "lucide",
-    "logos",
-    "brand-logos",
-    "thesvg"
+    "logos"
   ],
   "type": "module",
   "packageManager": "bun@1.3.14",
@@ -31,8 +29,7 @@
   },
   "sideEffects": false,
   "files": [
-    "dist",
-    "licenses"
+    "dist"
   ],
   "exports": {
     ".": {
@@ -66,7 +63,6 @@
     "check:sharp": "bun scripts/build/derive-sharp.ts --check",
     "stamp:override": "bun scripts/build/stamp-override.ts",
     "sync:lucide": "bun scripts/sync/sync-lucide.ts",
-    "sync:brands": "bun scripts/sync/sync-brands.ts",
     "check:brands": "bun scripts/check/check-brands.ts",
     "generate:logos": "bun scripts/build/generate-logos.ts",
     "check:logos": "bun scripts/build/generate-logos.ts --check",

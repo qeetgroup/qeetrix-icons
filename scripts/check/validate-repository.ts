@@ -28,7 +28,7 @@ export type SourceScan = ValidationResult & {
 };
 
 /**
- * Original brand logos, `icons/brand-icons/<collection>/<slug>/<variant>.svg`. They are not icon
+ * Qeet's own logos, `icons/brand-icons/<slug>/<variant>.svg`. They are not icon
  * drawings: a separate pipeline with its own validator (scripts/check/validate-brands.ts) owns
  * them, so the icon scanner skips the whole directory.
  */

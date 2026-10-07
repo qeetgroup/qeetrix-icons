@@ -1,5 +1,5 @@
 /**
- * Brand logo sources are embedded exactly as published. Nothing here changes a file: it reads the
+ * Logo sources are embedded exactly as drawn. Nothing here changes a file: it reads the
  * root element's sizing attributes (to know the aspect ratio) and encodes the file's bytes as a
  * lossless `data:` URI. This pipeline shares no code with the icon scripts.
  */

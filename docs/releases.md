@@ -6,7 +6,7 @@ What a version number means for an icon library, how a release happens, and how 
 
 > [!WARNING]
 > This branch holds the unreleased 2.0: the 1.x catalogue is gone, and the root exports the 1,863
-> Lucide-based icons, the 7,429 theSVG brand logos, and the public types. `package.json` still
+> Lucide-based icons, the Qeet logo and wordmark, and the public types. `package.json` still
 > carries a 1.x version. Merged to `main` through the flow below, this could publish the
 > incompatible 2.0 work as a **1.x patch release** on `latest`, and consumers on a `^1` range could
 > receive it on their next install.
@@ -96,10 +96,9 @@ are the cost to plan for: batch them into a major release rather than shipping t
 
 ### Logo updates
 
-A theSVG sync ([logos.md](logos.md#sources-and-sync)) prints what it added and removed. Added
-logos and variants are minor; removed or renamed slugs and variants are major, because their
-exports or variant names disappear. A logo whose license changed keeps its name but may no longer
-be usable the same way: list license changes in the release notes, whatever the version bump.
+Logos are edited by hand ([logos.md](logos.md#files)). Added logos and variants are minor;
+removed or renamed slugs and variants are major, because their exports or variant names
+disappear. A redrawn file under the same name is a patch.
 
 ## Publishing setup
 

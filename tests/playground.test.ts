@@ -994,7 +994,7 @@ export const iconMetadata: Readonly<Record<string, IconMetadata>> = ${JSON.strin
       "fixture-star",
       "FixtureArrowIcon",
       // Version stamps come from the small meta module, not the large config files.
-      "9.9.9",
+      JSON.parse(readFileSync(join(PKG, "config/lucide.json"), "utf8")).version as string,
     ]) {
       expect(main, marker).toContain(marker);
     }

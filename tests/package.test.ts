@@ -196,9 +196,7 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
       .sort();
     for (const entry of entries) {
       expect(
-        ["package.json", "README.md", "LICENSE"].includes(entry) ||
-          entry.startsWith("dist/") ||
-          entry.startsWith("licenses/"),
+        ["package.json", "README.md", "LICENSE"].includes(entry) || entry.startsWith("dist/"),
         entry,
       ).toBe(true);
       expect(entry, entry).not.toMatch(
@@ -208,8 +206,6 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
     expect(entries).toEqual(
       expect.arrayContaining([
         "LICENSE",
-        "licenses/third-party-logos.md",
-        "licenses/Apache-2.0.txt",
         "dist/index.js",
         "dist/index.d.ts",
         "dist/manifest.js",
@@ -374,21 +370,21 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
     }
   }, 180_000);
 
-  it("serves brand logos from the root, embedding each file unmodified", () => {
+  it("serves Qeet's logos from the root, embedding each file unmodified", () => {
     const result = node(`
-      import { GithubLogo } from "@qeetrix/icons";
+      import { QeetLogo } from "@qeetrix/icons";
       import { logoManifest } from "@qeetrix/icons/manifest";
       import { createElement } from "react";
       import { renderToStaticMarkup } from "react-dom/server";
-      const render = (props) => renderToStaticMarkup(createElement(GithubLogo, props));
+      const render = (props) => renderToStaticMarkup(createElement(QeetLogo, props));
       console.log(JSON.stringify({
         decorative: render({}),
-        mono: render({ variant: "mono", height: 40, "aria-label": "GitHub" }),
-        entry: logoManifest.logos.find(({ id }) => id === "github"),
+        dark: render({ variant: "dark", height: 40, "aria-label": "Qeet" }),
+        entry: logoManifest.logos.find(({ id }) => id === "qeet"),
       }));
     `) as {
       decorative: string;
-      mono: string;
+      dark: string;
       entry: { componentName: string };
     };
     const srcOf = (markup: string) =>
@@ -402,17 +398,17 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
           .replaceAll("&gt;", ">") ?? "",
       );
     const file = (variant: string) =>
-      readFileSync(join(PKG, "icons/brand-icons/brands/github", `${variant}.svg`), "utf8");
-    expect(result.entry.componentName).toBe("GithubLogo");
+      readFileSync(join(PKG, "icons/brand-icons/qeet", `${variant}.svg`), "utf8");
+    expect(result.entry.componentName).toBe("QeetLogo");
     expect(result.decorative).toMatch(/^<img /);
     expect(result.decorative).toContain('alt=""');
     expect(result.decorative).toContain('aria-hidden="true"');
     expect(result.decorative).toContain('height="24"');
     expect(srcOf(result.decorative)).toBe(file("default"));
-    expect(result.mono).toContain('alt="GitHub"');
-    expect(result.mono).not.toContain("aria-hidden");
-    expect(result.mono).toContain('height="40"');
-    expect(srcOf(result.mono)).toBe(file("mono"));
+    expect(result.dark).toContain('alt="Qeet"');
+    expect(result.dark).not.toContain("aria-hidden");
+    expect(result.dark).toContain('height="40"');
+    expect(srcOf(result.dark)).toBe(file("dark"));
   });
 
   it("tree-shakes logos: an icon ships no logo, and a logo ships no other logo", () => {
@@ -426,12 +422,11 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
     };
     const icon = bundle('import { TrashIcon } from "@qeetrix/icons"; console.log(TrashIcon);');
     expect(icon).not.toContain("data:image/svg+xml");
-    const logo = bundle('import { GithubLogo } from "@qeetrix/icons"; console.log(GithubLogo);');
+    const logo = bundle('import { QeetLogo } from "@qeetrix/icons"; console.log(QeetLogo);');
     expect(logo).toContain("data:image/svg+xml");
     expect(logo.match(/data:image\/svg\+xml,/g)?.length).toBe(
-      logoManifest.logos.find(({ id }) => id === "github")?.variants.length,
+      logoManifest.logos.find(({ id }) => id === "qeet")?.variants.length,
     );
-    expect(logo).not.toContain("GitLab");
   }, 120_000);
 
   it("refuses internal, category, layout, and extension-bearing subpaths", () => {

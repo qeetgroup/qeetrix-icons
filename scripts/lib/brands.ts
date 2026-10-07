@@ -1,25 +1,17 @@
-import { createHash } from "node:crypto";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
-import { constants, gunzipSync } from "node:zlib";
 import { DOMParser, type Document, Element, type Node, onWarningStopParsing } from "@xmldom/xmldom";
 import { compareText } from "./diagnostics.js";
 
 /**
- * Brand logos from theSVG (https://thesvg.org, https://github.com/glincker/thesvg).
+ * Qeet Group's own logos.
  *
- * Logos are kept as upstream ships them: every file is copied byte-for-byte, with its own colours,
- * viewBox and proportions, to `icons/brand-icons/<collection>/<slug>/<variant>.svg`.
- * `config/brands.json` records each logo's metadata and licence, and, per file, the background it
- * is drawn for. That background is measured from the painted colours, because upstream's `light`
- * and `dark` names do not reliably say which background a file suits.
+ * Every file is kept exactly as drawn, with its own colours, viewBox and proportions, at
+ * `icons/brand-icons/<slug>/<variant>.svg`. `config/brands.json` records each logo's
+ * metadata and licence, and, per file, the background it is drawn for. Third-party brand logos are
+ * not shipped; an app that needs one uses theSVG (https://thesvg.org) directly.
  */
 
-export const brandsSource = "https://github.com/glincker/thesvg";
 export const brandsRoot = "icons/brand-icons";
 export const brandsDataPath = "config/brands.json";
-/** Collection for folders that upstream ships but its manifest does not list. */
-export const unlistedCollection = "unlisted";
 
 /**
  * The background a file's artwork is drawn for: `light` is dark artwork for light backgrounds,
@@ -60,38 +52,32 @@ export type BrandPaint = {
 };
 
 export type BrandVariantData = BrandPaint & {
-  /** Repository-relative path: `icons/brand-icons/<collection>/<slug>/<variant>.svg`. */
+  /** Repository-relative path: `icons/brand-icons/<slug>/<variant>.svg`. */
   readonly file: string;
-  /** Upstream manifest keys that point at this file, sorted; empty when upstream lists none. */
-  readonly upstreamKeys: readonly string[];
 };
 
 export type BrandLogoData = {
   readonly title: string;
   readonly collection: string;
   readonly componentName: string;
-  /** The variant upstream's manifest names as `default`. */
+  /** The variant a component renders when none is given. */
   readonly defaultVariant: string;
   readonly variants: Readonly<Record<string, BrandVariantData>>;
-  /** Upstream brand colour as uppercase `RRGGBB`, or null. */
+  /** Brand colour as uppercase `RRGGBB`, or null. */
   readonly hex: string | null;
   readonly categories: readonly string[];
   readonly aliases: readonly string[];
-  /** SPDX identifier when upstream's text maps to one, `NOASSERTION` when there is none, else the text. */
+  /** SPDX identifier, or a `LicenseRef-` identifier for proprietary artwork. */
   readonly license: string;
-  /** Upstream's licence text, verbatim; null when upstream gives none. */
+  /** The licence text, verbatim; null when there is none. */
   readonly licenseRaw: string | null;
   readonly licenseClass: BrandLicenseClass;
   readonly website: string | null;
   readonly guidelines: string | null;
-  /** theSVG page for listed logos; the upstream folder at the pinned commit for unlisted ones. */
+  /** Where the artwork comes from, as an https URL. */
   readonly source: string;
-  /**
-   * Qeet's own artwork rather than an upstream logo (licence class `first-party`). `sync:brands`
-   * replaces everything else in `icons/brand-icons/` and `config/brands.json`, but carries these
-   * entries and their files across a re-sync unchanged.
-   */
-  readonly firstParty?: true;
+  /** Qeet's own artwork (licence class `first-party`). Every logo in the package is first-party. */
+  readonly firstParty: true;
 };
 
 export type BrandCollection = {
@@ -103,11 +89,6 @@ export type BrandCollection = {
 
 /** `config/brands.json`. */
 export type BrandsData = {
-  readonly source: string;
-  readonly commit: string;
-  readonly packageVersion: string | null;
-  /** Date of the pinned commit (UTC, `YYYY-MM-DD`), so re-syncing the same commit is reproducible. */
-  readonly fetched: string;
   readonly collections: readonly BrandCollection[];
   readonly logos: Readonly<Record<string, BrandLogoData>>;
 };
@@ -120,35 +101,6 @@ export const identifierPattern = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
 
 export function isKebabCase(value: string): boolean {
   return kebabPattern.test(value);
-}
-
-/**
- * Maps an upstream variant key or file stem to a kebab-case variant name: `wordmarkDark` and
- * `wordmark-dark` become `wordmark-dark`, `monoLobe` becomes `mono-lobe`, `16` stays `16`.
- */
-export function brandVariantName(key: string): string {
-  const name = key
-    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
-    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1-$2")
-    .replace(/[^A-Za-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .toLowerCase();
-  if (!kebabPattern.test(name)) {
-    throw new Error(`Cannot derive a variant name from ${JSON.stringify(key)}.`);
-  }
-  return name;
-}
-
-/** Lowercase ASCII kebab-case slug; upstream's `ai---fleet` becomes `ai-fleet`. */
-export function brandSlug(upstream: string): string {
-  const slug = upstream
-    .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-  if (!slug) throw new Error(`Cannot derive a slug from ${JSON.stringify(upstream)}.`);
-  return slug;
 }
 
 /**
@@ -166,107 +118,8 @@ export function brandComponentName(slug: string): string {
   return /^[0-9]/.test(name) ? `Brand${name}` : name;
 }
 
-const collectionLabels: Readonly<Record<string, string>> = {
-  brands: "Brands",
-  community: "Community",
-  "auth-badges": "Auth badges",
-  aws: "AWS architecture",
-  azure: "Azure architecture",
-  gcp: "Google Cloud architecture",
-  k8s: "Kubernetes architecture",
-  [unlistedCollection]: "Unlisted",
-};
-const collectionOrder = Object.keys(collectionLabels);
-
-function titleCase(slug: string): string {
-  return slug
-    .split("-")
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
-
-export function brandCollectionLabel(id: string): string {
-  return collectionLabels[id] ?? titleCase(id);
-}
-
-/** Known collections in upstream's order, then any others by id, with `unlisted` last. */
-export function compareCollections(left: string, right: string): number {
-  const rank = (id: string) => {
-    if (id === unlistedCollection) return Number.MAX_SAFE_INTEGER;
-    const index = collectionOrder.indexOf(id);
-    return index < 0 ? collectionOrder.length : index;
-  };
-  return rank(left) - rank(right) || compareText(left, right);
-}
-
-export function brandVariantFile(collection: string, slug: string, variant: string): string {
-  return `${brandsRoot}/${collection}/${slug}/${variant}.svg`;
-}
-
-/** Uppercase `RRGGBB` from `#rgb`, `rgb`, `#rrggbb` or `rrggbb`; null otherwise. */
-export function normalizeBrandHex(value: unknown): string | null {
-  if (typeof value !== "string") return null;
-  let hex = value.trim().replace(/^#/, "");
-  if (/^[0-9a-f]{3}$/i.test(hex)) hex = [...hex].map((digit) => digit + digit).join("");
-  return /^[0-9a-f]{6}$/i.test(hex) ? hex.toUpperCase() : null;
-}
-
-// ---------------------------------------------------------------------------------------------
-// Licences
-
-/** Deprecated or informal identifiers upstream uses, mapped to current SPDX identifiers. */
-const spdxAliases: Readonly<Record<string, string>> = {
-  "GPL-2.0": "GPL-2.0-only",
-  "GPL-2.0+": "GPL-2.0-or-later",
-  "GPL-3.0": "GPL-3.0-only",
-  "GPL-3.0+": "GPL-3.0-or-later",
-  "AGPL-3.0": "AGPL-3.0-only",
-  "LGPL-2.0": "LGPL-2.0-only",
-  "LGPL-2.1": "LGPL-2.1-only",
-  "LGPL-3.0": "LGPL-3.0-only",
-  PD: "LicenseRef-PublicDomain",
-  "Public Domain": "LicenseRef-PublicDomain",
-};
-const publicDomain = new Set(["CC0-1.0", "Unlicense", "LicenseRef-PublicDomain"]);
-const permissive = new Set([
-  "0BSD",
-  "MIT",
-  "MIT-0",
-  "ISC",
-  "Apache-2.0",
-  "BSD-2-Clause",
-  "BSD-3-Clause",
-  "Zlib",
-]);
-const creativeCommons = /^CC-BY(?:-NC)?(?:-SA|-ND)?-[1-4]\.[05]$/;
-const copyleft = /^(?:(?:A|L)?GPL-[23]\.[01]-(?:only|or-later)|MPL-[12]\.[01]|EPL-[12]\.0)$/;
-
-/** Normalizes upstream's licence text to an SPDX identifier where one fits, and classifies it. */
-export function normalizeBrandLicense(raw: unknown): {
-  license: string;
-  licenseRaw: string | null;
-  licenseClass: BrandLicenseClass;
-} {
-  if (typeof raw !== "string" || raw.trim() === "") {
-    return { license: "NOASSERTION", licenseRaw: null, licenseClass: "no-licence" };
-  }
-  const id = spdxAliases[raw.trim()] ?? raw.trim();
-  let licenseClass: BrandLicenseClass | undefined;
-  if (publicDomain.has(id)) licenseClass = "public-domain";
-  else if (permissive.has(id)) licenseClass = "permissive";
-  else if (creativeCommons.test(id)) {
-    licenseClass = id.startsWith("CC-BY-NC")
-      ? "non-commercial"
-      : id.startsWith("CC-BY-ND")
-        ? "no-derivatives"
-        : id.startsWith("CC-BY-SA")
-          ? "share-alike"
-          : "attribution";
-  } else if (copyleft.test(id)) licenseClass = "copyleft";
-  return licenseClass
-    ? { license: id, licenseRaw: raw, licenseClass }
-    : { license: raw, licenseRaw: raw, licenseClass: "no-licence" };
+export function brandVariantFile(slug: string, variant: string): string {
+  return `${brandsRoot}/${slug}/${variant}.svg`;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -1443,491 +1296,4 @@ export function decodeBrandSvg(bytes: Uint8Array): string {
 export function classifyBrandSvg(source: string): BrandPaint {
   const { document } = parseBrandSvg(source);
   return document ? analyseBrandPaint(document) : { background: "any", colors: [] };
-}
-
-/** `classifyBrandSvg` on raw bytes; undecodable files are `any` with no colours. */
-export function classifyBrandBytes(bytes: Uint8Array): BrandPaint {
-  let source: string;
-  try {
-    source = decodeBrandSvg(bytes);
-  } catch {
-    return { background: "any", colors: [] };
-  }
-  return classifyBrandSvg(source);
-}
-
-// ---------------------------------------------------------------------------------------------
-// Reading an extracted theSVG release (the repository tarball layout)
-
-export type BrandReleaseVariant = {
-  readonly name: string;
-  /** Path inside the release, such as `public/icons/github/mono.svg`. */
-  readonly upstreamFile: string;
-  readonly upstreamKeys: readonly string[];
-  readonly bytes: Buffer;
-};
-
-export type BrandReleaseLogo = {
-  readonly slug: string;
-  readonly upstreamSlug: string;
-  /** Whether upstream's manifest lists the logo. */
-  readonly listed: boolean;
-  readonly title: string;
-  readonly collection: string;
-  readonly defaultVariant: string;
-  readonly variants: readonly BrandReleaseVariant[];
-  readonly hex: string | null;
-  readonly categories: readonly string[];
-  readonly aliases: readonly string[];
-  readonly licenseRaw: string | null;
-  readonly website: string | null;
-  readonly guidelines: string | null;
-  readonly source: string;
-};
-
-export type BrandSkip = { readonly item: string; readonly reason: string };
-
-export type BrandRelease = {
-  readonly commit: string;
-  readonly packageVersion: string | null;
-  readonly logos: readonly BrandReleaseLogo[];
-  /** Upstream items left out, with the reason. */
-  readonly skipped: readonly BrandSkip[];
-};
-
-const manifestPath = "src/data/icons.json";
-const iconsPath = "public/icons";
-
-function stringOrNull(value: unknown): string | null {
-  return typeof value === "string" && value.trim() !== "" ? value : null;
-}
-
-function stringList(value: unknown, field: string): string[] {
-  if (value === undefined || value === null) return [];
-  if (!Array.isArray(value) || !value.every((item) => typeof item === "string")) {
-    throw new Error(`${field} must be an array of strings.`);
-  }
-  return value;
-}
-
-function readPackageVersion(directory: string): string | null {
-  for (const [file, field] of [
-    ["packages/thesvg/package.json", "version"],
-    ["src/data/thesvg-version.json", "version"],
-  ] as const) {
-    const path = join(directory, file);
-    if (!existsSync(path)) continue;
-    const version = (JSON.parse(readFileSync(path, "utf8")) as Record<string, unknown>)[field];
-    if (typeof version === "string") return version;
-  }
-  return null;
-}
-
-type DiskFile = { readonly folder: string; readonly name: string; readonly bytes: Buffer };
-
-/** Names each file of one logo; throws when two files would share a variant name. */
-function nameVariants(
-  slug: string,
-  files: readonly DiskFile[],
-  keysByFile: ReadonlyMap<string, readonly string[]>,
-): BrandReleaseVariant[] {
-  const variants = new Map<string, BrandReleaseVariant>();
-  for (const file of files) {
-    const upstreamFile = `${iconsPath}/${file.folder}/${file.name}`;
-    const keys = keysByFile.get(upstreamFile) ?? [];
-    const stem = brandVariantName(file.name.slice(0, -4));
-    // A file listed under a real variant key takes that key's name (`white.svg` listed as `mono`
-    // is `mono`); a file listed only as `default`, or not at all, is named after its stem.
-    const named = keys.filter((key) => key !== "default");
-    const name =
-      named.length === 0
-        ? stem
-        : brandVariantName(named.find((key) => brandVariantName(key) === stem) ?? named[0] ?? "");
-    const existing = variants.get(name);
-    if (existing) {
-      throw new Error(
-        `${slug}: ${existing.upstreamFile} and ${upstreamFile} both map to variant ${JSON.stringify(name)}.`,
-      );
-    }
-    variants.set(name, {
-      name,
-      upstreamFile,
-      upstreamKeys: [...keys].sort(compareText),
-      bytes: file.bytes,
-    });
-  }
-  return [...variants.values()].sort((left, right) => compareText(left.name, right.name));
-}
-
-/**
- * Reads an extracted theSVG repository: the manifest at `src/data/icons.json` and every SVG under
- * `public/icons/<folder>/`. Each manifest entry becomes one logo carrying every file in its
- * folder, including files the manifest does not reference. Policy for the rest:
- *
- * - A file the manifest lists but the release lacks is skipped with a note.
- * - A folder the manifest does not list is kept under the `unlisted` collection, unless it is
- *   byte-identical (same file names, same bytes) to a listed logo's folder, in which case it is a
- *   duplicate and is skipped with a note.
- */
-export function readBrandRelease(directory: string, commit: string): BrandRelease {
-  const manifest = JSON.parse(readFileSync(join(directory, manifestPath), "utf8")) as unknown;
-  if (!Array.isArray(manifest)) throw new Error(`${manifestPath} must be an array.`);
-  const skipped: BrandSkip[] = [];
-
-  const iconsDirectory = join(directory, iconsPath);
-  const folders = readdirSync(iconsDirectory, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-    .sort(compareText);
-  const folderFiles = new Map<string, DiskFile[]>();
-  for (const folder of folders) {
-    const files: DiskFile[] = [];
-    for (const entry of readdirSync(join(iconsDirectory, folder), { withFileTypes: true })) {
-      if (!entry.isFile() || entry.name === ".DS_Store") continue;
-      if (!entry.name.endsWith(".svg")) {
-        skipped.push({ item: `${iconsPath}/${folder}/${entry.name}`, reason: "not an SVG file" });
-        continue;
-      }
-      files.push({
-        folder,
-        name: entry.name,
-        bytes: readFileSync(join(iconsDirectory, folder, entry.name)),
-      });
-    }
-    folderFiles.set(
-      folder,
-      files.sort((left, right) => compareText(left.name, right.name)),
-    );
-  }
-
-  type Entry = {
-    readonly record: Record<string, unknown>;
-    readonly upstreamSlug: string;
-    readonly folders: readonly string[];
-    readonly keysByFile: Map<string, string[]>;
-    readonly defaultFile: string | undefined;
-    readonly missing: readonly { readonly key: string; readonly path: string }[];
-  };
-  const entries: Entry[] = [];
-  const owners = new Map<string, string>();
-  for (const value of manifest) {
-    const record = value as Record<string, unknown>;
-    const upstreamSlug = record.slug;
-    if (typeof upstreamSlug !== "string" || !upstreamSlug) {
-      throw new Error(`${manifestPath}: an entry has no slug.`);
-    }
-    const variants = record.variants;
-    if (!variants || typeof variants !== "object") {
-      throw new Error(`${manifestPath}: ${upstreamSlug} has no variants.`);
-    }
-    const keysByFile = new Map<string, string[]>();
-    const missing: { key: string; path: string }[] = [];
-    const entryFolders = new Set<string>();
-    let defaultFile: string | undefined;
-    for (const [key, path] of Object.entries(variants as Record<string, unknown>)) {
-      const match = typeof path === "string" ? /^\/icons\/([^/]+)\/([^/]+\.svg)$/.exec(path) : null;
-      if (!match?.[1] || !match[2]) {
-        skipped.push({ item: `${upstreamSlug} ${key}`, reason: `unexpected path ${String(path)}` });
-        continue;
-      }
-      entryFolders.add(match[1]);
-      if (!folderFiles.get(match[1])?.some((file) => file.name === match[2])) {
-        missing.push({ key, path: path as string });
-        continue;
-      }
-      const upstreamFile = `${iconsPath}/${match[1]}/${match[2]}`;
-      keysByFile.set(upstreamFile, [...(keysByFile.get(upstreamFile) ?? []), key]);
-      if (key === "default") defaultFile = upstreamFile;
-    }
-    const sortedFolders = [...entryFolders].sort(compareText);
-    for (const folder of sortedFolders) {
-      // Files the manifest does not reference belong to the folder's namesake, else its first user.
-      if (folder === upstreamSlug || !owners.has(folder)) owners.set(folder, upstreamSlug);
-    }
-    entries.push({
-      record,
-      upstreamSlug,
-      folders: sortedFolders,
-      keysByFile,
-      defaultFile,
-      missing,
-    });
-  }
-
-  const logos: BrandReleaseLogo[] = [];
-  const slugs = new Map<string, string>();
-  const claimSlug = (slug: string, upstream: string) => {
-    const previous = slugs.get(slug);
-    if (previous)
-      throw new Error(`Upstream ${previous} and ${upstream} both normalize to ${slug}.`);
-    slugs.set(slug, upstream);
-  };
-
-  for (const entry of entries) {
-    const { record, upstreamSlug, folders: entryFolders, keysByFile, defaultFile } = entry;
-    const slug = brandSlug(upstreamSlug);
-    const files = entryFolders.flatMap((folder) =>
-      (folderFiles.get(folder) ?? []).filter(
-        (file) =>
-          owners.get(folder) === upstreamSlug ||
-          keysByFile.has(`${iconsPath}/${folder}/${file.name}`),
-      ),
-    );
-    const variants = nameVariants(slug, files, keysByFile);
-    for (const { key, path } of entry.missing) {
-      // The manifest may name a file the folder holds under another spelling (nextera-energy lists
-      // wordmark-dark.svg but ships wordmarkDark.svg); that file is kept as an unlisted variant.
-      const name = brandVariantName(key);
-      const kept = variants.find(
-        (variant) => variant.name === name && variant.upstreamKeys.length === 0,
-      );
-      skipped.push({
-        item: `${upstreamSlug} ${key}`,
-        reason:
-          `listed upstream as ${path}, but the release has no such file` +
-          (kept ? `; the folder's unlisted ${kept.upstreamFile} is kept as variant ${name}` : ""),
-      });
-    }
-    if (variants.length === 0) {
-      skipped.push({ item: upstreamSlug, reason: "no files in the release" });
-      continue;
-    }
-    let defaultVariant = variants.find((variant) => variant.upstreamFile === defaultFile)?.name;
-    if (!defaultVariant) {
-      defaultVariant = variants.find((variant) => variant.name === "default")?.name ?? "";
-      defaultVariant ||= variants[0]?.name ?? "";
-      skipped.push({
-        item: `${upstreamSlug} default`,
-        reason: `upstream's default file is missing; ${defaultVariant} is used instead`,
-      });
-    }
-    const collection = record.collection;
-    if (typeof collection !== "string" || !isKebabCase(collection)) {
-      throw new Error(`${manifestPath}: ${upstreamSlug} has an invalid collection.`);
-    }
-    if (typeof record.title !== "string" || !record.title.trim()) {
-      throw new Error(`${manifestPath}: ${upstreamSlug} has no title.`);
-    }
-    claimSlug(slug, upstreamSlug);
-    logos.push({
-      slug,
-      upstreamSlug,
-      listed: true,
-      title: record.title,
-      collection,
-      defaultVariant,
-      variants,
-      hex: normalizeBrandHex(record.hex),
-      categories: stringList(record.categories, `${upstreamSlug} categories`),
-      aliases: stringList(record.aliases, `${upstreamSlug} aliases`),
-      licenseRaw: stringOrNull(record.license),
-      website: stringOrNull(record.url),
-      guidelines: stringOrNull(record.guidelines),
-      source: `https://thesvg.org/icon/${upstreamSlug}`,
-    });
-  }
-
-  const signature = (folder: string) =>
-    (folderFiles.get(folder) ?? [])
-      .map((file) => `${file.name}\0${createHash("sha256").update(file.bytes).digest("hex")}`)
-      .join("\n");
-  const listedSignatures = new Map<string, string>();
-  for (const [folder, owner] of owners) {
-    const key = signature(folder);
-    if (key && !listedSignatures.has(key)) listedSignatures.set(key, owner);
-  }
-  for (const folder of folders) {
-    if (owners.has(folder)) continue;
-    const item = `${iconsPath}/${folder}`;
-    const duplicateOf = listedSignatures.get(signature(folder));
-    if (duplicateOf) {
-      skipped.push({
-        item,
-        reason: `not in upstream's manifest and byte-identical to ${duplicateOf}`,
-      });
-      continue;
-    }
-    const slug = brandSlug(folder);
-    const variants = nameVariants(slug, folderFiles.get(folder) ?? [], new Map());
-    if (variants.length === 0) {
-      skipped.push({ item, reason: "not in upstream's manifest and has no SVG files" });
-      continue;
-    }
-    claimSlug(slug, folder);
-    logos.push({
-      slug,
-      upstreamSlug: folder,
-      listed: false,
-      title: titleCase(slug),
-      collection: unlistedCollection,
-      defaultVariant:
-        variants.find((variant) => variant.name === "default")?.name ?? variants[0]?.name ?? "",
-      variants,
-      hex: null,
-      categories: [],
-      aliases: [],
-      licenseRaw: null,
-      website: null,
-      guidelines: null,
-      source: `${brandsSource}/tree/${commit}/${iconsPath}/${folder}`,
-    });
-  }
-
-  return {
-    commit,
-    packageVersion: readPackageVersion(directory),
-    logos: logos.sort((left, right) => compareText(left.slug, right.slug)),
-    skipped,
-  };
-}
-
-/** Builds `config/brands.json` from a release, measuring each file's paint. */
-export function brandsData(release: BrandRelease, fetched: string): BrandsData {
-  const logos: Record<string, BrandLogoData> = {};
-  const counts = new Map<string, number>();
-  const componentNames = new Map<string, string>();
-  for (const logo of release.logos) {
-    const componentName = brandComponentName(logo.slug);
-    const clash = componentNames.get(componentName);
-    if (clash) throw new Error(`${clash} and ${logo.slug} both map to ${componentName}.`);
-    componentNames.set(componentName, logo.slug);
-    counts.set(logo.collection, (counts.get(logo.collection) ?? 0) + 1);
-    const variants: Record<string, BrandVariantData> = {};
-    for (const variant of logo.variants) {
-      variants[variant.name] = {
-        file: brandVariantFile(logo.collection, logo.slug, variant.name),
-        ...classifyBrandBytes(variant.bytes),
-        upstreamKeys: variant.upstreamKeys,
-      };
-    }
-    logos[logo.slug] = {
-      title: logo.title,
-      collection: logo.collection,
-      componentName,
-      defaultVariant: logo.defaultVariant,
-      variants,
-      hex: logo.hex,
-      categories: logo.categories,
-      aliases: logo.aliases,
-      ...normalizeBrandLicense(logo.licenseRaw),
-      website: logo.website,
-      guidelines: logo.guidelines,
-      source: logo.source,
-    };
-  }
-  return {
-    source: brandsSource,
-    commit: release.commit,
-    packageVersion: release.packageVersion,
-    fetched,
-    collections: [...counts.keys()]
-      .sort(compareCollections)
-      .map((id) => ({ id, label: brandCollectionLabel(id), count: counts.get(id) ?? 0 })),
-    logos,
-  };
-}
-
-/** The first-party entries of a `config/brands.json`, by slug. */
-export function firstPartyBrandLogos(data: unknown): Record<string, BrandLogoData> {
-  const logos = data && typeof data === "object" ? (data as { logos?: unknown }).logos : undefined;
-  if (!logos || typeof logos !== "object") return {};
-  return Object.fromEntries(
-    Object.entries(logos as Record<string, BrandLogoData>).filter(
-      ([, logo]) => logo?.firstParty === true,
-    ),
-  );
-}
-
-/**
- * Adds first-party logos to freshly synced data and recounts the collections. An upstream logo
- * with the same slug or component name is an error, not an overwrite: the first-party file would
- * otherwise silently replace (or be replaced by) a third party's artwork.
- */
-export function withFirstPartyLogos(
-  data: BrandsData,
-  firstParty: Readonly<Record<string, BrandLogoData>>,
-): BrandsData {
-  const logos: Record<string, BrandLogoData> = { ...data.logos };
-  const componentNames = new Map(
-    Object.entries(data.logos).map(([slug, logo]) => [logo.componentName, slug]),
-  );
-  for (const [slug, logo] of Object.entries(firstParty)) {
-    if (slug in data.logos)
-      throw new Error(`First-party logo ${slug} clashes with upstream ${slug}.`);
-    const clash = componentNames.get(logo.componentName);
-    if (clash) {
-      throw new Error(
-        `First-party logo ${slug} and upstream ${clash} share ${logo.componentName}.`,
-      );
-    }
-    logos[slug] = { ...logo, firstParty: true };
-  }
-  const counts = new Map<string, number>();
-  for (const logo of Object.values(logos)) {
-    counts.set(logo.collection, (counts.get(logo.collection) ?? 0) + 1);
-  }
-  return {
-    ...data,
-    collections: [...counts.keys()]
-      .sort(compareCollections)
-      .map((id) => ({ id, label: brandCollectionLabel(id), count: counts.get(id) ?? 0 })),
-    logos,
-  };
-}
-
-function sortKeys(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(sortKeys);
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.keys(value)
-        .sort(compareText)
-        .map((key) => [key, sortKeys((value as Record<string, unknown>)[key])]),
-    );
-  }
-  return value;
-}
-
-/** `config/brands.json` text with every object's keys sorted, before Biome formats it. */
-export function renderBrandsJson(data: BrandsData): string {
-  return `${JSON.stringify(sortKeys(data), null, 2)}\n`;
-}
-
-/** Every repository-relative file `config/brands.json` lists. */
-export function listedBrandFiles(data: BrandsData): string[] {
-  return Object.values(data.logos)
-    .flatMap((logo) => Object.values(logo.variants).map((variant) => variant.file))
-    .sort(compareText);
-}
-
-// ---------------------------------------------------------------------------------------------
-// Archive metadata
-
-function tarField(block: Buffer, offset: number, length: number): string {
-  return block
-    .subarray(offset, offset + length)
-    .toString("latin1")
-    .replace(/\0.*$/s, "")
-    .trim();
-}
-
-/**
- * Reads the commit and commit date from a GitHub tarball (made by `git archive`) without
- * unpacking it: the pax global header's `comment` is the commit SHA and every entry's mtime is
- * the commit time.
- */
-export function readArchiveInfo(gzipped: Uint8Array): { commit: string | undefined; date: string } {
-  const tar = gunzipSync(gzipped.subarray(0, 64 * 1024), {
-    finishFlush: constants.Z_SYNC_FLUSH,
-  });
-  const header = tar.subarray(0, 512);
-  if (header.length < 512) throw new Error("Archive is too short.");
-  const mtime = Number.parseInt(tarField(header, 136, 12), 8);
-  if (!Number.isFinite(mtime) || mtime <= 0) throw new Error("Archive has no modification time.");
-  let commit: string | undefined;
-  if (tarField(header, 156, 1) === "g") {
-    const size = Number.parseInt(tarField(header, 124, 12), 8);
-    const records = tar.subarray(512, 512 + size).toString("utf8");
-    commit = /(?:^|\n)\d+ comment=([0-9a-f]{40})\n/.exec(records)?.[1];
-  }
-  return { commit, date: new Date(mtime * 1000).toISOString().slice(0, 10) };
 }

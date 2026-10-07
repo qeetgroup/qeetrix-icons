@@ -20,8 +20,8 @@ import {
 import { compareText } from "../lib/diagnostics.js";
 
 /**
- * Validation for the brand logos in `icons/brand-icons/`. Logos stay byte-for-byte as upstream
- * ships them, so this does not judge their drawing; it checks that every file is listed in
+ * Validation for Qeet's logos in `icons/brand-icons/`. Logos stay byte-for-byte as drawn, so this
+ * does not judge their drawing; it checks that every file is listed in
  * `config/brands.json` (and the reverse), that each file is a well-formed SVG with a size, and that
  * none can run script or load anything from outside the file.
  */
@@ -53,7 +53,7 @@ export type BrandDiagnosticCode =
   | "QXB-MAP-001"
   /** A file `config/brands.json` lists that does not exist. */
   | "QXB-MAP-002"
-  /** A listed path that does not follow `icons/brand-icons/<collection>/<slug>/<variant>.svg`. */
+  /** A listed path that does not follow `icons/brand-icons/<slug>/<variant>.svg`. */
   | "QXB-MAP-003"
   /** A component name that is not a valid identifier or does not follow the naming rule. */
   | "QXB-NAME-001"
@@ -298,14 +298,6 @@ export function validateBrandsData(value: unknown): {
     meta("The file must hold a JSON object.");
     return { diagnostics, data: undefined };
   }
-  if (typeof value.source !== "string") meta("source must be a string.");
-  if (typeof value.commit !== "string" || !/^[0-9a-f]{40}$/.test(value.commit)) {
-    meta("commit must be a full 40-character commit SHA.");
-  }
-  if (!isNullableString(value.packageVersion)) meta("packageVersion must be a string or null.");
-  if (typeof value.fetched !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value.fetched)) {
-    meta("fetched must be a YYYY-MM-DD date.");
-  }
   if (!Array.isArray(value.collections) || !isRecord(value.logos)) {
     meta("collections must be an array and logos an object.");
     return { diagnostics, data: undefined };
@@ -351,9 +343,9 @@ export function validateBrandsData(value: unknown): {
     if (!isStringList(logo.categories) || !isStringList(logo.aliases)) {
       meta(`${at}.categories and aliases must be arrays of strings.`);
     }
-    if (logo.firstParty !== undefined && logo.firstParty !== true) {
-      meta(`${at}.firstParty must be true when present.`);
-    }
+    // Only Qeet's own artwork ships; third-party brand logos come from theSVG directly.
+    if (logo.firstParty !== true)
+      meta(`${at}.firstParty must be true: only first-party logos ship.`);
     if ((logo.firstParty === true) !== (logo.licenseClass === "first-party")) {
       meta(`${at}: firstParty and licenseClass "first-party" go together.`);
     }
@@ -402,12 +394,12 @@ export function validateBrandsData(value: unknown): {
         meta(`${vat} must be an object.`);
         continue;
       }
-      if (variant.file !== brandVariantFile(collection, slug, name)) {
+      if (variant.file !== brandVariantFile(slug, name)) {
         diagnostics.push(
           brandDiagnostic(
             "QXB-MAP-003",
             String(variant.file),
-            `${vat}.file must be ${JSON.stringify(brandVariantFile(collection, slug, name))}.`,
+            `${vat}.file must be ${JSON.stringify(brandVariantFile(slug, name))}.`,
           ),
         );
       }
@@ -420,8 +412,6 @@ export function validateBrandsData(value: unknown): {
       ) {
         meta(`${vat}.colors must list #rrggbb colours or currentColor.`);
       }
-      if (!isStringList(variant.upstreamKeys))
-        meta(`${vat}.upstreamKeys must be an array of strings.`);
     }
   }
   for (const [id, count] of collections) {
@@ -528,7 +518,7 @@ export function validateBrandsRepository(
           "QXB-META-002",
           file,
           `Recorded ${recorded.background} [${recorded.colors.join(" ")}] but the file paints ` +
-            `${paint.background} [${paint.colors.join(" ")}]; run bun run sync:brands.`,
+            `${paint.background} [${paint.colors.join(" ")}]; update ${brandsDataPath}.`,
         ),
       );
     }

@@ -5,10 +5,10 @@
 ### Major Changes
 
 - **Qeetrix Icons 2.0: Lucide icons, in round and sharp, with derived filled variants, plus
-  brand logos.** 2.0 replaces the 1.x catalogue with the outline icons of
+  the Qeet logos.** 2.0 replaces the 1.x catalogue with the outline icons of
   [Lucide](https://lucide.dev) 1.52.0, as React 19 components, plus a sharp style and filled
-  variants derived from those outlines, and adds the [theSVG](https://thesvg.org) brand logos. It
-  does not restore any part of the 1.x API.
+  variants derived from those outlines, and adds Qeet's own logo and wordmark. It does not restore
+  any part of the 1.x API.
 
   **Icons**
 
@@ -33,28 +33,20 @@
   - Lucide's rendering defaults: a 24 × 24 grid, stroke width 2, round caps and joins, 1 unit of
     padding, and `currentColor`.
 
-  **Brand logos** ([docs/logos.md](docs/logos.md))
+  **Qeet logos** ([docs/logos.md](docs/logos.md))
 
-  - 7,429 logos from theSVG (13,401 files), every collection: brands, auth badges, AWS, Azure,
-    Google Cloud, and Kubernetes architecture icons, community, and unlisted.
-    `bun run sync:brands [commit]` copies every file byte for byte to
-    `icons/brand-icons/<collection>/<slug>/<variant>.svg` from the commit pinned in
-    `config/brands.json`, which records each logo's metadata and license and each file's measured
-    background (`light`, `dark`, or `any`), because theSVG's own `light` and `dark` names are mostly
-    inverted.
-  - One component per logo, `<PascalCase slug>Logo` (`GithubLogo`; `Brand1passwordLogo` for slugs
-    starting with a digit), exported from the package root next to the icons. Each
-    renders its published file unmodified as an `<img>` with a lossless `data:image/svg+xml` URI:
-    no recolouring, no style or id clashes, no hooks. `LogoProps`: native `<img>` props except
+  - `QeetLogo` (the "q" mark) and `QeetWordmarkLogo` (**Qeet.** in a tile, and without it), Qeet
+    Group's own artwork, in `icons/brand-icons/<slug>/<variant>.svg`. `config/brands.json`
+    records each logo's metadata and each file's measured background (`light`, `dark`, or `any`).
+    Every logo must be first-party (`"firstParty": true`); the validator rejects any other.
+  - One component per logo, `<PascalCase slug>Logo`, exported from the package root next to the
+    icons. Each renders its file unmodified as an `<img>` with a lossless `data:image/svg+xml`
+    URI: no recolouring, no style or id clashes, no hooks. `LogoProps`: native `<img>` props except
     `src`, `srcSet`, and `sizes`, plus `variant` (typed per logo), `height` (default 24), and
     `width` (from the file's aspect ratio). Decorative by default; `alt` or `aria-label` names it.
   - `logoManifest` in `@qeetrix/icons/manifest`: id, component name, title, collection, variants
     with their backgrounds, default variant, brand colour, categories, aliases, license, website,
     guidelines, and source.
-  - Every logo keeps its own license, including restrictive ones (non-commercial, no-derivatives
-    for all AWS icons, copyleft) and about 560 with no real license. Logos are trademarks of their
-    owners, for identification only. Three upstream files are broken as published and render that
-    way: `btk` default, `logitech-g` default, and `zenmux` default and mono.
 
   **API**
 
@@ -78,18 +70,17 @@
     `trash-2` for `trash`, which are not exported).
   - RTL: 18 reading-direction icons, such as `undo`, `reply`, `send`, and `log-in`, are `mirror` in
     the manifest; every other icon is `preserve`. There is no runtime mirroring.
-  - Entry points are the root, `./icons/*`, `./logos/*`, `./manifest`, and `./package.json`;
-    there is no shape or category subpath. The root also exports the `LogoProps`, `LogoComponent`,
-    and `LogoBackground` types. ESM-only, `sideEffects: false`, per-icon and per-logo tree shaking,
-    and React 19 as the only peer dependency. Dev servers that pre-bundle the whole root process
-    every logo; direct subpath imports avoid that.
+  - Entry points are the root, `./icons/*`, `./manifest`, and `./package.json`; there is no
+    shape or category subpath. The root also exports the `LogoProps`, `LogoComponent`, and
+    `LogoBackground` types. ESM-only, `sideEffects: false`, per-icon and per-logo tree shaking,
+    and React 19 as the only peer dependency.
 
   **Tooling** (repository only, never published)
 
   - Source validation (`check:icons`), generation (`generate`, `check:generated`), filled
     derivation (`derive:filled`, `check:filled`), sharp derivation (`derive:sharp`, `check:sharp`),
-    the Lucide sync (`sync:lucide`), and the brand pipeline (`sync:brands`, `check:brands` with
-    `QXB-*` codes, `generate:logos`, `check:logos`). CI and the release gate run `check:icons`,
+    the Lucide sync (`sync:lucide`), and the logo pipeline (`check:brands` with `QXB-*` codes,
+    `generate:logos`, `check:logos`). CI and the release gate run `check:icons`,
     `check:filled`, `check:sharp`, and `check:generated`; `check:logos` runs in the test suite.
     The build is plain `tsc`; `tsc-alias`, which did nothing, is gone.
   - Validation checks the sharp stroke style (square caps, miter joins, and a `stroke-miterlimit`
@@ -98,14 +89,15 @@
     categories must be configured ids, the first being its source folder).
   - An internal visual QA playground (`bun run playground`) with an Icons page (Round/Sharp shape
     switch, `?shape=sharp`; search over tags and aliases; category filter over every category an
-    icon is listed under) and a Logos page (collections, backgrounds, licenses).
+    icon is listed under) and a Logos page (both Qeet logos on light, dark, and transparent
+    backgrounds).
 
   **License**
 
   - `LICENSE` keeps the MIT License for the package code and adds Lucide's license verbatim (ISC,
     with the Feather MIT notice it includes) for the icon artwork, the derived drawings, and the
-    generated icon components. Per-logo licenses and notices are in `LICENSE` and
-    `licenses/third-party-logos.md`. `package.json` declares `SEE LICENSE IN LICENSE`.
+    generated icon components. The Qeet logos are Qeet Group's proprietary artwork
+    (`LicenseRef-Qeet`). `package.json` declares `SEE LICENSE IN LICENSE`.
 
   **Removed**
 
@@ -118,6 +110,11 @@
     (`"outline" | "solid"`), and the white default colour. 2.0 reuses the names `IconVariant` and
     `variant` for `"outline" | "filled"`, and `IconShape` and `shape` for `"round" | "sharp"`, which
     in 1.x reserved `"sharp"` without any artwork.
+  - The 7,429 third-party brand logos from [theSVG](https://thesvg.org) that the 1.0.5–1.0.10
+    builds shipped, with the `sync:brands` command, `licenses/third-party-logos.md`, and
+    `licenses/Apache-2.0.txt`. The package drops from about 100 MB to 16 MB installed, and a cold
+    root import in Node from about 77 s to under 2 s. An app that needs a third-party logo uses
+    theSVG directly, for example `@thesvg/react`, one logo per import.
   - The 1.x generator and its `generate:check` script (2.0 has its own `generate` and
     `check:generated`), and the example viewer app.
   - Never released: an earlier 2.0 draft of 578 original Qeetrix outline drawings, its planned

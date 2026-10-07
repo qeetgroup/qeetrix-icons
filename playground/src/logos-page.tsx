@@ -184,9 +184,8 @@ function LoadedLogosPage({
           <p className="eyebrow">Library</p>
           <h1>Logos</h1>
           <p className="page-lede">
-            {formatCount(index.logos.length)} brand logos from theSVG
-            {index.version ? ` ${index.version}` : ""}, embedded byte for byte. Each renders at its
-            own aspect ratio.
+            {formatCount(index.logos.length)} Qeet logos, embedded byte for byte. Each renders at
+            its own aspect ratio.
           </p>
         </div>
         <p className="trademark-line">
@@ -515,14 +514,7 @@ function LogoSidebar({
       </Disclosure>
       <div className="sidebar-footer">
         <p className="sidebar-note">
-          Source: theSVG{index.version ? ` ${index.version}` : ""}
-          {index.commit ? (
-            <>
-              {" "}
-              at <code title={index.commit}>{index.commit.slice(0, 7)}</code>
-            </>
-          ) : null}
-          . Logos are trademarks of their respective owners.
+          Qeet Group's own artwork. The Qeet name and mark are trademarks of Qeet Group.
         </p>
       </div>
     </>
@@ -612,8 +604,8 @@ function NoLogos() {
           </span>
           <h2>No logos yet</h2>
           <p>
-            Sync the brand logos and generate their components with <code>bun run sync:brands</code>{" "}
-            and <code>bun run generate:logos</code>, then reload.
+            Add the logo files under <code>icons/brand-icons/</code> and their entries to{" "}
+            <code>config/brands.json</code>, run <code>bun run generate:logos</code>, then reload.
           </p>
         </section>
       </main>

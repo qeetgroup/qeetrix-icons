@@ -4,8 +4,8 @@ The contract for consuming `@qeetrix/icons` 2.0. It is implemented and tested ag
 tarball. The package exports the 1,863 Lucide icons of the pinned release
 ([lucide.md](lucide.md)) as React 19 components. Every icon has two shapes, round (Lucide's
 drawing) and sharp ([sharp.md](sharp.md)), and 794 icons also have a filled drawing in each shape
-([filled.md](filled.md)). It also exports 7,429 brand logos from theSVG and the first-party `QeetLogo` and `QeetWordmarkLogo` as `…Logo` components; see
-[Brand logos](#brand-logos) and [logos.md](logos.md).
+([filled.md](filled.md)). It also exports Qeet's own logos, `QeetLogo` and `QeetWordmarkLogo`; see
+[Qeet logos](#qeet-logos) and [logos.md](logos.md).
 
 ## Importing icons
 
@@ -112,24 +112,22 @@ Accessibility rules are in [accessibility.md](accessibility.md).
 To hold an arbitrary icon, for example in a button component, type it as
 `ComponentType<IconProps<"outline">>`: every icon has an outline drawing, so every icon fits.
 
-## Brand logos
+## Qeet logos
 
 ```tsx
-import { GithubLogo, type LogoProps } from "@qeetrix/icons";
+import { QeetLogo, QeetWordmarkLogo, type LogoProps } from "@qeetrix/icons";
 
-<GithubLogo />
-<GithubLogo variant="wordmark" height={32} alt="GitHub" />
+<QeetLogo />
+<QeetWordmarkLogo variant="dark" height={32} alt="Qeet" />
 ```
 
-Each logo is one named export, PascalCase of its slug plus `Logo` (`Brand` in front when the slug
-starts with a digit: `Brand1passwordLogo`), exported from the package root like every icon. It
-renders its published SVG file unmodified as an `<img>`, so it
-keeps its own colours and cannot be recoloured with CSS. `LogoProps<V>` is the native `<img>`
+Each logo is one named export, PascalCase of its slug plus `Logo`, exported from the package root
+like every icon. It renders its SVG file unmodified as an `<img>`, so it keeps its own colours and
+cannot be recoloured with CSS. `LogoProps<V>` is the native `<img>`
 props without `src`, `srcSet`, and `sizes`, plus `variant` (typed to the logo's files, default the
 logo's `defaultVariant`), `height` (default 24), and `width` (from the file's aspect ratio unless
-given). Logos are decorative by default; `alt` or `aria-label` names one. Every logo keeps its own
-license, and some restrict use. The full contract, variants and backgrounds, licensing, and
-performance advice are in [logos.md](logos.md).
+given). Logos are decorative by default; `alt` or `aria-label` names one. The full contract,
+variants and backgrounds are in [logos.md](logos.md). Third-party brand logos are not exported.
 
 ## Manifest
 
@@ -138,7 +136,7 @@ import { iconManifest, type IconManifest, type IconManifestEntry } from "@qeetri
 import { logoManifest, type LogoManifest, type LogoManifestEntry } from "@qeetrix/icons/manifest";
 ```
 
-The manifest subpath holds two catalogues, `iconManifest` for icons and `logoManifest` for brand
+The manifest subpath holds two catalogues, `iconManifest` for icons and `logoManifest` for the Qeet
 logos ([logos.md](logos.md#catalogue)), as metadata for documentation, search, the playground, and
 other tooling. They are only available from this subpath. The package root never imports them, a
 catalogue never imports a component, and rendering an icon or logo never needs them. The rest of
@@ -215,9 +213,8 @@ Tree shaking works per concept:
   published module. All icons share one tiny runtime function.
 - Tests bundle the packed package and check each of these, and that root and direct imports of the
   same icon bundle its module once.
-- Logos tree-shake the same way, one module per logo. Together they are large, so development
-  servers that pre-bundle the whole root are slower; see
-  [logos.md](logos.md#performance) for direct imports and `optimizePackageImports`.
+- Logos tree-shake the same way, one module per logo: importing `QeetLogo` never ships
+  `QeetWordmarkLogo`.
 
 ## Deliberately not provided
 
@@ -246,8 +243,8 @@ Public names and drawing support are semver API: every export, direct-import sub
 | Rename or removal of an icon concept, including a Lucide rename | Major |
 | Changing the default shape from round or the default variant from outline | Major |
 | Removed or retyped `IconProps` member | Major |
-| New logo, or new file for a logo, from a theSVG sync | Minor |
-| Changed logo file, title, background, or license | Patch; call out license changes in release notes |
+| New logo, or new file for a logo | Minor |
+| Changed logo file, title, or background | Patch |
 | Removal or rename of a logo or one of its variants, or a removed or retyped `LogoProps` member | Major |
 
 Renames come from Lucide. Its former names are recorded as aliases but not exported, so a Lucide
