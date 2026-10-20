@@ -19,7 +19,7 @@ export function ShoppingCartMinusIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M16 5h6" />
-        <path d="M2.05 2.05L3.86 2.004L4.026 2.138L7 18H17" />
+        <path d="M2.05 2.05L3.981 2.023L7 18H17" />
         <path d="M5.564 5H12" />
         <path d="M7.25 14H20.694L21.467 9.317" />
         <circle cx="18" cy="20" r="2" />

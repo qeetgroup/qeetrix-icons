@@ -412,7 +412,7 @@ flowchart LR
 
 ```text
 config/
-  derived/            Per-category tables: filled recipes and roles, keepRound, tipHeight
+  derived/            Per-category tables: filled recipes and roles, keepRound, tipHeight, keepPoint
   overrides/          Hand-drawn, hash-stamped replacements for derived drawings
   lucide.json, brands.json, categories.ts, icon-system.ts, icon-metadata.ts, …
 icons/

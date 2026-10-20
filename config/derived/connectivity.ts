@@ -56,4 +56,23 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // the Bluetooth rune's tips, a speaker cone's corners, and a pen's nib read as clipped; they move
+  // in instead. (zap and zap-off stay unlisted: the bolt's tips are too acute to point within the
+  // padding, so pointed, the bolt stretches out of shape.)
+  keepPoint: {
+    // The rune.
+    bluetooth: [0],
+    "bluetooth-connected": [0],
+    "bluetooth-off": [0, 2],
+    "bluetooth-searching": [0],
+    // The speaker.
+    volume: [0],
+    "volume-1": [0],
+    "volume-2": [0],
+    "volume-off": [3],
+    "volume-x": [0],
+    // The pen's nib.
+    "wifi-pen": [1],
+  },
 };

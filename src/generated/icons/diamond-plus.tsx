@@ -15,7 +15,7 @@ export function DiamondPlusIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13.414 23L13.706 22.708L22.991 13.423L22.991 10.587L13.413 1.009L10.577 1.009L1 10.586L1 11.783Q0.999 11.791 0.999 11.8L0.999 12.21Q0.999 12.219 1 12.227L1 13.424L10.576 23L11.773 23Q11.781 23.001 11.79 23.001L12.2 23.001Q12.209 23.001 12.217 23L13.414 23ZM13 17L13 13L17 13L17 11L13 11L13 7L11 7L11 11L7 11L7 13L11 13L11 17L13 17Z"
+            d="M11.995 22.999L1.001 12.005L11.995 1L23 12.005L12.702 22.292L11.995 22.999ZM13 13L13 17L11 17L11 13L7 13L7 11L11 11L11 7L13 7L13 11L17 11L17 13L13 13Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function DiamondPlusIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 8v8" />
-        <path d="M12.999 22.001L21.991 13.009V11.001L12.999 2.009H10.991L1.999 11.001V13.009L10.991 22.001Z" />
+        <path d="M11.995 21.585L21.585 12.005L11.995 2.415L2.415 12.005Z" />
         <path d="M8 12h8" />
       </svg>
     );

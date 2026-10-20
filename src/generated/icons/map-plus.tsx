@@ -18,7 +18,7 @@ export function MapPlusIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11 19L8.999 18.001L3 21.002V6.001L8.528 3.236H9.472L15 6L21 2.999V12" />
+        <path d="M11 19L8.999 18.001L3 21.002V6.001L9 3L15 6L21 2.999V12" />
         <path d="M15 5.764V12" />
         <path d="M18 15v6" />
         <path d="M21 18h-6" />

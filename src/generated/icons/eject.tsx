@@ -15,7 +15,7 @@ export function EjectIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M12.836 1.52L22.352 11.576L21.324 14L2.675 14L1.647 11.576L11.46 1.207L12.54 1.207L12.836 1.52ZM2 16L22 16L22 22L2 22L2 16Z"
+            d="M22.999 14L12.763 1.905L12 1.003L0.999 14L22.999 14ZM2 16L22 16L22 22L2 22L2 16Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function EjectIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.11 2.207L21.176 11.788L20.662 13H3.337L2.823 11.788L11.89 2.207Z" />
+        <path d="M12 2.551L20.843 13H3.156Z" />
         <rect height="4" width="18" x="3" y="17" />
       </svg>
     );

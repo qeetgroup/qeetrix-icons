@@ -90,4 +90,11 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a funnel's rim and spout read as clipped; they move in instead.
+  keepPoint: {
+    funnel: [0],
+    "funnel-plus": [0],
+    "funnel-x": [0],
+  },
 };

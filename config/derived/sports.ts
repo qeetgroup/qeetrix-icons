@@ -24,4 +24,14 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a star's tips, a medal's ribbon, a podium's numeral, and a shoe's toe read as clipped; they
+  // move in instead.
+  keepPoint: {
+    "circle-star": [1],
+    medal: [0],
+    podium: [1],
+    "sport-shoe": [2],
+    "square-star": [0],
+  },
 };

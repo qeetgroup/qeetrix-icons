@@ -18,10 +18,10 @@ export function TelescopeIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M9.087 12.702L3 14L2.058 10.233L2.228 9.925L15.485 5.566" />
+        <path d="M9.087 12.702L3 14L2.175 10.097L15.488 5.576" />
         <path d="M14.538 11.538L16.914 11.032" />
         <path d="m16 21-3.105-6.21" />
-        <path d="M20 3.001L21.937 10.749L21.748 11.064L18 11.999L16 3.999Z" />
+        <path d="M20 3.001L21.803 10.883L18 11.999L16 3.999Z" />
         <path d="M6.401 9.603L7.029 12.119" />
         <path d="m8 21 3.105-6.21" />
         <circle cx="12" cy="13" r="2" />

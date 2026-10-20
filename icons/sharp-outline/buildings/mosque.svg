@@ -1,8 +1,9 @@
+<!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/buildings/mosque.svg (sha256 e2017f86d87199bd02437fe5483062674880981764f019ad23b4adf556a62a0b). Edit this file, not icons/. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
   <path d="M12.268 2a2 2 0 003.465 2"/>
   <path d="M14 5 L14 8"/>
   <path d="M16 22v-3a2 2 0 00-4 0v3"/>
-  <path d="M21 13C20.338 11.503 19.334 10.247 18.1 9.37C16.825 8.47 15.422 8 14 8C12.578 8 11.174 8.47 9.9 9.37C8.741 10.196 7.784 11.356 7.122 12.735L7.28 13Z"/>
+  <path d="M20 13C19.433 11.503 18.572 10.247 17.514 9.37C16.421 8.47 15.219 8 14 8C12.781 8 11.578 8.47 10.486 9.37C9.43 10.248 8.568 11.504 8 13Z"/>
   <path d="M3 9h4"/>
   <path d="M7 22V6A5 5 0 0 0 5.111 2.086H4.889A5 5 0 0 0 3 6V22H21V13H20"/>
 </svg>

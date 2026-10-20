@@ -19,7 +19,7 @@ export function LayerArrowUpIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 14V5" />
-        <path d="M7.674 10.774L1.996 13.355V14.647L12.005 19.197L22.004 14.652V13.35L16.332 10.772" />
+        <path d="M7.674 10.774L2.896 14.001L12.005 19.197L21.116 14.001L16.332 10.772" />
         <path d="m9 7 3-3 3 3" />
       </svg>
     );

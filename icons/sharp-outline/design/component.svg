@@ -1,6 +1,7 @@
+<!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/design/component.svg (sha256 5df7bd0e34c1b53b23a676c134a837d8ed9d2d62083315d038beca1614a5a2fe). Edit this file, not icons/. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="M18.619 15.791L22 12.41V11.59L18.619 8.209L15.239 11.59V12.41Z"/>
-  <path d="M5.381 15.791L8.762 12.41V11.59L5.381 8.209L2 11.59V12.41Z"/>
-  <path d="M12.41 22L15.792 18.62L12 14.829L8.208 18.62L11.59 22Z"/>
-  <path d="M12 9.171L15.791 5.381L12.41 2H11.59L8.209 5.381Z"/>
+  <path d="M18.219 15.367L21.586 12L18.219 8.633L14.852 12Z"/>
+  <path d="M5.781 15.367L9.148 12L5.781 8.633L2.414 12Z"/>
+  <path d="M12 21.586L15.367 18.219L12 14.852L8.633 18.219Z"/>
+  <path d="M12 9.148L15.367 5.781L12 2.414L8.633 5.781Z"/>
 </svg>

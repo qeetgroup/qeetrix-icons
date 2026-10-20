@@ -22,4 +22,15 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a bell's flare and a warning triangle's corners read as clipped; they move in instead.
+  keepPoint: {
+    // The bell's flare, like account's bell.
+    "bell-minus": [2],
+    "bell-off": [1],
+    "bell-plus": [3],
+    "bell-ring": [2],
+    // The triangle, like shapes' triangle.
+    "triangle-alert": [0],
+  },
 };

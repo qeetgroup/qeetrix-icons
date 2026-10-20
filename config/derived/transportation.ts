@@ -61,4 +61,20 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat, a
+  // hull's tips, a plane's nose, a road's corners, a sail's, a cone's, and a fork's read as
+  // clipped; they move in instead. sailboat's sharp filled override follows the pointed sail.
+  keepPoint: {
+    forklift: [3],
+    kayak: [1],
+    "plane-landing": [1],
+    "plane-takeoff": [1],
+    road: [3],
+    sailboat: [2],
+    ship: [3],
+    tractor: [0],
+    // The base only: the cone's apex is too acute to come to a point inside the padding.
+    "traffic-cone": [1],
+    "truck-electric": [4],
+  },
 };

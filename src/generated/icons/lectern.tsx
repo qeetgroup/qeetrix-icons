@@ -15,7 +15,7 @@ export function LecternIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M19 5L21.278 5L23.008 7.203L21.349 14L17 14L17 8L7 8L7 14L2.652 14L0.992 7.203L2.722 5L17 5L17 3L13 3L13 1L19 1L19 5ZM8 9L8 21L5 21L5 23L19 23L19 21L16 21L16 9L8 9Z"
+            d="M19 5L22.993 5L21.403 14L17 14L17 8L7 8L7 14L2.598 14L1.008 5L17 5L17 3L13 3L13 1L19 1L19 5ZM8 9L8 21L5 21L5 23L19 23L19 21L16 21L16 9L8 9Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function LecternIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 13H20.564L21.921 7.438L20.792 6H3.208L2.079 7.438L3.437 13H9.001" />
+        <path d="M15 13H20.564L21.802 6H2.198L3.437 13H9.001" />
         <path d="M15 22V10H9V22" />
         <path d="M18 22H6" />
         <path d="M18 6V2H14" />

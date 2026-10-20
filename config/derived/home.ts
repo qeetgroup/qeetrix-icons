@@ -51,4 +51,19 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a roof's ridge, a lampshade's corners, a door leaf's, and a panel's read as clipped; they move
+  // in instead.
+  keepPoint: {
+    // The door leaf.
+    "door-open": [3],
+    // The roof, like buildings' house.
+    "house-heart": [1],
+    "house-wifi": [2],
+    // The shade.
+    "lamp-ceiling": [2],
+    "lamp-desk": [0],
+    // The panel.
+    "solar-panel": [4],
+  },
 };

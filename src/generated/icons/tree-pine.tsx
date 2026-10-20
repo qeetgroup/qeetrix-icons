@@ -15,7 +15,7 @@ export function TreePineIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M19.261 15L22.548 18.617L21.936 20L13 20L13 23L11 23L11 20L2.064 20L1.452 18.617L4.739 15L2.195 15L6.739 10L4.123 10L12 1.532L19.877 10L17.261 10L21.805 15L19.261 15Z"
+            d="M19.06 15L22.994 20L13 20L13 23L11 23L11 20L1.006 20L4.94 15L2.195 15L6.739 10L4.123 10L12 1.532L19.877 10L17.261 10L21.805 15L19.06 15Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function TreePineIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M17.175 14.192L21.37 18.808L21.285 19H2.715L2.63 18.808L6.825 14.192L6.74 14H4.455L8.825 9.192L8.74 9H6.419L12 3L17.581 9H15.26L15.175 9.192L19.545 14H17.26Z" />
+        <path d="M17.161 14.204L20.935 19H3.065L6.839 14.204L6.74 14H4.455L8.825 9.192L8.74 9H6.419L12 3L17.581 9H15.26L15.175 9.192L19.545 14H17.26Z" />
         <path d="M12 22v-3" />
       </svg>
     );

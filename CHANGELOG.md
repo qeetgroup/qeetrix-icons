@@ -18,8 +18,9 @@
     re-syncs the pinned release or upgrades it ([docs/lucide.md](docs/lucide.md)).
   - A sharp style for every icon: the same geometry with square caps, mitered joins (miter limit
     4), and corner roundings squared off, acute tips included. Corners whose point would leave the
-    canvas or hit another stroke are cut flat, dots become squares, and figurative circles and
-    organic outlines stay round. `bun run derive:sharp` derives it from the round outlines
+    canvas or hit another stroke are cut flat, except that listed polygons and solids (triangle,
+    diamond, star, box, …) move a corner in to keep its point; dots become squares, and
+    figurative circles and organic outlines stay round. `bun run derive:sharp` derives it from the round outlines
     ([docs/sharp.md](docs/sharp.md)).
   - Filled variants for 794 icons, in both shapes, listed in `config/filled.ts`.
     `bun run derive:filled` derives each from its outline with Skia path operations

@@ -20,10 +20,10 @@ export function UnplugIcon(props: IconProps<"outline">) {
       >
         <path d="M19.419 4.581L21.581 2.419" />
         <path d="M2.419 21.581L4.581 19.419" />
-        <path d="M12 18L6 12L2.113 15.887V16.113L7.887 21.887H8.113Z" />
+        <path d="M12 18L6 12L2.39 16L8 21.61Z" />
         <path d="M7.5 13.5 10 11" />
         <path d="M10.5 16.5 13 14" />
-        <path d="M12 6L18 12L21.887 8.113V7.887L16.113 2.113H15.887Z" />
+        <path d="M12 6L18 12L21.61 8L16 2.39Z" />
       </svg>
     );
   }

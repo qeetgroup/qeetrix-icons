@@ -18,7 +18,7 @@ export function MousePointerBanIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M12.013 5.663L11.988 6.373L7.7 7.701L6.373 11.988L5.663 12.013L2.166 3.02L3.02 2.166Z" />
+        <path d="M13.017 6.054L7.7 7.701L6.054 13.018L2.591 2.591Z" />
         <circle cx="16" cy="16" r="6" />
         <path d="m11.8 11.8 8.4 8.4" />
       </svg>

@@ -15,4 +15,10 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // the slice's corner reads as clipped; it moves in instead.
+  keepPoint: {
+    // The slice.
+    "chart-pie": [0],
+  },
 };
