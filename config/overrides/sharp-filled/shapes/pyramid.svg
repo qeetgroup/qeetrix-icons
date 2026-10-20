@@ -1,0 +1,4 @@
+<!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/shapes/pyramid.svg (sha256 9ec563fb4c9b9add77edd50d00f1cfc2138eddd326e032915e1a4ff018e63e6d). Edit this file, not icons/. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M11 2.404L1.006 16.447L11 22.403ZM13 2.404L22.999 16.444L13 22.403Z"/>
+</svg>

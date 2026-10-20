@@ -15,7 +15,7 @@ export function LandmarkIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1.452 8L22.55 8L23 6.064L23 6.055L12.695 1L11.305 1L1 6.056L1.452 8ZM2 23L22 23L22 21L2 21L2 23ZM5 19L5 10L7 10L7 19L5 19ZM9 19L9 10L11 10L11 19L9 19ZM13 10L13 19L15 19L15 10L13 10ZM17 19L17 10L19 10L19 19L17 19Z"
+            d="M22.546 8L1.456 8L1.035 6.093L12 1.011L22.966 6.093L22.546 8ZM5 10L5 19L7 19L7 10L5 10ZM9 10L9 19L11 19L11 10L9 10ZM13 19L13 10L15 10L15 19L13 19ZM17 10L17 19L19 19L19 10L17 10ZM2 21L22 21L22 23L2 23L2 21Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function LandmarkIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 18v-7" />
-        <path d="M21.756 7H2.246L2.154 6.604L11.551 1.993H12.449L21.848 6.604Z" />
+        <path d="M22.546 7H1.456L12 2.113Z" />
         <path d="M14 18v-7" />
         <path d="M18 18v-7" />
         <path d="M3 22h18" />

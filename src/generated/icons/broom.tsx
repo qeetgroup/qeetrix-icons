@@ -19,8 +19,8 @@ export function BroomIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M13.919 10.081L21.581 2.419" />
-        <path d="M11.491 8.49L2.21 13.897L2.059 15.059L8.942 21.942L10.104 21.791L15.509 12.51Z" />
-        <path d="m5 18 2-2" />
+        <path d="M11.491 8.49L2.57 14.532L9.469 21.431L15.509 12.51Z" />
+        <path d="M5.707 17.293L7 16" />
         <path d="M8.406 11.407L12.594 15.594" />
       </svg>
     );

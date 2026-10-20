@@ -35,8 +35,9 @@ export const derivations: CategoryDerivations = {
   keepRound: {
     accessibility: [0], // The figure's head.
     "person-standing": [0], // The figure's head.
-    // The eyes: figurative dots, round in sharp (UI dots stay square).
-    baby: [1, 3],
+    // The eyes: figurative dots, round in sharp (UI dots stay square). The head (2) too, for the
+    // curl of hair Lucide draws on it: squared, the curl turns into a square spiral.
+    baby: [1, 2, 3],
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},

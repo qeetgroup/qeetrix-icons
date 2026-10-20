@@ -7,7 +7,7 @@ judgment here:
 - **Every filled drawing**, before it is listed in [config/derived/](../config/derived/README.md) and
   again whenever it changes. Filled drawings are derived by rule, and a rule can produce a
   valid but poor drawing ([filled.md](filled.md)).
-- **Every change to the sharp style**: a rule in `scripts/lib/sharp.ts` or a `keepRound` or `tipHeight` entry
+- **Every change to the sharp style**: a rule in `scripts/lib/sharp.ts` or a `keepRound`, `tipHeight`, or `keepPoint` entry
   can change hundreds of sharp drawings at once ([sharp.md](sharp.md)).
 - **Every Lucide upgrade**: added and redrawn outlines, the filled and sharp drawings they change,
   and RTL decisions for new icons ([lucide.md](lucide.md#upgrading-lucide)). Outline problems are

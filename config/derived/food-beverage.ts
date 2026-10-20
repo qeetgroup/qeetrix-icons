@@ -86,4 +86,29 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat, a
+  // cone's tip, a carrot's, a slice's, a glass's rim, a liner's, a bag's fold, and a wrapper's ends
+  // read as clipped; they move in instead. The sharp filled overrides of carrot, ice-cream-cone,
+  // and paper-bag follow the pointed outlines.
+  keepPoint: {
+    // The wrapper's ends.
+    candy: [2, 4],
+    "candy-off": [4, 6],
+    // The tip.
+    carrot: [0],
+    "ice-cream-cone": [0],
+    pizza: [4],
+    // The cup's rim, where the handle meets it.
+    coffee: [2],
+    // The pot's rim.
+    "cooking-pot": [3],
+    // The liner.
+    cupcake: [3],
+    // The stem.
+    grape: [0],
+    // The glass's rim.
+    martini: [0],
+    // The bag's fold.
+    "paper-bag": [1],
+  },
 };

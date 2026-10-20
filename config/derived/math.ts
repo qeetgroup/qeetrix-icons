@@ -29,4 +29,10 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a weight's base corners read as clipped; they move in instead.
+  keepPoint: {
+    weight: [1],
+    "weight-tilde": [0],
+  },
 };

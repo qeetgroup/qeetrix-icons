@@ -18,7 +18,10 @@ export const derivations: CategoryDerivations = {
     // drawing is an override only to flatten the monitor's bottom corners, which the base's round
     // clearance flared by 0.13 units.
     computer: { roles: { 3: "front" } },
-    // The top disc sits in front of the drum; the middle seam is cut.
+    // The top disc sits in front of the drum; the middle seam is cut. Both filled drawings are one
+    // override: derived, the seam's caps curled up the sides (round) or stepped (sharp), and the
+    // lid's 1-unit gap was half the seam's. The override stacks discs instead: every edge is the
+    // outline's rx 10, ry 4 lower half, so each 2-unit gap is a crescent across the full width.
     database: { roles: { 0: "front" } },
     disc: {},
     "disc-2": {},
@@ -69,4 +72,23 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // an arrowhead's tip, a bolt's, a triangle's, a laptop's base, a plug's corners, and a zigzag's
+  // points read as clipped; they move in instead.
+  keepPoint: {
+    // The arrowhead, the bolt, and the eject triangle.
+    "database-arrow-down": [0],
+    "database-zap": [3],
+    eject: [0],
+    "plug-zap": [0],
+    // The laptop's base.
+    laptop: [0],
+    // The lamp's head.
+    spotlight: [3],
+    // The plugs.
+    unplug: [2, 5],
+    // The zigzags.
+    vibrate: [0, 1],
+    "vibrate-off": [0, 1],
+  },
 };

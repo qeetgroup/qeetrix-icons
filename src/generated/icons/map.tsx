@@ -33,7 +33,7 @@ export function MapIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21 2.999V18L15.472 20.765H14.528L9 18.001L3 21.002V6.001L8.528 3.236H9.472L15 6Z" />
+        <path d="M21 2.999V18L15 21.001L9 18.001L3 21.002V6.001L9 3L15 6Z" />
         <path d="M15 5.764V19.764" />
         <path d="M9 4.236V18.236" />
       </svg>

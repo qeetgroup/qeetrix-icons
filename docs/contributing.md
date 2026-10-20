@@ -72,9 +72,9 @@ in [architecture.md](architecture.md).
   the playground ([filled.md](filled.md#adding-a-filled-drawing)). Only if roles cannot get it
   right, draw an override and stamp it ([filled.md](filled.md#overrides)).
 - **Change the sharp style.** Edit the rules in [scripts/lib/sharp.ts](../scripts/lib/sharp.ts), or
-  `keepRound` or `tipHeight` in `config/derived/<category>.ts`, run `bun run derive:sharp` and
-  `bun run generate`, and review every changed drawing and every override in a changed category
-  ([sharp.md](sharp.md#changing-the-sharp-style)).
+  `keepRound`, `tipHeight`, or `keepPoint` in `config/derived/<category>.ts`, run
+  `bun run derive:sharp` and `bun run generate`, and review every changed drawing and every
+  override in a changed category ([sharp.md](sharp.md#changing-the-sharp-style)).
 - **Change an RTL decision.** Edit the `mirrored` list in
   [config/icon-metadata.ts](../config/icon-metadata.ts) and run `bun run generate`
   ([rtl.md](rtl.md)).
@@ -121,7 +121,7 @@ publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
   `config/lucide.json`, or `config/categories.ts`; the next sync would undo them. Restating Lucide's rules in
   [config/icon-system.ts](../config/icon-system.ts) is fine; inventing per-icon geometry is not.
   Derivations follow general rules, and their per-icon exceptions (filled `roles`, sharp
-  `keepRound` and `tipHeight`, hand-drawn overrides) each say why.
+  `keepRound`, `tipHeight`, and `keepPoint`, hand-drawn overrides) each say why.
 - **Tool-written files are never edited by hand.** That covers `icons/`, `src/generated/`, and
   `icon-manifest.json`. Their writers must be deterministic: no timestamps, and sort with an
   explicit codepoint comparator rather than `localeCompare`, so a file's bytes never depend on the

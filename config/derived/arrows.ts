@@ -59,4 +59,48 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // an arrowhead's tip and wings, a pointer's tip, a sign's point, and a play triangle read as
+  // clipped; they move in instead, and a shaft that ends in a tip is trimmed to hide in it.
+  keepPoint: {
+    // The big arrow's outline.
+    "arrow-big-down": [0],
+    "arrow-big-down-dash": [0],
+    "arrow-big-left": [0],
+    "arrow-big-left-dash": [0],
+    "arrow-big-right": [0],
+    "arrow-big-right-dash": [0],
+    "arrow-big-up": [0],
+    "arrow-big-up-dash": [0],
+    // The arrowheads.
+    "arrow-up-from-dot": [0],
+    move: [1, 2, 4, 5],
+    "move-down": [0],
+    "move-horizontal": [0, 2],
+    "move-left": [0],
+    "move-right": [0],
+    "move-up": [0],
+    "move-vertical": [1, 2],
+    "phone-forwarded": [1],
+    sunrise: [6],
+    "unfold-horizontal": [6, 7],
+    "unfold-vertical": [6, 7],
+    // The pointer.
+    "lasso-select": [4],
+    "mouse-pointer": [1],
+    "mouse-pointer-2": [0],
+    "mouse-pointer-2-off": [0],
+    "mouse-pointer-ban": [0],
+    "mouse-pointer-click": [4],
+    "spline-pointer": [0],
+    "square-dashed-mouse-pointer": [0],
+    "square-mouse-pointer": [0],
+    // The sign's pointed ends.
+    milestone: [2],
+    signpost: [2],
+    "signpost-big": [0, 1],
+    // The triangles.
+    play: [0],
+    rewind: [0, 1],
+  },
 };

@@ -19,7 +19,7 @@ export function LighthouseIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 3V2" />
-        <path d="M15.196 17.358L7.313 21.823L7.064 21.646L9 11V6A3 3 0 0 1 15 6V11L16.821 21.016" />
+        <path d="M15.176 17.321L7.55 21.226L9 11V6A3 3 0 0 1 15 6V11L16.821 21.016" />
         <path d="m19.792 4.5.866-.5" />
         <path d="m19.797 13.5.866.5" />
         <path d="M21 9h1" />

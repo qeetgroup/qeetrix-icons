@@ -32,4 +32,12 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a flask's base, a tube's corners, and a trefoil's blades read as clipped; they move in instead.
+  keepPoint: {
+    "flask-conical": [0],
+    "flask-conical-off": [3],
+    radiation: [2, 3],
+    telescope: [0, 3],
+  },
 };

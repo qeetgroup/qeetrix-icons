@@ -15,7 +15,7 @@ export function ArrowBigDownDashIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M16 3L8 3L8 5L16 5L16 3ZM21.388 11L16 11L16 7L8 7L8 11L2.612 11L2.018 12.433L12 22.414L21.982 12.433L21.388 11Z"
+            d="M16 3L8 3L8 5L16 5L16 3ZM22.986 11L16 11L16 7L8 7L8 11L1.014 11L12 22.444L22.986 11Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function ArrowBigDownDashIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M15 12H20.72L20.802 12.198L12 21L3.198 12.198L3.28 12H9V8H15Z" />
+        <path d="M15 12H20.64L12 21L3.36 12H9V8H15Z" />
         <path d="M9 4h6" />
       </svg>
     );

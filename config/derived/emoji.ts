@@ -34,4 +34,12 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a heart's tip and a popper's cone read as clipped; they move in instead.
+  keepPoint: {
+    // The heart's tip.
+    "heart-crack": [1],
+    // The cone's tip.
+    "party-popper": [0],
+  },
 };

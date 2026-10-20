@@ -21,6 +21,12 @@ export type CategoryDerivations = {
    * letters beside them (an A beside a B).
    */
   readonly tipHeight?: Readonly<Record<string, readonly number[]>>;
+  /**
+   * Outline elements whose corners keep their point at the padding, by index: where a miter would
+   * paint past it, the corner moves in until the miter fits instead of being cut flat (a triangle's
+   * apex, a diamond's corners).
+   */
+  readonly keepPoint?: Readonly<Record<string, readonly number[]>>;
 };
 
 /** Merges per-category derivations, failing on a name listed by two categories. */
@@ -31,6 +37,7 @@ export function mergeDerivations(
   const keepRound: Record<string, readonly number[]> = {};
   const sharpFilledRoles: Record<string, Readonly<Record<number, FilledRole>>> = {};
   const tipHeight: Record<string, readonly number[]> = {};
+  const keepPoint: Record<string, readonly number[]> = {};
   const categoryOf = new Map<string, string>();
   for (const [category, derivations] of Object.entries(byCategory)) {
     for (const [table, target] of [
@@ -38,6 +45,7 @@ export function mergeDerivations(
       [derivations.keepRound, keepRound],
       [derivations.sharpFilledRoles, sharpFilledRoles],
       [derivations.tipHeight ?? {}, tipHeight],
+      [derivations.keepPoint ?? {}, keepPoint],
     ] as const) {
       for (const [name, value] of Object.entries(table)) {
         const owner = categoryOf.get(name);
@@ -49,5 +57,5 @@ export function mergeDerivations(
       }
     }
   }
-  return { filled, keepRound, sharpFilledRoles, tipHeight, categoryOf };
+  return { filled, keepRound, sharpFilledRoles, tipHeight, keepPoint, categoryOf };
 }

@@ -34,4 +34,19 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat, a
+  // nut's corners, a broom's head, a pencil's tip, and a pick's points read as clipped; they move
+  // in instead. (ruler stays unlisted, and so do pencil-ruler's ruler pieces: moving only a rotated
+  // rectangle's outer corners in narrows its ends, and the ruler's ticks poke out of it.)
+  keepPoint: {
+    // The nut, like shapes' hexagon.
+    bolt: [0],
+    // The broom's head.
+    broom: [1],
+    "broom-sparkles": [3],
+    // The pencil.
+    "pencil-ruler": [4],
+    // The pick's head.
+    pickaxe: [1, 2],
+  },
 };

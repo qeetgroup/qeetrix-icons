@@ -1,4 +1,5 @@
+<!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/mail/send-horizontal.svg (sha256 99a000241ce3e07899a9189425130122f6f817d44f91ffcb8a0172a0f3dac76a). Edit this file, not icons/. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="M6.134 12L2.701 21.215L2.856 21.357L22.002 12.316V11.684L2.854 2.643L2.699 2.785Z"/>
-  <path d="M6 12H21"/>
+  <path d="M6.134 12L3.04 20.996L20.791 12L3.045 3.011Z"/>
+  <path d="M6 12H19.8"/>
 </svg>

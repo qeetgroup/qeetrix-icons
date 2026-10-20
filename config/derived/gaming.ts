@@ -55,4 +55,24 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // an arrow's tip and fletching, a crown's points, a die's or card's corners, a ghost's hem, and
+  // a pennant read as clipped; they move in instead. (gem stays unlisted: pointed, the inner
+  // facets' tip pokes out below the body's, and its sharp filled override is drawn on the current
+  // outline.)
+  keepPoint: {
+    // The arrow.
+    "bow-arrow": [1, 2, 3],
+    // The crown's points.
+    crown: [0],
+    // The back die.
+    dices: [1],
+    // The hem.
+    ghost: [1],
+    // The pennant.
+    goal: [0],
+    // The cards.
+    "playing-cards": [1],
+    "playing-cards-fan": [0, 2],
+  },
 };

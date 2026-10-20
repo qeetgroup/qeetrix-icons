@@ -34,4 +34,22 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // an arrowhead's tip, a pediment's corners, and a receipt's zigzag corners read as clipped; they
+  // move in instead.
+  keepPoint: {
+    "banknote-arrow-down": [1],
+    // The pediment.
+    landmark: [1],
+    // The receipt's torn edges.
+    receipt: [2],
+    "receipt-cent": [2],
+    "receipt-euro": [1],
+    "receipt-indian-rupee": [0],
+    "receipt-japanese-yen": [1],
+    "receipt-pound-sterling": [1],
+    "receipt-russian-ruble": [0],
+    "receipt-text": [3],
+    "receipt-turkish-lira": [2],
+  },
 };

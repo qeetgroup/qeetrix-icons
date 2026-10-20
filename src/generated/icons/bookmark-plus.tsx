@@ -15,7 +15,7 @@ export function BookmarkPlusIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M18.33 22.492L12 18.875L5.17 22.778L4 22.099L4 2L20 2L20 22.099L18.83 22.778L18.33 22.492ZM13 11L13 14L11 14L11 11L8 11L8 9L11 9L11 6L13 6L13 9L16 9L16 11L13 11Z"
+            d="M18.541 22.231L12 18.849L4 22.986L4 2L20 2L20 22.986L18.541 22.231ZM13 11L13 14L11 14L11 11L8 11L8 9L11 9L11 6L13 6L13 9L16 9L16 11L13 11Z"
             fillRule="evenodd"
           />
         </svg>
@@ -35,7 +35,7 @@ export function BookmarkPlusIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M12 7v6" />
         <path d="M15 10H9" />
-        <path d="M18.826 21.624L12 17.723L5.174 21.624L5 21.523V3H19V21.523Z" />
+        <path d="M19 21.343L12 17.723L5 21.343V3H19Z" />
       </svg>
     );
   }

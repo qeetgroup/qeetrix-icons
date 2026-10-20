@@ -15,7 +15,7 @@ export function DicesIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M8.589 5.996L10.573 8L16 8L16 13.482L17.916 15.418L18.627 14.707L23.001 10.333L22.989 7.641L16.243 1.002L13.573 1.013L8.589 5.996ZM16.01 5L14 5L14 7L16.01 7L16.01 5ZM17 8L19.01 8L19.01 10L17 10L17 8ZM1 9L15 9L15 23L1 23L1 9ZM9 13L11.01 13L11.01 15L9 15L9 13ZM7.01 17L5 17L5 19L7.01 19L7.01 17Z"
+            d="M8.482 5.888L10.573 8L16 8L16 13.482L18.025 15.527L18.72 14.6L22.996 8.896L15.001 1.005L8.482 5.888ZM16.01 5L14 5L14 7L16.01 7L16.01 5ZM17 8L19.01 8L19.01 10L17 10L17 8ZM1 9L15 9L15 23L1 23L1 9ZM9 13L11.01 13L11.01 15L9 15L9 13ZM7.01 17L5 17L5 19L7.01 19L7.01 17Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function DicesIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <rect height="12" width="12" x="2" y="10" />
-        <path d="M17.92 14L21.999 9.921L21.991 8.062L15.835 2.004L13.989 2.011L10 6" />
+        <path d="M17.92 14L21.672 8.995L14.911 2.322L10 6" />
         <path d="M6 18h.01" />
         <path d="M10 14h.01" />
         <path d="M15 6h.01" />

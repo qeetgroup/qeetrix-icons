@@ -1,7 +1,7 @@
 <!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/design/layers-arrow-up.svg (sha256 ae7e228107f4562663352415a0521be18da3af6b58c7d52c1165af43b8db0dbc). Edit this file, not icons/. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
   <path d="M12 12V3"/>
-  <path d="M2.309 17.78L12.005 21.907L21.683 17.788"/>
-  <path d="M7.674 8.774L1.996 11.355V12.647L12.005 17.197L22.004 12.652V11.35L16.332 8.772"/>
+  <path d="M2 17.002V17.648L12.005 21.907L22 17.651V17.002"/>
+  <path d="M7.674 8.774L2.896 12.001L12.005 17.197L21.116 12.001L16.332 8.772"/>
   <path d="M9 5L12 2.34L15 5"/>
 </svg>

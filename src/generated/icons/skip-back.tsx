@@ -15,7 +15,7 @@ export function SkipBackIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M21.493 20.036L18.956 21.472L6.001 13.699L5.998 10.302L18.956 2.528L22 4.251L22 19.749L21.493 20.036ZM2 3L2 21L4 21L4 3L2 3Z"
+            d="M6.013 13.682L20.497 22.116L22 22.992L22 1.008L6.013 10.318L6.013 13.682ZM2 3L2 21L4 21L4 3L2 3Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function SkipBackIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21 19.166L18.971 20.315L7.001 13.133L6.999 10.868L18.971 3.685L21 4.834Z" />
+        <path d="M21 21.252L7.013 13.107V10.893L21 2.748Z" />
         <path d="M3 20V4" />
       </svg>
     );

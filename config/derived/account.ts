@@ -93,4 +93,44 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a star's tips, a tag's point, a bookmark's tails, a bell's flare, a ribbon's tails, a flag's
+  // corner, and an arrow's or a pen's tip read as clipped; they move in instead.
+  keepPoint: {
+    // The ribbon.
+    award: [0],
+    // The bell's body.
+    bell: [1],
+    "bell-check": [3],
+    "bell-dot": [1],
+    // The bookmark's body.
+    bookmark: [0],
+    "bookmark-check": [0],
+    "bookmark-minus": [1],
+    "bookmark-off": [0],
+    "bookmark-plus": [2],
+    "bookmark-x": [1],
+    // The flag's top edge, where it turns down the fly.
+    flag: [0],
+    "flag-off": [3],
+    // The two cuffs.
+    handshake: [2, 3],
+    // The arrowhead; the shaft is trimmed to hide in its tip.
+    share: [1],
+    // The star.
+    star: [0],
+    "star-check": [0],
+    "star-minus": [1],
+    "star-plus": [0],
+    "star-x": [1],
+    "user-star": [0],
+    // The tag's body; both tags in `tags`.
+    tag: [0],
+    "tag-plus": [1],
+    "tag-x": [0],
+    tags: [0, 1],
+    // The pen's nib.
+    "user-pen": [1],
+    "user-round-pen": [1],
+  },
 };

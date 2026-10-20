@@ -43,4 +43,14 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat, a
+  // moon's horns, a canopy's ribs, and an arrowhead read as clipped; they move in instead.
+  keepPoint: {
+    "cloud-moon": [1],
+    "cloud-moon-rain": [1],
+    umbrella: [2],
+    "umbrella-off": [2, 4],
+    "waves-arrow-up": [3],
+    "wind-arrow-up": [3],
+  },
 };

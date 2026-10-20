@@ -34,7 +34,7 @@ Upstream icons marked deprecated are skipped. In 1.52.0 these are `badge-swiss-f
 Never edit `icons/round-outline/`, `config/lucide.json`, or `config/categories.ts` by hand: the
 next sync rewrites them. A problem in an outline belongs upstream, in Lucide. What this repository
 owns is the per-category derivation tables ([config/derived/](../config/derived/README.md): the
-filled list and roles, and the sharp style's `keepRound` and `tipHeight` exceptions), the
+filled list and roles, and the sharp style's `keepRound`, `tipHeight`, and `keepPoint` exceptions), the
 hand-drawn overrides (`config/overrides/`), the sharpening rules
 ([scripts/lib/sharp.ts](../scripts/lib/sharp.ts)), the RTL list in
 [config/icon-metadata.ts](../config/icon-metadata.ts), and the design values in
@@ -85,7 +85,7 @@ fix the cause and run the remaining commands yourself.
      ([filled.md](filled.md#adding-a-filled-drawing)).
    - `icons/sharp-outline/` and `icons/sharp-filled/`: every sharp drawing of a new or redrawn
      icon. Review them with the playground's shape set to Sharp ([sharp.md](sharp.md)).
-4. Re-check the `roles`, `keepRound`, and `tipHeight` entries in `config/derived/` for every icon
+4. Re-check the `roles`, `keepRound`, `tipHeight`, and `keepPoint` entries in `config/derived/` for every icon
    whose outline changed. Overrides of a changed outline fail derivation until someone redraws or
    re-stamps them ([filled.md](filled.md#overrides)). The entries are
    keyed by element index, so a redrawn outline can shift indices and an entry then applies to the

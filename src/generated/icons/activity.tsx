@@ -18,7 +18,7 @@ export function ActivityIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22 12H18L15.189 22H14.811L9.189 2H8.811L6 12H2" />
+        <path d="M22 12H18L15 19.954L9 4.046L6 12H2" />
       </svg>
     );
   }

@@ -44,4 +44,16 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a heart's tip and a pulse's peaks read as clipped; they move in instead. (mouth, mouth-off,
+  // and tube-lotion stay unlisted: pointed, the lips turn angular and the tube's cap spikes out.)
+  keepPoint: {
+    // The pulse's peaks.
+    activity: [0],
+    // The heart's tip.
+    heart: [0],
+    "heart-minus": [0],
+    "heart-plus": [0],
+    "heart-pulse": [0],
+  },
 };

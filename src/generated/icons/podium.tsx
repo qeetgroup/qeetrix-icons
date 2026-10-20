@@ -34,7 +34,7 @@ export function PodiumIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M12 6V2h-1" />
-        <path d="M9 15V14.586L8.414 14H3V21H21V16H15.586L15 16.586V17" />
+        <path d="M9 15V14H3V21H21V16H15V17" />
         <path d="M9 21V10H15V21" />
       </svg>
     );

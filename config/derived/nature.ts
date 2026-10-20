@@ -32,4 +32,14 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a peak, a roof's ridge, a pine's tiers, and a blade's tip read as clipped; they move in instead.
+  keepPoint: {
+    birdhouse: [2],
+    mountain: [0],
+    "mountain-snow": [0],
+    shovel: [0],
+    "tree-pine": [0],
+    trees: [3],
+  },
 };

@@ -14,10 +14,7 @@ export function SendHorizontalIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path
-            d="M4.694 11L1.527 2.503L2.674 1.452L22.895 11L4.694 11ZM4.694 13L1.529 21.497L2.676 22.548L22.895 13L4.694 13Z"
-            fillRule="evenodd"
-          />
+          <path d="M4.733 11L1.298 1.005L21.032 11ZM4.733 13L1.292 23.003L21.026 13Z" />
         </svg>
       );
     }
@@ -33,8 +30,8 @@ export function SendHorizontalIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M6.134 12L2.701 21.215L2.856 21.357L22.002 12.316V11.684L2.854 2.643L2.699 2.785Z" />
-        <path d="M6 12H21" />
+        <path d="M6.134 12L3.04 20.996L20.791 12L3.045 3.011Z" />
+        <path d="M6 12H19.8" />
       </svg>
     );
   }

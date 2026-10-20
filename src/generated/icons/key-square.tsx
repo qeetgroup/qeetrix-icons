@@ -15,7 +15,7 @@ export function KeySquareIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M15.9 18.414L22.703 11.611L22.996 11.318L22.996 8.482L15.518 1.004L12.682 1.004L5.586 8.1L8.036 10.55L1 17.586L1 23L8 23L8 20L11 20L11 17L12.414 17L13.45 15.964L15.9 18.414ZM18.414 10L14.707 6.293L14 5.586L12.586 7L17 11.414L18.414 10Z"
+            d="M15.978 18.492L22.427 10.531L22.994 9.832L14.168 1.006L5.508 8.022L8.036 10.55L1 17.586L1 23L8 23L8 20L11 20L11 17L12.414 17L13.45 15.964L15.978 18.492ZM18.414 10L14.707 6.293L14 5.586L12.586 7L17 11.414L18.414 10Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function KeySquareIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21.996 10.904L15.9 17L7 8.1L13.096 2.004H15.104L21.996 8.896Z" />
+        <path d="M21.65 9.902L15.9 17L7 8.1L14.098 2.35Z" />
         <path d="m14 7 3 3" />
         <path d="M9.4 10.6L2 18V22H7V19H10V16H12L13.4 14.6" />
       </svg>

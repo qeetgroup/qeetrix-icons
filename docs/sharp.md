@@ -71,7 +71,8 @@ shapes. Element by element:
   it is a wave's crest (a tilde) or ends the path (a hook). A partial rounding where a path stops
   ends at its corner.
 - **Spikes**: a tip whose point would reach more than about 3 units past the rounding is cut flat
-  along the rounding's middle tangent, reaching no further than the rounding did.
+  along the rounding's middle tangent, reaching no further than the rounding did, unless its
+  element keeps its points ([Kept points](#kept-points)).
 - **Closed paths** are treated cyclically, starting on a straight run, so a corner where Lucide's
   path happens to start (the bottom of `triangle-alert`) is sharpened like every other.
 - **Unchanged**: `line`, `ellipse`, and circles larger than a dot.
@@ -81,7 +82,9 @@ Then the whole icon is fitted, because a corner or a cap can collide with anothe
 1. **Padding**: nothing paints past Lucide's 1-unit padding (by more than 0.01) unless the round
    outline itself reaches further there. A corner that would cross it is cut flat, perpendicular
    to its bisector, by the smallest cut that fits; a vertex is never moved, so both edges keep
-   their direction. A free end whose square cap would cross is shortened by the overshoot.
+   their direction. In an element that keeps its points, the vertex moves in instead
+   ([Kept points](#kept-points)). A free end whose square cap would cross is shortened by the
+   overshoot.
 2. **Collisions**: a miter that would pass through another element's stroke and out of its far
    side, or nearly close a gap the round drawing keeps (the tip of `square-radical`, the apex of
    `ferris-wheel`), is cut flat at the round drawing's extent. An inward miter at a concave cusp
@@ -132,6 +135,37 @@ it (`case-upper`, `a-large-small`, `a-arrow-down`). Other tips are unaffected.
 Like filled roles, these are element indices: re-check them when a Lucide upgrade redraws a listed
 icon ([lucide.md](lucide.md#upgrading-lucide)).
 
+### Kept points
+
+Cutting a corner flat at the padding keeps both edges' directions, but on a polygon or a solid the
+flat reads as a clipped corner: a triangle with a blunt top, a diamond with four flats, a star with
+square tips. `keepPoint` in `config/derived/<category>.ts` lists, by icon name and element index,
+the elements whose corners keep their point instead (`triangle`, `diamond`, `hexagon`, `box`,
+`star`, `tag`, `bookmark`):
+
+- A straight-armed corner whose miter would cross the padding moves in, by the least distance that
+  fits: along an arm that runs level or upright, so a flat base or side stays where it is, or else
+  along its bisector. It never moves more than 45% of an arm. Each twin of a symmetric shape finds
+  the same move, so the shape stays symmetric.
+- Its roundings are squared to a point even where the point would be a spike or meet a stroke ending
+  in the corner (a cube's edge at its bottom vertex); the move then brings it inside the padding.
+- A line that ended in the corner, now just past it, is trimmed as an attached end, so its square
+  cap hides in the corner.
+- A corner that would harm a neighbour, or that no move can fit, is still cut flat.
+
+A tip sharper than about 29° cannot come to a point at all, because the miter limit of 4 bevels it
+(`sparkle`, `astroid`), and an acute apex may not fit the padding however far it moves in
+(`metronome`, `traffic-cone`'s cone): leave such an element unlisted; the padding test catches one
+listed by mistake. Leave a rotated square or rectangle unlisted too (`ruler`): moving only its
+outer corners in narrows its ends into a kite. Where it needs points, draw an override that shrinks
+it evenly instead (`component`).
+
+A moved corner can also leave an override behind or a line short of it. A sharp filled override
+keeps its old corners, so redraw it on the pointed outline (`lectern`, `carrot`, `sailboat`); a cut
+that no longer reaches a moved corner (`pyramid`), or a line too long to trim by a cap
+(`send-horizontal`), is drawn as an override too. These are element indices like the other lists:
+re-check them when a Lucide upgrade redraws a listed icon.
+
 ## Sharp filled drawings
 
 A sharp filled drawing is derived from the sharp outline by the same `deriveFilled` as the round
@@ -157,7 +191,7 @@ replaced by a reviewed override in `config/overrides/sharp-filled/`
 ## Changing the sharp style
 
 Never edit a sharp SVG. To change one, change the rules in
-[scripts/lib/sharp.ts](../scripts/lib/sharp.ts), or add an entry to `keepRound` or `tipHeight` in
+[scripts/lib/sharp.ts](../scripts/lib/sharp.ts), or add an entry to `keepRound`, `tipHeight`, or `keepPoint` in
 `config/derived/<category>.ts` with a comment saying why, then run `bun run derive:sharp` and
 `bun run generate`. Where neither can give a clean drawing, draw an override in
 `config/overrides/sharp-outline/` and stamp it ([filled.md](filled.md#overrides)). A rule change can touch

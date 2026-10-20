@@ -19,7 +19,7 @@ export function BugPlayIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 19.655A6 6 0 0 1 6 14v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 3.97" />
-        <path d="M21.774 18.103L15.526 21.85L14 20.986V15.014L15.526 14.15L21.774 17.897Z" />
+        <path d="M21.006 17.988L14 21.406V13.234Z" />
         <path d="M14.539 3.461L15.581 2.419" />
         <path d="M21 5A4 4 0 0 1 18.419 8.735" />
         <path d="M3 21A4 4 0 0 1 5.827 17.171" />

@@ -1,0 +1,4 @@
+<!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/devices/database.svg (sha256 650b9da06971102b891e177e16177f02988ebec8b9dc5594d8b4a86aa1c71774). Edit this file, not icons/. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M2 5A10 4 0 0 1 22 5A10 4 0 0 1 2 5ZM2 7A10 4 0 0 0 22 7V10A10 4 0 0 1 2 10ZM2 12A10 4 0 0 0 22 12V19A10 4 0 0 1 2 19Z"/>
+</svg>
