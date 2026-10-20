@@ -14,10 +14,7 @@ export function TriangleRightIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path
-            d="M23 2.614L21.674 1.983L1.282 18.48L1 19.412L1 19.611L1.219 20.302L1.44 21L23 21L23 2.614Z"
-            fillRule="evenodd"
-          />
+          <path d="M23 1.005L2.92 19.26L1.006 21L23 21L23 1.005Z" fillRule="evenodd" />
         </svg>
       );
     }
@@ -33,7 +30,7 @@ export function TriangleRightIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M2.172 20L2.016 19.507L2.15 19.064L21.813 3.157L22 3.246V20Z" />
+        <path d="M3.593 20L22 3.266V20Z" />
       </svg>
     );
   }

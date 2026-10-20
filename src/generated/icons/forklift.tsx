@@ -21,7 +21,7 @@ export function ForkliftIcon(props: IconProps<"outline">) {
         <path d="M12 12H3V18" />
         <path d="M15 19h7" />
         <path d="M16 19V2" />
-        <path d="M6 12V5H11L15.695 9.695L16 10.43V10.828" />
+        <path d="M6 12V5H11L16 10V10.828" />
         <path d="M7 19h4" />
         <circle cx="13" cy="19" r="2" />
         <circle cx="5" cy="19" r="2" />

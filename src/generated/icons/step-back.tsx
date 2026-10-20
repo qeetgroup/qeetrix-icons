@@ -15,7 +15,7 @@ export function StepBackIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M17.493 20.036L14.956 21.472L1.004 13.101L1.004 10.899L14.956 2.528L18 4.251L18 19.749L17.493 20.036ZM20 3L20 21L22 21L22 3L20 3Z"
+            d="M16.457 21.992L1 12L18 1.011L18 22.989L16.457 21.992ZM20 3L20 21L22 21L22 3L20 3Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function StepBackIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M17 19.166L14.971 20.315L2.004 12.535V11.465L14.971 3.685L17 4.834Z" />
+        <path d="M17 21.152L2.842 12L17 2.848Z" />
         <path d="M21 20V4" />
       </svg>
     );

@@ -15,7 +15,7 @@ export function HouseIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M13.395 1.244L22 8.62L22 22L16 22L16 11L8 11L8 22L2 22L2 8.62L10.886 1.003L13.114 1.003L13.395 1.244ZM10 22L14 22L14 13L10 13L10 22Z"
+            d="M12.604 1.468L22 8.583L22 22L16 22L16 11L8 11L8 22L2 22L2 8.583L12 1.011L12.604 1.468ZM10 22L14 22L14 13L10 13L10 22Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function HouseIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M15 21V12H9V21" />
-        <path d="M12.744 2.003L21 9.08V21H3V9.08L11.256 2.003Z" />
+        <path d="M12 2.265L21 9.08V21H3V9.08Z" />
       </svg>
     );
   }

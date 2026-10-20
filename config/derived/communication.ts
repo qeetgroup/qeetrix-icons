@@ -20,4 +20,13 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a chevron's tip and a desk's corners read as clipped; they move in instead. (spool stays
+  // unlisted: pointed, its flanges spike out to the canvas edge.)
+  keepPoint: {
+    // The chevrons.
+    "chevrons-left-right-ellipsis": [2, 3],
+    // The desk; its sharp filled drawing (an override) follows the pointed corners.
+    lectern: [0],
+  },
 };

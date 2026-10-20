@@ -25,6 +25,8 @@ export const derivations: CategoryDerivations = {
     hexagon: {},
     octagon: {},
     pentagon: {},
+    // The sharp filled drawing is an override: with the apex moved in (`keepPoint`), the edge
+    // ends lower, and its derived cut stopped short of the apex, leaving a cap above it.
     pyramid: {},
     "rectangle-horizontal": {},
     "rectangle-vertical": {},
@@ -44,4 +46,23 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // these polygons and solids read as clipped; each corner moves in until its miter fits instead.
+  keepPoint: {
+    // A solid's outline; the edges that end in its corners are trimmed to hide in them.
+    box: [0],
+    boxes: [0, 4, 8],
+    cone: [0],
+    cuboid: [2],
+    diamond: [0],
+    hexagon: [0],
+    pentagon: [0],
+    pyramid: [0],
+    // The triangle.
+    shapes: [0],
+    // The blade's tip.
+    spade: [1],
+    triangle: [0],
+    "triangle-right": [0],
+  },
 };

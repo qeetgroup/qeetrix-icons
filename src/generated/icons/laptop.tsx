@@ -15,7 +15,7 @@ export function LaptopIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M3 14.987L3 4L21 4L21 14.987L3 14.987ZM2.386 16.987L0.992 19.763L1.753 21L22.247 21L23.008 19.763L21.614 16.987L2.386 16.987Z"
+            d="M3 14.987L3 4L21 4L21 14.987L3 14.987ZM2.549 16.987L1.006 21L22.994 21L21.451 16.987L2.549 16.987Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function LaptopIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M20 16.001L21.864 19.714L21.688 20H2.312L2.136 19.714L4 16.001V5H20Z" />
+        <path d="M20 16.001L21.538 20H2.462L4 16.001V5H20Z" />
         <path d="M19.054 15.987H4.946" />
       </svg>
     );

@@ -112,4 +112,32 @@ export const derivations: CategoryDerivations = {
     letters: [3],
     "text-initial": [3],
   },
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat, a
+  // pen's or brush's tip, a chevron's, a delete key's point, a map's folds, a pin's tip, and a
+  // pilcrow's arrowhead read as clipped; they move in instead.
+  keepPoint: {
+    // The tip.
+    brush: [1],
+    "clipboard-pen": [1],
+    paintbrush: [2],
+    pen: [0],
+    "pen-line": [1],
+    "pen-off": [0],
+    "pen-tool": [0, 1],
+    "pencil-line": [2],
+    "save-pen": [1],
+    // The chevrons.
+    code: [0, 1],
+    "code-xml": [0, 1],
+    // The key's point, the eraser's corner, and the tilted book.
+    delete: [0],
+    eraser: [0],
+    "library-big": [2],
+    // The map's folds and the pin, like navigation's.
+    map: [0],
+    "map-pin-search": [0],
+    // The arrowhead.
+    "pilcrow-left": [4],
+    "pilcrow-right": [4],
+  },
 };

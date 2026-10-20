@@ -18,8 +18,8 @@ export function LampDeskIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M14.207 4.793L21.805 6.349L21.865 6.549L13.284 15.13L12.14 14.786L10.793 8.207L7.586 5L10.59 1.996H11.41Z" />
-        <path d="m14.207 4.793-3.414 3.414" />
+        <path d="M14.207 4.793L21.121 6.663L13.266 15.085L12.136 14.767L10.793 8.207L7.586 5L11 2.286Z" />
+        <path d="M13.5 5.5L10.793 8.207" />
         <path d="M11 18V22H3V18Z" />
         <path d="M9.086 6.5L3.774 11.812L6.538 17.113" />
       </svg>

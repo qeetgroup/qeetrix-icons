@@ -15,7 +15,7 @@ export function EraserIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 9.759L14.528 1.284L13.474 1.284L5.082 9.676L5.789 10.383L15.324 19.918L13.91 21.332L4.375 11.797L3.668 11.09L1 13.758L1 16.241L6.751 22L21 22L21 20L15.247 20L23 12.242L23 9.759Z"
+            d="M6.688 22L21 22L21 20L15.05 20L22.996 10.993L14.014 1.011L5.518 10.112L5.789 10.383L5.789 10.383L6.496 11.09L14.617 19.211L13.203 20.625L5.082 12.504L4.375 11.797L4.375 11.797L4.152 11.574L0.999 14.951L6.688 22Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,8 +33,8 @@ export function EraserIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21 21H7.166L1.993 15.82V14.179L13.888 2.284H14.114L22.007 10.18V11.821L12.834 21" />
-        <path d="m5.082 11.09 8.828 8.828" />
+        <path d="M21 21H7.166L2.323 14.999L14 2.491L21.657 11L12.834 21" />
+        <path d="M5.789 11.797L13.203 19.211" />
       </svg>
     );
   }

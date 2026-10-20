@@ -26,4 +26,11 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // an arrowhead's tip and a play triangle read as clipped; they move in instead. (square-sparkles
+  // stays unlisted, like sparkle: its tips are too acute to come to a point.)
+  keepPoint: {
+    "image-down": [2],
+    "image-play": [0],
+  },
 };

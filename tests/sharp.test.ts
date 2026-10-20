@@ -277,6 +277,25 @@ describe("fitting a sharp icon", () => {
     expect(sharpenOne('<path d="m12 6 6 14H6z"/>')).toBe('  <path d="m12 6 6 14H6z"/>');
   });
 
+  it("moves the corners of elements listed in keepPoint in until their miters fit", () => {
+    // The apex moves in along its bisector and keeps its point; the base, inside, stays.
+    const triangle = syntheticSvg({}, '<path d="m12 1.5 9 20H3z"/>');
+    expect(elements(sharpenOutline(triangle, "icon", [], [], [0]))[0]).toBe(
+      '  <path d="M12 2.81L21 21.5H3Z"/>',
+    );
+    // A corner on a level edge slides along it, so the base stays flat; a spike is not cut.
+    const right = syntheticSvg(
+      {},
+      '<path d="M22 18a2 2 0 0 1-2 2H3c-1.1 0-1.3-.6-.4-1.3L20.4 4.3c.9-.7 1.6-.4 1.6.7Z"/>',
+    );
+    expect(elements(sharpenOutline(right, "icon", [], [], [0]))[0]).toBe(
+      '  <path d="M3.593 20L22 3.266V20Z"/>',
+    );
+    expect(elements(sharpenOutline(right, "icon"))[0]).toBe(
+      '  <path d="M2.172 20L2.016 19.507L2.15 19.064L21.813 3.157L22 3.246V20Z"/>',
+    );
+  });
+
   it("gives symmetric shapes symmetric cuts", () => {
     const diamond =
       "M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z";
@@ -312,9 +331,8 @@ describe("the repository's outlines", () => {
       '  <path d="M15 15H9.3L9.212 14.788L15 9"/>',
       '  <path d="M10 15H9V9"/>',
     ]);
-    expect(sharpIcon("file-output")[2]).toBe(
-      '  <path d="M5 11L2.113 13.887V14.113L2.707 14.707"/>',
-    );
+    // file-output's arrowhead, listed in config/derived keepPoint, joins into a point at the padding.
+    expect(sharpIcon("file-output")[2]).toBe('  <path d="M5 11L2.26 14L2.707 14.707"/>');
     expect(sharpIcon("image-off")[3]).toBe('  <path d="M18 12L21 15V14"/>');
   });
 
@@ -349,9 +367,10 @@ describe("the repository's outlines", () => {
     const [arrow, , letter] = sharpIcon("a-arrow-down").map(pathData);
     expect(arrow).toBe("M14.419 12.419L18 16L21.581 12.419");
     expect(letter).toBe("M2.313 15.25L6.167 6.002H6.834L10.687 15.25");
-    // triangle-alert, which starts mid-edge, gets identical bottom corners and a narrow apex flat.
+    // triangle-alert, which starts mid-edge and is listed in keepPoint, gets bottom corners that
+    // mirror each other about its apex.
     const triangle = pathData(sharpIcon("triangle-alert")[0]);
-    expect(triangle).toBe("M11.395 1.997L2.134 18.204L3.756 21H20.224L21.846 18.204L12.585 1.997Z");
+    expect(triangle).toBe("M11.99 3.155L2.636 21H21.344Z");
     // The scale's pans are cut alike on both sides.
     const pan = pathData(sharpIcon("scale")[1]);
     expect(pan).toContain("L21.951 15.869L21.887 16.082");
@@ -359,12 +378,14 @@ describe("the repository's outlines", () => {
   });
 
   it("bring closed polygons' tips to a point, or a minimal flat at the padding", () => {
-    // triangle's apex would paint past the padding: a flat about a unit wide, right at it.
+    // triangle, listed in config/derived keepPoint, keeps all three points inside the padding;
+    // unlisted, a corner is cut flat right at it (see "fitting a sharp icon", above).
     const triangle = pathData(sharpIcon("triangle")[0]);
-    expect(triangle).toBe("M3.776 21H20.224L21.846 18.204L12.585 1.997H11.415L2.154 18.204Z");
-    // The star's two lower tips fit inside the padding and stay pointed.
-    expect(pathData(sharpIcon("star")[0])).toContain("L18.516 21.274L18.345 21.399L11.999 18.063");
-    // A dashed triangle's corner pieces sharpen like the triangle.
+    expect(triangle).toBe("M2.656 21H21.344L12 3.152Z");
+    // The star, listed too, brings its lower tips to points inside the padding.
+    expect(pathData(sharpIcon("star")[0])).toContain("L18.357 21.236L11.999 18.063");
+    // A dashed triangle's corner pieces, unlisted, are cut at the padding. (The repository's sharp
+    // triangle-dashed is an override that follows the pointed triangle, dashes and all.)
     expect(pathData(sharpIcon("triangle-dashed")[0])).toBe(
       "M10.17 4.193L11.439 1.995H12.559L13.836 4.206",
     );

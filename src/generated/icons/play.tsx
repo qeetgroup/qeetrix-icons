@@ -14,10 +14,7 @@ export function PlayIcon(props: IconProps<"outline" | "filled">) {
           xmlns="http://www.w3.org/2000/svg"
           {...resolveIconProps(props)}
         >
-          <path
-            d="M6.098 23L22.508 13.428L23 13.141L23 10.859L6.098 1L6.086 1L4 2.198L4 21.802L6.086 23L6.098 23Z"
-            fillRule="evenodd"
-          />
+          <path d="M21.502 12.865L4 22.997L4 1.003L22.997 12L21.502 12.865Z" fillRule="evenodd" />
         </svg>
       );
     }
@@ -33,7 +30,7 @@ export function PlayIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M22.004 12.564L6.088 21.848L5 21.223V2.777L6.088 2.152L22.004 11.436Z" />
+        <path d="M21.001 12L5 21.263V2.737Z" />
       </svg>
     );
   }

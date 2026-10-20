@@ -51,4 +51,32 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a layer's corners, a plot's, a triangle's, and a pencil's or knife's tip read as clipped;
+  // they move in instead. (layer-arrow-down, layer-arrow-up, and layers-arrow-up are overrides
+  // drawn the same way from a corrected copy: Lucide splits their right corner into two arcs, or
+  // two paths, which squared would leave it round or lopsided.)
+  keepPoint: {
+    // The layers.
+    layers: [0, 2],
+    "layers-2": [0, 1],
+    "layers-arrow-down": [3, 4],
+    "layers-minus": [0, 3],
+    "layers-plus": [0, 4],
+    // The plots. (component is an override: moving only each diamond's outer tip in made kites of
+    // them, so the override shrinks and shifts each diamond evenly, keeping its edges at 45°.)
+    "land-plot": [0, 1],
+    // The triangles.
+    "triangles-centerline-dashed-horizontal": [4, 5],
+    "triangles-centerline-dashed-vertical": [4, 5],
+    // The tip.
+    pencil: [0],
+    "pencil-off": [0],
+    "pencil-sparkles": [3],
+    slice: [0],
+    "wand-sparkles": [0],
+    // The magnet's poles and the bucket's rim.
+    magnet: [1],
+    "paint-bucket": [3],
+  },
 };

@@ -15,7 +15,7 @@ export function BookmarkMinusIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M12 18.875L18.33 22.492L18.83 22.778L20 22.099L20 2L4 2L4 22.099L5.17 22.778L12 18.875ZM8 11L16 11L16 9L8 9L8 11Z"
+            d="M12 18.849L18.541 22.231L20 22.986L20 2L4 2L4 22.986L12 18.849ZM8 11L16 11L16 9L8 9L8 11Z"
             fillRule="evenodd"
           />
         </svg>
@@ -34,7 +34,7 @@ export function BookmarkMinusIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M15 10H9" />
-        <path d="M18.826 21.624L12 17.723L5.174 21.624L5 21.523V3H19V21.523Z" />
+        <path d="M19 21.343L12 17.723L5 21.343V3H19Z" />
       </svg>
     );
   }

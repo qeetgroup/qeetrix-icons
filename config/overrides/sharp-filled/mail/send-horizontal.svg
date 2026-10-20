@@ -1,0 +1,4 @@
+<!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/mail/send-horizontal.svg (sha256 99a000241ce3e07899a9189425130122f6f817d44f91ffcb8a0172a0f3dac76a). Edit this file, not icons/. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M4.733 11L1.298 1.005L21.032 11ZM4.733 13L1.292 23.003L21.026 13Z"/>
+</svg>

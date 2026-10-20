@@ -39,4 +39,11 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a chevron's tip and an arrowhead's read as clipped; they move in instead.
+  keepPoint: {
+    "calendar-chevrons-right": [2],
+    "clock-arrow-down": [2],
+    "clock-arrow-right": [3],
+  },
 };

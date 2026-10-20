@@ -36,4 +36,32 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat, a
+  // pin's tip, an arrowhead's, a map's corners, and a chevron's tip read as clipped; they move in
+  // instead.
+  keepPoint: {
+    // The pin's tip.
+    "map-pin": [0],
+    "map-pin-check": [0],
+    "map-pin-check-inside": [0],
+    "map-pin-minus": [0],
+    "map-pin-minus-inside": [0],
+    "map-pin-off": [1],
+    "map-pin-pen": [1],
+    "map-pin-plus": [0],
+    "map-pin-plus-inside": [0],
+    "map-pin-x": [0],
+    "map-pin-x-inside": [0],
+    "map-pinned": [1],
+    // The map's folds.
+    "map-minus": [0],
+    "map-plus": [0],
+    // The arrowhead.
+    navigation: [0],
+    "navigation-2": [0],
+    "navigation-2-off": [0, 1],
+    "navigation-off": [0, 1],
+    // The chevron.
+    "globe-code": [2],
+  },
 };

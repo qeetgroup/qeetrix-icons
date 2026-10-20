@@ -64,4 +64,32 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat, a
+  // play triangle, a diamond's corners, a star's tips, an arrowhead's, a horn's rim, and a flag's
+  // corner read as clipped; they move in instead. (clapperboard stays unlisted: pointed, the
+  // clapper's top edge moves, and its sharp filled override is drawn on the current outline. So
+  // does metronome: its apex is too acute to come to a point inside the padding.)
+  keepPoint: {
+    // The triangles, like arrows' play and rewind.
+    "fast-forward": [0, 1],
+    "list-video": [3],
+    "play-off": [0, 1],
+    "skip-back": [0],
+    "skip-forward": [1],
+    "step-back": [0],
+    "step-forward": [0],
+    // The diamond, like shapes' diamond.
+    "diamond-minus": [0],
+    "diamond-plus": [1],
+    // The star, like account's star.
+    "star-off": [0, 1],
+    // The arrowheads.
+    shuffle: [0, 1],
+    // The horn.
+    megaphone: [0],
+    "megaphone-off": [0],
+    // The headstock and the flag.
+    guitar: [1],
+    "music-2": [1],
+  },
 };

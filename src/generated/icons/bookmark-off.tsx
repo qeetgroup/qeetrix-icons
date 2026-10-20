@@ -15,7 +15,7 @@ export function BookmarkOffIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M22.995 21.581L3.126 1.712L2.419 1.005L1.005 2.419L21.581 22.995L22.995 21.581ZM6.242 2L20 2L20 15.758L6.242 2ZM4 22.099L4 6.828L19.538 22.367L18.83 22.778L12 18.875L5.17 22.778L4 22.099Z"
+            d="M22.995 21.581L3.126 1.712L2.419 1.005L1.005 2.419L21.581 22.995L22.995 21.581ZM6.242 2L20 2L20 15.758L6.242 2ZM4 22.986L4 6.828L20 22.828L20 22.986L12 18.849L4 22.986Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function BookmarkOffIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M19 20V21.523L18.826 21.624L12 17.723L5.174 21.624L5 21.523V6" />
+        <path d="M19 20V21.343L12 17.723L5 21.343V6" />
         <path d="M2.419 2.419L21.581 21.581" />
         <path d="M8.656 3H19V13.344" />
       </svg>

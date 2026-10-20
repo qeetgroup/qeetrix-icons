@@ -18,7 +18,7 @@ export function PartyPopperIcon(props: IconProps<"outline">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M5.465 12.242L2.147 21.585L2.415 21.853L11.757 18.544" />
+        <path d="M5.495 12.252L2.552 21.449L11.747 18.514" />
         <path d="M4 3h.01" />
         <path d="M22 8h.01" />
         <path d="M15 2h.01" />

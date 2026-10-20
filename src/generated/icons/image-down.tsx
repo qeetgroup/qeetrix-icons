@@ -20,7 +20,7 @@ export function ImageDownIcon(props: IconProps<"outline">) {
       >
         <path d="M10.3 21H3V3H21V15L16.5 10.5L6.707 20.293" />
         <path d="M14 19L16.788 21.788L17 21.7V16.5" />
-        <path d="M16.293 21.293L16.887 21.887H17.113L20 19" />
+        <path d="M16.293 21.293L17 21.74L20 19" />
         <circle cx="9" cy="9" r="2" />
       </svg>
     );

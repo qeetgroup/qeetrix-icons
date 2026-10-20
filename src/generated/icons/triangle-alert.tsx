@@ -15,7 +15,7 @@ export function TriangleAlertIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M1 18.173L10.527 1.501L10.813 1L13.167 1L23 18.208L20.8 22L3.18 22L1 18.242L1 18.173ZM13 14L13 8L11 8L11 14L13 14ZM13.01 16L11 16L11 18L13.01 18L13.01 16Z"
+            d="M22.997 22L11.99 1.001L0.983 22L22.997 22ZM13 8L13 14L11 14L11 8L13 8ZM11 16L13.01 16L13.01 18L11 18L11 16Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function TriangleAlertIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M11.395 1.997L2.134 18.204L3.756 21H20.224L21.846 18.204L12.585 1.997Z" />
+        <path d="M11.99 3.155L2.636 21H21.344Z" />
         <path d="M12 9v4" />
         <path d="M12 17h.01" />
       </svg>

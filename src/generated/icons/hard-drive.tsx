@@ -34,7 +34,7 @@ export function HardDriveIcon(props: IconProps<"outline" | "filled">) {
         {...resolveIconProps(props)}
       >
         <path d="M10 16h.01" />
-        <path d="M2 20H22V12.24L21.893 11.786L17.994 4H6.006L2.107 11.786L2 12.24Z" />
+        <path d="M2 20H22V12L17.994 4H6.006L2 12Z" />
         <path d="M20.946 12.013H3.054" />
         <path d="M6 16h.01" />
       </svg>

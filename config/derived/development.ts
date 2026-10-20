@@ -52,4 +52,33 @@ export const derivations: CategoryDerivations = {
   },
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // an arrowhead's tip, a speech bubble's tail, a pennant's tip, a play triangle, a drive's
+  // corners, and a box's corners read as clipped; they move in instead.
+  keepPoint: {
+    // The arrowhead.
+    "book-up-2": [4],
+    "hard-drive-upload": [0],
+    merge: [0],
+    // The bubble's tail.
+    "bot-message-square": [4],
+    "message-circle-code": [2],
+    "message-square-code": [0],
+    "message-square-diff": [0],
+    // The pennant.
+    "flag-triangle-left": [0],
+    "flag-triangle-right": [0],
+    // The play triangle.
+    "bug-play": [1],
+    // The drive's slanted top.
+    "hard-drive": [1],
+    // The box, like shapes' box.
+    container: [0],
+    "package-check": [2],
+    "package-minus": [2],
+    "package-plus": [3],
+    "package-x": [3],
+    // The hook's corner.
+    "webhook-off": [2],
+  },
 };

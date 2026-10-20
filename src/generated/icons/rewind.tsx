@@ -15,7 +15,7 @@ export function RewindIcon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M23 3.996L19.296 2.461L13 8.758L13 3.996L9.296 2.461L1 10.758L1 13.242L1.285 13.527L9.296 21.539L13 20.004L13 15.242L19.296 21.539L23 20.004L23 3.996Z"
+            d="M13 9.208L23 1.009L23 22.991L13 14.792L13 22.988L1.797 12.738L0.991 12L13 1.012L13 9.208Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,8 +33,8 @@ export function RewindIcon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M1.992 12.82L9.531 20.359L12 19.336V4.664L9.531 3.641L1.992 11.18Z" />
-        <path d="M12 11.172V12.828L19.531 20.359L22 19.336V4.664L19.531 3.641Z" />
+        <path d="M2.472 12L12 20.718V3.282Z" />
+        <path d="M11.172 12L22 20.878V3.122Z" />
       </svg>
     );
   }

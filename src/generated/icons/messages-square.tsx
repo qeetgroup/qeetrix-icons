@@ -19,7 +19,7 @@ export function MessagesSquareIcon(props: IconProps<"outline">) {
         {...resolveIconProps(props)}
       >
         <path d="M6 12L2 16V2H16V12Z" />
-        <path d="M20 9H22V21.34L20.826 21.826L18 19H8V16" />
+        <path d="M20 9H22V21.27L18 19H8V16" />
       </svg>
     );
   }

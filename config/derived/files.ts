@@ -58,4 +58,30 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a ribbon's tails, a box's corners, a heart's tip, an arrowhead's, a pen's nib, a camera's or
+  // speaker's corners, and an open folder's flap read as clipped; they move in instead.
+  keepPoint: {
+    // The detail in the file's corner.
+    "file-badge": [2],
+    "file-box": [3],
+    "file-check-corner": [2],
+    "file-code-corner": [2],
+    "file-heart": [2],
+    "file-output": [2],
+    "file-pen": [2],
+    "file-video-camera": [2],
+    "file-volume": [3],
+    "folder-heart": [1],
+    "folder-output": [2],
+    "folder-pen": [1],
+    // The open folder's front flap.
+    "folder-open": [0],
+    "folder-open-dot": [0],
+    // The box, like shapes' box.
+    package: [0],
+    "package-2": [1],
+    "package-open": [1, 2, 3],
+    "package-search": [2],
+  },
 };

@@ -35,7 +35,7 @@ export function CoffeeIcon(props: IconProps<"outline" | "filled">) {
       >
         <path d="M10 2v2" />
         <path d="M14 2v2" />
-        <path d="M16 8H16.414L17 8.586V17A4 4 0 0 1 13 21H7A4 4 0 0 1 3 17V8H18A4 4 0 1 1 18 16H17" />
+        <path d="M16 8H17V17A4 4 0 0 1 13 21H7A4 4 0 0 1 3 17V8H18A4 4 0 1 1 18 16H17" />
         <path d="M6 2v2" />
       </svg>
     );

@@ -28,4 +28,15 @@ export const derivations: CategoryDerivations = {
   keepRound: {},
   // Roles for the sharp filled drawing that differ from the round one, by element index.
   sharpFilledRoles: {},
+  // Outline elements whose corners keep their point at the padding, by element index. Cut flat,
+  // a bag's base, a shirt's shoulders and hem, and a cart's basket read as clipped; they move in
+  // instead.
+  keepPoint: {
+    handbag: [0],
+    shirt: [0],
+    // The basket.
+    "shopping-cart": [0, 1],
+    "shopping-cart-minus": [1],
+    "shopping-cart-plus": [2],
+  },
 };

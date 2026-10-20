@@ -15,7 +15,7 @@ export function MousePointer2Icon(props: IconProps<"outline" | "filled">) {
           {...resolveIconProps(props)}
         >
           <path
-            d="M22.02 10.739L21.924 12.182L14.178 14.18L12.182 21.924L10.018 22.068L1.774 1.774L22.068 10.018L22.02 10.739Z"
+            d="M20.579 11.928L14.144 14.146L11.1 22.985L1.626 1.626L22.983 11.1L20.579 11.928Z"
             fillRule="evenodd"
           />
         </svg>
@@ -33,7 +33,7 @@ export function MousePointer2Icon(props: IconProps<"outline" | "filled">) {
         xmlns="http://www.w3.org/2000/svg"
         {...resolveIconProps(props)}
       >
-        <path d="M21.022 10.673L20.974 11.394L13.357 13.359L11.394 20.974L10.673 21.022L3.592 3.592Z" />
+        <path d="M20.253 10.983L13.357 13.359L10.983 20.254L3.592 3.592Z" />
       </svg>
     );
   }

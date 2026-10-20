@@ -1,12 +1,12 @@
 <!-- Override: hand-drawn replacement for the derived drawing, drawn against icons/round-outline/shapes/triangle-dashed.svg (sha256 7f4af3f11d9cb5a3a3717be8dfa391d4a58de1d247d905409095066298b76ddb). Edit this file, not icons/. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4">
-  <path d="M10.163 4.189L11.415 1.997L12.585 1.997L13.844 4.201"/>
-  <path d="M14 21h2"/>
-  <path d="m15.874 7.743 1 1.732"/>
-  <path d="m18.849 12.952 1 1.732"/>
-  <path d="M21.83 18.176L21.846 18.204L20.224 21L19.989 21"/>
-  <path d="M4.024 21L3.776 21L2.154 18.204L2.18 18.158"/>
-  <path d="m5.136 12.952-1 1.732"/>
-  <path d="M8 21h2"/>
-  <path d="m8.102 7.743-1 1.732"/>
+  <path d="M10.498 6.019L12 3.152L13.508 6.03"/>
+  <path d="M13.635 21L15.269 21"/>
+  <path d="M15.163 9.187L15.974 10.734"/>
+  <path d="M17.596 13.829L18.407 15.376"/>
+  <path d="M20.035 18.484L21.354 21L18.53 21"/>
+  <path d="M5.481 21L2.646 21L3.973 18.468"/>
+  <path d="M6.402 13.834L5.591 15.381"/>
+  <path d="M8.731 21L10.365 21"/>
+  <path d="M8.833 9.195L8.022 10.742"/>
 </svg>

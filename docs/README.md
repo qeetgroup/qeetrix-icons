@@ -28,7 +28,7 @@ The machine-readable internal contracts are in `config/`, none of them package e
 [icon-system.ts](../config/icon-system.ts) (design values),
 [lucide.json](../config/lucide.json) and [categories.ts](../config/categories.ts) (synced from
 Lucide), [icon-metadata.ts](../config/icon-metadata.ts) (manifest metadata and RTL),
-[derived/](../config/derived/README.md) (per category: the filled list and roles, `keepRound`, and
-`tipHeight`), [overrides/](../config/derived/README.md) (hand-drawn replacements), and
+[derived/](../config/derived/README.md) (per category: the filled list and roles, `keepRound`,
+`tipHeight`, and `keepPoint`), [overrides/](../config/derived/README.md) (hand-drawn replacements), and
 [brands.json](../config/brands.json)
 (the Qeet logos, edited by hand).
