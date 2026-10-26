@@ -127,6 +127,20 @@ Each file records the background it is drawn for, measured from its painted colo
 measure as `any`, because their orange mixes with dark or light letters; use `default` or `plain`
 on light surfaces and `dark` or `plain-dark` on dark ones.
 
+## Clear space and minimum size
+
+Keep **a quarter of the logo's height clear on every side**: no text, edge or other mark inside it.
+At the default 24px that is 6px, so a top bar holding a 24px mark needs at least 36px of height and
+6px between the mark and the product name beside it.
+
+| Logo | Minimum height | Default height |
+|:--|:--|:--|
+| `QeetLogo` | 16px: below it the counter of the q closes up | 24px |
+| `QeetWordmarkLogo` (every file) | 20px: below it the letters and the dot blur | 24px |
+
+The default `height` of every logo component is 24px. The Qeetrix Storybook's Brand page draws the
+clear space and the minimum sizes.
+
 ## Licensing and trademarks
 
 The logos are Qeet Group's own artwork (`LicenseRef-Qeet`, proprietary), named in each generated
