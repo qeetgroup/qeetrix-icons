@@ -163,6 +163,7 @@ export function createGenerationPlan(
         contents: renderComponentSource({
           outputPath: concept.outputPath,
           componentName: concept.componentName,
+          mirror: concept.directionality === "mirror",
           shapes: shapes.map((shape) => ({
             shape,
             variants: group

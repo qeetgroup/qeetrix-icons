@@ -12,7 +12,7 @@ export function SendHorizontalIcon(props: IconProps<"outline" | "filled">) {
           fill="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          {...resolveIconProps(props)}
+          {...resolveIconProps(props, true)}
         >
           <path d="M4.733 11L1.298 1.005L21.032 11ZM4.733 13L1.292 23.003L21.026 13Z" />
         </svg>
@@ -28,7 +28,7 @@ export function SendHorizontalIcon(props: IconProps<"outline" | "filled">) {
         strokeWidth="2"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <path d="M6.134 12L3.04 20.996L20.791 12L3.045 3.011Z" />
         <path d="M6 12H19.8" />
@@ -41,7 +41,7 @@ export function SendHorizontalIcon(props: IconProps<"outline" | "filled">) {
         fill="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <path
           d="M4.146 2.146L22.142 10.644Q22.421 10.776 22.619 11L4.694 11L2.098 4.035Q1.932 3.604 2.037 3.154Q2.142 2.704 2.482 2.392Q2.823 2.08 3.28 2.013Q3.734 1.947 4.146 2.146ZM4.694 13L2.095 19.976Q1.933 20.396 2.038 20.845Q2.143 21.294 2.483 21.607Q2.822 21.919 3.279 21.986Q3.735 22.053 4.15 21.852L22.141 13.356Q22.421 13.224 22.619 13L4.694 13Z"
@@ -59,7 +59,7 @@ export function SendHorizontalIcon(props: IconProps<"outline" | "filled">) {
       strokeWidth="2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      {...resolveIconProps(props)}
+      {...resolveIconProps(props, true)}
     >
       <path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z" />
       <path d="M6 12h16" />

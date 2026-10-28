@@ -302,3 +302,35 @@ describe.each([
     expect(render({ "aria-label": "Starred", shape, variant })).not.toContain("<title");
   });
 });
+
+describe("directionality", () => {
+  // QTRX-51: an icon that points a reading direction is right by default in right-to-left.
+  it("renders data-qx-mirror on every icon the manifest marks mirror, and on no other", () => {
+    const dir = join(PKG, "src/generated/icons");
+    const manifest = readFileSync(join(PKG, "src/generated/icon-manifest.ts"), "utf8");
+    const mirrored = new Set(
+      [...manifest.matchAll(/componentName: "(\w+)",[\s\S]*?directionality: "(\w+)"/g)]
+        .filter(([, , directionality]) => directionality === "mirror")
+        .map(([, name]) => name),
+    );
+    expect(mirrored.size).toBe(18);
+    for (const file of readdirSync(dir)) {
+      const code = readFileSync(join(dir, file), "utf8");
+      const name = /export function (\w+)\(/.exec(code)?.[1] ?? "";
+      expect(code.includes("resolveIconProps(props, true)"), name).toBe(mirrored.has(name));
+    }
+  });
+
+  it("puts data-qx-mirror on the root svg, and lets a caller's own value win", () => {
+    const mirrored = runtime.resolveIconProps({}, true) as Record<string, unknown>;
+    expect(mirrored["data-qx-mirror"]).toBe("");
+    const own = runtime.resolveIconProps(
+      { "data-qx-mirror": "never" } as IconProps,
+      true,
+    ) as Record<string, unknown>;
+    expect(own["data-qx-mirror"]).toBe("never");
+    expect(runtime.resolveIconProps({}) as Record<string, unknown>).not.toHaveProperty(
+      "data-qx-mirror",
+    );
+  });
+});

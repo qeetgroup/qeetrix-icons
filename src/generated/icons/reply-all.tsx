@@ -16,7 +16,7 @@ export function ReplyAllIcon(props: IconProps<"outline">) {
         strokeWidth="2"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <path d="m12 17-5-5 5-5" />
         <path d="M22 18V16A4 4 0 0 0 18 12H8" />
@@ -33,7 +33,7 @@ export function ReplyAllIcon(props: IconProps<"outline">) {
       strokeWidth="2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      {...resolveIconProps(props)}
+      {...resolveIconProps(props, true)}
     >
       <path d="m12 17-5-5 5-5" />
       <path d="M22 18v-2a4 4 0 0 0-4-4H7" />
