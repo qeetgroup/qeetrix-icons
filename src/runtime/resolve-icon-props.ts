@@ -19,17 +19,18 @@ const hasText = (value: string | undefined) => value !== undefined && value.trim
  * - Unnamed icons are decorative: `aria-hidden="true"`, `focusable="false"`, and no role.
  * - A non-empty `aria-label` or `aria-labelledby` exposes the icon as `role="img"` instead.
  * - Explicit `width`, `height`, `focusable`, `aria-hidden`, or `role` always wins.
+ * - An icon that points a reading direction (`mirror`, its manifest directionality) renders
+ *   `data-qx-mirror`, so `[dir="rtl"] [data-qx-mirror] { scale: -1 1 }` (in @qeetrix/react's base
+ *   styles) turns it the other way in right-to-left; a caller's own `data-qx-mirror` wins.
  * - A prop passed as `undefined` counts as not passed. The generated `<svg>` spreads these props
  *   after its authored `strokeWidth="2"`, `fill`, `stroke`, and the rest, so a key holding
  *   `undefined` (`strokeWidth={maybe}`) would erase that attribute and SVG would fall back to its
  *   initial value: a stroke 1 unit wide, a black fill, or no stroke at all.
  */
-export function resolveIconProps({
-  size = defaultIconSize,
-  shape: _shape,
-  variant: _variant,
-  ...props
-}: IconProps): SVGProps<SVGSVGElement> {
+export function resolveIconProps(
+  { size = defaultIconSize, shape: _shape, variant: _variant, ...props }: IconProps,
+  mirror = false,
+): SVGProps<SVGSVGElement> {
   const named = hasText(props["aria-label"]) || hasText(props["aria-labelledby"]);
   const passed: Record<string, unknown> = {};
   for (const key in props) {
@@ -37,6 +38,7 @@ export function resolveIconProps({
     if (value !== undefined) passed[key] = value;
   }
   return {
+    ...(mirror ? { "data-qx-mirror": "" } : {}),
     ...passed,
     width: props.width ?? size,
     height: props.height ?? size,

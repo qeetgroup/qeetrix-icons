@@ -29,6 +29,11 @@ export type ComponentSource = {
   readonly componentName: string;
   /** Every shape of the concept, each with the same variants; the first is the default shape. */
   readonly shapes: readonly ShapeSource[];
+  /**
+   * The icon points a reading direction (its manifest directionality is `mirror`): every drawing
+   * renders `data-qx-mirror`, so it faces the other way under `dir="rtl"` by default.
+   */
+  readonly mirror?: boolean;
 };
 
 function importPath(outputPath: string, module: string): string {
@@ -67,11 +72,15 @@ function printElement(element: ReactSvgElement, depth: number, spread?: string):
 }
 
 /** A `return (...)` of one drawing, with `resolveIconProps` spread last onto its root. */
-function printReturn(svg: ReactSvgElement, depth: number): string[] {
+function printReturn(svg: ReactSvgElement, depth: number, mirror: boolean): string[] {
   const indent = "  ".repeat(depth);
   return [
     `${indent}return (`,
-    ...printElement(svg, depth + 1, "{...resolveIconProps(props)}"),
+    ...printElement(
+      svg,
+      depth + 1,
+      mirror ? "{...resolveIconProps(props, true)}" : "{...resolveIconProps(props)}",
+    ),
     `${indent});`,
   ];
 }
@@ -80,16 +89,20 @@ function printReturn(svg: ReactSvgElement, depth: number): string[] {
  * The drawings of one shape: each non-default variant is one `if` branch, and the default variant
  * is the fall-through, so an outline-only shape has no branch at all.
  */
-function printVariants(variants: readonly VariantSource[], depth: number): string[] {
+function printVariants(
+  variants: readonly VariantSource[],
+  depth: number,
+  mirror: boolean,
+): string[] {
   const indent = "  ".repeat(depth);
   const [fallback, ...branches] = variants;
   return [
     ...branches.flatMap(({ variant, svg }) => [
       `${indent}if (props.variant === ${JSON.stringify(variant)}) {`,
-      ...printReturn(svg, depth + 1),
+      ...printReturn(svg, depth + 1, mirror),
       `${indent}}`,
     ]),
-    ...printReturn(fallback.svg, depth),
+    ...printReturn(fallback.svg, depth, mirror),
   ];
 }
 
@@ -111,6 +124,7 @@ export function renderComponentSource({
   outputPath,
   componentName,
   shapes,
+  mirror = false,
 }: ComponentSource): string {
   const [fallback, ...others] = shapes;
   if (!fallback?.variants.length) throw new Error(`${componentName} has no drawings.`);
@@ -135,10 +149,10 @@ export function renderComponentSource({
       : [`export function ${componentName}(`, `  ${props},`, ") {"]),
     ...others.flatMap(({ shape, variants: drawn }) => [
       `  if (props.shape === ${JSON.stringify(shape)}) {`,
-      ...printVariants(drawn, 2),
+      ...printVariants(drawn, 2, mirror),
       "  }",
     ]),
-    ...printVariants(fallback.variants, 1),
+    ...printVariants(fallback.variants, 1, mirror),
     "}",
     "",
   ].join("\n");

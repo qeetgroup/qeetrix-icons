@@ -16,7 +16,7 @@ export function RedoDotIcon(props: IconProps<"outline">) {
         strokeWidth="2"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <rect height="2" width="2" x="11" y="16" />
         <path d="M21 7v6h-6" />
@@ -33,7 +33,7 @@ export function RedoDotIcon(props: IconProps<"outline">) {
       strokeWidth="2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      {...resolveIconProps(props)}
+      {...resolveIconProps(props, true)}
     >
       <circle cx="12" cy="17" r="1" />
       <path d="M21 7v6h-6" />

@@ -16,7 +16,7 @@ export function ForwardIcon(props: IconProps<"outline">) {
         strokeWidth="2"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <path d="m15 17 5-5-5-5" />
         <path d="M4 18V16A4 4 0 0 1 8 12H19" />
@@ -32,7 +32,7 @@ export function ForwardIcon(props: IconProps<"outline">) {
       strokeWidth="2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      {...resolveIconProps(props)}
+      {...resolveIconProps(props, true)}
     >
       <path d="m15 17 5-5-5-5" />
       <path d="M4 18v-2a4 4 0 0 1 4-4h12" />

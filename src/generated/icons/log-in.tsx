@@ -16,7 +16,7 @@ export function LogInIcon(props: IconProps<"outline">) {
         strokeWidth="2"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <path d="m10 17 5-5-5-5" />
         <path d="M14 12H3" />
@@ -33,7 +33,7 @@ export function LogInIcon(props: IconProps<"outline">) {
       strokeWidth="2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      {...resolveIconProps(props)}
+      {...resolveIconProps(props, true)}
     >
       <path d="m10 17 5-5-5-5" />
       <path d="M15 12H3" />

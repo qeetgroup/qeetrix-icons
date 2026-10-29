@@ -12,7 +12,7 @@ export function SendIcon(props: IconProps<"outline" | "filled">) {
           fill="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          {...resolveIconProps(props)}
+          {...resolveIconProps(props, true)}
         >
           <path
             d="M20.801 1.785L19.733 2.854L10.207 12.379L9.367 13.219L1.001 8.856L20.801 1.785ZM22.214 3.202L21.854 3.561L21.854 3.561L21.156 4.259L21.147 4.268L21.147 4.268L11.621 13.793L10.914 14.5L10.782 14.632L15.144 23L22.214 3.202Z"
@@ -31,7 +31,7 @@ export function SendIcon(props: IconProps<"outline" | "filled">) {
         strokeWidth="2"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <path d="M21.348 2.652L3.493 9.028L11.039 12.963L14.972 20.507Z" />
         <path d="M20.44 3.561L10.914 13.086" />
@@ -44,7 +44,7 @@ export function SendIcon(props: IconProps<"outline" | "filled">) {
         fill="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <path
           d="M21.588 0.999L21.147 1.44L10.207 12.379L9.259 13.326L1.942 10.392Q1.505 10.217 1.247 9.824Q0.989 9.432 1.001 8.962Q1.013 8.492 1.291 8.113Q1.569 7.734 2.014 7.581L20.998 1.086Q21.289 0.981 21.588 0.999ZM23.002 2.413L22.561 2.854L11.621 13.793L10.674 14.74L13.608 22.058L13.608 22.058Q13.783 22.495 14.176 22.753Q14.569 23.011 15.038 22.999Q15.508 22.987 15.887 22.709Q16.266 22.431 16.419 21.986L22.919 2.986Q23.02 2.707 23.002 2.413Z"
@@ -62,7 +62,7 @@ export function SendIcon(props: IconProps<"outline" | "filled">) {
       strokeWidth="2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      {...resolveIconProps(props)}
+      {...resolveIconProps(props, true)}
     >
       <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
       <path d="m21.854 2.147-10.94 10.939" />

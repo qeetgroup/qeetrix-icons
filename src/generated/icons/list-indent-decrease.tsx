@@ -16,7 +16,7 @@ export function ListIndentDecreaseIcon(props: IconProps<"outline">) {
         strokeWidth="2"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        {...resolveIconProps(props)}
+        {...resolveIconProps(props, true)}
       >
         <path d="M21 5H11" />
         <path d="M21 12H11" />
@@ -34,7 +34,7 @@ export function ListIndentDecreaseIcon(props: IconProps<"outline">) {
       strokeWidth="2"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      {...resolveIconProps(props)}
+      {...resolveIconProps(props, true)}
     >
       <path d="M21 5H11" />
       <path d="M21 12H11" />

@@ -1,6 +1,18 @@
 # @qeetrix/icons
 
-## Unreleased — 2.0.0
+## 2.0.0
+
+The Lucide-based catalogue below, released as the major it is (QTRX-9). 1.0.12 and 1.0.13 carried
+it under a patch version by mistake, and broke `^1.0.x` ranges: move to `^2.0.0`.
+
+### Directionality
+
+- **Icons that point a reading direction mirror by themselves** (QTRX-51). The 18 icons the
+  manifest marks `mirror` (log-in, log-out, send, reply, undo, redo, text-align-start and -end,
+  list-indent, …) render `data-qx-mirror` on their `<svg>`, so `[dir="rtl"] [data-qx-mirror]
+  { scale: -1 1 }` (in @qeetrix/react's base styles; add the rule yourself without it) turns them
+  the other way in right-to-left. A caller's own `data-qx-mirror` wins. Arrows and chevrons stay
+  `preserve`: they mirror only in some uses, through @qeetrix/react's `mirrorInRtl()`.
 
 ### Major Changes
 
