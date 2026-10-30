@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import {
   cpSync,
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readdirSync,
@@ -10,10 +11,10 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative, sep } from "node:path";
+import { DOMParser, type Element } from "@xmldom/xmldom";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { iconMetadata } from "../config/icon-metadata.js";
 import { iconSystem } from "../config/icon-system.js";
-import { brandSourceDirectory } from "../scripts/check/validate-repository.js";
 import { iconManifest, logoManifest } from "../src/manifest.js";
 import { apiFixtureMetadata, apiFixtures, sharpApiFixtures, writeFixture } from "./helpers.js";
 
@@ -133,9 +134,8 @@ beforeAll(() => {
   const repository = join(workspace, "repository");
   cpSync(PKG, repository, {
     recursive: true,
-    // Brand logo sources feed their own pipeline, never icon generation or the build.
+    // Brand logo sources come along: the build ships them as SVG files too.
     filter: (source) =>
-      relative(PKG, source).split(sep).join("/") !== brandSourceDirectory &&
       !relative(PKG, source)
         .split(sep)
         .some((part) => ["node_modules", "dist", ".git", "coverage"].includes(part)),
@@ -199,9 +199,14 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
         ["package.json", "README.md", "LICENSE"].includes(entry) || entry.startsWith("dist/"),
         entry,
       ).toBe(true);
-      expect(entry, entry).not.toMatch(
-        /\.svg$|(?<!\.d)\.tsx?$|icon-manifest\.json|scripts\/|config\//,
-      );
+      expect(entry, entry).not.toMatch(/(?<!\.d)\.tsx?$|icon-manifest\.json|scripts\/|config\//);
+      // Plain SVG only as the package's own files: a drawing per shape and variant, or a logo.
+      if (entry.endsWith(".svg")) {
+        expect(entry).toMatch(
+          /^dist\/svg\/(?:(?:round|sharp)-(?:outline|filled)\/[a-z0-9-]+|logos\/[a-z0-9-]+\/[a-z0-9-]+(?:\.mask-free)?)\.svg$/,
+        );
+      }
+      if (entry.endsWith(".json")) expect(["package.json", "dist/manifest.json"]).toContain(entry);
     }
     expect(entries).toEqual(
       expect.arrayContaining([
@@ -210,15 +215,23 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
         "dist/index.d.ts",
         "dist/manifest.js",
         "dist/manifest.d.ts",
+        "dist/manifest.json",
         "dist/generated/icons/fixture-search.js",
         "dist/generated/icons/fixture-search.d.ts",
         "dist/generated/icons/fixture-star.js",
         "dist/generated/icons/fixture-star.d.ts",
+        "dist/svg/round-outline/fixture-search.svg",
+        "dist/svg/sharp-filled/fixture-star.svg",
+        "dist/svg/logos/qeet/default.svg",
+        "dist/svg/logos/qeet/default.mask-free.svg",
       ]),
     );
-    // Variants and shapes are props of each icon, never entry points or modules of their own.
-    // Brand logos are excluded: their slugs legitimately contain words like "sharp" (c-sharp).
-    const iconEntries = entries.filter((entry) => !entry.startsWith("dist/generated/logos/"));
+    // Variants and shapes are props of each icon, never entry points or modules of their own; the
+    // SVG files, which have no props, are the one place they name folders. Brand logos are
+    // excluded: their slugs legitimately contain words like "sharp" (c-sharp).
+    const iconEntries = entries.filter(
+      (entry) => !entry.startsWith("dist/generated/logos/") && !entry.startsWith("dist/svg/"),
+    );
     expect(iconEntries.filter((entry) => entry.includes("filled"))).toEqual([]);
     expect(iconEntries.filter((entry) => entry.includes("sharp"))).toEqual([]);
   });
@@ -411,6 +424,123 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
     expect(srcOf(result.dark)).toBe(file("dark"));
   });
 
+  it("ships every drawing as a plain SVG file: what its component renders, less runtime props", () => {
+    // One Node process renders every drawing of every concept from the packed package; the
+    // markup goes through a file, as it is larger than a child process's output buffer.
+    node(`
+      import * as root from "@qeetrix/icons";
+      import { iconManifest } from "@qeetrix/icons/manifest";
+      import { writeFileSync } from "node:fs";
+      import { createElement } from "react";
+      import { renderToStaticMarkup } from "react-dom/server";
+      const rendered = {};
+      for (const { id, componentName, shapes, variants } of iconManifest.icons) {
+        for (const shape of shapes) {
+          for (const variant of variants) {
+            rendered["svg/" + shape + "-" + variant + "/" + id + ".svg"] = renderToStaticMarkup(
+              createElement(root[componentName], { shape, variant }),
+            );
+          }
+        }
+      }
+      writeFileSync("rendered.json", JSON.stringify(rendered));
+      console.log("true");
+    `);
+    const rendered = JSON.parse(readFileSync(join(consumer, "rendered.json"), "utf8")) as Record<
+      string,
+      string
+    >;
+    const dist = join(consumer, "node_modules/@qeetrix/icons/dist");
+    const shipped = readdirSync(join(dist, "svg"), { recursive: true, encoding: "utf8" })
+      .map((file) => `svg/${file.split(sep).join("/")}`)
+      .filter((file) => file.endsWith(".svg") && !file.startsWith("svg/logos/"))
+      .sort();
+    expect(shipped).toEqual(Object.keys(rendered).sort());
+    // Every production drawing and every fixture drawing, each once.
+    expect(shipped.length).toBe(
+      production.reduce((sum, { shapes, variants }) => sum + shapes.length * variants.length, 0) +
+        apiFixtures.length +
+        sharpApiFixtures.length,
+    );
+    // Attributes in document order, children in drawing order; `runtime` names root attributes
+    // the component adds when it renders, which a file cannot carry.
+    const runtime = ["width", "height", "focusable", "aria-hidden", "role", "data-qx-mirror"];
+    const canonical = (markup: string, strip: readonly string[]) => {
+      const print = (element: Element, depth: number): string =>
+        `<${element.tagName}${Array.from(element.attributes)
+          .filter(({ name }) => depth > 0 || !strip.includes(name))
+          .map(({ name, value }) => ` ${name}="${value}"`)
+          .join("")}>${Array.from(element.childNodes)
+          .filter((child) => child.nodeType === 1)
+          .map((child) => print(child as Element, depth + 1))
+          .join("")}</${element.tagName}>`;
+      return print(
+        new DOMParser().parseFromString(markup, "application/xml").documentElement as Element,
+        0,
+      );
+    };
+    let mirrored = 0;
+    for (const [path, markup] of Object.entries(rendered)) {
+      const file = readFileSync(join(dist, path), "utf8");
+      expect(canonical(file, []), path).toBe(canonical(markup, runtime));
+      expect(file.match(/^<svg [^>]*>/)?.[0], path).not.toMatch(
+        / (?:width|height|data-qx-mirror)=/,
+      );
+      if (markup.includes("data-qx-mirror")) mirrored += 1;
+    }
+    // The stripped attributes are really there to strip: reading-direction icons mirror at runtime.
+    expect(mirrored).toBeGreaterThan(0);
+  }, 300_000);
+
+  it("resolves the SVG files and the JSON manifest through the exports map", () => {
+    const result = node(`
+      import { iconManifest } from "@qeetrix/icons/manifest";
+      import manifest from "@qeetrix/icons/manifest.json" with { type: "json" };
+      import { fileURLToPath } from "node:url";
+      const resolved = (specifier) => fileURLToPath(import.meta.resolve(specifier));
+      console.log(JSON.stringify({
+        same: JSON.stringify(manifest) === JSON.stringify(iconManifest),
+        json: resolved("@qeetrix/icons/manifest.json"),
+        round: resolved("@qeetrix/icons/svg/round-outline/fixture-search.svg"),
+        sharpFilled: resolved("@qeetrix/icons/svg/sharp-filled/fixture-star.svg"),
+        logo: resolved("@qeetrix/icons/svg/logos/qeet/default.svg"),
+        maskFree: resolved("@qeetrix/icons/svg/logos/qeet/dark.mask-free.svg"),
+      }));
+    `) as Record<string, string> & { same: boolean };
+    const { same, ...paths } = result;
+    expect(same).toBe(true);
+    expect(paths).toEqual({
+      json: expect.stringMatching(/\/@qeetrix\/icons\/dist\/manifest\.json$/),
+      round: expect.stringMatching(/\/dist\/svg\/round-outline\/fixture-search\.svg$/),
+      sharpFilled: expect.stringMatching(/\/dist\/svg\/sharp-filled\/fixture-star\.svg$/),
+      logo: expect.stringMatching(/\/dist\/svg\/logos\/qeet\/default\.svg$/),
+      maskFree: expect.stringMatching(/\/dist\/svg\/logos\/qeet\/dark\.mask-free\.svg$/),
+    });
+    for (const path of Object.values(paths)) expect(existsSync(path), path).toBe(true);
+    // The packed repository's manifest, fixtures included, byte for byte.
+    expect(readFileSync(paths.json, "utf8")).toBe(
+      readFileSync(join(workspace, "repository/icon-manifest.json"), "utf8"),
+    );
+    // Every logo file as its component embeds it; the mark also without its mask.
+    for (const { id, variants } of logoManifest.logos) {
+      for (const { name } of variants) {
+        const shipped = join(
+          consumer,
+          "node_modules/@qeetrix/icons/dist/svg/logos",
+          id,
+          `${name}.svg`,
+        );
+        expect(
+          readFileSync(shipped).equals(
+            readFileSync(join(PKG, "icons/brand-icons", id, `${name}.svg`)),
+          ),
+          `${id}/${name}`,
+        ).toBe(true);
+      }
+    }
+    expect(readFileSync(paths.maskFree, "utf8")).not.toMatch(/<mask\b|\bmask=/);
+  });
+
   it("tree-shakes logos: an icon ships no logo, and a logo ships no other logo", () => {
     const bundle = (entry: string) => {
       writeFixture(consumer, "entry.js", entry);
@@ -442,6 +572,9 @@ describe("packed @qeetrix/icons", { timeout: 180_000 }, () => {
       "@qeetrix/icons/scripts/lib/generation-plan",
       "@qeetrix/icons/dist/index.js",
       "@qeetrix/icons/icon-manifest.json",
+      "@qeetrix/icons/dist/manifest.json",
+      "@qeetrix/icons/svg",
+      "@qeetrix/icons/dist/svg/round-outline/fixture-search.svg",
       "@qeetrix/icons/actions",
       "@qeetrix/icons/icons/shapes/fixture-star",
       "@qeetrix/icons/icons/round-outline/shapes/fixture-star",

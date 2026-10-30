@@ -1,7 +1,9 @@
 # Generation
 
 One command turns validated source SVG into every published icon file: one React 19 component per
-icon concept, the icon export barrel, and the icon manifest. The Qeet logos have their own generator,
+icon concept, the icon export barrel, and the icon manifest. The build prints the same drawings as
+plain SVG files, and the manifest as JSON, into `dist/` ([below](#package-svg-files-and-manifest-json)).
+The Qeet logos have their own generator,
 `generate:logos` ([below](#qeet-logos)). The icon sources are the
 Lucide outlines ([lucide.md](lucide.md)) and the drawings derived from them, round filled
 ([filled.md](filled.md)) and sharp ([sharp.md](sharp.md)); generation treats them all alike. The
@@ -16,6 +18,8 @@ icons/<style>-<variant>/<category>/<name>.svg  +  config/icon-metadata.ts (from 
             -> src/generated/icon-index.ts    icon export barrel, re-exported by src/index.ts
             -> src/generated/icon-manifest.ts typed manifest, re-exported by src/manifest.ts
             -> icon-manifest.json             the same manifest, for repository tooling
+            -> dist/svg/<shape>-<variant>/<id>.svg, dist/manifest.json
+                                              written by `bun run build`, never into the repository
 ```
 
 **Everything under `src/generated/`, and `icon-manifest.json`, is generated: never edit them by
@@ -52,7 +56,8 @@ Generated <concepts> React icon components, the root exports, and the manifest (
 missing, edited, or out-of-date component, barrel, manifest module, or manifest JSON, and any stale
 icon output file in `src/generated/`, then exits 1. It does not use Git, so it works in any checkout
 or extracted copy. Generated files are committed, so the build compiles them like any other source;
-it does not regenerate. CI and the release gate run `check:icons`, `check:filled`, `check:sharp`,
+it does not regenerate them. Its last step prints the package's SVG files and JSON manifest from
+the same plan, and refuses to while `check:generated` would fail. CI and the release gate run `check:icons`, `check:filled`, `check:sharp`,
 `check:generated`, `check:brands`, and `check:logos` before the build. All of these CLIs are anchored to this repository rather
 than the working directory.
 
@@ -65,8 +70,10 @@ than the working directory.
 | Transform | [svg-to-react.ts](../scripts/lib/svg-to-react.ts) | Parse validated XML into a React-named element tree |
 | Render components | [component-source.ts](../scripts/lib/component-source.ts) | Print each component module, already Biome-formatted |
 | Render package files | [package-sources.ts](../scripts/lib/package-sources.ts) | Print the barrel, manifest module, and manifest JSON |
+| Render package files | `renderSvgFile` in [package-sources.ts](../scripts/lib/package-sources.ts) | Print one drawing as a plain SVG file, from the tree its component is printed from |
 | Plan | [generation-plan.ts](../scripts/lib/generation-plan.ts) | Group drawings into concepts once, and build every file from those concepts |
 | Write / verify | [generated-output.ts](../scripts/lib/generated-output.ts) | Safe preflight, then write and clean, or compare without writing |
+| Package | [package-assets.ts](../scripts/build/package-assets.ts) | The build's last step: check, then write the package files into `dist/` |
 
 The plan holds one entry per concept: its name and public id, component name, category and
 categories, directionality, tags, aliases, output path, and its validated source drawings grouped
@@ -280,6 +287,35 @@ resolved at runtime and source SVG may not contain `<title>`. Formatting and eve
 still apply, and `.gitattributes` marks the generated files so GitHub collapses their diffs. The
 SVG sources in `icons/` are outside Biome.
 
+## Package SVG files and manifest JSON
+
+`bun run build` is `tsc`, then [package-assets.ts](../scripts/build/package-assets.ts), which
+writes the package's language-neutral files into `dist/`, for Android, iOS, and any tool that does
+not run React:
+
+```text
+dist/svg/<shape>-<variant>/<id>.svg   one per drawing: round and sharp outline for every concept,
+                                      round and sharp filled for every concept with a filled drawing
+dist/manifest.json                    the icon manifest, the same bytes as icon-manifest.json
+dist/svg/logos/<slug>/<variant>.svg   every logo file, and <variant>.mask-free.svg (logos.md)
+```
+
+They come from the generation plan. In it, each drawing is converted once (`svgToReact`), and that
+one tree is printed twice: as JSX into its component, and as SVG (`renderSvgFile`) into its file,
+with the same elements, attributes, order, and values, the names spelled back through the same
+attribute table. So a file is what its component renders by default, minus the props
+`resolveIconProps` adds at runtime. Comments, whitespace, and the XML declaration are dropped, as
+for components; one element per line, two-space indentation, LF newlines. The paths are flat and
+category-free, like `./icons/*`, and named by `sourceFolder`, as the source folders are.
+
+Before writing anything, the step checks that the committed components and logo modules match
+their sources (as `check:generated` and `check:logos` do) and stops if not, so `dist/` never ships
+an SVG file its component does not draw. It owns `dist/svg/` and `dist/manifest.json` and nothing
+else. The generation tests prove each production file reads back to its source's element tree,
+and the packed-tarball test renders every drawing of every icon from the package and compares it
+with its file. Nothing here is committed: the plan holds these files in memory
+(`GenerationPlan.packageFiles`), and only the build writes them.
+
 ## Qeet logos
 
 `bun run generate:logos` ([generate-logos.ts](../scripts/build/generate-logos.ts), with
@@ -298,6 +334,9 @@ removes them, and the logo generator owns nothing else: it removes stale files o
 `src/generated/logos/`. A test keeps the two lists in step. `bun run check:logos` regenerates in
 memory and fails on any stale, missing, or extra logo file; it runs inside the Vitest suite.
 
+The build also ships every logo file into `dist/svg/logos/`, and derives a mask-free file beside
+any drawn with `<mask>` ([logos.md](logos.md#svg-files)).
+
 Nothing is converted. Each logo module embeds its files byte for byte as `data:image/svg+xml` URIs,
 records each file's intrinsic size for the aspect ratio, and renders through the shared
 [render-logo.ts](../src/runtime/render-logo.ts) runtime. Its header names the source files, marks
@@ -308,8 +347,9 @@ the artwork as first-party, and gives the logo's license. Output is deterministi
 
 The generators, validators, plans, metadata config, and filesystem helpers live in `scripts/` and
 `config/` and never enter `dist/`. The package exports only the root, `./icons/*`,
-`./manifest`, and `./package.json`; the runtime helpers and the generated barrels compile into
-`dist/` but cannot be imported directly. See [api.md](api.md#entry-points).
+`./manifest`, `./manifest.json`, `./svg/*`, and `./package.json`; the runtime helpers and the
+generated barrels compile into `dist/` but cannot be imported directly. See
+[api.md](api.md#entry-points).
 
 ## Not in this pipeline
 

@@ -21,14 +21,16 @@ Lucide release (GitHub tag)
         -> bun run derive:sharp    icons/sharp-outline/ (all icons), icons/sharp-filled/ (filled list)
         -> bun run check:icons     validate every source SVG and the metadata
         -> bun run generate        components, icon barrel, icon manifest, icon-manifest.json
-        -> bun run build           dist/, the only published directory
+        -> bun run build           dist/, the only published directory: tsc, then every drawing
+                                   as an SVG file and the manifest as JSON
         -> playground              human visual review (repository only)
         -> Qeetrix UI / Qeet products
 
 Qeet logo files (edited by hand: icons/brand-icons/, config/brands.json)
         -> bun run check:brands    validate the catalogue and every logo file
         -> bun run generate:logos  logo modules, logo barrel, logo manifest
-        -> bun run build           (the same dist/)
+        -> bun run build           (the same dist/), plus every logo file as an SVG file and the
+                                   Qeet mark without its mask
 ```
 
 `sync:lucide` runs `derive:filled`, `derive:sharp`, and `generate` itself. `generate` repeats the validation and aborts on any error without writing.
@@ -65,10 +67,10 @@ embedded byte for byte and rendered as an image.
 | `src/generated/` | Generated icon output (one module per concept in `icons/`, `icon-index.ts`, `icon-manifest.ts`) and logo output (one module per logo in `logos/`, `logo-index.ts`, `logo-manifest.ts`) |
 | [src/index.ts](../src/index.ts) | Hand-written package index: re-exports the icon and logo barrels and the public types |
 | [src/manifest.ts](../src/manifest.ts) | Hand-written `@qeetrix/icons/manifest` entry: re-exports `iconManifest` and `logoManifest` |
-| `icon-manifest.json` | Generated manifest for repository tooling; not published |
+| `icon-manifest.json` | Generated manifest for repository tooling; the build ships the same bytes as `dist/manifest.json` |
 | `scripts/sync/` | The `sync:lucide` CLI |
 | `scripts/check/` | Icon validation (`check:icons`, `check:generated`) and logo validation (`check:brands`) |
-| `scripts/build/` | The `generate`, `derive:filled` (and `check:filled`), `derive:sharp` (and `check:sharp`), and `generate:logos` (and `check:logos`) CLIs |
+| `scripts/build/` | The `generate`, `derive:filled` (and `check:filled`), `derive:sharp` (and `check:sharp`), and `generate:logos` (and `check:logos`) CLIs, and `package-assets.ts`, the build's last step |
 | `scripts/lib/` | Lucide reading, logo SVG analysis, filled and sharp derivation, diagnostics, SVG-to-React conversion, logo embedding, rendering, planning, and safe output |
 | `playground/` | Internal Vite + React visual QA tool; reads generated output, never published |
 | `docs/` | Design, naming, accessibility, RTL, pipeline, and release contracts |
@@ -79,11 +81,12 @@ embedded byte for byte and rendered as an image.
 | [tests/sharp.test.ts](../tests/sharp.test.ts) | Sharpening: stroke style, corners, tips, chamfers, kept curves, and idempotence |
 | [tests/brands.test.ts](../tests/brands.test.ts) | Naming, measured backgrounds, logo validation, and the committed file listing |
 | [tests/logos.test.ts](../tests/logos.test.ts) | Lossless data URIs, intrinsic sizes, logo rendering, byte identity of every embedded file, and `check:logos` |
+| [tests/logo-assets.test.ts](../tests/logo-assets.test.ts) | The logo SVG files and the mask-free derivation: the Qeet mark loses nothing to its mask, and unsupported masks fail |
 | [tests/generation.test.ts](../tests/generation.test.ts) | Conversion, determinism, Biome/TypeScript output checks, and output safety |
 | [tests/runtime.test.ts](../tests/runtime.test.ts) | Rendering, props, refs, and accessibility of generated components |
-| [tests/package.test.ts](../tests/package.test.ts) | Packed-tarball resolution, type, boundary, contents, and tree-shaking checks |
+| [tests/package.test.ts](../tests/package.test.ts) | Packed-tarball resolution, type, boundary, contents, and tree-shaking checks, and every SVG file against its rendered component |
 | [tests/playground.test.ts](../tests/playground.test.ts) | Playground data model, URL state, boundary, and a fixture build |
-| `dist/` | Compiler output; the only build directory and published payload directory |
+| `dist/` | Compiler output, plus the SVG files and `manifest.json` the build writes; the only build directory and published payload directory |
 
 The main TypeScript config includes `config/`, `scripts/`, `src/`, tests, and the Vitest
 configuration under strict checking. The build config keeps `rootDir` and `include` limited to
@@ -125,7 +128,8 @@ types; the logo runtime uses `createElement`. Development dependencies, each wit
 - `@xmldom/xmldom`: the XML parser behind validation, the Lucide sync, and both derivations
   ([validation.md](validation.md#parser-decision)).
 - `canvaskit-wasm`, pinned to `0.42.0`: Skia path operations for the filled drawings, in both shapes
-  ([filled.md](filled.md)).
+  ([filled.md](filled.md)), and for applying a logo's mask in its mask-free file
+  ([logos.md](logos.md#svg-files)).
 - `react`, `react-dom`, and their types: typecheck generated output and render it in tests.
 - `vite`, already installed through Vitest: runs and builds the playground.
 
@@ -134,7 +138,9 @@ directly. The playground has no React plugin, UI kit, router, or icon library; i
 native controls, and local CSS tokens. It enumerates generated modules with Vite's
 `import.meta.glob`, inside `playground/` only. The package still has no registry and no
 `<Icon name>` or `<Logo name>` API, and nothing in the playground is published: `files` ships only
-`dist/`, and the playground builds to `playground/dist/`. The build is plain `tsc` over `src/`.
+`dist/`, and the playground builds to `playground/dist/`. The build is `tsc` over `src/`, then
+`scripts/build/package-assets.ts`, which writes `dist/svg/` and `dist/manifest.json` from the
+generation and logo plans ([generation.md](generation.md#package-svg-files-and-manifest-json)).
 
 Validation and generation tests use synthetic geometry only, never production artwork. See
 [releases.md](releases.md) before release work: the package version is still 1.x, and 2.0 must not

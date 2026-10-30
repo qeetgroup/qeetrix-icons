@@ -51,6 +51,16 @@ export function reactAttributeName(name: string): string {
   return mapped;
 }
 
+/** The same table read the other way, so a converted tree can be printed back as SVG. */
+const svgAttributeNames = new Map([...reactAttributeNames].map(([svg, react]) => [react, svg]));
+
+/** The SVG spelling of a React attribute name produced by {@link reactAttributeName}. */
+export function svgAttributeName(name: string): string {
+  const mapped = svgAttributeNames.get(name);
+  if (!mapped) throw new Error(`No SVG attribute mapping for ${JSON.stringify(name)}.`);
+  return mapped;
+}
+
 function convertElement(element: Element): ReactSvgElement {
   if (!/^[a-z]+$/.test(element.tagName)) {
     throw new Error(`Cannot emit element <${element.tagName}> as JSX.`);

@@ -280,7 +280,7 @@ describe("package manifest", () => {
     expect(manifest.peerDependencies).toEqual({ react: "^19.0.0" });
   });
 
-  it("exposes only the root, per-icon, manifest, and package.json entry points", () => {
+  it("exposes only the root, per-icon, manifest, manifest JSON, SVG, and package.json entry points", () => {
     expect(manifest.exports).toEqual({
       ".": { types: "./dist/index.d.ts", import: "./dist/index.js", default: "./dist/index.js" },
       "./icons/*": {
@@ -293,6 +293,8 @@ describe("package manifest", () => {
         import: "./dist/manifest.js",
         default: "./dist/manifest.js",
       },
+      "./manifest.json": "./dist/manifest.json",
+      "./svg/*": "./dist/svg/*",
       "./package.json": "./package.json",
     });
   });
@@ -303,6 +305,16 @@ describe("package manifest", () => {
 
   it("publishes only dist", () => {
     expect(manifest.files).toEqual(["dist"]);
+  });
+
+  it("builds the SVG files and the JSON manifest into dist after compiling, from the generation plan", () => {
+    const { scripts } = JSON.parse(readFileSync(join(PKG, "package.json"), "utf8")) as {
+      scripts: Record<string, string>;
+    };
+    expect(scripts.build).toBe(
+      "rm -rf dist && tsc -p tsconfig.build.json && bun scripts/build/package-assets.ts",
+    );
+    expect(scripts.prepack).toBe("bun run build");
   });
 
   it("keeps config, validators, and fixtures outside the production build", () => {

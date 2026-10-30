@@ -1,6 +1,44 @@
 # @qeetrix/icons
 
-## 2.0.0
+## 2.1.0
+
+Plain SVG files and a JSON manifest, for platforms that don't run React. Additive: every 2.0.0
+module and declaration is byte for byte the same, so `^2.0.0` consumers (including
+`@qeetrix/react`) are unaffected.
+
+### Minor Changes
+
+- **Every drawing ships as a plain SVG file, and the icon manifest as JSON** (QTRX-188). Android,
+  iOS, and other non-React tools no longer have to read SVG back out of the generated
+  `_jsx("svg", …)` calls or the manifest out of a JavaScript literal.
+  - `@qeetrix/icons/svg/<shape>-<variant>/<id>.svg`: one file per drawing, `round-outline` and
+    `sharp-outline` for all 1,863 icons and `round-filled` and `sharp-filled` for the 775 with a
+    filled drawing: 5,276 files. Each is printed from the same element tree its component is
+    printed from, so it holds exactly what the component renders by default, less the props it
+    adds at runtime (`width`, `height`, `aria-hidden`, `focusable`, `data-qx-mirror`): the same
+    elements, attributes, order, and values, spelled as SVG. No comments; `viewBox` 24 × 24 and
+    `currentColor`, as in the sources. Directionality stays manifest data.
+  - `@qeetrix/icons/manifest.json`: `iconManifest` as JSON, the same bytes as the repository's
+    `icon-manifest.json` (ids, names, component names, categories, variants, shapes,
+    directionality, tags, aliases).
+  - `@qeetrix/icons/svg/logos/<slug>/<variant>.svg`: the six Qeet logo files, byte for byte as
+    their components embed them.
+  - The build writes them into `dist/` after `tsc` (`scripts/build/package-assets.ts`), from the
+    generation plan, and refuses while the committed components or logo modules are out of date
+    with their sources. The packed-tarball test renders every drawing of every icon from the
+    package and compares it with its SVG file. `package.json` exports `./manifest.json` and
+    `./svg/*`; `files` is still `dist`. The tarball grows from 0.70 MB to 1.31 MB packed and
+    from 5.8 MB to 9.3 MB unpacked: 5,285 more files, 3.5 MB of SVG and JSON.
+
+- **The Qeet mark without its `<mask>`** (QTRX-189), for Android VectorDrawable and iOS vector
+  assets, which have no masks: `@qeetrix/icons/svg/logos/qeet/default.mask-free.svg` and
+  `dark.mask-free.svg`, beside the files `QeetLogo` renders, which are unchanged. The mask cuts the
+  bowl's hole where the bowl's own path already leaves it open (Skia path operations find no area
+  in both), so the mask-free files keep every path exactly as drawn and drop the mask and its
+  `<defs>`. Rendered with anti-aliasing off, the two are pixel-identical (Chromium, at 24 to
+  2,508 px); with it on, they differ only on edge pixels of the bowl, where the mask adds its own
+  anti-aliasing to the hole's edge, and nowhere else (Chromium, Firefox, WebKit). A mask the
+  derivation cannot apply exactly (grey, transformed, or styled) fails the build instead.
 
 The Lucide-based catalogue below, released as the major it is (QTRX-9). 1.0.12 and 1.0.13 carried
 it under a patch version by mistake, and broke `^1.0.x` ranges: move to `^2.0.0`.

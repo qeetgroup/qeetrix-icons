@@ -141,6 +141,38 @@ At the default 24px that is 6px, so a top bar holding a 24px mark needs at least
 The default `height` of every logo component is 24px. The Qeetrix Storybook's Brand page draws the
 clear space and the minimum sizes.
 
+## SVG files
+
+For platforms that draw SVG themselves rather than React (Android, iOS, design tools), the package
+also ships every logo file as a plain SVG file, built into `dist/` by `bun run build`
+([scripts/lib/logo-assets.ts](../scripts/lib/logo-assets.ts)):
+
+| Specifier | Contents |
+|:--|:--|
+| `@qeetrix/icons/svg/logos/<slug>/<variant>.svg` | Each file byte for byte, the same bytes its component embeds |
+| `@qeetrix/icons/svg/logos/<slug>/<variant>.mask-free.svg` | Beside a file drawn with `<mask>`: the same drawing with every mask applied to its geometry |
+
+Android VectorDrawable and iOS vector assets have no masks, and the "q" mark cuts its bowl's hole
+with one, so `qeet/default.mask-free.svg` and `qeet/dark.mask-free.svg` are the files to convert
+there; the wordmark has no mask and its files convert as they are. `QeetLogo` keeps rendering the
+files as drawn.
+
+The derivation applies a mask exactly or not at all. A luminance mask in user space, made of
+opaque white and black `<path>` and `<rect>` shapes, keeps the area its white shapes paint minus
+what its black shapes paint over, within its region. When that removes nothing from the masked
+`<path>`, as for the Qeet mark, whose bowl path already leaves the hole open, the mask and any
+`<defs>` it leaves empty are dropped and every path stays as drawn. Otherwise the path becomes its
+intersection with the kept area (Skia path operations, `canvaskit-wasm`), with the fill rule Skia
+computed it under. Anything else (grey or partial masks, opacity, transforms, styles, masked
+elements other than `<path>`) fails the build rather than ship a drawing that renders differently.
+The result has no comments and must paint the same colours as the file.
+
+The mask-free mark renders the same as the masked one. Rendered with anti-aliasing off, the two
+are pixel-identical in Chromium at every size from 24 to 2,508 px, for both files; a test proves
+the same at 1,254 px for every pixel centre. With anti-aliasing on, they differ only on edge pixels of the bowl, in
+Chromium, Firefox, and WebKit alike: the mask anti-aliases the hole's edge a second time, so the
+masked file draws that edge slightly fainter. Native vectors draw it once, like the mask-free file.
+
 ## Licensing and trademarks
 
 The logos are Qeet Group's own artwork (`LicenseRef-Qeet`, proprietary), named in each generated
