@@ -29,9 +29,11 @@ import {
   manifestJsonPath,
   manifestModulePath,
   type PlannedConcept,
+  packageManifestJsonPath,
+  packageSvgPath,
   planRepositoryGeneration,
 } from "../scripts/lib/generation-plan.js";
-import { reactAttributeName, svgToReact } from "../scripts/lib/svg-to-react.js";
+import { reactAttributeName, svgAttributeName, svgToReact } from "../scripts/lib/svg-to-react.js";
 import {
   apiFixtureMetadata,
   apiFixtures,
@@ -119,6 +121,13 @@ describe("SVG to React conversion", () => {
     for (const name of ["unknown-attribute", "onclick", "style", "href", "transform"]) {
       expect(() => reactAttributeName(name)).toThrow("No React attribute mapping");
     }
+  });
+
+  it("reads the same table back from React to SVG names, for every mapping", () => {
+    for (const name of ["stroke-width", "fill-rule", "clip-rule", "class", "viewBox", "cx", "d"]) {
+      expect(svgAttributeName(reactAttributeName(name))).toBe(name);
+    }
+    expect(() => svgAttributeName("stroke-width")).toThrow("No SVG attribute mapping");
   });
 
   it("does not widen the validator allowlist just because a mapping exists", () => {
@@ -625,6 +634,128 @@ export { FixtureStarIcon } from "./icons/fixture-star.js";
     }
     // Plans the whole repository: every drawing in every shape.
   }, 60_000);
+});
+
+describe("package SVG files and JSON manifest", () => {
+  function packageContents(plan: GenerationPlan, path: string): string {
+    const file = plan.packageFiles.find((candidate) => candidate.path === path);
+    if (!file) throw new Error(`The plan has no package file ${path}.`);
+    return file.contents;
+  }
+
+  it("prints one SVG file per drawing, flat by shape and variant, plus manifest.json", () => {
+    const plan = styledFixturePlan();
+    expect(plan.packageFiles.map(({ path }) => path)).toEqual([
+      packageManifestJsonPath,
+      "svg/round-filled/fixture-star.svg",
+      "svg/round-outline/fixture-arrow.svg",
+      "svg/round-outline/fixture-search.svg",
+      "svg/round-outline/fixture-star.svg",
+      "svg/sharp-filled/fixture-star.svg",
+      "svg/sharp-outline/fixture-arrow.svg",
+      "svg/sharp-outline/fixture-search.svg",
+      "svg/sharp-outline/fixture-star.svg",
+    ]);
+    expect(plan.packageFiles.length).toBe(plan.iconCount + 1);
+    expect(packageSvgPath("sharp", "filled", "fixture-star")).toBe(
+      "svg/sharp-filled/fixture-star.svg",
+    );
+    // Category folders never reach a package path, as they never reach an import path.
+    expect(plan.packageFiles.some(({ path }) => /shapes|arrows|navigation/.test(path))).toBe(false);
+  });
+
+  it("prints each drawing with the component's attributes, in its order, spelled as SVG", () => {
+    const plan = styledFixturePlan();
+    const { design } = iconSystem;
+    expect(packageContents(plan, "svg/round-outline/fixture-star.svg")).toBe(
+      `<svg fill="none" stroke="currentColor" stroke-linecap="${design.linecap}" stroke-linejoin="${design.linejoin}" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="6.25"/>
+</svg>
+`,
+    );
+    expect(packageContents(plan, "svg/sharp-outline/fixture-arrow.svg")).toBe(
+      `<svg fill="none" stroke="currentColor" stroke-linecap="${design.sharp.linecap}" stroke-linejoin="${design.sharp.linejoin}" stroke-miterlimit="${design.sharp.miterLimit}" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <polyline points="9.625,6 15,12 9.625,18"/>
+</svg>
+`,
+    );
+    expect(packageContents(plan, "svg/sharp-filled/fixture-star.svg")).toBe(
+      `<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="8.125"/>
+</svg>
+`,
+    );
+    // The component's runtime props never reach the file; directionality is manifest data.
+    for (const { path, contents } of plan.packageFiles) {
+      if (path === packageManifestJsonPath) continue;
+      expect(contents.match(/^<svg [^>]*>/)?.[0], path).not.toMatch(
+        / (?:width|height|aria-hidden|focusable|data-qx-mirror|role)=/,
+      );
+    }
+  });
+
+  it("drops comments and nests groups, and reads back to the same element tree", () => {
+    const source = `<!-- Derived from icons/round-outline/arrows/fixture.svg. Do not edit. -->
+${syntheticSvg(
+  {},
+  `<g fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><g><rect x="4" y="5" width="8" height="6" rx="1"/></g></g><path d="M 5 7 L 11 13" fill-rule="evenodd"/>`,
+)}`;
+    const plan = createGenerationPlan([{ file: sourceFile, source }]);
+    expect(plan.diagnostics).toEqual([]);
+    const svg = packageContents(plan, "svg/round-outline/fixture.svg");
+    expect(svg).toBe(
+      `<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="currentColor">
+    <circle cx="12" cy="12" r="4"/>
+    <g>
+      <rect height="6" rx="1" width="8" x="4" y="5"/>
+    </g>
+  </g>
+  <path d="M 5 7 L 11 13" fill-rule="evenodd"/>
+</svg>
+`,
+    );
+    expect(svgToReact(svg)).toEqual(svgToReact(source));
+  });
+
+  it("ships the manifest as the same bytes as icon-manifest.json", () => {
+    for (const plan of [fixturePlan(), styledFixturePlan(), createGenerationPlan([])]) {
+      expect(packageContents(plan, packageManifestJsonPath)).toBe(
+        contentsOf(plan, manifestJsonPath),
+      );
+    }
+    expect(createGenerationPlan([]).packageFiles.map(({ path }) => path)).toEqual([
+      packageManifestJsonPath,
+    ]);
+  });
+
+  it("plans no package file when any source fails", () => {
+    const plan = createGenerationPlan([
+      ...apiFixtures,
+      { file: "icons/round-outline/arrows/broken.svg", source: "<svg" },
+    ]);
+    expect(plan.diagnostics.length).toBeGreaterThan(0);
+    expect(plan.packageFiles).toEqual([]);
+  });
+
+  it("prints every production drawing, each reading back to its source's element tree", () => {
+    const plan = planRepositoryGeneration(PKG, iconMetadata);
+    expect(plan.diagnostics).toEqual([]);
+    const files = new Map(plan.packageFiles.map(({ path, contents }) => [path, contents]));
+    expect(files.size).toBe(plan.iconCount + 1);
+    expect(files.get(packageManifestJsonPath)).toBe(
+      readFileSync(join(PKG, manifestJsonPath), "utf8"),
+    );
+    for (const concept of plan.concepts) {
+      for (const { file, style, variant } of concept.sources) {
+        const svg = files.get(packageSvgPath(style, variant, concept.id));
+        expect(svg, file).toBeDefined();
+        expect(svgToReact(svg ?? ""), file).toEqual(
+          svgToReact(readFileSync(join(PKG, file), "utf8")),
+        );
+      }
+    }
+  }, 120_000);
 });
 
 describe("generated output passes Biome and strict TypeScript", () => {

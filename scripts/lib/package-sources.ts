@@ -1,4 +1,5 @@
 import type { IconManifest } from "../../src/types/icon-manifest.js";
+import { type ReactSvgElement, svgAttributeName } from "./svg-to-react.js";
 
 /** Matches `formatter.lineWidth` in biome.json; tests prove Biome leaves the output unchanged. */
 const lineWidth = 100;
@@ -135,4 +136,30 @@ export function renderManifestJson(manifest: IconManifest): string {
     "}",
     "",
   ].join("\n");
+}
+
+/**
+ * One drawing as a plain SVG file, printed from the element tree its component is printed from:
+ * the same elements in drawing order, the same attributes in the same order with the same values,
+ * spelled as SVG (`stroke-width`, not `strokeWidth`). So the file is exactly what the component
+ * renders by default, without the props it adds at runtime (`width`, `height`, `aria-hidden`,
+ * `focusable`, `data-qx-mirror`). One element per line, two-space indentation, LF newlines.
+ *
+ * Values need no escaping: conversion has already refused any value a quoted attribute could not
+ * carry verbatim (quotes, `&`, `<`, `>`, braces, backslashes, control characters).
+ */
+export function renderSvgFile(svg: ReactSvgElement): string {
+  const print = (element: ReactSvgElement, depth: number): string[] => {
+    const indent = "  ".repeat(depth);
+    const attributes = element.attributes
+      .map(([name, value]) => ` ${svgAttributeName(name)}="${value}"`)
+      .join("");
+    if (element.children.length === 0) return [`${indent}<${element.tag}${attributes}/>`];
+    return [
+      `${indent}<${element.tag}${attributes}>`,
+      ...element.children.flatMap((child) => print(child, depth + 1)),
+      `${indent}</${element.tag}>`,
+    ];
+  };
+  return [...print(svg, 0), ""].join("\n");
 }

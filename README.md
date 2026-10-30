@@ -44,6 +44,7 @@ import { TrashIcon, StarIcon, QeetLogo } from "@qeetrix/icons";
 - [🎨 Icons](#-icons)
 - [🟠 Qeet logos](#-qeet-logos)
 - [🔎 Catalogue and search](#-catalogue-and-search)
+- [🧱 SVG files and JSON, beyond React](#-svg-files-and-json-beyond-react)
 - [🔁 Coming from lucide-react](#-coming-from-lucide-react)
 - [📐 Design rules](#-design-rules)
 - [🧪 Playground](#-playground)
@@ -73,6 +74,8 @@ provide:
   for safety, and labelled with the background each file is drawn for.
 - 🔎 **Searchable catalogues.** Tags, categories, Lucide's former names, RTL behaviour, and logo
   files and colours, published as data for docs sites and pickers.
+- 🧱 **Beyond React.** Every drawing and logo also ships as a plain SVG file, and the catalogue as
+  JSON, for Android, iOS, and any other tool.
 - 🌲 **Zero runtime cost you didn't ask for.** No runtime dependencies, no hooks, no side
   effects: bundlers keep only the icons and logos you import.
 
@@ -85,11 +88,12 @@ provide:
 | 🌓 **Variants** | `outline` for every icon; `filled` for 775, in both shapes |
 | 🟠 **Logos** | The Qeet logo and wordmark, Qeet Group's own artwork |
 | 🗂️ **Logo files** | 6 (light and dark, and the wordmark with and without its tile), embedded unmodified |
+| 🧱 **SVG files** | 5,276 drawings, the 6 logo files and the mask-free Qeet mark as plain SVG, and the manifest as JSON |
 | 📐 **Grid** | 24 × 24, 2-unit stroke, 1-unit padding, `currentColor` |
 | ⚛️ **Runtime** | React 19 peer dependency only; no runtime dependencies; no hooks |
 | 📦 **Module format** | ESM with TypeScript declarations; every module free of side effects |
 | ↔️ **RTL** | 18 reading-direction concepts flagged `mirror` in the catalogue |
-| ✅ **Tests** | 649 tests in 12 suites, including a packed-tarball consumer test |
+| ✅ **Tests** | 685 tests in 13 suites, including a packed-tarball consumer test |
 
 ## 📦 Installation
 
@@ -306,6 +310,35 @@ const qeetFiles = logoManifest.logos.find(({ id }) => id === "qeet")?.variants;
 | `tags`, `aliases` | `aliases`, `hex` (brand colour) |
 | `directionality` | `license`, `website`, `guidelines`, `source` |
 
+## 🧱 SVG files and JSON, beyond React
+
+Android, iOS, design tools and other languages get the same drawings as plain files: no React
+module to read, no JavaScript literal to parse.
+
+```text
+@qeetrix/icons/svg/round-outline/trash.svg     every icon, round and sharp, outline and filled:
+@qeetrix/icons/svg/sharp-filled/trash.svg      svg/<shape>-<variant>/<id>.svg
+@qeetrix/icons/manifest.json                   the icon catalogue as JSON
+@qeetrix/icons/svg/logos/qeet/default.svg      every logo file, byte for byte
+@qeetrix/icons/svg/logos/qeet/default.mask-free.svg   the Qeet mark without its <mask>
+```
+
+- 🎯 Each icon file is exactly what its component draws by default, printed from the same
+  generated element tree and checked against it: `viewBox="0 0 24 24"`, `currentColor`, no
+  comments, none of the props the component adds when it renders (`width`, `aria-hidden`, …).
+- 🗂️ Which files exist follows the manifest: `shapes` × `variants` for each entry. Its
+  `directionality` says which to mirror in right-to-left layouts.
+- 🟠 Android VectorDrawable and iOS vector assets cannot draw SVG masks, which the Qeet mark uses to
+  cut its bowl. Convert `qeet/default.mask-free.svg` and `qeet/dark.mask-free.svg` instead: the
+  same artwork with the mask applied, pixel-identical with anti-aliasing off.
+
+```js
+import manifest from "@qeetrix/icons/manifest.json" with { type: "json" };
+const trash = new URL(import.meta.resolve("@qeetrix/icons/svg/round-outline/trash.svg"));
+```
+
+See [docs/api.md](docs/api.md#svg-files) and [docs/logos.md](docs/logos.md#svg-files).
+
 ## 🔁 Coming from lucide-react
 
 The artwork is Lucide's, so most screens move over with an import change:
@@ -373,8 +406,9 @@ bun run playground
   package on the first start after installing or upgrading, then reuse their cache.
 - 🪶 **Per-icon imports** are available when you need the leanest possible module graph:
   `import { TrashIcon } from "@qeetrix/icons/icons/trash"`.
-- 📦 **Package:** about 0.7 MB packed and 5.5 MB unpacked. Only compiled code ships; no source
-  SVGs.
+- 📦 **Package:** about 1.3 MB packed and 9.3 MB unpacked: the compiled modules, and 3.5 MB of
+  plain SVG files and JSON for other platforms. No source SVGs or tooling ship; bundlers never
+  touch the SVG files unless you import one.
 
 ## 🏗️ How it is built
 

@@ -2,18 +2,24 @@ import { posix } from "node:path";
 import { categories } from "../../config/categories.js";
 import type { IconMetadata } from "../../config/icon-metadata.js";
 import { type IconStyle, iconSystem } from "../../config/icon-system.js";
-import type { IconDirectionality } from "../../src/types/icon.js";
+import type { IconDirectionality, IconShape, IconVariant } from "../../src/types/icon.js";
 import type { IconManifest } from "../../src/types/icon-manifest.js";
 import { noMetadata } from "../check/validate-metadata.js";
 import { type IconSource, scanIconSources, validateSources } from "../check/validate-repository.js";
 import {
   componentNameFromFilename,
   type IconLocation,
+  sourceFolder,
   validateSourcePath,
 } from "../check/validate-source-path.js";
 import { renderComponentSource } from "./component-source.js";
 import { compareText, type Diagnostic, diagnostic, sortDiagnostics } from "./diagnostics.js";
-import { renderBarrel, renderManifestJson, renderManifestModule } from "./package-sources.js";
+import {
+  renderBarrel,
+  renderManifestJson,
+  renderManifestModule,
+  renderSvgFile,
+} from "./package-sources.js";
 import { svgToReact } from "./svg-to-react.js";
 
 /** Owned entirely by generation: every file inside is generated, and anything else is stale. */
@@ -33,6 +39,22 @@ export const logoGeneratedPaths: readonly string[] = [
   "src/generated/logo-index.ts",
   "src/generated/logo-manifest.ts",
 ];
+
+/**
+ * The package's language-neutral copy of the icons, relative to `dist/`: every drawing as a plain
+ * SVG file, and the manifest as JSON. The build writes them (`scripts/build/package-assets.ts`);
+ * they are never written into the repository.
+ */
+export const packageSvgDirectory = "svg";
+export const packageManifestJsonPath = "manifest.json";
+
+/**
+ * `svg/<shape>-<variant>/<id>.svg`, named like the source folders but flat, like `./icons/*`, so a
+ * category move changes no path.
+ */
+export function packageSvgPath(shape: IconShape, variant: IconVariant, id: string): string {
+  return `${packageSvgDirectory}/${sourceFolder(shape, variant)}/${id}.svg`;
+}
 
 /** Fixed-path artifacts; every other generated file is a concept's component at its canonical path. */
 export const packageArtifactPaths: readonly string[] = [
@@ -78,6 +100,12 @@ export type GenerationPlan = {
   readonly manifest: IconManifest;
   /** Every generated file, in path order. Empty whenever `diagnostics` is not. */
   readonly files: readonly GeneratedFile[];
+  /**
+   * Every package file, relative to `dist/`, in path order: one SVG per drawing, printed from the
+   * same element tree as its component, and `manifest.json`, the same bytes as
+   * `icon-manifest.json`. Empty whenever `diagnostics` is not.
+   */
+  readonly packageFiles: readonly GeneratedFile[];
   readonly diagnostics: readonly Diagnostic[];
 };
 
@@ -92,6 +120,7 @@ function failedPlan(iconCount: number, diagnostics: readonly Diagnostic[]): Gene
     concepts: [],
     manifest: { schemaVersion: 1, icons: [] },
     files: [],
+    packageFiles: [],
     diagnostics: sortDiagnostics(diagnostics),
   };
 }
@@ -134,6 +163,7 @@ export function createGenerationPlan(
 
   const concepts: PlannedConcept[] = [];
   const components: GeneratedFile[] = [];
+  const svgFiles: GeneratedFile[] = [];
   const diagnostics: Diagnostic[] = [];
   for (const [name, group] of drawings) {
     group.sort(
@@ -158,6 +188,11 @@ export function createGenerationPlan(
         sources: group.map(({ location }) => location),
         outputPath: generatedOutputPath(name),
       };
+      // One conversion per drawing feeds both its component and its SVG file, so they cannot differ.
+      const converted = group.map(({ location, source }) => ({
+        location,
+        svg: svgToReact(source),
+      }));
       components.push({
         path: concept.outputPath,
         contents: renderComponentSource({
@@ -166,16 +201,22 @@ export function createGenerationPlan(
           mirror: concept.directionality === "mirror",
           shapes: shapes.map((shape) => ({
             shape,
-            variants: group
+            variants: converted
               .filter(({ location }) => location.style === shape)
-              .map(({ location, source }) => ({
+              .map(({ location, svg }) => ({
                 variant: location.variant,
                 sourcePath: location.file,
-                svg: svgToReact(source),
+                svg,
               })),
           })),
         }),
       });
+      for (const { location, svg } of converted) {
+        svgFiles.push({
+          path: packageSvgPath(location.style, location.variant, name),
+          contents: renderSvgFile(svg),
+        });
+      }
       concepts.push(concept);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -230,7 +271,11 @@ export function createGenerationPlan(
     { path: manifestModulePath, contents: renderManifestModule(manifest) },
     { path: manifestJsonPath, contents: renderManifestJson(manifest) },
   ].sort((left, right) => compareText(left.path, right.path));
-  return { iconCount, concepts, manifest, files, diagnostics: [] };
+  const packageFiles: GeneratedFile[] = [
+    ...svgFiles,
+    { path: packageManifestJsonPath, contents: renderManifestJson(manifest) },
+  ].sort((left, right) => compareText(left.path, right.path));
+  return { iconCount, concepts, manifest, files, packageFiles, diagnostics: [] };
 }
 
 export function planRepositoryGeneration(

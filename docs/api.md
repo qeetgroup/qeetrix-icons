@@ -180,10 +180,45 @@ type IconManifestEntry = {
   removed or changes meaning. `categories`, `shapes`, `tags`, and `aliases` were added without
   changing it.
 - The manifest carries no source paths, timestamps, or other repository or build data. A drawing's
-  source is always `icons/<shape>-<variant>/<category>/<name>.svg`, and SVG sources are not shipped.
-- The same data is generated as `icon-manifest.json` at the repository root, for language-neutral
-  repository tooling. That file is not published; the package exposes only the typed module, which
-  needs no JSON import attributes.
+  source is always `icons/<shape>-<variant>/<category>/<name>.svg`; its published file is
+  `@qeetrix/icons/svg/<shape>-<variant>/<id>.svg` ([SVG files](#svg-files)).
+- The same data ships as JSON, `@qeetrix/icons/manifest.json`, for tools that are not JavaScript.
+  It is the same bytes as the repository's generated `icon-manifest.json`. In JavaScript, prefer
+  the typed module, which needs no JSON import attributes.
+
+## SVG files
+
+For platforms that do not run React (Android, iOS, design tools, other languages), every drawing
+also ships as a plain SVG file:
+
+```text
+@qeetrix/icons/svg/round-outline/<id>.svg   every icon
+@qeetrix/icons/svg/sharp-outline/<id>.svg   every icon
+@qeetrix/icons/svg/round-filled/<id>.svg    icons whose variants include "filled"
+@qeetrix/icons/svg/sharp-filled/<id>.svg    the same icons
+@qeetrix/icons/svg/logos/<slug>/<variant>.svg (and <variant>.mask-free.svg), see logos.md
+```
+
+```svg
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3 6h18"/>
+  …
+</svg>
+```
+
+- A file holds exactly what its component renders for that `shape` and `variant` by default: the
+  same elements in drawing order, and the same attributes in the same order with the same values,
+  spelled as SVG (`stroke-width`, not `strokeWidth`). It has none of the props the component adds
+  when it renders (`width`, `height`, `aria-hidden`, `focusable`, `role`, `data-qx-mirror`), no
+  comments, and no XML declaration. Size it with `viewBox`; colour it through `currentColor`.
+- Which files exist follows the manifest: `shapes` times `variants` for each entry, at
+  `svg/<shape>-<variant>/<id>.svg`, flat like `./icons/*`. The manifest's `directionality` says
+  whether to mirror a drawing in right-to-left layouts; the files never mirror themselves.
+- The build prints each file from the element tree its component is printed from, in the same
+  generation plan ([generation.md](generation.md#package-svg-files-and-manifest-json)). A test
+  renders every drawing of every icon from the packed package and compares it with its file.
+- They are files, not modules: resolve them (`import.meta.resolve`, `require.resolve`, a bundler's
+  asset import), don't `import` them as code.
 
 ## Entry points
 
@@ -192,13 +227,16 @@ type IconManifestEntry = {
 | `@qeetrix/icons` | Every icon and logo component, plus the `IconProps`, `IconShape`, `IconVariant`, `IconDirectionality`, `LogoProps`, `LogoComponent`, and `LogoBackground` types |
 | `@qeetrix/icons/icons/<id>` | One icon component |
 | `@qeetrix/icons/manifest` | `iconManifest` and `logoManifest`, with the `IconManifest`, `IconManifestEntry`, `LogoManifest`, `LogoManifestEntry`, `LogoManifestVariant`, and `LogoBackground` types |
+| `@qeetrix/icons/manifest.json` | `iconManifest` as JSON |
+| `@qeetrix/icons/svg/<shape>-<variant>/<id>.svg` | One drawing as a plain SVG file ([SVG files](#svg-files)) |
+| `@qeetrix/icons/svg/logos/<slug>/<variant>.svg` | One logo file, byte for byte; `<variant>.mask-free.svg` beside one drawn with a mask ([logos.md](logos.md#svg-files)) |
 | `@qeetrix/icons/package.json` | Package metadata |
 
 The exports map denies everything else. The runtime helpers, generated barrels, internal types,
-config, scripts, `dist/` paths, and category, collection, shape, or variant paths cannot be
-imported. This is
-tested against the packed tarball under Node ESM and TypeScript `bundler` and `nodenext`
-resolution. The package is ESM-only.
+config, scripts, `dist/` paths, `icon-manifest.json`, and category, collection, shape, or variant
+module paths cannot be imported; only the SVG files, which are not modules, are grouped by shape
+and variant. This is tested against the packed tarball under Node ESM and TypeScript `bundler`
+and `nodenext` resolution. The package is ESM-only.
 
 ## Tree shaking
 
@@ -228,8 +266,9 @@ Tree shaking works per concept:
 
 ## Versioning
 
-Public names and drawing support are semver API: every export, direct-import subpath, manifest
-`id`, each component's accepted variants, and the shapes every icon offers.
+Public names and drawing support are semver API: every export, direct-import subpath, SVG file
+path, manifest `id`, each component's accepted variants, and the shapes every icon offers. A
+drawing and its SVG file come and go together, so the table below covers both.
 
 | Change | Release |
 |:--|:--|

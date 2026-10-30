@@ -1,8 +1,8 @@
 {
   "name": "@qeetrix/icons",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": false,
-  "description": "Qeetrix Icons — Lucide icons in round and sharp shapes with derived filled variants, plus the Qeet logo and wordmark, as tree-shakeable React components.",
+  "description": "Qeetrix Icons — Lucide icons in round and sharp shapes with derived filled variants, plus the Qeet logo and wordmark, as tree-shakeable React components, plain SVG files, and a JSON manifest.",
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
@@ -47,6 +47,8 @@
       "import": "./dist/manifest.js",
       "default": "./dist/manifest.js"
     },
+    "./manifest.json": "./dist/manifest.json",
+    "./svg/*": "./dist/svg/*",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -67,7 +69,7 @@
     "generate:logos": "bun scripts/build/generate-logos.ts",
     "check:logos": "bun scripts/build/generate-logos.ts --check",
     "check:generated": "bun scripts/check/check-generated.ts",
-    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && bun scripts/build/package-assets.ts",
     "playground": "vite --config playground/vite.config.ts",
     "playground:build": "vite build --config playground/vite.config.ts",
     "prepack": "bun run build"

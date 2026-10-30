@@ -39,7 +39,7 @@ workspace uses it.
 | `bun run check:generated` | Fail if any generated icon file is missing, edited, out of date, or stale |
 | `bun run playground` | Start the internal visual QA playground |
 | `bun run playground:build` | Production-build the playground to prove it compiles |
-| `bun run build` | `rm -rf dist` → `tsc` |
+| `bun run build` | `rm -rf dist` → `tsc` → the SVG files and `manifest.json` into `dist/` ([generation.md](generation.md#package-svg-files-and-manifest-json)) |
 
 ## Where things live
 
@@ -58,7 +58,7 @@ workspace uses it.
 | `docs/` | Design, naming, accessibility, RTL, pipeline, and release contracts. |
 | [playground/](../playground/) | Internal visual QA tool. Reads generated output; never published. |
 | `tests/` | Config, Lucide sync, filled and sharp derivation, validation, generation, logos, runtime, package, and playground checks; temporary fixtures only. |
-| `dist/` | Build output, and the only thing published. Gitignored. |
+| `dist/` | Build output (compiled modules, SVG files, `manifest.json`), and the only thing published. Gitignored. |
 
 Read [design.md](design.md) and [naming.md](naming.md) first. Accessibility and RTL expectations are
 in [accessibility.md](accessibility.md) and [rtl.md](rtl.md). The pipeline and file ownership are
