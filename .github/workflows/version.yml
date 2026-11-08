@@ -81,4 +81,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           HEAD_REF: ${{ github.head_ref }}
-        run: gh workflow run ci.yml --ref "$HEAD_REF" --repo "$GITHUB_REPOSITORY"
+        run: |
+          gh workflow run ci.yml --ref "$HEAD_REF" --repo "$GITHUB_REPOSITORY"
+          gh workflow run main-takes-develop.yml --ref "$HEAD_REF" --repo "$GITHUB_REPOSITORY"

@@ -7,6 +7,11 @@
 > RTL decisions ([rtl.md](rtl.md)), the Qeet logos ([logos.md](logos.md)), tooling, and
 > documentation. Third-party brand logos are not accepted; apps use theSVG directly.
 
+## Branches
+
+Work on a branch from `develop` and open its pull request into `develop`. Only `develop` goes into `main`, through
+a `develop` → `main` pull request the maintainer opens; `main` refuses anything else.
+
 ## Setup
 
 ```bash
