@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   pull_request:
+  # The Version workflow starts it on the commit it bumps, which GitHub holds as a pull_request run.
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
