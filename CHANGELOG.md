@@ -1,5 +1,22 @@
 # @qeetrix/icons
 
+## Unreleased
+
+### Patch Changes
+
+- **The filled Send icons are one paper plane**. In `SendIcon` and `SendHorizontalIcon`
+  filled, round and sharp, the fold cut ran out through the nose, so each drew two triangles that
+  never met at the tip. Their filled drawings are now overrides
+  (`config/overrides/<shape>-filled/mail/`): the outer edges meet at one tip and the fold stops 9
+  units from the tail, a round-ended cut in round (the repository's own derivation with the fold
+  shortened) and a tapered one in sharp. Right-to-left mirroring is unchanged. The 177 other filled
+  drawings whose cut runs on through their edge were reviewed: they part on purpose (dividers,
+  flaps, a file's dog-ear, a pyramid's faces), so none changes.
+- **Development tooling without known advisories**: Vite 8.3.6 and Vitest 4.1.12, which
+  drop the advisories in Vite's bundled launch-editor and in undici and source-map-js through jsdom
+  (Vitest's optional peer, now out of the lockfile). `bun audit` is clean and runs in CI. Nothing
+  reaches people who install the package, which has no runtime dependencies.
+
 ## 2.1.0
 
 Plain SVG files and a JSON manifest, for platforms that don't run React. Additive: every 2.0.0
@@ -8,7 +25,7 @@ module and declaration is byte for byte the same, so `^2.0.0` consumers (includi
 
 ### Minor Changes
 
-- **Every drawing ships as a plain SVG file, and the icon manifest as JSON** (QTRX-188). Android,
+- **Every drawing ships as a plain SVG file, and the icon manifest as JSON**. Android,
   iOS, and other non-React tools no longer have to read SVG back out of the generated
   `_jsx("svg", …)` calls or the manifest out of a JavaScript literal.
   - `@qeetrix/icons/svg/<shape>-<variant>/<id>.svg`: one file per drawing, `round-outline` and
@@ -30,7 +47,7 @@ module and declaration is byte for byte the same, so `^2.0.0` consumers (includi
     `./svg/*`; `files` is still `dist`. The tarball grows from 0.70 MB to 1.31 MB packed and
     from 5.8 MB to 9.3 MB unpacked: 5,285 more files, 3.5 MB of SVG and JSON.
 
-- **The Qeet mark without its `<mask>`** (QTRX-189), for Android VectorDrawable and iOS vector
+- **The Qeet mark without its `<mask>`**, for Android VectorDrawable and iOS vector
   assets, which have no masks: `@qeetrix/icons/svg/logos/qeet/default.mask-free.svg` and
   `dark.mask-free.svg`, beside the files `QeetLogo` renders, which are unchanged. The mask cuts the
   bowl's hole where the bowl's own path already leaves it open (Skia path operations find no area
@@ -40,12 +57,12 @@ module and declaration is byte for byte the same, so `^2.0.0` consumers (includi
   anti-aliasing to the hole's edge, and nowhere else (Chromium, Firefox, WebKit). A mask the
   derivation cannot apply exactly (grey, transformed, or styled) fails the build instead.
 
-The Lucide-based catalogue below, released as the major it is (QTRX-9). 1.0.12 and 1.0.13 carried
+The Lucide-based catalogue below, released as the major it is. 1.0.12 and 1.0.13 carried
 it under a patch version by mistake, and broke `^1.0.x` ranges: move to `^2.0.0`.
 
 ### Directionality
 
-- **Icons that point a reading direction mirror by themselves** (QTRX-51). The 18 icons the
+- **Icons that point a reading direction mirror by themselves**. The 18 icons the
   manifest marks `mirror` (log-in, log-out, send, reply, undo, redo, text-align-start and -end,
   list-indent, …) render `data-qx-mirror` on their `<svg>`, so `[dir="rtl"] [data-qx-mirror]
   { scale: -1 1 }` (in @qeetrix/react's base styles; add the rule yourself without it) turns them

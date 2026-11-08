@@ -21,6 +21,8 @@ jobs:
         with:
           bun-version: 1.3.14
       - run: bun install --frozen-lockfile
+      # No known advisory in the dependencies, development tooling included.
+      - run: bun audit
       - run: bun run lint
       - run: bun run typecheck
       - run: bun run test
