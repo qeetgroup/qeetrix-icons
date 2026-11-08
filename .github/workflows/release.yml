@@ -6,10 +6,11 @@ name: Release
 #
 # The flow end to end:
 #
-#   1. Open a PR. `version.yml` bumps the patch version on your branch, so the
-#      version you are about to ship is visible in the PR diff. Want a minor or
-#      major? Set it by hand in package.json and the bump leaves it alone.
-#   2. Merge to main. This workflow publishes that version to npm, pushes the
+#   1. Raise the version in package.json on develop (the next patch, or a minor or major), then
+#      open the develop → main PR; its Version check fails until it's raised. The version you are
+#      about to ship is in the PR diff.
+#   2. Merge to main. This workflow builds the package (every gate already passed in develop's
+#      CI on this commit), publishes that version to npm, pushes the
 #      matching `vX.Y.Z` tag, and opens a GitHub Release.
 #   3. Bad release? Run `rollback.yml` — it points `latest` back at an older
 #      version. npm will not let a version be republished, so a rollback moves
@@ -76,25 +77,9 @@ jobs:
             echo "release=true" >> "$GITHUB_OUTPUT"
           fi
 
-      # Gate before shipping. Nothing below runs if the version is unchanged.
-      - if: steps.version.outputs.release == 'true'
-        run: bun run lint
-      - if: steps.version.outputs.release == 'true'
-        run: bun run typecheck
-      - if: steps.version.outputs.release == 'true'
-        run: bun run test
-      - if: steps.version.outputs.release == 'true'
-        run: bun run check:icons
-      - if: steps.version.outputs.release == 'true'
-        run: bun run check:filled
-      - if: steps.version.outputs.release == 'true'
-        run: bun run check:sharp
-      - if: steps.version.outputs.release == 'true'
-        run: bun run check:generated
-      - if: steps.version.outputs.release == 'true'
-        run: bun run check:brands
-      - if: steps.version.outputs.release == 'true'
-        run: bun run check:logos
+      # develop's CI already passed every gate on this commit (main takes develop only, on an up-to-date
+      # branch), so they don't run again here. Only the package is built, as it's published.
+      # Nothing below runs if the version is unchanged.
       - if: steps.version.outputs.release == 'true'
         run: bun run build
 

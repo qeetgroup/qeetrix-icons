@@ -2,7 +2,8 @@ name: Version
 
 # A develop → main pull request releases, so the version it carries must be above main's. Raise `version` in
 # package.json on develop, in an ordinary commit, before opening the pull request; for a minor or major, raise it by
-# hand the same way. This check fails, naming the next patch, until it's raised. Nothing commits for you: main
+# hand the same way. This check fails, naming the next patch, until it's raised; a pull request that changes nothing
+# that ships (CI, docs, tests) needs no new version, and merging it releases nothing. Nothing commits for you: main
 # requires CI on the pull request's last commit, and a commit pushed by a workflow gets no CI run of its own.
 on:
   pull_request:
@@ -27,6 +28,8 @@ jobs:
           BASE: ${{ github.base_ref }}
           PKG: package.json
           NPM_REGISTRY: ${{ vars.QEETRIX_NPM_REGISTRY }}
+          # Paths that don't ship: a pull request touching only these needs no new version.
+          NO_SHIP: '^(\.github/|docs/|tests/)|(^|/)[^/]*\.md$'
         run: |
           set -euo pipefail
           current=$(node -p "require('./$PKG').version")
@@ -38,6 +41,10 @@ jobs:
           above=$(node -p "const p = v => v.split('-')[0].split('.').map(Number); const [a, b] = [p('$current'), p('$base')];
             (a[0] - b[0] || a[1] - b[1] || a[2] - b[2]) > 0")
           if [ "$above" != "true" ]; then
+            ships=$(git diff --name-only "origin/$BASE...HEAD" | grep -v -E "$NO_SHIP" || true)
+            if [ -z "$ships" ]; then
+              echo "This pull request changes nothing that ships: no new version, and nothing to release."; exit 0
+            fi
             # The next patch npm has never accepted (an unpublished version can never be published again).
             if [ -f scripts/npm-versions.mjs ]; then next=$(node scripts/npm-versions.mjs next "$base"); else
               next=$(node -p "const [a, b, c] = '$base'.split('.').map(Number); [a, b, c + 1].join('.')"); fi
