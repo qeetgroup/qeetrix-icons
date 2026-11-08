@@ -1,10 +1,14 @@
 name: CI
 
 on:
-  # Once, on the pull request. A merge into main isn't checked again: main requires this check and an up-to-date
-  # branch, so a merge lands exactly what its pull request tested.
+  # On develop only: every push to it, and every pull request into it (Dependabot's). A develop → main pull request
+  # is checked by develop's run on the same commit, and main isn't checked again after the merge: main requires
+  # this check on an up-to-date branch, so what's merged is exactly what passed here.
+  push:
+    branches: [develop]
   pull_request:
-  # The Version workflow starts it on the commit it bumps, which GitHub holds as a pull_request run.
+    branches: [develop]
+  # The Version workflow starts it on the commit it bumps: a push made with a workflow's token starts no workflow.
   workflow_dispatch:
 
 concurrency:

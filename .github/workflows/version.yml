@@ -73,8 +73,8 @@ jobs:
           git push origin "HEAD:$HEAD_REF"
           echo "bumped=true" >> "$GITHUB_OUTPUT"
 
-      # GitHub holds pull_request runs on a commit pushed by this workflow ("action required"), so the
-      # bumped commit would have no CI result. A run started explicitly is not held: start CI on it, as
+      # A commit pushed with this workflow's token starts no workflow (GitHub holds its pull_request run), so
+      # the bumped commit would have no CI result. A run started explicitly isn't held: start CI on it, as
       # qeetrix-react's Version workflow does.
       - name: run CI on the bumped commit
         if: steps.bump.outputs.bumped == 'true'
