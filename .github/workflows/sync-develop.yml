@@ -1,0 +1,29 @@
+name: Sync develop
+
+# After a merge into main, develop moves up to main's merge commit. It's a fast-forward that changes no file (the
+# merge holds exactly develop's tree), so the next develop → main pull request is already up to date, as main's
+# branch protection requires, with no "Update branch" merge.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Fast-forward develop to main
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Fast-forward develop
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          # force=false: GitHub accepts only a fast-forward, so a commit on develop that main hasn't got is never lost.
+          if gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/heads/develop" -f sha="$GITHUB_SHA" -F force=false > /dev/null; then
+            echo "develop is now at main's $GITHUB_SHA."
+          else
+            echo "::warning::develop has commits main hasn't, so it can't fast-forward: the next pull request's Update branch merges main in."
+          fi

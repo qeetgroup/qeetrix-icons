@@ -7,6 +7,11 @@
 > RTL decisions ([rtl.md](rtl.md)), the Qeet logos ([logos.md](logos.md)), tooling, and
 > documentation. Third-party brand logos are not accepted; apps use theSVG directly.
 
+## Branches
+
+Work on a branch from `develop` and open its pull request into `develop`. Only `develop` goes into `main`, through
+a `develop` → `main` pull request the maintainer opens; `main` refuses anything else.
+
 ## Setup
 
 ```bash
@@ -104,7 +109,7 @@ bun install -> lint -> typecheck -> test -> check:icons -> check:filled -> check
 CI also runs `check:brands` (every logo file against `config/brands.json`, including content
 validation) and `check:logos` (generated logo output is current), in CI and in the release gate.
 
-Three more workflows handle releases — `version.yml` bumps the patch version on a PR, `release.yml`
+Three more workflows handle releases — `version.yml` checks that a `develop` → `main` PR raises the version, `release.yml`
 publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
 [releases.md](releases.md).
 

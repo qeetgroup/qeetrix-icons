@@ -8,7 +8,7 @@
 and wordmark**, as tree-shakeable, fully typed React 19 components, all from one import.
 
 [![npm](https://img.shields.io/npm/v/@qeetrix/icons?style=flat-square&color=111111&label=npm)](https://www.npmjs.com/package/@qeetrix/icons)
-[![CI](https://img.shields.io/github/actions/workflow/status/qeetgroup/qeetrix-icons/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/qeetgroup/qeetrix-icons/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/qeetgroup/qeetrix-icons/ci.yml?branch=develop&style=flat-square&label=CI)](https://github.com/qeetgroup/qeetrix-icons/actions/workflows/ci.yml)
 ![Icons](https://img.shields.io/badge/icons-1%2C863-111111?style=flat-square)
 ![Filled](https://img.shields.io/badge/filled-775-111111?style=flat-square)
 ![Shapes](https://img.shields.io/badge/shapes-round%20%C2%B7%20sharp-111111?style=flat-square)
@@ -536,8 +536,8 @@ The full index is [docs/README.md](docs/README.md).
 
 - 🏷️ **Published on npm** as [`@qeetrix/icons`](https://www.npmjs.com/package/@qeetrix/icons),
   with signed provenance from GitHub Actions, and as a GitHub Release for each version.
-- 🔢 **Versioning:** the Version workflow raises the patch version on every pull request unless
-  it is already raised; merging to `main` publishes that version, tags it, and opens the GitHub
+- 🔢 **Versioning:** raise `version` on `develop` before the `develop` → `main` pull request; its Version
+  check fails until the version is above `main`'s. Merging to `main` publishes that version, tags it, and opens the GitHub
   Release. A Rollback workflow moves the `latest` tag back to an earlier version.
 - 📝 **Changes** are recorded in [CHANGELOG.md](CHANGELOG.md). Read
   [docs/releases.md](docs/releases.md) before any release work.
