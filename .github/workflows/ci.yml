@@ -1,8 +1,8 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
+  # Once, on the pull request. A merge into main isn't checked again: main requires this check and an up-to-date
+  # branch, so a merge lands exactly what its pull request tested.
   pull_request:
   # The Version workflow starts it on the commit it bumps, which GitHub holds as a pull_request run.
   workflow_dispatch:
