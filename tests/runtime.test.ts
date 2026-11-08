@@ -304,7 +304,7 @@ describe.each([
 });
 
 describe("directionality", () => {
-  // QTRX-51: an icon that points a reading direction is right by default in right-to-left.
+  // An icon that points a reading direction is right by default in right-to-left.
   it("renders data-qx-mirror on every icon the manifest marks mirror, and on no other", () => {
     const dir = join(PKG, "src/generated/icons");
     const manifest = readFileSync(join(PKG, "src/generated/icon-manifest.ts"), "utf8");

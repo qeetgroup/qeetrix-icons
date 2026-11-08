@@ -1,6 +1,6 @@
 {
   "name": "@qeetrix/icons",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": false,
   "description": "Qeetrix Icons — Lucide icons in round and sharp shapes with derived filled variants, plus the Qeet logo and wordmark, as tree-shakeable React components, plain SVG files, and a JSON manifest.",
   "license": "SEE LICENSE IN LICENSE",
@@ -87,8 +87,8 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "typescript": "^6.0.3",
-    "vite": "^8.2.2",
-    "vitest": "^4.1.9"
+    "vite": "^8.3.6",
+    "vitest": "^4.1.12"
   },
   "publishConfig": {
     "access": "public"
