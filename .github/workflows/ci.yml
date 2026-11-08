@@ -8,7 +8,7 @@ on:
     branches: [develop]
   pull_request:
     branches: [develop]
-  # The Version workflow starts it on the commit it bumps: a push made with a workflow's token starts no workflow.
+  # By hand, on any branch.
   workflow_dispatch:
 
 concurrency:

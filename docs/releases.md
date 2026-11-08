@@ -17,23 +17,20 @@ What a version number means for an icon library, how a release happens, and how 
 
 ## How a release happens
 
-Three workflows, and you drive all of it by opening a PR.
+Three workflows. You raise the version on `develop`, then open the `develop` → `main` PR.
 
 | Workflow | Trigger | What it does |
 |:--|:--|:--|
-| `version.yml` | PR opened or pushed | Bumps the patch version on your branch |
+| `version.yml` | PR into `main` opened or pushed | Checks that the version is above `main`'s |
 | `release.yml` | Merge to `main` | Publishes to npm, then tags the commit |
 | `rollback.yml` | Manual | Points `latest` back at an older version |
 
 ### 1. Open a PR
 
-`version.yml` bumps the patch version in `package.json` and commits it to your branch, so **the
-version you are about to ship is visible in the PR diff** rather than decided later by a bot.
-
-Want a minor or major instead? Edit `version` in `package.json` yourself. The workflow only acts when
-the PR's version still equals `main`'s, so a manual bump is left alone rather than bumped twice.
-
-It skips fork PRs (their token is read-only) and never reacts to its own commit.
+First raise `version` in `package.json` on `develop`, in an ordinary commit: the next patch, or a minor or
+major. **The version you are about to ship is in the PR diff.** The Version check fails, naming the next
+patch, until the version is above `main`'s. Nothing commits for you: `main` requires CI on the PR's last
+commit, and a commit pushed by a workflow gets no CI run of its own.
 
 ### 2. Merge to main
 

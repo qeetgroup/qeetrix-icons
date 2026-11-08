@@ -7,8 +7,7 @@ on:
     branches: [main]
     # edited: a pull request whose base is changed to main is checked again.
     types: [opened, reopened, synchronize, edited]
-  # The Version workflow starts it on the commit it bumps on develop: a push made with a workflow's token starts no
-  # workflow, so that commit would have no result for this check.
+  # By hand: on develop it passes, on any other branch it fails.
   workflow_dispatch:
 
 permissions: {}

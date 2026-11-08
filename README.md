@@ -536,8 +536,8 @@ The full index is [docs/README.md](docs/README.md).
 
 - 🏷️ **Published on npm** as [`@qeetrix/icons`](https://www.npmjs.com/package/@qeetrix/icons),
   with signed provenance from GitHub Actions, and as a GitHub Release for each version.
-- 🔢 **Versioning:** the Version workflow raises the patch version on every pull request unless
-  it is already raised; merging to `main` publishes that version, tags it, and opens the GitHub
+- 🔢 **Versioning:** raise `version` on `develop` before the `develop` → `main` pull request; its Version
+  check fails until the version is above `main`'s. Merging to `main` publishes that version, tags it, and opens the GitHub
   Release. A Rollback workflow moves the `latest` tag back to an earlier version.
 - 📝 **Changes** are recorded in [CHANGELOG.md](CHANGELOG.md). Read
   [docs/releases.md](docs/releases.md) before any release work.

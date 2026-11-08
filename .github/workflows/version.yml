@@ -1,86 +1,46 @@
 name: Version
 
-# Bumps the patch version on the PR branch, so the version you are releasing is
-# visible in the PR diff and reviewable like any other change.
-#
-# Want a minor or major bump instead? Edit `version` in package.json yourself.
-# This workflow only acts when the PR's version is still equal to main's, so a
-# manual bump is left alone rather than bumped a second time.
+# A develop → main pull request releases, so the version it carries must be above main's. Raise `version` in
+# package.json on develop, in an ordinary commit, before opening the pull request; for a minor or major, raise it by
+# hand the same way. This check fails, naming the next patch, until it's raised. Nothing commits for you: main
+# requires CI on the pull request's last commit, and a commit pushed by a workflow gets no CI run of its own.
 on:
   pull_request:
+    branches: [main]
     types: [opened, synchronize, reopened]
-
-concurrency:
-  group: version-${{ github.head_ref }}
-  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  bump:
+  raised:
+    name: Version is raised
     runs-on: ubuntu-latest
-    # A fork PR gets a read-only token and cannot be pushed to, and a bot's own
-    # commit must not trigger another bump.
-    if: >
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      github.actor != 'github-actions[bot]'
-    permissions:
-      contents: write
-      actions: write # start CI on the bumped commit (the last step)
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
           fetch-depth: 0
-
-      - name: bump the patch version unless it is already raised
-        id: bump
+          persist-credentials: false
+      - name: The version is above main's
         env:
           BASE: ${{ github.base_ref }}
-          HEAD_REF: ${{ github.head_ref }}
+          PKG: package.json
+          NPM_REGISTRY: ${{ vars.QEETRIX_NPM_REGISTRY }}
         run: |
           set -euo pipefail
-
-          current=$(node -p "require('./package.json').version")
-          base=$(git show "origin/$BASE:package.json" | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")
-
-          echo "PR version: $current"
-          echo "$BASE version: $base"
-
-          if [ "$current" != "$base" ]; then
-            echo "Version already raised in this PR. Leaving it alone."
-            exit 0
+          current=$(node -p "require('./$PKG').version")
+          if ! base_package=$(git show "origin/$BASE:$PKG" 2>/dev/null); then
+            echo "$BASE has no $PKG yet: $current is the first release."; exit 0
           fi
-
-          next=$(node -e "
-            const [maj, min, patch] = '$base'.split('.').map(Number);
-            console.log([maj, min, patch + 1].join('.'));
-          ")
-          echo "Bumping $current -> $next"
-
-          node -e "
-            const fs = require('fs');
-            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            pkg.version = '$next';
-            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
-          "
-
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json
-          git commit -m "chore: bump version to $next"
-          git push origin "HEAD:$HEAD_REF"
-          echo "bumped=true" >> "$GITHUB_OUTPUT"
-
-      # A commit pushed with this workflow's token starts no workflow (GitHub holds its pull_request run), so
-      # the bumped commit would have no CI result. A run started explicitly isn't held: start CI on it, as
-      # qeetrix-react's Version workflow does.
-      - name: run CI on the bumped commit
-        if: steps.bump.outputs.bumped == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          HEAD_REF: ${{ github.head_ref }}
-        run: |
-          gh workflow run ci.yml --ref "$HEAD_REF" --repo "$GITHUB_REPOSITORY"
-          gh workflow run main-takes-develop.yml --ref "$HEAD_REF" --repo "$GITHUB_REPOSITORY"
+          base=$(printf '%s' "$base_package" | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).version")
+          echo "This pull request: $current. $BASE: $base."
+          above=$(node -p "const p = v => v.split('-')[0].split('.').map(Number); const [a, b] = [p('$current'), p('$base')];
+            (a[0] - b[0] || a[1] - b[1] || a[2] - b[2]) > 0")
+          if [ "$above" != "true" ]; then
+            # The next patch npm has never accepted (an unpublished version can never be published again).
+            if [ -f scripts/npm-versions.mjs ]; then next=$(node scripts/npm-versions.mjs next "$base"); else
+              next=$(node -p "const [a, b, c] = '$base'.split('.').map(Number); [a, b, c + 1].join('.')"); fi
+            echo "::error::Raise version in $PKG above $base on develop, in an ordinary commit: $next for a patch, or a minor or major by hand."
+            exit 1
+          fi
