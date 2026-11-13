@@ -3,7 +3,7 @@
 The contract for consuming `@qeetrix/icons` 2.0. It is implemented and tested against a packed
 tarball. The package exports the 1,863 Lucide icons of the pinned release
 ([lucide.md](lucide.md)) as React 19 components. Every icon has two shapes, round (Lucide's
-drawing) and sharp ([sharp.md](sharp.md)), and 794 icons also have a filled drawing in each shape
+drawing) and sharp ([sharp.md](sharp.md)), and 775 icons also have a filled drawing in each shape
 ([filled.md](filled.md)). It also exports Qeet's own logos, `QeetLogo` and `QeetWordmarkLogo`; see
 [Qeet logos](#qeet-logos) and [logos.md](logos.md).
 

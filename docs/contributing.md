@@ -97,21 +97,27 @@ that adds, renames, or removes an icon or a filled drawing.
 [validation.md](validation.md) for rule codes and what still requires visual review
 ([visual-qa.md](visual-qa.md)).
 
-## CI
+## CI, and before you push
 
-CI runs one job — see [the workflow](../.github/workflows/ci.yml):
+CI checks each change once, on its pull request (every PR into `develop`, and the `develop` → `main` PR); pushes
+run nothing. **Verify** ([the workflow](../.github/workflows/ci.yml)) runs the typecheck, Biome, `check:generated`
+and `bun audit`. The **Release gate** checks that a `develop` → `main` PR comes from `develop` and raises the version
+when what ships changed; `release.yml` builds and publishes on merge, then tags; `rollback.yml` moves `latest` back.
+See [releases.md](releases.md).
 
-```text
-bun install -> lint -> typecheck -> test -> check:icons -> check:filled -> check:sharp
-            -> check:generated -> check:brands -> check:logos -> build -> playground:build
+### Before you push
+
+The tests, the source checks and the builds don't run in CI. Run them all before every push, and say so in the
+commit:
+
+```sh
+bun run lint && bun run typecheck && bun run test && bun run check:icons && bun run check:filled \
+  && bun run check:sharp && bun run check:generated && bun run check:brands && bun run check:logos \
+  && bun run build && bun run playground:build && bun audit
 ```
 
-CI also runs `check:brands` (every logo file against `config/brands.json`, including content
-validation) and `check:logos` (generated logo output is current), in CI and in the release gate.
-
-Three more workflows handle releases — `version.yml` checks that a `develop` → `main` PR raises the version, `release.yml`
-publishes on merge and then tags, and `rollback.yml` moves `latest` back. See
-[releases.md](releases.md).
+`check:brands` checks every logo file against `config/brands.json`, content included, and `check:logos` that the
+generated logo output is current.
 
 ## Conventions
 
