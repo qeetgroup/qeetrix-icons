@@ -1,10 +1,9 @@
 # Documentation
 
-Qeetrix Icons 2.0 ships the 1,863 outline icons of Lucide 1.52.0, in Lucide's 42 categories, as
-React 19 components with a manifest. Every icon also has a sharp style, and 794 have filled
+Qeetrix Icons ships the 1,863 outline icons of Lucide 1.52.0, in Lucide's 42 categories, as
+React 19 components with a manifest. Every icon also has a sharp style, and 775 have filled
 variants, all derived from the Lucide outlines. The package also ships the Qeet logo and wordmark,
-each rendered exactly as drawn. Validation, generation, the public
-API, and the visual QA playground are complete; 2.0 is not yet released.
+each rendered exactly as drawn.
 
 | Document | Purpose |
 |:--|:--|
@@ -21,8 +20,9 @@ API, and the visual QA playground are complete; 2.0 is not yet released.
 | [validation.md](validation.md) | Source rules, diagnostics, metadata checks, logo checks, and the parser decision |
 | [generation.md](generation.md) | Icon generation, the logo generator, generated files, runtime decision, and output safety |
 | [visual-qa.md](visual-qa.md) | The playground, the review workflow, and the per-icon checklist |
-| [contributing.md](contributing.md) | Bun setup, commands, common changes, conventions, and CI |
-| [releases.md](releases.md) | Release behavior, what each bump means, and why 2.0 must not reach `main` yet |
+| [migrating-from-lucide-react.md](migrating-from-lucide-react.md) | Moving a screen from `lucide-react`: imports, props, filled, sharp and logos |
+| [contributing.md](contributing.md) | Bun setup, commands, common changes, conventions, CI and the local gate |
+| [releases.md](releases.md) | How a release happens and what each bump means |
 
 The machine-readable internal contracts are in `config/`, none of them package exports:
 [icon-system.ts](../config/icon-system.ts) (design values),

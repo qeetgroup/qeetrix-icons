@@ -1,0 +1,66 @@
+name: Release gate
+
+# A develop → main pull request releases. Besides Verify, main requires this one check on it:
+#   - the change comes from this repository's develop (feature branches, forks and Dependabot go into develop);
+#   - the version in package.json is above main's, unless nothing that ships changed.
+# Raise the version on develop, in an ordinary commit, before opening the pull request: nothing commits for you.
+on:
+  pull_request:
+    branches: [main]
+    # edited: a pull request whose base is changed to main is checked again.
+    types: [opened, reopened, synchronize, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: Release gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: the change comes from develop
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          set -euo pipefail
+          if [ "$HEAD_REPO:$HEAD_REF" != "$GITHUB_REPOSITORY:develop" ]; then
+            echo "::error::main takes develop only, and this comes from $HEAD_REPO:$HEAD_REF. Open the pull request into develop."
+            exit 1
+          fi
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # the version check compares with main
+          persist-credentials: false
+
+      - name: the version is above main's
+        env:
+          BASE: ${{ github.base_ref }}
+          PKG: package.json
+          # What ships is dist/, built from these: the components and runtime (src/), the drawings and logos
+          # (icons/), their configuration (config/), the build scripts, the manifest, the package manifest and
+          # lockfile, and the build's TypeScript settings. A pull request that changes nothing else (CI, tests,
+          # docs, the playground, tooling) needs no new version and releases nothing.
+          SHIPS: '^(src/|icons/|config/|scripts/build/|scripts/lib/|icon-manifest\.json$|package\.json$|bun\.lock$|tsconfig\.build\.json$)'
+          NO_SHIP: '(^|/)[^/]*\.md$'
+        run: |
+          set -euo pipefail
+          current=$(node -p "require('./$PKG').version")
+          if ! base_package=$(git show "origin/$BASE:$PKG" 2>/dev/null); then
+            echo "$BASE has no $PKG yet: $current is the first release."; exit 0
+          fi
+          base=$(printf '%s' "$base_package" | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).version")
+          echo "This pull request: $current. $BASE: $base."
+          above=$(node -p "const p = v => v.split('-')[0].split('.').map(Number); const [a, b] = [p('$current'), p('$base')];
+            (a[0] - b[0] || a[1] - b[1] || a[2] - b[2]) > 0")
+          if [ "$above" != "true" ]; then
+            ships=$(git diff --name-only "origin/$BASE...HEAD" | grep -E "$SHIPS" | grep -v -E "$NO_SHIP" || true)
+            if [ -z "$ships" ]; then
+              echo "This pull request changes nothing that ships: no new version, and nothing to release."; exit 0
+            fi
+            next=$(node -p "const [a, b, c] = '$base'.split('.').map(Number); [a, b, c + 1].join('.')")
+            echo "::error::Raise version in $PKG above $base on develop, in an ordinary commit: $next for a patch, or a minor or major by hand."
+            exit 1
+          fi

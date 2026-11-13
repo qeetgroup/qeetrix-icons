@@ -38,7 +38,7 @@ should be invented: these are judgments.
 
 ```bash
 bun run playground        # local development server
-bun run playground:build  # production build; CI runs it to prove the playground compiles
+bun run playground:build  # production build; the local gate runs it to prove the playground compiles
 ```
 
 The playground lives in [playground/](../playground/) and is repository tooling, never part of the

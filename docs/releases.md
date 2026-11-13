@@ -2,35 +2,25 @@
 
 What a version number means for an icon library, how a release happens, and how to undo one.
 
-## 2.0 and `main`
-
-> [!WARNING]
-> This branch holds the unreleased 2.0: the 1.x catalogue is gone, and the root exports the 1,863
-> Lucide-based icons, the Qeet logo and wordmark, and the public types. `package.json` still
-> carries a 1.x version. Merged to `main` through the flow below, this could publish the
-> incompatible 2.0 work as a **1.x patch release** on `latest`, and consumers on a `^1` range could
-> receive it on their next install.
->
-> Keep 2.0 off `main` until it is ready to ship, and set `version` to `2.0.0` by hand when it is.
-> `release.yml` has no pre-release channel — it always publishes with the default dist-tag — so
-> shipping 2.0 pre-releases would first need a change to that workflow.
-
 ## How a release happens
 
-Three workflows. You raise the version on `develop`, then open the `develop` → `main` PR.
+You raise the version on `develop`, then open the `develop` → `main` PR.
 
 | Workflow | Trigger | What it does |
 |:--|:--|:--|
-| `version.yml` | PR into `main` opened or pushed | Checks that the version is above `main`'s |
-| `release.yml` | Merge to `main` | Publishes to npm, then tags the commit |
+| `ci.yml` · **Verify** | A PR into `develop` or `main` | Typecheck, Biome, the generated components, `bun audit` |
+| `release-gate.yml` · **Release gate** | The `develop` → `main` PR | It comes from `develop`; the version is above `main`'s when what ships changed |
+| `release.yml` | Merge to `main` | Builds, publishes to npm, then tags the commit |
+| `sync-develop.yml` | After the merge | Fast-forwards `develop` to `main` |
 | `rollback.yml` | Manual | Points `latest` back at an older version |
 
 ### 1. Open a PR
 
 First raise `version` in `package.json` on `develop`, in an ordinary commit: the next patch, or a minor or
-major. **The version you are about to ship is in the PR diff.** The Version check fails, naming the next
-patch, until the version is above `main`'s. Nothing commits for you: `main` requires CI on the PR's last
-commit, and a commit pushed by a workflow gets no CI run of its own.
+major. **The version you are about to ship is in the PR diff.** The Release gate fails, naming the next
+patch, until the version is above `main`'s; a PR that changes nothing that ships (CI, tests, docs, the
+playground) needs none. Nothing commits for you: `main` requires Verify on the PR's last commit, and a
+commit pushed by a workflow gets no CI run of its own.
 
 ### 2. Merge to main
 
@@ -38,9 +28,9 @@ commit, and a commit pushed by a workflow gets no CI run of its own.
 Release. The tag comes last on purpose: every `v*` tag is a version that really shipped, the same
 property `qeet-id-server`'s deploy workflow maintains.
 
-Before publishing it runs the full gate: `lint`, `typecheck`, `test`, `check:icons`,
-`check:filled`, `check:sharp`, `check:generated`, `check:brands`, `check:logos`, `build`. A merge
-that does not change the version publishes nothing and succeeds, so re-running is always safe.
+Before publishing it builds the package; the tests and every check ran locally before the push
+([contributing.md](contributing.md), "Before you push"), and Verify passed on the PR. A merge that does
+not change the version publishes nothing and succeeds, so re-running is always safe.
 
 There is no `bun run release`. Releasing is merging.
 

@@ -83,7 +83,7 @@ and turn, all by derivation ([sharp.md](sharp.md)):
 
 `outline` is the default and exists for every icon. `filled` is optional and selective: a solid
 alternative for states such as selected navigation, favorite, bookmark, notification state, rating,
-or active status. 794 icons have one, in both shapes; the rest are outline-only.
+or active status. 775 icons have one, in both shapes; the rest are outline-only.
 
 Filled drawings follow a few conventions, all produced by the derivation rather than drawn:
 
